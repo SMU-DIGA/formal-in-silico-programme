@@ -1,0 +1,344 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Formal in Silico · 项目纲领</title>
+<meta name="description" content="Formal in Silico：用形式化方法重写 DFT、MD 与 FEM，让模拟输出的每一个数都带有机器检查过的保证。">
+<link rel="alternate" hreflang="en" href="../">
+<link rel="alternate" hreflang="zh-CN" href="./">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@600;700;900&display=swap">
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/site.js"></script>
+</head>
+<body>
+
+<header class="bar"><div class="bar-in">
+  <a class="brand" href="./">Formal in Silico</a>
+  <nav class="nav" aria-label="站点">
+    <a href="./" aria-current="page">纲领</a>
+    <a href="progress.html">进度</a>
+    <a class="lang" href="../" hreflang="en" lang="en">EN</a>
+  </nav>
+  <button class="theme" type="button" aria-label="切换浅色或深色主题"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zm0 1.5v11a5.5 5.5 0 0 1 0-11z"/></svg></button>
+</div></header>
+
+<div class="hero"><div class="hero-in">
+  <p class="eyebrow">项目纲领 · v0.3 · 2026-09-29</p>
+  <h1>Formal in Silico</h1>
+  <p class="sub">用形式化方法重写 DFT、MD 与 FEM</p>
+  <p class="lead">材料设计、药物筛选、结构安全评估越来越依赖计算机模拟给出的数字。这些数字从方程出发，经过离散化、迭代算法和并行程序，最后落在 IEEE 754 浮点数上。今天，这条链上的每一环主要靠测试和经验来担保。本项目要让每一环都带上可以被检查的证明：数学层用 PDE 理论和定理证明器，软件层用 TLA+ 和模型检验，两层之间用精化关系连接。</p>
+  <div class="judgments" aria-label="三类判断">
+    <div class="j m"><span class="k">PDE</span><span class="e">‖<i class="v">u</i> − <i class="v">u<sub>h</sub></i>‖ ≤ (<i class="v">M</i>/<i class="v">α</i>) · inf ‖<i class="v">u</i> − <i class="v">v<sub>h</sub></i>‖</span></div>
+    <div class="j s"><span class="k">TLA+</span><span class="e">Spec ⇒ □ AtomsConserved</span></div>
+    <div class="j f"><span class="k">IEEE 754</span><span class="e">|fl(<i class="v">E<sub>h</sub></i>) − <i class="v">E<sub>h</sub></i>| ≤ <i class="v">ε</i><sub>round</sub></span></div>
+  </div>
+  <div class="stats">
+    <div class="stat"><b>100</b><span>条命题登记在可信账本中</span></div>
+    <div class="stat"><b>92</b><span>条已有机器证明（T3 或 T4）</span></div>
+    <div class="stat"><b>21</b><span>条达到端到端等级 T4：检查器可靠性与内核安全</span></div>
+    <div class="stat"><b>2</b><span>个参照程序交叉校验：DFTK.jl 与 scikit-fem</span></div>
+  </div>
+  <div class="cta">
+    <a class="btn" href="progress.html">查看实现进度</a>
+    <a class="btn ghost" href="#s2">阅读核心主张</a>
+  </div>
+</div></div>
+
+<div class="wrap">
+<nav class="toc" aria-label="目录">
+  <p>目录</p>
+  <ol>
+    <li><a href="#s1"><span>§1</span>动机</a></li>
+    <li><a href="#s2"><span>§2</span>核心主张</a></li>
+    <li><a href="#s3"><span>§3</span>两层形式化</a></li>
+    <li><a href="#s4"><span>§4</span>证明义务</a></li>
+    <li><a href="#s5"><span>§5</span>可信等级</a></li>
+    <li><a href="#s6"><span>§6</span>原则</a></li>
+    <li><a href="#s7"><span>§7</span>不做什么</a></li>
+    <li><a href="#s8"><span>§8</span>路线图</a></li>
+    <li><a href="#s9"><span>§9</span>第一个里程碑</a></li>
+    <li><a href="#s10"><span>§10</span>决定与待决</a></li>
+    <li><a href="#s11"><span>§11</span>参考文献</a></li>
+  </ol>
+</nav>
+<main>
+
+<section id="s1">
+  <p class="sec-no">§1</p>
+  <h2>为什么要这样做</h2>
+  <div class="prose">
+    <p>科学计算软件通常用三种办法建立信任：与解析解对比，与实验对比，与别的程序对比。这些办法都有效，但只覆盖被测到的情形，而且当结果出现偏差时，很难说清偏差来自哪一层。</p>
+  </div>
+  <div class="cards">
+    <div class="card">
+      <span class="yr">1991 · FEM</span>
+      <h3>Sleipner A 平台沉没</h3>
+      <p>北海 Sleipner A 平台的混凝土基座在注水试验中破坏并沉没。事后调查指出，有限元线弹性分析中的单元形状不佳，使三格室壁的剪应力被低估约 47%，配筋因此不足。程序正常运行，没有报错。</p>
+      <p class="lesson">教训：网格质量和离散误差应当是可检查的前提条件，而不是工程师的经验判断。</p>
+    </div>
+    <div class="card">
+      <span class="yr">2016 · DFT</span>
+      <h3>Δ 量规与可复现性</h3>
+      <p>Lejaeghere 等人比较了 15 个固体计算代码、40 种赝势或基组方案对 71 种单质晶体的 PBE 状态方程。较新的方法之间吻合良好，较早的方案存在明显偏差，而差异的来源只能靠逐项对比去定位。</p>
+      <p class="lesson">教训：结果依赖大量隐式的数值设置。这些设置应当写进规范，并与误差估计绑定。</p>
+    </div>
+  </div>
+  <div class="prose">
+    <p>并行化让问题更难。MD 程序在数千个 MPI 进程上做区域分解，原子跨越子域边界时如果丢失或重复，能量曲线上可能只出现一个很难察觉的跳变。浮点归约的顺序随进程数改变，同一个输入在不同规模的机器上会给出逐位不同的轨迹。这些错误与物理无关，是并发协议的错误，而并发协议正是 TLA+ 擅长处理的对象。</p>
+  </div>
+</section>
+
+<section id="s2">
+  <p class="sec-no">§2</p>
+  <h2>核心主张：可信度取决于链条上最弱的一环</h2>
+  <div class="prose">
+    <p>我们把一次模拟从方程到浮点数的过程拆成六层，并为每两层之间写下明确的证明义务。前三段义务属于 PDE 与数值分析，第四段属于软件规范，第五段属于浮点分析。</p>
+  </div>
+  <ol class="chain">
+    <li><div class="layer"><span class="no">L1</span><h4>物理模型</h4><p>方程本身：Kohn–Sham 方程、牛顿或 Langevin 运动方程、线弹性方程。</p></div></li>
+    <li class="ob"><span class="tag m">数学</span> 适定性：解存在、唯一，并连续依赖于数据</li>
+    <li><div class="layer"><span class="no">L2</span><h4>连续问题</h4><p>函数空间中的变分形式，例如在 H¹ 中求 <i class="v">u</i> 使 <i class="v">a</i>(<i class="v">u</i>, <i class="v">v</i>) = ℓ(<i class="v">v</i>) 对所有 <i class="v">v</i> 成立。</p></div></li>
+    <li class="ob"><span class="tag m">数学</span> 离散误差估计：<i class="v">u<sub>h</sub></i> → <i class="v">u</i>，并给出收敛阶</li>
+    <li><div class="layer"><span class="no">L3</span><h4>离散问题</h4><p>有限维代数系统：刚度矩阵、平面波系数、粒子坐标。</p></div></li>
+    <li class="ob"><span class="tag m">数学</span> 算法收敛：迭代在第 <i class="v">k</i> 步停止时，代数误差受控</li>
+    <li><div class="layer"><span class="no">L4</span><h4>抽象算法</h4><p>SCF 迭代、Velocity Verlet、共轭梯度法的数学描述，按精确算术理解。</p></div></li>
+    <li class="ob"><span class="tag s">TLA+</span> 精化：并行程序的每一步都对应抽象算法的一步，或不改变抽象状态</li>
+    <li><div class="layer"><span class="no">L5</span><h4>并行程序</h4><p>MPI 进程、消息、共享内存线程、GPU 流，以及检查点与重启。</p></div></li>
+    <li class="ob"><span class="tag f">浮点</span> 舍入误差界：浮点结果与精确算术结果的距离</li>
+    <li><div class="layer"><span class="no">L6</span><h4>浮点执行</h4><p>在 IEEE 754 硬件上实际算出来的那个数。</p></div></li>
+  </ol>
+  <div class="ineq">
+    <div class="formula">‖<i class="v">u</i> − <i class="v">ũ<sub>h</sub></i><sup>(k)</sup>‖ ≤ <span class="m">‖<i class="v">u</i> − <i class="v">u<sub>h</sub></i>‖ + ‖<i class="v">u<sub>h</sub></i> − <i class="v">u<sub>h</sub></i><sup>(k)</sup>‖</span> + <span class="fp">‖<i class="v">u<sub>h</sub></i><sup>(k)</sup> − <i class="v">ũ<sub>h</sub></i><sup>(k)</sup>‖</span></div>
+    <ul>
+      <li><span class="tag m">数学</span> 离散误差与代数误差：由 PDE 理论和算法理论给出</li>
+      <li><span class="tag f">浮点</span> 舍入误差：由浮点分析给出</li>
+      <li><span class="tag s">TLA+</span> 前提：程序实际算出的就是 <i class="v">ũ<sub>h</sub></i><sup>(k)</sup>，由精化保证</li>
+    </ul>
+  </div>
+  <div class="prose">
+    <p>这个不等式是项目的骨架。它的每一项都要有定理支撑，而它能够成立的前提（并行程序忠实地执行了抽象算法）要由软件层的规范来保证。模型本身与真实物理之间的差距不在这个不等式里，那是确认（validation）问题，见 §7。</p>
+  </div>
+</section>
+
+<section id="s3">
+  <p class="sec-no">§3</p>
+  <h2>两层形式化，一座桥，一个地基</h2>
+  <div class="pillars">
+    <div class="pillar m">
+      <span class="tag m">数学层</span>
+      <h3 style="margin-top:10px">PDE 理论与数值分析</h3>
+      <ul>
+        <li><b>适定性：</b>Lax–Milgram、inf-sup 条件、Kohn–Sham 能量泛函极小元的存在性</li>
+        <li><b>离散收敛：</b>先验误差估计（Céa 引理、插值估计、平面波截断误差）与后验误差估计</li>
+        <li><b>结构保持：</b>辛性、时间可逆性、动量守恒、电荷守恒、晶体对称性</li>
+        <li><b>迭代收敛：</b>SCF 不动点、Newton 法、Krylov 方法的收敛条件与停止准则</li>
+      </ul>
+      <p class="tool"><b>工具</b>　Lean 4 + Mathlib。Mathlib 已有 Hilbert 空间、测度论和 Lax–Milgram，可以直接作为起点。<b>策略</b>　先把定理写成带文献出处的公理，让上层可以立刻依赖它；再逐步把公理替换为机器证明。每一条尚未证明的公理都登记在可信账本里。</p>
+    </div>
+    <div class="pillar s">
+      <span class="tag s">软件层</span>
+      <h3 style="margin-top:10px">TLA+ 规范与模型检验</h3>
+      <ul>
+        <li><b>安全性：</b>原子不丢不重，每个自由度只有一个所有者，并行组装无写冲突，无死锁</li>
+        <li><b>活性：</b>消息最终送达；SCF 循环要么收敛，要么在有限步内报告失败</li>
+        <li><b>协议：</b>区域分解与 halo 交换、分布式 FFT 转置、检查点与重启、自适应网格加密与负载再平衡</li>
+      </ul>
+      <p class="tool"><b>工具</b>　PlusCal 写算法；TLC 在小规模实例上穷举；Apalache 做符号检验；TLAPS 写对任意规模成立的证明。<b>与代码的连接</b>　实现运行时输出事件日志，用 trace validation 检查日志是否是规范允许的行为。</p>
+    </div>
+    <div class="pillar b">
+      <span class="tag p">桥</span>
+      <h3 style="margin-top:10px">精化：把数学定理传递给并行程序</h3>
+      <p>抽象算法写成 TLA+ 规范 <i class="v">A</i>：状态是全局密度或全局相空间坐标，每一步是一次数学上的迭代映射。并行实现写成规范 <i class="v">P</i>：状态分散在各个进程上。精化映射把 <i class="v">P</i> 的状态投影成 <i class="v">A</i> 的状态，例如把各进程上的局部密度拼成全局密度。证明 <i class="v">P</i> ⇒ <i class="v">A</i> 之后，数学层关于 <i class="v">A</i> 的收敛定理就对并行程序成立。</p>
+      <p class="tool">性能优化也按同样的方式处理：每一次优化都是一次新的精化，必须证明它仍然实现上一层规范。</p>
+    </div>
+    <div class="pillar f">
+      <span class="tag f">地基</span>
+      <h3 style="margin-top:10px">浮点是一等公民</h3>
+      <p>IEEE 754 加法不满足结合律。浮点结果不直接进入结论：大型求解器的输出交给经过证明的检查器，检查器要么全程用精确有理数，要么用向外舍入的区间算术，所以需要信任的浮点性质缩小到“就近舍入的结果是最近的 double”。</p>
+      <p class="tool">全局归约采用确定性的求和顺序，使结果不随进程数或线程数变化。舍入模型写进规范，与离散误差、代数误差放在同一个误差预算里。</p>
+    </div>
+  </div>
+</section>
+
+<section id="s4">
+  <p class="sec-no">§4</p>
+  <h2>证明义务矩阵</h2>
+  <div class="prose"><p>三个领域在六层上各自需要证明的内容。这张表是项目的工作清单：每个单元格最终都要对应一份规范、一个定理或一条登记过的假设。</p></div>
+  <div class="tbl"><table class="matrix">
+    <thead><tr><th>层</th><th>DFT · 密度泛函理论 · 电子结构</th><th>MD · 分子动力学 · 原子轨迹</th><th>FEM · 有限元 · 连续介质</th></tr></thead>
+    <tbody>
+      <tr><td class="l">模型</td><td>Kohn–Sham 方程，一个非线性特征值问题：<i class="v">H</i>[<i class="v">ρ</i>]<i class="v">ψ<sub>i</sub></i> = <i class="v">ε<sub>i</sub>ψ<sub>i</sub></i>，<i class="v">ρ</i> = Σ<i class="v">f<sub>i</sub></i>|<i class="v">ψ<sub>i</sub></i>|²</td><td>哈密顿系统；恒温模拟为 Langevin 动力学及其 Fokker–Planck 方程</td><td>椭圆、抛物、双曲型 PDE，例如线弹性 −∇·<i class="v">σ</i>(<i class="v">u</i>) = <i class="v">f</i> 及其弱形式</td></tr>
+      <tr><td class="l">连续理论</td><td>Lieb 变分原理；LDA 型 Kohn–Sham 模型能量极小元的存在性；Hamiltonian 的自伴性</td><td>力场 Lipschitz 时解存在唯一；能量、动量、角动量守恒；相空间体积守恒（Liouville）；Langevin 动力学的不变测度与遍历性</td><td>Lax–Milgram 给出适定性；混合问题（Stokes、近不可压弹性）需要 inf-sup 条件；解的正则性决定可达的收敛阶</td></tr>
+      <tr><td class="l">离散化</td><td>平面波截断的先验误差估计；Brillouin 区 <i class="v">k</i> 点积分误差；赝势带来的模型误差单独登记</td><td>Velocity Verlet 的辛性与时间可逆性；向后误差分析：存在修正哈密顿量，能量误差 <i class="v">O</i>(Δ<i class="v">t</i>²) 在指数长的时间内有界</td><td>Céa 引理加插值估计：‖<i class="v">u</i> − <i class="v">u<sub>h</sub></i>‖<sub>H¹</sub> ≤ <i class="v">C h<sup>k</sup></i>|<i class="v">u</i>|<sub>H<sup>k+1</sup></sub>；网格形状正则性作为显式前提；后验估计量的可靠性与有效性</td></tr>
+      <tr><td class="l">算法</td><td>SCF 不动点迭代与 Anderson / Pulay 混合的局部收敛条件；LOBPCG、Davidson 保持轨道正交；SCF 状态机：收敛、振荡、重启</td><td>近邻表：只要上次重建后最大位移小于 skin 厚度的一半，就不会漏掉相互作用对；SHAKE / RATTLE 约束迭代的收敛</td><td>CG / GMRES 与预条件子的收敛和停止准则；自适应循环 SOLVE → ESTIMATE → MARK → REFINE 的收敛性</td></tr>
+      <tr><td class="l">并行执行</td><td><i class="v">k</i> 点、能带、平面波三级并行的数据划分；分布式三维 FFT 转置不丢不重；全局归约后各进程看到同一个 <i class="v">ρ</i></td><td>区域分解下原子迁移守恒；ghost 原子交换一致；无死锁；检查点重启前后状态等价</td><td>并行组装无写冲突；每个自由度恰有一个所有者；分布式加密后网格保持协调，负载再平衡不丢单元</td></tr>
+      <tr><td class="l">浮点</td><td>正交化过程中舍入误差的累积；电荷守恒 ∫<i class="v">ρ</i> = <i class="v">N</i> 的数值偏差界</td><td>长时间积分中舍入误差的累积；归约顺序导致的逐位不可复现</td><td>刚度矩阵条件数 <i class="v">κ</i> ∼ <i class="v">h</i><sup>−2</sup> 对可达精度的限制；数值求积误差</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="s5">
+  <p class="sec-no">§5</p>
+  <h2>可信等级</h2>
+  <div class="prose"><p>不是所有东西都能马上被证明。每个组件都要如实标出自己所处的等级，并在可信账本中列出它依赖的假设。等级只升不虚标。</p></div>
+  <div class="tiers">
+    <div class="tier"><span class="t c-t0">T0</span><h4>测试</h4><p>回归测试、解析解对比、与既有代码对标。只对测过的输入成立。</p></div>
+    <div class="tier"><span class="t c-t1">T1</span><h4>文献证明</h4><p>有纸面证明和文献出处，假设已显式列出，但尚未机器检查。</p></div>
+    <div class="tier"><span class="t c-t2">T2</span><h4>模型检验</h4><p>TLC 或 Apalache 在有限规模实例上穷举了全部行为。</p></div>
+    <div class="tier"><span class="t c-t3">T3</span><h4>机器证明</h4><p>Lean、Rocq 或 TLAPS 证明，对任意规模成立，但停留在抽象模型、精确算术或代码的逐行模型层面。</p></div>
+    <div class="tier"><span class="t c-t4">T4</span><h4>端到端</h4><p>机器证明一直覆盖到可执行代码和浮点舍入。先例：Boldo 等人对一维波动方程 C 程序的完整证明。</p></div>
+  </div>
+</section>
+
+<section id="s6">
+  <p class="sec-no">§6</p>
+  <h2>原则</h2>
+  <div class="principles">
+    <div class="principle"><h4>规范先于代码</h4><p>每个模块先有数学陈述和 TLA+ 规范，再有实现。</p></div>
+    <div class="principle"><h4>假设必须可见</h4><p>正则性、网格条件、步长限制、收敛阈值都写进规范，不藏在输入文件的默认值里。</p></div>
+    <div class="principle"><h4>等级如实</h4><p>宁可标 T0，也不虚标 T3。可信账本是项目里最重要的文件。</p></div>
+    <div class="principle"><h4>小的可信内核</h4><p>只有少数内核需要达到 T4；上层通过组合定理继承它们的保证。</p></div>
+    <div class="principle"><h4>浮点进入规范</h4><p>舍入模型和误差界与离散误差一起进入同一个误差预算。</p></div>
+    <div class="principle"><h4>默认可复现</h4><p>相同输入在任意进程数下给出逐位相同的结果，除非使用者显式放弃这一点。</p></div>
+    <div class="principle"><h4>先正确，后性能</h4><p>先得到可证明的版本，再在不破坏证明的前提下优化。每次优化都是一次新的精化。</p></div>
+    <div class="principle"><h4>验证检查器，不验证求解器</h4><p>LAPACK、FFT 库这类大型数值库不做证明，而是为它们的输出写经过证明的检查器。求解器可以替换，保证来自检查器。</p></div>
+    <div class="principle"><h4>每次运行附带报告</h4><p>报告的每一行都标出可信账本中的命题编号，由编号查到它的等级与所依赖的假设；报告末尾列出本次运行用到的假设。</p></div>
+    <div class="principle"><h4>每个输出都有定理</h4><p>程序输出的每个数都要对应一条机器证明的定理。结果是近似值时（迭代、离散化、<i class="v">k</i> 点采样、有限温度、浮点），要证明的是误差界，测试、模型检验与 sanitizer 只作辅助证据。还没有这样一条定理的输出算未完成，列为缺口。</p></div>
+    <div class="principle"><h4>开放</h4><p>规范、证明、基准和可信账本都将公开，任何人都可以重新检查。</p></div>
+  </div>
+</section>
+
+<section id="s7">
+  <p class="sec-no">§7</p>
+  <h2>不做什么</h2>
+  <div class="cards three">
+    <div class="card"><h3>不判断物理模型是否正确</h3><p>交换关联泛函、力场参数、本构关系与真实世界的差距属于确认（validation）。本项目只做验证（verification）：正确地求解给定的方程。</p></div>
+    <div class="card"><h3>不在一开始就替代现有软件</h3><p>Quantum ESPRESSO、VASP、LAMMPS、GROMACS、deal.II、FEniCS 是对标对象和参照。</p></div>
+    <div class="card"><h3>不要求所有代码都被证明</h3><p>输入解析、I/O、可视化停留在 T0 即可，只要它们不进入误差预算。</p></div>
+  </div>
+</section>
+
+<section id="s8">
+  <p class="sec-no">§8</p>
+  <h2>路线图</h2>
+  <div class="goal">
+    <h3>当前目标 G1：DFTK 功能对齐 <span class="tag n">2026-09-29 设定</span></h3>
+    <p>让 mini-DFT 覆盖 DFTK.jl 的主要功能。只有实现、与 DFTK 在同一离散问题上一致、输出有 Lean 证书三条都满足，才算<b>完成</b>。顺序是先在 1D 做全，再把 Lean 模型推广到 <i class="v">d</i> 维做 3D，最后是基础设施与外部接口。阶段 2 的 MD 推迟到它完成之后。</p>
+  </div>
+  <div class="goal">
+    <h3>并行目标 G2：带形式化证明的有限元，对照 scikit-fem <span class="tag n">2026-09-30 设定</span></h3>
+    <p>用自己的 C 实现覆盖 scikit-fem 的主要功能，scikit-fem 在同一离散问题上作独立参照。完成标准与 G1 相同；能做到的地方，证书的结论针对<b>连续问题的真解</b>，而不只是离散解。先在 1D 做全，再做 2D 三角形网格。</p>
+  </div>
+  <ol class="phases">
+    <li class="phase"><div class="hd"><b>阶段 0</b><strong>最小 DFT</strong><span class="tag f">进行中</span></div><div class="bd">
+      <p>一维周期约化 Hartree 模型，平面波离散，串行执行。用它把 L1 到 L6 完整走通一遍，同时建立整个项目会复用的基础设施：可信账本、证书检查器、运行报告格式、trace validation。</p>
+      <p><span class="k">退出标准</span>义务清单中的命题全部达到目标等级；四组基准通过；每次运行都输出可信报告。</p></div></li>
+    <li class="phase"><div class="hd"><b>阶段 1</b><strong>DFT 扩展</strong><span class="tag f">部分提前完成</span></div><div class="bd">
+      <p>一维 LDA 交换关联（凸性丢失，唯一性改为局部结论）；<i class="v">k</i> 点采样，以及 <i class="v">k</i> 点的 MPI 并行——项目第一个真正的并行协议；三维平面波与局域赝势，与 DFTK.jl 交叉校验。</p>
+      <p><span class="k">退出标准</span><i class="v">k</i> 点并行在 1 到 64 个进程上结果逐位一致，运行日志全部通过 trace validation。</p></div></li>
+    <li class="phase"><div class="hd"><b>阶段 2</b><strong>推广到 MD 与 FEM</strong><span class="tag f">FEM 进行中</span></div><div class="bd">
+      <p>复用阶段 0 建立的框架，做两个最小版本：一维 Lennard-Jones 原子链加 Velocity Verlet；一维 Poisson 方程加 P1 线性元。TLA+ 模块覆盖 halo 交换、原子迁移、并行组装、检查点。</p>
+      <p><span class="k">退出标准</span>两个最小版本都输出可信报告；Céa 引理与 Verlet 辛性达到 T3。</p></div></li>
+    <li class="phase"><div class="hd"><b>阶段 3</b><strong>可信内核</strong><span class="tag n">未开始</span></div><div class="bd">
+      <p>选定少数内核达到 T4：平面波动能算子的作用、FEM 单元刚度矩阵组装、Verlet 单步；浮点误差界的机器证明与代码相连。</p>
+      <p><span class="k">退出标准</span>这些内核的浮点误差界经过机器检查，并进入全局误差预算。</p></div></li>
+    <li class="phase"><div class="hd"><b>阶段 4</b><strong>对标</strong><span class="tag n">未开始</span></div><div class="bd">
+      <p>在标准基准上与既有代码比较：DFT 用 Δ 量规，MD 用 NVE 能量漂移和径向分布函数，FEM 用制造解方法检验收敛阶。</p>
+      <p><span class="k">退出标准</span>公开基准结果，以及每个结果对应的可信账本。</p></div></li>
+  </ol>
+  <p class="note">每个阶段与目标的逐项现状见<a href="progress.html">进度页</a>。</p>
+</section>
+
+<section id="s9">
+  <p class="sec-no">§9</p>
+  <h2>第一个里程碑：mini-DFT 与 mini-FEM</h2>
+  <div class="prose">
+    <p>在扩展到 MD 和 FEM 之前，先用一个尽量小的 DFT 程序把 L1 到 L6 全部走通。它要小到每一层的证明义务都能写清楚，同时保留 Kohn–Sham 计算的完整骨架：非线性特征值问题、自洽迭代、平面波离散。</p>
+  </div>
+  <div class="tbl"><table>
+    <tbody>
+      <tr><td class="l">模型</td><td>一维周期约化 Hartree（rHF）模型，不含交换关联项。区域为周期区间 [0, <i class="v">L</i>)，<i class="v">N</i> 个电子，自旋简并。能量为动能、外势能与 ½ Hartree 能之和，Hartree 核在非零频率上为 4π/<i class="v">q</i>²。</td></tr>
+      <tr><td class="l">外势</td><td>光滑周期函数：常数、余弦、周期化的高斯双势阱（可重复多份）。一维 Coulomb 势在原点不可积，因此不用它。</td></tr>
+      <tr><td class="l">离散</td><td>平面波，|<i class="v">k</i>| ≤ <i class="v">K</i>；只取 Γ 点，或 <i class="v">N<sub>k</sub></i> 个等权 <i class="v">k</i> 点（Γ 中心或 Monkhorst–Pack 网格）。实空间网格点数不少于 4<i class="v">K</i> + 1，保证密度和 Hamiltonian 作用没有混叠。</td></tr>
+      <tr><td class="l">占据</td><td>零温时假设能隙存在，每次迭代都用区间算术检查；有限温度时用 Fermi–Dirac、Gaussian、Methfessel–Paxton 或 Marzari–Vanderbilt 占据，所有 <i class="v">k</i> 点共用一个化学势。</td></tr>
+      <tr><td class="l">算法</td><td>SCF 迭代，线性或 Anderson 混合，可加 Kerker 预条件；稠密矩阵直接对角化；<i class="v">k</i> 点用共享内存线程并行，按固定顺序累加。</td></tr>
+    </tbody>
+  </table></div>
+  <div class="cards">
+    <div class="card"><h3>为什么选 rHF</h3><p>它的能量关于密度矩阵是凸的，而 Hartree 项在非零频率上严格凸，所以基态密度唯一。在 DFT 家族里，这是数学性质最干净的模型，适合作为第一个机器证明的对象。加入 LDA 交换关联后凸性会丢失，这一步放在阶段 1。</p></div>
+    <div class="card"><h3>LAPACK 求解，检查器担保</h3><p>LAPACK 本身停在 T0。驱动收敛后写出证书，用 Lean 写成并编译的检查器以精确有理数重新检查，输出能量、自由能、截断极限、密度、本征值、能带与态密度的严格区间。检查器的可靠性是 Lean 定理；它不信任求解器给出的任何数，求解器算错只会让检查失败或区间变宽。</p></div>
+  </div>
+  <div class="prose">
+    <p><b>mini-FEM</b> 在目标 G2 下沿用同一模式：一维 Poisson 方程的 P1 线性元（Dirichlet、Neumann、Robin 边界），梁方程的三次 Hermite 元（固支、简支、自由、滑动），右端项由多项式、指数、正弦、余弦组合而成。Lean 检查器给出<b>连续问题真解</b>在每个节点上的严格区间，以及整个区间上最大误差的严格上界。自适应加密以这些经过证明的单元误差界作为标记量。</p>
+  </div>
+</section>
+
+<section id="s10">
+  <p class="sec-no">§10</p>
+  <h2>决定与待决问题</h2>
+  <div class="decision">
+    <p class="meta">D1 · 已决定 · 2026-09-27 · 修订 · 2026-09-29</p>
+    <h3>证明器分层：数学层与浮点模型用 Lean 4，代码层连接待选工具</h3>
+    <dl>
+      <dt>分工</dt><dd><ul>
+        <li>Lean 4 + Mathlib 负责 L1–L4（适定性、离散误差估计、结构保持、迭代收敛），以及 L6 的两部分：证书检查器（精确有理数，编译成可执行程序）与区间算术内核的逐行 binary64 模型。</li>
+        <li>Frama-C/WP 负责 C 可信内核的运行时安全。</li>
+        <li>把 Lean 中的浮点结论落到实际的 C 代码上，候选工具是 Rocq 的 Flocq、VST、CompCert，或 Frama-C 的浮点模型。尚未开始。</li></ul></dd>
+      <dt>理由</dt><dd>数学层是项目的主体；Mathlib 的泛函分析与测度论是一个统一的库，AI 辅助证明工具也大多优先支持 Lean。“验证检查器，不验证求解器”把浮点义务缩小了，Lean 中一个很小的 binary64 模型就够用。代码级验证方面 Rocq 的工具链和 T4 先例仍然更成熟，所以这一步的工具尚未选定。</dd>
+      <dt>代价</dt><dd>Lean 模型与 C 代码的对应目前只有逐行对照与逐位差分测试，没有机器证明，区间算术的正确性停在 T3。</dd>
+    </dl>
+  </div>
+  <div class="decision">
+    <p class="meta">D2 · 已决定 · 2026-09-27</p>
+    <h3>实现语言：C11，分成经过证明的内核和不受信任的驱动</h3>
+    <dl>
+      <dt>分工</dt><dd><ul>
+        <li><b>可信内核</b>：单位根、网格密度与电荷区间、区间算术的本征对残差上界与惯性计数。只用受限的 C 子集并带形式化注释，Frama-C/WP 证明没有运行时错误（T4）。</li>
+        <li><b>证书检查器</b>用 Lean 写，全程精确有理数，可靠性是 Lean 定理。</li>
+        <li><b>驱动</b>：SCF 循环、调用 LAPACK、线程并行、输入输出、可信报告、事件日志、写证书。停在 T0，它算出的任何数都要先通过内核或检查器，才会作为有保证的结果写进报告。</li>
+        <li>Python 与 Julia 只用在基准和 trace validation 工具里，不进入可信链。</li></ul></dd>
+      <dt>理由</dt><dd>代码级验证最成熟的路线都从 C 出发；LAPACK 和 FFTW 本身提供 C 接口。C 的主要风险是内存安全：内核由证明兜底，驱动用 sanitizer 测试。编译时禁止乘加合并与一切改变浮点语义的优化，保证编译后的运算与证明一致。</dd>
+      <dt>未选的方案</dt><dd>Rust（验证工具与上述代码层工具接不上）、Julia 或 Python（没有代码级证明的路线）、Fortran（形式化验证工具很少）、Lean 本身（其浮点没有形式化语义）。</dd>
+    </dl>
+  </div>
+  <h3 style="margin-top:28px">待决问题</h3>
+  <ul class="prose">
+    <li><b>一维 rHF 的连续理论。</b>现有文献主要处理三维 Coulomb 相互作用；一维周期 Hartree 核下的适定性需要找到对应文献，或者自己补一个证明。</li>
+    <li><b>Sobolev 空间的机器化深度。</b>先公理化到什么程度，哪些定理值得优先证明？</li>
+    <li><b>随机性。</b>Langevin 动力学和随机初猜涉及概率性质，TLA+ 只描述不确定性。</li>
+    <li><b>GPU。</b>异步流和弱内存模型如何进入 TLA+ 规范。</li>
+  </ul>
+</section>
+
+<section id="s11">
+  <p class="sec-no">§11</p>
+  <h2>参考文献</h2>
+  <ol class="refs">
+    <li>B. Jakobsen, F. Rosendahl. The Sleipner platform accident. <i>Structural Engineering International</i> 4(3), 1994.</li>
+    <li>K. Lejaeghere et al. Reproducibility in density functional theory calculations of solids. <i>Science</i> 351, aad3000, 2016.</li>
+    <li>S. Boldo, F. Clément, J.-C. Filliâtre, M. Mayero, G. Melquiond, P. Weis. Wave equation numerical resolution: a comprehensive mechanized proof of a C program. <i>Journal of Automated Reasoning</i> 50(4), 2013.</li>
+    <li>S. Boldo, F. Clément, F. Faissole, V. Martin, M. Mayero. A Coq formal proof of the Lax–Milgram theorem. CPP 2017.</li>
+    <li>J. P. Solovej. Proof of the ionization conjecture in a reduced Hartree–Fock model. <i>Inventiones Mathematicae</i> 104, 1991.</li>
+    <li>E. Cancès, A. Deleurme, M. Lewin. A new approach to the modeling of local defects in crystals: the reduced Hartree–Fock case. <i>Communications in Mathematical Physics</i> 281, 2008.</li>
+    <li>E. Cancès, R. Chakir, Y. Maday. Numerical analysis of the planewave discretization of some orbital-free and Kohn–Sham models. <i>ESAIM: M2AN</i> 46(2), 2012.</li>
+    <li>M. F. Herbst, A. Levitt, E. Cancès. DFTK: A Julian approach for simulating electrons in solids. JuliaCon Proceedings, 2021.</li>
+    <li>E. Hairer, C. Lubich, G. Wanner. <i>Geometric Numerical Integration</i>, 2nd ed. Springer, 2006.</li>
+    <li>B. Leimkuhler, C. Matthews. Rational construction of stochastic numerical methods for molecular sampling. <i>AMRX</i>, 2013.</li>
+    <li>P. Binev, W. Dahmen, R. DeVore. Adaptive finite element methods with convergence rates. <i>Numerische Mathematik</i> 97, 2004.</li>
+    <li>L. Lamport. <i>Specifying Systems: The TLA+ Language and Tools for Hardware and Software Engineers</i>. Addison-Wesley, 2002.</li>
+    <li>H. Cirstea, M. A. Kuppe, B. Loillier, S. Merz. Validating traces of distributed programs against TLA+ specifications, 2024.</li>
+  </ol>
+</section>
+
+</main>
+</div>
+
+<footer><div class="in">
+  <span>Formal in Silico · 项目纲领 v0.3 · 随项目演进修订</span>
+  <span><a href="progress.html">实现进度</a> · <a href="../" hreflang="en">English</a></span>
+</div></footer>
+</body>
+</html>

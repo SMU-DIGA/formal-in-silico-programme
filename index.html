@@ -1,0 +1,344 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Formal in Silico — Programme</title>
+<meta name="description" content="Formal in Silico: rewriting DFT, molecular dynamics and finite elements with formal methods, so that every number a simulation reports comes with a machine-checked guarantee.">
+<link rel="alternate" hreflang="en" href="./">
+<link rel="alternate" hreflang="zh-CN" href="zh/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700;8..60,800&display=swap">
+<link rel="stylesheet" href="assets/style.css">
+<script src="assets/site.js"></script>
+</head>
+<body>
+
+<header class="bar"><div class="bar-in">
+  <a class="brand" href="./">Formal in Silico</a>
+  <nav class="nav" aria-label="Site">
+    <a href="./" aria-current="page">Programme</a>
+    <a href="progress.html">Progress</a>
+    <a class="lang" href="zh/" hreflang="zh-CN" lang="zh-CN">中文</a>
+  </nav>
+  <button class="theme" type="button" aria-label="Toggle light or dark theme"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zm0 1.5v11a5.5 5.5 0 0 1 0-11z"/></svg></button>
+</div></header>
+
+<div class="hero"><div class="hero-in">
+  <p class="eyebrow">Programme · v0.3 · 29 September 2026</p>
+  <h1>Formal in Silico</h1>
+  <p class="sub">Rewriting DFT, molecular dynamics and finite elements with formal methods</p>
+  <p class="lead">Materials design, drug screening and structural safety assessment rely more and more on numbers produced by simulation. Those numbers start from equations and pass through discretisation, iterative algorithms and parallel programs before they land as IEEE&nbsp;754 floating-point values. Today every link in that chain is vouched for mainly by testing and experience. We want every link to carry a proof that anyone can check: PDE theory and a theorem prover for the mathematics, TLA+ and model checking for the software, and a refinement relation between the two.</p>
+  <div class="judgments" aria-label="The three kinds of judgement">
+    <div class="j m"><span class="k">PDE</span><span class="e">‖<i class="v">u</i> − <i class="v">u<sub>h</sub></i>‖ ≤ (<i class="v">M</i>/<i class="v">α</i>) · inf ‖<i class="v">u</i> − <i class="v">v<sub>h</sub></i>‖</span></div>
+    <div class="j s"><span class="k">TLA+</span><span class="e">Spec ⇒ □ AtomsConserved</span></div>
+    <div class="j f"><span class="k">IEEE 754</span><span class="e">|fl(<i class="v">E<sub>h</sub></i>) − <i class="v">E<sub>h</sub></i>| ≤ <i class="v">ε</i><sub>round</sub></span></div>
+  </div>
+  <div class="stats">
+    <div class="stat"><b>100</b><span>claims registered in the trust ledger</span></div>
+    <div class="stat"><b>92</b><span>of them machine-proved (tier T3 or T4)</span></div>
+    <div class="stat"><b>21</b><span>at the end-to-end tier T4: checker soundness and kernel safety</span></div>
+    <div class="stat"><b>2</b><span>reference codes cross-checked: DFTK.jl and scikit-fem</span></div>
+  </div>
+  <div class="cta">
+    <a class="btn" href="progress.html">See the progress</a>
+    <a class="btn ghost" href="#s2">Read the core claim</a>
+  </div>
+</div></div>
+
+<div class="wrap">
+<nav class="toc" aria-label="Contents">
+  <p>Contents</p>
+  <ol>
+    <li><a href="#s1"><span>01</span>Motivation</a></li>
+    <li><a href="#s2"><span>02</span>Core claim</a></li>
+    <li><a href="#s3"><span>03</span>Two layers</a></li>
+    <li><a href="#s4"><span>04</span>Obligations</a></li>
+    <li><a href="#s5"><span>05</span>Trust tiers</a></li>
+    <li><a href="#s6"><span>06</span>Principles</a></li>
+    <li><a href="#s7"><span>07</span>Non-goals</a></li>
+    <li><a href="#s8"><span>08</span>Roadmap</a></li>
+    <li><a href="#s9"><span>09</span>First milestones</a></li>
+    <li><a href="#s10"><span>10</span>Decisions</a></li>
+    <li><a href="#s11"><span>11</span>References</a></li>
+  </ol>
+</nav>
+<main>
+
+<section id="s1">
+  <p class="sec-no">§1</p>
+  <h2>Why do this</h2>
+  <div class="prose">
+    <p>Scientific software usually earns trust in three ways: comparison with analytic solutions, with experiment, and with other programs. All three work, but they only cover the cases that were tested, and when a result deviates it is hard to say which layer the deviation came from.</p>
+  </div>
+  <div class="cards">
+    <div class="card">
+      <span class="yr">1991 · FEM</span>
+      <h3>The Sleipner A platform sinks</h3>
+      <p>The concrete base of the Sleipner A platform in the North Sea failed during a ballast test and sank. The investigation found that poorly shaped elements in the linear-elastic finite-element analysis underestimated the shear stress in the tricell walls by about 47%, so the reinforcement was insufficient. The program ran normally and reported no error.</p>
+      <p class="lesson">Lesson: mesh quality and discretisation error should be checkable preconditions, not a matter of engineering judgement.</p>
+    </div>
+    <div class="card">
+      <span class="yr">2016 · DFT</span>
+      <h3>The Δ-gauge and reproducibility</h3>
+      <p>Lejaeghere et al. compared the PBE equations of state of 71 elemental crystals across 15 solid-state codes and 40 pseudopotential or basis-set schemes. Recent methods agree well; older schemes deviate noticeably, and the source of each difference could only be located by item-by-item comparison.</p>
+      <p class="lesson">Lesson: results depend on many implicit numerical settings. Those settings belong in the specification, tied to an error estimate.</p>
+    </div>
+  </div>
+  <div class="prose">
+    <p>Parallelism makes things harder. An MD code decomposes space over thousands of MPI ranks; if an atom is lost or duplicated as it crosses a subdomain boundary, the energy curve may show only a barely visible jump. The order of floating-point reductions changes with the number of ranks, so the same input gives bitwise-different trajectories on machines of different size. These errors have nothing to do with physics. They are errors in concurrent protocols, and concurrent protocols are exactly what TLA+ is good at.</p>
+  </div>
+</section>
+
+<section id="s2">
+  <p class="sec-no">§2</p>
+  <h2>Core claim: a result is only as trustworthy as the weakest link</h2>
+  <div class="prose">
+    <p>We split the path from equation to floating-point number into six layers and write an explicit proof obligation between each pair. The first three obligations belong to PDE theory and numerical analysis, the fourth to software specification, the fifth to floating-point analysis.</p>
+  </div>
+  <ol class="chain">
+    <li><div class="layer"><span class="no">L1</span><h4>Physical model</h4><p>The equations themselves: Kohn–Sham, Newton or Langevin equations of motion, linear elasticity.</p></div></li>
+    <li class="ob"><span class="tag m">Maths</span> Well-posedness: a solution exists, is unique and depends continuously on the data</li>
+    <li><div class="layer"><span class="no">L2</span><h4>Continuous problem</h4><p>A variational form in a function space, e.g. find <i class="v">u</i> ∈ H¹ with <i class="v">a</i>(<i class="v">u</i>, <i class="v">v</i>) = ℓ(<i class="v">v</i>) for all <i class="v">v</i>.</p></div></li>
+    <li class="ob"><span class="tag m">Maths</span> Discretisation error estimate: <i class="v">u<sub>h</sub></i> → <i class="v">u</i>, with a rate</li>
+    <li><div class="layer"><span class="no">L3</span><h4>Discrete problem</h4><p>A finite-dimensional algebraic system: stiffness matrices, plane-wave coefficients, particle coordinates.</p></div></li>
+    <li class="ob"><span class="tag m">Maths</span> Algorithmic convergence: when the iteration stops at step <i class="v">k</i>, the algebraic error is controlled</li>
+    <li><div class="layer"><span class="no">L4</span><h4>Abstract algorithm</h4><p>SCF iteration, velocity Verlet, conjugate gradients — described mathematically, in exact arithmetic.</p></div></li>
+    <li class="ob"><span class="tag s">TLA+</span> Refinement: every step of the parallel program corresponds to one step of the abstract algorithm, or leaves the abstract state unchanged</li>
+    <li><div class="layer"><span class="no">L5</span><h4>Parallel program</h4><p>MPI ranks, messages, shared-memory threads, GPU streams, checkpoint and restart.</p></div></li>
+    <li class="ob"><span class="tag f">Floating point</span> Rounding-error bound: the distance between the floating-point result and the exact-arithmetic result</li>
+    <li><div class="layer"><span class="no">L6</span><h4>Floating-point execution</h4><p>The number actually computed on IEEE 754 hardware.</p></div></li>
+  </ol>
+  <div class="ineq">
+    <div class="formula">‖<i class="v">u</i> − <i class="v">ũ<sub>h</sub></i><sup>(k)</sup>‖ ≤ <span class="m">‖<i class="v">u</i> − <i class="v">u<sub>h</sub></i>‖ + ‖<i class="v">u<sub>h</sub></i> − <i class="v">u<sub>h</sub></i><sup>(k)</sup>‖</span> + <span class="fp">‖<i class="v">u<sub>h</sub></i><sup>(k)</sup> − <i class="v">ũ<sub>h</sub></i><sup>(k)</sup>‖</span></div>
+    <ul>
+      <li><span class="tag m">Maths</span> Discretisation and algebraic error: from PDE theory and the theory of the algorithm</li>
+      <li><span class="tag f">Floating point</span> Rounding error: from floating-point analysis</li>
+      <li><span class="tag s">TLA+</span> Precondition: the program really computes <i class="v">ũ<sub>h</sub></i><sup>(k)</sup> — guaranteed by refinement</li>
+    </ul>
+  </div>
+  <div class="prose">
+    <p>This inequality is the backbone of the project. Each term must be backed by a theorem, and the premise that makes it hold — that the parallel program faithfully executes the abstract algorithm — must be guaranteed by the software-layer specification. The gap between the model and real physics is not in this inequality: that is validation, not verification (§7).</p>
+  </div>
+</section>
+
+<section id="s3">
+  <p class="sec-no">§3</p>
+  <h2>Two layers, one bridge, one foundation</h2>
+  <div class="pillars">
+    <div class="pillar m">
+      <span class="tag m">Mathematics layer</span>
+      <h3 style="margin-top:10px">PDE theory and numerical analysis</h3>
+      <ul>
+        <li><b>Well-posedness:</b> Lax–Milgram, inf-sup conditions, existence of minimisers of the Kohn–Sham energy</li>
+        <li><b>Discrete convergence:</b> a priori estimates (Céa’s lemma, interpolation, plane-wave truncation) and a posteriori estimates</li>
+        <li><b>Structure preservation:</b> symplecticity, time reversibility, conservation of momentum and charge, crystal symmetry</li>
+        <li><b>Iterative convergence:</b> conditions and stopping criteria for SCF fixed points, Newton and Krylov methods</li>
+      </ul>
+      <p class="tool"><b>Tool:</b> Lean 4 with Mathlib, which already has Hilbert spaces, measure theory and Lax–Milgram. <b>Strategy:</b> state theorems first as axioms with a literature source so that upper layers can depend on them at once, then replace the axioms with machine proofs. Every unproved axiom is registered in the trust ledger.</p>
+    </div>
+    <div class="pillar s">
+      <span class="tag s">Software layer</span>
+      <h3 style="margin-top:10px">TLA+ specification and model checking</h3>
+      <ul>
+        <li><b>Safety:</b> atoms are never lost or duplicated, every degree of freedom has exactly one owner, parallel assembly has no write conflicts, no deadlock</li>
+        <li><b>Liveness:</b> messages are eventually delivered; the SCF loop either converges or reports failure in finitely many steps</li>
+        <li><b>Protocols:</b> domain decomposition and halo exchange, distributed FFT transposes, checkpoint and restart, adaptive refinement and load rebalancing</li>
+      </ul>
+      <p class="tool"><b>Tools:</b> PlusCal for algorithms; TLC for exhaustive checking of small instances; Apalache for symbolic checking; TLAPS for proofs at any scale. <b>Link to the code:</b> the implementation emits an event log at run time, and trace validation checks that the log is a behaviour the specification allows.</p>
+    </div>
+    <div class="pillar b">
+      <span class="tag p">Bridge</span>
+      <h3 style="margin-top:10px">Refinement carries the theorems to the parallel program</h3>
+      <p>The abstract algorithm is a TLA+ specification <i class="v">A</i> whose state is the global density or phase-space point, and whose steps are one mathematical iteration each. The parallel implementation is a specification <i class="v">P</i> whose state is spread over processes. A refinement mapping projects the state of <i class="v">P</i> onto that of <i class="v">A</i> — for example by stitching local densities into the global one. Once <i class="v">P</i> ⇒ <i class="v">A</i> is proved, the convergence theorems about <i class="v">A</i> hold for the parallel program.</p>
+      <p class="tool">Performance work is handled the same way: every optimisation is a new refinement, and must be proved to still implement the level above.</p>
+    </div>
+    <div class="pillar f">
+      <span class="tag f">Foundation</span>
+      <h3 style="margin-top:10px">Floating point is a first-class citizen</h3>
+      <p>IEEE 754 addition is not associative. Floating-point results never enter a conclusion directly: the output of a large solver goes to a proved checker that uses either exact rational arithmetic or outward-rounded interval arithmetic. The only floating-point fact we then have to trust is “round-to-nearest returns the nearest double”.</p>
+      <p class="tool">Global reductions use a deterministic summation order, so results do not depend on the number of processes or threads. The rounding model is part of the specification and sits in the same error budget as the discretisation and algebraic errors.</p>
+    </div>
+  </div>
+</section>
+
+<section id="s4">
+  <p class="sec-no">§4</p>
+  <h2>The proof-obligation matrix</h2>
+  <div class="prose"><p>What each of the three domains must prove at each layer. This table is the project’s work list: every cell must eventually correspond to a specification, a theorem or a registered assumption.</p></div>
+  <div class="tbl"><table class="matrix">
+    <thead><tr><th>Layer</th><th>DFT · electronic structure</th><th>MD · atomic trajectories</th><th>FEM · continuum mechanics</th></tr></thead>
+    <tbody>
+      <tr><td class="l">Model</td><td>Kohn–Sham equations, a nonlinear eigenvalue problem <i class="v">H</i>[<i class="v">ρ</i>]<i class="v">ψ<sub>i</sub></i> = <i class="v">ε<sub>i</sub>ψ<sub>i</sub></i>, <i class="v">ρ</i> = Σ<i class="v">f<sub>i</sub></i>|<i class="v">ψ<sub>i</sub></i>|²</td><td>Hamiltonian dynamics; for thermostatted runs, Langevin dynamics and its Fokker–Planck equation</td><td>Elliptic, parabolic and hyperbolic PDEs, e.g. linear elasticity −∇·<i class="v">σ</i>(<i class="v">u</i>) = <i class="v">f</i> and its weak form</td></tr>
+      <tr><td class="l">Continuum</td><td>Lieb variational principle; existence of minimisers for LDA-type Kohn–Sham models; self-adjointness of the Hamiltonian</td><td>Existence and uniqueness for Lipschitz forces; conservation of energy, momentum and angular momentum; Liouville; invariant measure and ergodicity of Langevin dynamics</td><td>Well-posedness via Lax–Milgram; inf-sup conditions for mixed problems (Stokes, nearly incompressible elasticity); regularity sets the attainable rate</td></tr>
+      <tr><td class="l">Discrete</td><td>A priori error of the plane-wave cutoff; Brillouin-zone <i class="v">k</i>-point integration error; pseudopotential model error registered separately</td><td>Symplecticity and time reversibility of velocity Verlet; backward error analysis: a modified Hamiltonian keeps the energy error <i class="v">O</i>(Δ<i class="v">t</i>²) for exponentially long times</td><td>Céa’s lemma plus interpolation: ‖<i class="v">u</i> − <i class="v">u<sub>h</sub></i>‖<sub>H¹</sub> ≤ <i class="v">C h<sup>k</sup></i>|<i class="v">u</i>|<sub>H<sup>k+1</sup></sub>; mesh shape regularity as an explicit premise; reliability and efficiency of a posteriori estimators</td></tr>
+      <tr><td class="l">Algorithm</td><td>Local convergence of SCF with Anderson/Pulay mixing; orthogonality in LOBPCG and Davidson; the SCF state machine: converge, oscillate, restart</td><td>Neighbour lists: no pair is missed while the maximum displacement since the last rebuild is below half the skin; convergence of SHAKE/RATTLE</td><td>Convergence and stopping criteria of CG/GMRES with preconditioners; convergence of the SOLVE → ESTIMATE → MARK → REFINE loop</td></tr>
+      <tr><td class="l">Parallel</td><td><i class="v">k</i>-point / band / plane-wave data distribution; distributed 3D FFT transposes lose and duplicate nothing; every process sees the same <i class="v">ρ</i> after reduction</td><td>Atom migration is conserved under domain decomposition; ghost exchange is consistent; no deadlock; state is equivalent across checkpoint and restart</td><td>Parallel assembly is write-conflict free; every degree of freedom has exactly one owner; the mesh stays conforming after distributed refinement; rebalancing loses no cells</td></tr>
+      <tr><td class="l">Floating point</td><td>Accumulated rounding in orthogonalisation; a bound on the numerical deviation of the charge ∫<i class="v">ρ</i> = <i class="v">N</i></td><td>Rounding accumulation over long integrations; bitwise irreproducibility from reduction order</td><td>The limit that a condition number <i class="v">κ</i> ∼ <i class="v">h</i><sup>−2</sup> puts on attainable accuracy; quadrature error</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="s5">
+  <p class="sec-no">§5</p>
+  <h2>Trust tiers</h2>
+  <div class="prose"><p>Not everything can be proved at once. Every component states honestly which tier it has reached and lists the assumptions it depends on in the trust ledger. Tiers only go up, and are never overstated.</p></div>
+  <div class="tiers">
+    <div class="tier"><span class="t c-t0">T0</span><h4>Tested</h4><p>Regression tests, analytic solutions, comparison with established codes. Holds only for the inputs tested.</p></div>
+    <div class="tier"><span class="t c-t1">T1</span><h4>Paper proof</h4><p>A proof on paper with a literature source and explicit assumptions, not yet machine-checked.</p></div>
+    <div class="tier"><span class="t c-t2">T2</span><h4>Model-checked</h4><p>TLC or Apalache has exhausted every behaviour of a finite instance.</p></div>
+    <div class="tier"><span class="t c-t3">T3</span><h4>Machine proof</h4><p>A Lean, Rocq or TLAPS proof valid at any scale, for the abstract model, exact arithmetic or a line-by-line model of the code.</p></div>
+    <div class="tier"><span class="t c-t4">T4</span><h4>End to end</h4><p>Machine proof all the way down to executable code and floating-point rounding. Precedent: Boldo et al.’s proof of a C program for the 1D wave equation.</p></div>
+  </div>
+</section>
+
+<section id="s6">
+  <p class="sec-no">§6</p>
+  <h2>Principles</h2>
+  <div class="principles">
+    <div class="principle"><h4>Specification before code</h4><p>Every module has a mathematical statement and a TLA+ specification before it has an implementation.</p></div>
+    <div class="principle"><h4>Assumptions are visible</h4><p>Regularity, mesh conditions, step-size limits and convergence thresholds are written into the specification, not hidden in input-file defaults.</p></div>
+    <div class="principle"><h4>Honest tiers</h4><p>Better to mark T0 than to overstate T3. The trust ledger is the most important file in the project.</p></div>
+    <div class="principle"><h4>A small trusted kernel</h4><p>Only a few kernels need T4; upper layers inherit their guarantees through composition theorems.</p></div>
+    <div class="principle"><h4>Floating point enters the specification</h4><p>The rounding model and its error bounds join the discretisation error in a single error budget.</p></div>
+    <div class="principle"><h4>Reproducible by default</h4><p>The same input gives bitwise-identical results at any process count, unless the user explicitly gives this up.</p></div>
+    <div class="principle"><h4>Correct first, fast later</h4><p>First obtain a provable version, then optimise without breaking the proof. Every optimisation is a new refinement.</p></div>
+    <div class="principle"><h4>Verify the checker, not the solver</h4><p>Large numerical libraries such as LAPACK or FFT libraries are not proved; their outputs are checked by proved checkers. Solvers are replaceable; the guarantee comes from the checker.</p></div>
+    <div class="principle"><h4>Every run comes with a report</h4><p>Each line of the report cites a claim in the trust ledger, from which its tier and assumptions can be looked up; the report ends with the assumptions the run used.</p></div>
+    <div class="principle"><h4>Every output has a theorem</h4><p>Every number the program prints must correspond to a machine-proved theorem. Where the result is an approximation — iteration, discretisation, <i class="v">k</i>-point sampling, finite temperature, floating point — what is proved is an error bound. Tests, model checking and sanitizers are supporting evidence only. An output without such a theorem is unfinished and is listed as a gap.</p></div>
+    <div class="principle"><h4>Open</h4><p>Specifications, proofs, benchmarks and the trust ledger are to be public, so that anyone can re-check them.</p></div>
+  </div>
+</section>
+
+<section id="s7">
+  <p class="sec-no">§7</p>
+  <h2>What we do not do</h2>
+  <div class="cards three">
+    <div class="card"><h3>Judge the physics</h3><p>The gap between exchange-correlation functionals, force fields or constitutive laws and the real world is validation. This project does verification: solving the given equations correctly.</p></div>
+    <div class="card"><h3>Replace existing software at the outset</h3><p>Quantum ESPRESSO, VASP, LAMMPS, GROMACS, deal.II and FEniCS are benchmarks and references, not targets for replacement.</p></div>
+    <div class="card"><h3>Prove all the code</h3><p>Input parsing, I/O and visualisation can stay at T0, as long as they do not enter the error budget.</p></div>
+  </div>
+</section>
+
+<section id="s8">
+  <p class="sec-no">§8</p>
+  <h2>Roadmap</h2>
+  <div class="goal">
+    <h3>Current goal G1 — feature parity with DFTK <span class="tag n">set 29 Sep 2026</span></h3>
+    <p>Bring mini-DFT to the main feature set of DFTK.jl. A feature is <b>done</b> only when it is implemented, agrees with DFTK on the same discrete problem, and its output carries a Lean certificate. Order: complete everything in 1D first, then generalise the Lean model to <i class="v">d</i> dimensions for 3D, and finally infrastructure and external interfaces. MD (phase 2) is postponed until G1 is complete.</p>
+  </div>
+  <div class="goal">
+    <h3>Parallel goal G2 — certified finite elements against scikit-fem <span class="tag n">set 30 Sep 2026</span></h3>
+    <p>Cover the main features of scikit-fem with our own C implementation, with scikit-fem as the independent reference on the same discrete problem. Same completion standard as G1, and wherever possible the certificate speaks about the <b>true solution of the continuous problem</b>, not just the discrete one. 1D first, then 2D triangular meshes.</p>
+  </div>
+  <ol class="phases">
+    <li class="phase"><div class="hd"><b>PHASE 0</b><strong>Minimal DFT</strong><span class="tag f">In progress</span></div><div class="bd">
+      <p>A one-dimensional periodic reduced Hartree model, plane waves, serial. Walk through L1–L6 once, and build the infrastructure the whole project reuses: the trust ledger, certificate checkers, the run-report format, trace validation.</p>
+      <p><span class="k">Exit</span>every obligation reaches its target tier; four benchmark groups pass; every run prints a trust report.</p></div></li>
+    <li class="phase"><div class="hd"><b>PHASE 1</b><strong>DFT extensions</strong><span class="tag f">Partly ahead of plan</span></div><div class="bd">
+      <p>1D LDA exchange-correlation (convexity is lost; uniqueness becomes a local result); <i class="v">k</i>-point sampling and its MPI parallelisation — the project’s first real parallel protocol; 3D plane waves with local pseudopotentials, cross-checked against DFTK.jl.</p>
+      <p><span class="k">Exit</span><i class="v">k</i>-point parallel runs are bitwise identical on 1 to 64 processes and every run log passes trace validation.</p></div></li>
+    <li class="phase"><div class="hd"><b>PHASE 2</b><strong>MD and FEM</strong><span class="tag f">FEM in progress</span></div><div class="bd">
+      <p>Reuse the phase-0 framework for two minimal versions: a 1D Lennard-Jones chain with velocity Verlet, and 1D Poisson with P1 elements. TLA+ modules for halo exchange, atom migration, parallel assembly and checkpointing.</p>
+      <p><span class="k">Exit</span>both minimal versions print trust reports; Céa’s lemma and Verlet symplecticity reach T3.</p></div></li>
+    <li class="phase"><div class="hd"><b>PHASE 3</b><strong>Trusted kernels</strong><span class="tag n">Not started</span></div><div class="bd">
+      <p>Bring a few kernels to T4: the plane-wave kinetic operator, FEM element-stiffness assembly, one Verlet step — with machine-checked floating-point error bounds connected to the code.</p>
+      <p><span class="k">Exit</span>the floating-point error bounds of these kernels are machine-checked and enter the global error budget.</p></div></li>
+    <li class="phase"><div class="hd"><b>PHASE 4</b><strong>Benchmarking</strong><span class="tag n">Not started</span></div><div class="bd">
+      <p>Standard benchmarks against established codes: the Δ-gauge for DFT, NVE energy drift and radial distribution functions for MD, the method of manufactured solutions for FEM convergence rates.</p>
+      <p><span class="k">Exit</span>published benchmark results, each with its trust ledger.</p></div></li>
+  </ol>
+  <p class="note">Detailed, item-by-item status for each phase and goal is on the <a href="progress.html">progress page</a>.</p>
+</section>
+
+<section id="s9">
+  <p class="sec-no">§9</p>
+  <h2>First milestones: mini-DFT and mini-FEM</h2>
+  <div class="prose">
+    <p>Before extending to MD and FEM, we walk through L1 to L6 with the smallest DFT program we could design. It is small enough that every layer’s obligation can be written down, yet it keeps the full skeleton of a Kohn–Sham calculation: a nonlinear eigenvalue problem, self-consistent iteration, plane-wave discretisation.</p>
+  </div>
+  <div class="tbl"><table>
+    <tbody>
+      <tr><td class="l">Model</td><td>One-dimensional periodic reduced Hartree–Fock (rHF), no exchange-correlation. Periodic interval [0, <i class="v">L</i>), <i class="v">N</i> electrons, spin-degenerate. Energy: kinetic + external + ½ Hartree, with the Hartree kernel 4π/<i class="v">q</i>² on nonzero frequencies.</td></tr>
+      <tr><td class="l">Potential</td><td>Smooth periodic: constant, cosine, periodised Gaussian double well (optionally repeated). The 1D Coulomb potential is not integrable at the origin and is not used.</td></tr>
+      <tr><td class="l">Discretisation</td><td>Plane waves with |<i class="v">k</i>| ≤ <i class="v">K</i>; Γ only, or <i class="v">N<sub>k</sub></i> equally weighted <i class="v">k</i>-points (Γ-centred or Monkhorst–Pack). A real-space grid of at least 4<i class="v">K</i> + 1 points guarantees that density and Hamiltonian action are alias-free.</td></tr>
+      <tr><td class="l">Occupation</td><td>Zero temperature with a gap checked in interval arithmetic at every iteration; or Fermi–Dirac, Gaussian, Methfessel–Paxton or Marzari–Vanderbilt smearing with a common chemical potential.</td></tr>
+      <tr><td class="l">Algorithm</td><td>SCF with linear or Anderson mixing and optional Kerker preconditioning; dense diagonalisation; shared-memory thread parallelism over <i class="v">k</i>-points with a fixed summation order.</td></tr>
+    </tbody>
+  </table></div>
+  <div class="cards">
+    <div class="card"><h3>Why rHF</h3><p>Its energy is convex in the density matrix, and the Hartree term is strictly convex on nonzero frequencies, so the ground-state density is unique. Within the DFT family it has the cleanest mathematics — a good first target for machine proof. Adding LDA exchange-correlation loses convexity; that step belongs to phase 1.</p></div>
+    <div class="card"><h3>LAPACK solves, the checker guarantees</h3><p>LAPACK stays at T0. After convergence the solver writes a certificate; a checker written and compiled in Lean re-checks it in exact rational arithmetic and returns rigorous intervals for the energy, free energy, truncation limit, density, eigenvalues, band structure and density of states. Its soundness is a Lean theorem: it trusts no number from the solver, so a solver bug can only make the check fail or the interval wider.</p></div>
+  </div>
+  <div class="prose">
+    <p><b>mini-FEM</b> follows the same pattern for goal G2: 1D Poisson with P1 elements (Dirichlet, Neumann and Robin boundaries) and the beam equation with cubic Hermite elements (clamped, pinned, free and sliding ends), with right-hand sides built from polynomials, exponentials, sines and cosines. The Lean checker returns intervals for the <b>true solution of the continuous problem</b> at every node, and a rigorous bound on the maximum error over the whole interval. Adaptive refinement uses these proved element-wise bounds as its marking criterion.</p>
+  </div>
+</section>
+
+<section id="s10">
+  <p class="sec-no">§10</p>
+  <h2>Decisions and open questions</h2>
+  <div class="decision">
+    <p class="meta">D1 · decided 27 Sep 2026 · revised 29 Sep 2026</p>
+    <h3>Provers: Lean 4 for the mathematics and the floating-point model; the code-level link is still open</h3>
+    <dl>
+      <dt>Division</dt><dd><ul>
+        <li>Lean 4 + Mathlib for L1–L4 (well-posedness, discretisation error, structure preservation, iterative convergence) and for two parts of L6: the certificate checkers (exact rationals, compiled to executables) and a line-by-line binary64 model of the interval-arithmetic kernel.</li>
+        <li>Frama-C/WP for the absence of run-time errors in the trusted C kernel.</li>
+        <li>Connecting the Lean floating-point results to the actual C code — candidates are Rocq with Flocq, VST and CompCert, or Frama-C’s floating-point model — is not started.</li></ul></dd>
+      <dt>Why</dt><dd>The mathematics layer is the bulk of the work; Mathlib’s analysis and measure theory form one unified library, and most AI-assisted proving tools support Lean first. “Verify the checker, not the solver” shrinks the floating-point obligations enough that a small binary64 model in Lean suffices. For code-level verification, Rocq’s toolchain and the T4 precedent remain strong, so the tool for that step is not yet chosen.</dd>
+      <dt>Cost</dt><dd>The correspondence between the Lean model and the C code rests on line-by-line review and bitwise differential tests, not on a machine proof; interval-arithmetic correctness therefore stops at T3.</dd>
+    </dl>
+  </div>
+  <div class="decision">
+    <p class="meta">D2 · decided 27 Sep 2026</p>
+    <h3>Implementation language: C11, split into a proved kernel and an untrusted driver</h3>
+    <dl>
+      <dt>Division</dt><dd><ul>
+        <li><b>Trusted kernel</b> — roots of unity, grid density and charge intervals, interval-arithmetic residual bounds and inertia counting. Restricted C with formal annotations; Frama-C/WP proves no run-time errors (T4).</li>
+        <li><b>Certificate checkers</b> in Lean, exact rationals, soundness a Lean theorem.</li>
+        <li><b>Driver</b> — SCF loop, LAPACK, threads, I/O, reports, event logs, certificate output. Stays at T0: every number it computes must pass the kernel or a checker before it appears as a guaranteed result.</li>
+        <li>Python and Julia appear only in benchmarks and trace-validation tooling, outside the trust chain.</li></ul></dd>
+      <dt>Why</dt><dd>The mature code-level verification routes all start from C. LAPACK and FFTW have C interfaces. The main risk, memory safety, is handled by proof in the kernel and by sanitizers in the driver. Compilation forbids fused multiply-add contraction and any fast-math optimisation, so the compiled arithmetic matches the proofs.</dd>
+      <dt>Not chosen</dt><dd>Rust (its verifiers do not connect to the code-level tools above), Julia or Python (no route to code-level proof), Fortran (few verification tools), Lean itself (its floating point has no formal semantics).</dd>
+    </dl>
+  </div>
+  <h3 style="margin-top:28px">Open questions</h3>
+  <ul class="prose">
+    <li><b>Continuum theory of 1D rHF.</b> The literature treats the 3D Coulomb interaction; for the 1D periodic Hartree kernel we need to find a reference or supply a proof.</li>
+    <li><b>How deep to formalise Sobolev spaces</b> — what to axiomatise first, and which theorems to prove first.</li>
+    <li><b>Randomness.</b> Langevin dynamics and random initial guesses involve probabilistic properties; TLA+ only describes nondeterminism.</li>
+    <li><b>GPUs.</b> How asynchronous streams and weak memory models enter a TLA+ specification.</li>
+  </ul>
+</section>
+
+<section id="s11">
+  <p class="sec-no">§11</p>
+  <h2>References</h2>
+  <ol class="refs">
+    <li>B. Jakobsen, F. Rosendahl. The Sleipner platform accident. <i>Structural Engineering International</i> 4(3), 1994.</li>
+    <li>K. Lejaeghere et al. Reproducibility in density functional theory calculations of solids. <i>Science</i> 351, aad3000, 2016.</li>
+    <li>S. Boldo, F. Clément, J.-C. Filliâtre, M. Mayero, G. Melquiond, P. Weis. Wave equation numerical resolution: a comprehensive mechanized proof of a C program. <i>Journal of Automated Reasoning</i> 50(4), 2013.</li>
+    <li>S. Boldo, F. Clément, F. Faissole, V. Martin, M. Mayero. A Coq formal proof of the Lax–Milgram theorem. CPP 2017.</li>
+    <li>J. P. Solovej. Proof of the ionization conjecture in a reduced Hartree–Fock model. <i>Inventiones Mathematicae</i> 104, 1991.</li>
+    <li>E. Cancès, A. Deleurme, M. Lewin. A new approach to the modeling of local defects in crystals: the reduced Hartree–Fock case. <i>Communications in Mathematical Physics</i> 281, 2008.</li>
+    <li>E. Cancès, R. Chakir, Y. Maday. Numerical analysis of the planewave discretization of some orbital-free and Kohn–Sham models. <i>ESAIM: M2AN</i> 46(2), 2012.</li>
+    <li>M. F. Herbst, A. Levitt, E. Cancès. DFTK: A Julian approach for simulating electrons in solids. JuliaCon Proceedings, 2021.</li>
+    <li>E. Hairer, C. Lubich, G. Wanner. <i>Geometric Numerical Integration</i>, 2nd ed. Springer, 2006.</li>
+    <li>B. Leimkuhler, C. Matthews. Rational construction of stochastic numerical methods for molecular sampling. <i>AMRX</i>, 2013.</li>
+    <li>P. Binev, W. Dahmen, R. DeVore. Adaptive finite element methods with convergence rates. <i>Numerische Mathematik</i> 97, 2004.</li>
+    <li>L. Lamport. <i>Specifying Systems: The TLA+ Language and Tools for Hardware and Software Engineers</i>. Addison-Wesley, 2002.</li>
+    <li>H. Cirstea, M. A. Kuppe, B. Loillier, S. Merz. Validating traces of distributed programs against TLA+ specifications, 2024.</li>
+  </ol>
+</section>
+
+</main>
+</div>
+
+<footer><div class="in">
+  <span>Formal in Silico · Programme v0.3 · revised as the project evolves</span>
+  <span><a href="progress.html">Progress</a> · <a href="zh/" hreflang="zh-CN">中文版</a></span>
+</div></footer>
+</body>
+</html>

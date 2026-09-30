@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Formal in Silico — Progress</title>
+<meta name="description" content="Implementation progress of Formal in Silico: the trust ledger, DFTK parity for mini-DFT, scikit-fem parity for mini-FEM, cross-checks and open gaps.">
+<link rel="alternate" hreflang="en" href="progress.html">
+<link rel="alternate" hreflang="zh-CN" href="zh/progress.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700;8..60,800&display=swap">
+<link rel="stylesheet" href="assets/style.css">
+<script src="assets/site.js"></script>
+</head>
+<body>
+
+<header class="bar"><div class="bar-in">
+  <a class="brand" href="./">Formal in Silico</a>
+  <nav class="nav" aria-label="Site">
+    <a href="./">Programme</a>
+    <a href="progress.html" aria-current="page">Progress</a>
+    <a class="lang" href="zh/progress.html" hreflang="zh-CN" lang="zh-CN">中文</a>
+  </nav>
+  <button class="theme" type="button" aria-label="Toggle light or dark theme"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zm0 1.5v11a5.5 5.5 0 0 1 0-11z"/></svg></button>
+</div></header>
+
+<div class="hero small"><div class="hero-in">
+  <p class="eyebrow">Status snapshot · 30 September 2026</p>
+  <h1>Progress</h1>
+  <p class="lead">Where the programme stands: how many claims have reached which trust tier, how far mini-DFT is towards DFTK parity (goal G1) and mini-FEM towards scikit-fem parity (goal G2), what the cross-checks show, and what is still missing. A feature counts as <b>done</b> only when it is implemented, agrees with the reference code, <i>and</i> every number it outputs is covered by a Lean theorem.</p>
+  <div class="stats">
+    <div class="stat"><b>100</b><span>claims in the trust ledger (89 DFT, 11 FEM)</span></div>
+    <div class="stat"><b>92%</b><span>machine-proved: 71 at T3, 21 at T4</span></div>
+    <div class="stat"><b>6 / 46</b><span>DFTK parity items done; 3 more agree but lack full certificates</span></div>
+    <div class="stat"><b>11 / 26</b><span>scikit-fem parity items done, all 1D</span></div>
+  </div>
+</div></div>
+
+<div class="wrap">
+<nav class="toc" aria-label="Contents">
+  <p>Contents</p>
+  <ol>
+    <li><a href="#ledger"><span>01</span>Trust ledger</a></li>
+    <li><a href="#how"><span>02</span>How it works</a></li>
+    <li><a href="#g1"><span>03</span>G1 · DFTK</a></li>
+    <li><a href="#g2"><span>04</span>G2 · scikit-fem</a></li>
+    <li><a href="#outputs"><span>05</span>Certified outputs</a></li>
+    <li><a href="#evidence"><span>06</span>Cross-checks</a></li>
+    <li><a href="#phases"><span>07</span>Phases</a></li>
+    <li><a href="#gaps"><span>08</span>Open gaps</a></li>
+    <li><a href="#base"><span>09</span>Trusted base</a></li>
+  </ol>
+</nav>
+<main>
+
+<section id="ledger">
+  <p class="sec-no">01</p>
+  <h2>The trust ledger</h2>
+  <div class="prose"><p>Every claim the project makes is registered with its tier, its evidence and the assumptions it depends on. Every line of a run report cites one of these claims. The tiers are defined on the <a href="./#s5">programme page</a>; a claim is only ever marked at the tier it has actually reached.</p></div>
+  <div class="sbar big" role="img" aria-label="100 claims: 21 at T4, 71 at T3, 2 at T2, 1 at T0, 5 not yet reached">
+    <i class="sw-t4" style="flex:21"></i><i class="sw-t3" style="flex:71"></i><i class="sw-t2" style="flex:2"></i><i class="sw-t0" style="flex:1"></i><i class="sw-no" style="flex:5"></i>
+  </div>
+  <div class="legend">
+    <span><i class="sw-t4"></i>T4 end to end · 21</span>
+    <span><i class="sw-t3"></i>T3 machine proof · 71</span>
+    <span><i class="sw-t2"></i>T2 model-checked · 2</span>
+    <span><i class="sw-t0"></i>T0 tested · 1</span>
+    <span><i class="sw-no"></i>target not yet reached · 5</span>
+  </div>
+  <div class="rows">
+    <div class="row"><div>DFT foundations<div class="cap">discrete model · algorithm · parallelism · floating point</div></div><span class="n">19</span><div class="barcell"><div class="sbar"><i class="sw-t4" style="flex:1"></i><i class="sw-t3" style="flex:11"></i><i class="sw-t2" style="flex:2"></i><i class="sw-t0" style="flex:1"></i><i class="sw-no" style="flex:4"></i></div></div></div>
+    <div class="row"><div>Ground-state energy certificate</div><span class="n">8</span><div class="barcell"><div class="sbar"><i class="sw-t4" style="flex:1"></i><i class="sw-t3" style="flex:7"></i></div></div></div>
+    <div class="row"><div>Finite-temperature free energy</div><span class="n">14</span><div class="barcell"><div class="sbar"><i class="sw-t4" style="flex:3"></i><i class="sw-t3" style="flex:11"></i></div></div></div>
+    <div class="row"><div>Gaussian and cold smearing</div><span class="n">5</span><div class="barcell"><div class="sbar"><i class="sw-t3" style="flex:5"></i></div></div></div>
+    <div class="row"><div>SCF-solution certificates<div class="cap">Methfessel–Paxton · Marzari–Vanderbilt</div></div><span class="n">10</span><div class="barcell"><div class="sbar"><i class="sw-t4" style="flex:3"></i><i class="sw-t3" style="flex:7"></i></div></div></div>
+    <div class="row"><div>k-point sampling and supercells</div><span class="n">7</span><div class="barcell"><div class="sbar"><i class="sw-t4" style="flex:2"></i><i class="sw-t3" style="flex:5"></i></div></div></div>
+    <div class="row"><div>Discretisation error<div class="cap">truncation K → ∞ · true Gaussian potential</div></div><span class="n">13</span><div class="barcell"><div class="sbar"><i class="sw-t4" style="flex:3"></i><i class="sw-t3" style="flex:9"></i><i class="sw-no" style="flex:1"></i></div></div></div>
+    <div class="row"><div>Density and eigenvalues</div><span class="n">10</span><div class="barcell"><div class="sbar"><i class="sw-t4" style="flex:3"></i><i class="sw-t3" style="flex:7"></i></div></div></div>
+    <div class="row"><div>Band structure and density of states</div><span class="n">3</span><div class="barcell"><div class="sbar"><i class="sw-t4" style="flex:2"></i><i class="sw-t3" style="flex:1"></i></div></div></div>
+    <div class="row"><div>mini-FEM<div class="cap">Poisson · beams · load Taylor models</div></div><span class="n">11</span><div class="barcell"><div class="sbar"><i class="sw-t4" style="flex:3"></i><i class="sw-t3" style="flex:8"></i></div></div></div>
+  </div>
+  <p class="note">The T4 claims are the soundness theorems of the certificate checkers (which run in exact rational arithmetic, so no floating point is involved) and the proof that the trusted C kernel has no run-time errors. The five claims below target: continuum well-posedness of 1D rHF, the a priori plane-wave estimate and linear-mixing convergence (all awaiting a literature check at T1), the equality of the truncation limit with the continuum energy, and the Lean–Rocq interface claim.</p>
+</section>
+
+<section id="how">
+  <p class="sec-no">02</p>
+  <h2>How a result earns its guarantee</h2>
+  <div class="prose"><p>The solver is never trusted. It proposes; a proved checker disposes. This is what lets us use LAPACK and fast floating-point code while still stating every output as a theorem.</p></div>
+  <div class="pipe">
+    <div class="step u"><span class="who">Untrusted · T0</span><h4>Solver</h4><p>The C driver runs the SCF loop or FEM assembly, calls LAPACK, uses threads, and writes a certificate: orbitals, factorisations, nodal values.</p></div>
+    <div class="step c"><span class="who">Data</span><h4>Certificate</h4><p>Floating-point numbers read as the exact binary rationals they are. Nothing in it is assumed to be correct.</p></div>
+    <div class="step v"><span class="who">Proved · Lean</span><h4>Checker</h4><p>Re-checks everything in exact rational arithmetic. Its soundness is a Lean theorem; a wrong certificate can only fail or widen the interval.</p></div>
+    <div class="step o"><span class="who">Guaranteed</span><h4>Rigorous interval</h4><p>An interval that provably contains the true quantity — for FEM, the solution of the continuous problem itself.</p></div>
+  </div>
+  <div class="prose"><p>Alongside, the SCF controller is a TLA+ specification checked with TLC (it can report “converged” only if the residual is small, the gap is open and the certificate passes), and every run can emit a trace that is replayed against that specification.</p></div>
+</section>
+
+<section id="g1">
+  <p class="sec-no">03</p>
+  <h2>Goal G1 — mini-DFT reaches DFTK parity</h2>
+  <div class="prose"><p>Reference: DFTK.jl 0.8.0 on the same discrete problem. Order: complete the 1D feature set (M0–M3), generalise the Lean model to <i class="v">d</i> dimensions for 2D/3D (M4–M5), then infrastructure (M6).</p></div>
+  <div class="legend">
+    <span><i class="sw-done"></i>Done — implemented, agrees, certified</span>
+    <span><i class="sw-align"></i>Agrees — certificates incomplete</span>
+    <span><i class="sw-impl"></i>Implemented — not yet compared</span>
+    <span><i class="sw-todo"></i>Not started</span>
+  </div>
+  <div class="ms">
+    <div class="row"><span class="code">M0</span><div>Existing core</div><div class="barcell"><div class="sbar"><i class="sw-done" style="flex:5"></i><i class="sw-align" style="flex:1"></i><i class="sw-impl" style="flex:3"></i></div></div><span class="n">5 / 9</span></div>
+    <div class="row"><span class="code">M1</span><div>1D solvers, occupation, k-points</div><div class="barcell"><div class="sbar"><i class="sw-done" style="flex:1"></i><i class="sw-align" style="flex:2"></i><i class="sw-todo" style="flex:4"></i></div></div><span class="n">1 / 7</span></div>
+    <div class="row"><span class="code">M2</span><div>1D physics terms</div><div class="barcell"><div class="sbar"><i class="sw-todo" style="flex:7"></i></div></div><span class="n">0 / 7</span></div>
+    <div class="row"><span class="code">M3</span><div>1D post-processing and response</div><div class="barcell"><div class="sbar"><i class="sw-todo" style="flex:9"></i></div></div><span class="n">0 / 9</span></div>
+    <div class="row"><span class="code">M4</span><div><i class="v">d</i> dimensions</div><div class="barcell"><div class="sbar"><i class="sw-todo" style="flex:7"></i></div></div><span class="n">0 / 7</span></div>
+    <div class="row"><span class="code">M5</span><div>Full 3D</div><div class="barcell"><div class="sbar"><i class="sw-todo" style="flex:4"></i></div></div><span class="n">0 / 4</span></div>
+    <div class="row"><span class="code">M6</span><div>Infrastructure and interfaces</div><div class="barcell"><div class="sbar"><i class="sw-todo" style="flex:3"></i></div></div><span class="n">0 / 3</span></div>
+  </div>
+
+  <h3 style="margin-top:32px">M0 · existing core</h3>
+  <div class="tbl"><table class="feat">
+    <thead><tr><th>Feature</th><th>Status</th><th>What is certified</th></tr></thead>
+    <tbody>
+      <tr><td>Kinetic, external (Fourier) and Hartree terms</td><td class="st"><span class="tag st-done">Done</span></td><td>Ground-state energy, density, eigenvalues and each energy component</td></tr>
+      <tr><td>Fermi–Dirac smearing and entropy</td><td class="st"><span class="tag st-done">Done</span></td><td>Free energy, entropy and energy; existence of the finite-temperature ground state and uniqueness of its density are proved</td></tr>
+      <tr><td>Γ-centred grids with an odd number of k-points</td><td class="st"><span class="tag st-done">Done</span></td><td>Per-cell energy through the equivalent supercell, plus its truncation limit</td></tr>
+      <tr><td>Even grids, Monkhorst–Pack</td><td class="st"><span class="tag st-done">Done</span></td><td>Supercell with half-integer frequencies; grids that contain the zone boundary are excluded</td></tr>
+      <tr><td>Dense diagonalisation</td><td class="st"><span class="tag st-done">Done</span></td><td>Each eigenpair enclosed by a residual bound; Sylvester inertia confirms they are the lowest ones</td></tr>
+      <tr><td>Linear, Kerker and Anderson mixing</td><td class="st"><span class="tag st-impl">Implemented</span></td><td>Does not affect the result, which is checked by certificate</td></tr>
+      <tr><td>Non-self-consistent bands, Gaussian-broadened DOS</td><td class="st"><span class="tag st-align">Agrees</span></td><td>Certified for zero-temperature Γ-point runs; finite-temperature and k-point runs not yet</td></tr>
+      <tr><td>Supercells</td><td class="st"><span class="tag st-impl">Implemented</span></td><td>Supercell equivalence is proved</td></tr>
+      <tr><td>Parallelism over k-points</td><td class="st"><span class="tag st-impl">Implemented</span></td><td>Threads rather than MPI; the protocol is model-checked (T2), results are bitwise identical across thread counts</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3 style="margin-top:28px">M1 · 1D solvers, occupation and k-points</h3>
+  <div class="tbl"><table class="feat">
+    <thead><tr><th>Feature</th><th>Status</th><th>What is certified</th></tr></thead>
+    <tbody>
+      <tr><td>Gaussian, Methfessel–Paxton, Marzari–Vanderbilt smearing</td><td class="st"><span class="tag st-align">Agrees</span><br><span class="tag st-done" style="margin-top:4px">Gaussian done</span></td><td>Gaussian: free energy, entropy and energy. MP and MV occupations can exceed 1, so there is no variational principle; instead the checker proves that the discrete SCF equations have exactly one solution near the computed one, bounds its chemical potential, and encloses its energy and free energy (free-energy interval about 5×10<sup>−14</sup> wide). DFTK’s Fermi level, energy and free energy all fall inside the Lean intervals. Missing: higher-order MP.</td></tr>
+      <tr><td>Monkhorst–Pack grids, shifts, time-reversal reduction</td><td class="st"><span class="tag st-done">Done</span></td><td>Every grid without the zone boundary is certified; DFTK’s energies lie inside the Lean intervals</td></tr>
+      <tr><td>Bands and DOS aligned with DFTK</td><td class="st"><span class="tag st-align">Agrees</span></td><td>As in M0</td></tr>
+      <tr><td>Grid-based Hamiltonian action, LOBPCG, preconditioning</td><td class="st"><span class="tag st-todo">Not started</span></td><td>Alias-free grid action is already proved</td></tr>
+      <tr><td>Adaptive band count and diagonalisation tolerance</td><td class="st"><span class="tag st-todo">Not started</span></td><td></td></tr>
+      <tr><td>LDOS, dielectric and χ<sub>0</sub> mixing; potential mixing</td><td class="st"><span class="tag st-todo">Not started</span></td><td></td></tr>
+      <tr><td>Newton’s method, direct minimisation</td><td class="st"><span class="tag st-todo">Not started</span></td><td></td></tr>
+    </tbody>
+  </table></div>
+
+  <details class="more"><summary>Planned: M2–M6 (30 items, none started)</summary>
+    <h4 style="margin-top:14px">M2 · 1D physics terms</h4>
+    <ul class="planned"><li>LDA exchange-correlation (energy no longer convex; needs local uniqueness and a posteriori estimates)</li><li>Collinear spin (LSDA), magnetic term</li><li>Local nonlinearity (Gross–Pitaevskii)</li><li>Exact exchange (Hartree–Fock, hybrids)</li><li>Atoms and pseudopotentials: local and nonlocal parts, Ewald, correction terms</li><li>Pairwise interatomic potentials</li><li>DFT+U</li></ul>
+    <h4>M3 · 1D post-processing and response</h4>
+    <ul class="planned"><li>Forces</li><li>Geometry optimisation</li><li>Stresses</li><li>Response: χ<sub>0</sub>, Hessian, DFPT</li><li>Polarisability</li><li>Phonons</li><li>Elastic constants</li><li>A posteriori error estimates and refinement</li><li>Currents</li></ul>
+    <h4>M4 · <i class="v">d</i> dimensions</h4>
+    <ul class="planned"><li>Lean model generalised to <i class="v">d</i>-dimensional lattices</li><li>2D/3D plane waves with FFTW</li><li>Arbitrary lattices, atomic structures, symmetry</li><li>HGH and UPF pseudopotentials</li><li>3D Ewald and pseudopotential correction</li><li>Anyons (2D)</li><li>DFTK examples: silicon, graphene, GaAs surface, Cohen–Bergstresser</li></ul>
+    <h4>M5 · full 3D</h4>
+    <ul class="planned"><li>GGA and meta-GGA</li><li>3D forces, stresses, phonons, elastic constants</li><li>Exact exchange (ACE)</li><li>MPI k-point parallelism, bitwise identical on 1–64 processes</li></ul>
+    <h4>M6 · infrastructure (last; may be trimmed)</h4>
+    <ul class="planned"><li>GPU</li><li>Arbitrary floating-point types, automatic differentiation</li><li>Wannier90, VTK, JSON and plotting interfaces</li></ul>
+  </details>
+</section>
+
+<section id="g2">
+  <p class="sec-no">04</p>
+  <h2>Goal G2 — certified finite elements against scikit-fem</h2>
+  <div class="prose"><p>Reference: scikit-fem 12.0.2 on the same discrete problem. The standard is the same as G1, with one addition: wherever possible, the certificate is about the <b>true solution of the continuous problem</b>, not only the discrete one. In 1D this avoids Sobolev spaces by working with Green’s functions and classical solutions; 2D will need an H¹ model in Lean.</p></div>
+  <div class="ms">
+    <div class="row"><span class="code">F0</span><div>1D Poisson, P1 elements</div><div class="barcell"><div class="sbar"><i class="sw-done" style="flex:7"></i></div></div><span class="n">7 / 7</span></div>
+    <div class="row"><span class="code">F1</span><div>1D extensions</div><div class="barcell"><div class="sbar"><i class="sw-done" style="flex:4"></i><i class="sw-todo" style="flex:5"></i></div></div><span class="n">4 / 9</span></div>
+    <div class="row"><span class="code">F2</span><div>2D triangular meshes</div><div class="barcell"><div class="sbar"><i class="sw-todo" style="flex:5"></i></div></div><span class="n">0 / 5</span></div>
+    <div class="row"><span class="code">F3</span><div>More physics, 3D</div><div class="barcell"><div class="sbar"><i class="sw-todo" style="flex:5"></i></div></div><span class="n">0 / 5</span></div>
+  </div>
+
+  <h3 style="margin-top:32px">F0 · 1D Poisson with P1 elements — complete</h3>
+  <div class="tbl"><table class="feat">
+    <thead><tr><th>Feature</th><th>Status</th><th>What is certified</th></tr></thead>
+    <tbody>
+      <tr><td>1D meshes: uniform, graded, arbitrary rational nodes</td><td class="st"><span class="tag st-done">Done</span></td><td>The checker verifies the mesh is well ordered</td></tr>
+      <tr><td>P1 elements, stiffness and load assembly</td><td class="st"><span class="tag st-done">Done</span></td><td>The checker re-encloses the load with Taylor models and does not trust the solver’s quadrature</td></tr>
+      <tr><td>Non-homogeneous Dirichlet boundaries</td><td class="st"><span class="tag st-done">Done</span></td><td>Covered by the checker’s soundness theorem</td></tr>
+      <tr><td>Polynomial right-hand sides</td><td class="st"><span class="tag st-done">Done</span></td><td>Integrated exactly</td></tr>
+      <tr><td>Linear solve</td><td class="st"><span class="tag st-done">Done</span></td><td>The solver is untrusted; its nodal error is bounded exactly</td></tr>
+      <tr><td>True-solution nodal values and pointwise error</td><td class="st"><span class="tag st-done">Done</span></td><td>Existence and uniqueness of the classical solution, nodal exactness, the <i class="v">h</i>²/8 interpolation bound and the discrete maximum principle are all proved</td></tr>
+      <tr><td>Céa’s lemma (abstract setting)</td><td class="st"><span class="tag st-done">Done</span></td><td>Proved, in preparation for 2D</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3 style="margin-top:28px">F1 · 1D extensions</h3>
+  <div class="tbl"><table class="feat">
+    <thead><tr><th>Feature</th><th>Status</th><th>What is certified</th></tr></thead>
+    <tbody>
+      <tr><td>Neumann and Robin boundaries</td><td class="st"><span class="tag st-done">Done</span></td><td>All theory proved for general boundary conditions; Neumann at both ends is excluded</td></tr>
+      <tr><td>Non-polynomial right-hand sides</td><td class="st"><span class="tag st-done">Done</span></td><td>Sums and products of polynomials, exponentials, sines and cosines, via Taylor models with proved remainders; nodal intervals about 10<sup>−15</sup> wide</td></tr>
+      <tr><td>Hermite beam elements (fourth-order problem)</td><td class="st"><span class="tag st-done">Done</span></td><td>Clamped, pinned, free and sliding ends in any combination; rigorous intervals for both nodal values and slopes; the <i class="v">h</i>⁴/384 interpolation bound is proved</td></tr>
+      <tr><td>Adaptive refinement (1D)</td><td class="st"><span class="tag st-done">Done</span></td><td>Elements are marked by their proved error bounds, not by an estimator; the final mesh is certified</td></tr>
+      <tr><td>Variable coefficients</td><td class="st"><span class="tag st-todo">Not started</span></td><td></td></tr>
+      <tr><td>P2 and higher-order Lagrange elements</td><td class="st"><span class="tag st-todo">Not started</span></td><td></td></tr>
+      <tr><td>Eigenvalue problem</td><td class="st"><span class="tag st-todo">Not started</span></td><td>Can reuse the DFT inertia argument</td></tr>
+      <tr><td>Energy-norm error</td><td class="st"><span class="tag st-todo">Not started</span></td><td></td></tr>
+      <tr><td>Example-by-example comparison with scikit-fem’s 1D gallery</td><td class="st"><span class="tag st-todo">Not started</span></td><td></td></tr>
+    </tbody>
+  </table></div>
+
+  <details class="more"><summary>Planned: F2–F3 (10 items, none started)</summary>
+    <h4 style="margin-top:14px">F2 · 2D triangular meshes</h4>
+    <ul class="planned"><li>Triangular meshes with checker-verified shape regularity (the Sleipner lesson)</li><li>P1 and P2 triangles</li><li>A Lean model of H¹<sub>0</sub></li><li>Guaranteed-upper-bound a posteriori estimates (equilibrated fluxes)</li><li>Quadrilateral elements</li></ul>
+    <h4>F3 · more physics and 3D</h4>
+    <ul class="planned"><li>Linear elasticity (Korn’s inequality)</li><li>Stokes and mixed elements (inf-sup)</li><li>Adaptive refinement in 2D</li><li>Tetrahedral and hexahedral meshes</li><li>Parallel assembly, specified in TLA+</li></ul>
+  </details>
+</section>
+
+<section id="outputs">
+  <p class="sec-no">05</p>
+  <h2>What a certified run reports today</h2>
+  <div class="cards">
+    <div class="card"><span class="tag m">mini-DFT</span><h3>Rigorous intervals for</h3>
+      <ul class="small" style="padding-left:1.1em;margin:8px 0 0">
+        <li>the discrete ground-state energy, and the truncation limit with a bound on the discretisation error</li>
+        <li>the energy under the true Gaussian potential, Fourier tail included</li>
+        <li>the ground-state density (Coulomb norm and pointwise) and the Hartree potential</li>
+        <li>every eigenvalue of the ground-state Hamiltonian, and the gap</li>
+        <li>kinetic, external and Hartree energy components</li>
+        <li>band energies along a path and density-of-states values</li>
+        <li>free energy, entropy and energy at finite temperature</li>
+        <li>for MP/MV smearing: a locally unique SCF solution, its chemical potential, energy and free energy</li>
+        <li>per-cell values for k-point runs, through the equivalent supercell</li>
+      </ul></div>
+    <div class="card"><span class="tag s">mini-FEM</span><h3>Rigorous statements about the true solution</h3>
+      <ul class="small" style="padding-left:1.1em;margin:8px 0 0">
+        <li>an interval for <i class="v">u</i>(<i class="v">x<sub>i</sub></i>) at every node</li>
+        <li>for beams, also an interval for the slope <i class="v">u</i>′(<i class="v">x<sub>i</sub></i>)</li>
+        <li>the exact error of the solver’s own nodal values</li>
+        <li>a bound on max |<i class="v">u</i> − <i class="v">u<sub>h</sub></i>| over the whole interval, and per element</li>
+        <li>an adaptively refined mesh that meets a requested tolerance, with the tolerance certified on the final mesh</li>
+      </ul></div>
+  </div>
+</section>
+
+<section id="evidence">
+  <p class="sec-no">06</p>
+  <h2>Cross-checks and supporting evidence</h2>
+  <div class="prose"><p>Benchmarks do not raise a tier, but they catch misunderstandings: a Lean interval that excludes an independent reference value would reveal a wrong model.</p></div>
+  <ul class="checks">
+    <li><span>DFT benchmark suite, including cross-checks with DFTK.jl</span><b>110 / 110 pass</b></li>
+    <li><span>Energies (free energies) against DFTK.jl on the same discrete problem</span><b>≤ 5×10⁻¹⁵</b></li>
+    <li><span>All eigenvalues and energy components against DFTK.jl</span><b>≤ 10⁻¹²</b></li>
+    <li><span>DFTK’s Gaussian free energy, and its MP/MV Fermi level, energy and free energy</span><b>inside the Lean intervals</b></li>
+    <li><span>Reports with 1, 2, 4 and 7 threads</span><b>bitwise identical</b></li>
+    <li><span>Trace validation: runs ending converged, gap closed, max iterations, certificate failed</span><b>all accepted</b></li>
+    <li><span>Trace validation: tampered traces (claimed convergence without a certificate, a dropped record, wrong limit)</span><b>all rejected</b></li>
+    <li><span>Mutation tests on the SCF controller spec (remove the certificate check or the iteration cap)</span><b>caught by TLC</b></li>
+    <li><span>FEM: 11 Poisson and 6 beam cases — Lean nodal intervals contain the reference solution</span><b>width ≤ 3×10⁻¹⁵</b></li>
+    <li><span>FEM: scikit-fem nodal values against mini-FEM (Poisson / beam)</span><b>≤ 3×10⁻¹³ / 4×10⁻¹²</b></li>
+    <li><span>FEM: proved max-error bound relative to the sampled actual error</span><b>0.85 – 1.00</b></li>
+    <li><span>FEM: tampered nodal values</span><b>only widen the error bound</b></li>
+  </ul>
+</section>
+
+<section id="phases">
+  <p class="sec-no">07</p>
+  <h2>Roadmap phases</h2>
+  <ol class="phases">
+    <li class="phase"><div class="hd"><b>PHASE 0</b><strong>Minimal DFT</strong><span class="tag f">In progress</span></div><div class="bd">
+      <p>Trust ledger, Lean certificate checkers, trust reports and trace validation are in place; all four benchmark groups pass, including the DFTK cross-check.</p>
+      <p><span class="k">Remaining</span>literature checks for continuum well-posedness, the a priori plane-wave estimate and linear-mixing convergence (target T1); the Lean–Rocq interface claim; a code-level proof of the interval arithmetic (now T3, target T4).</p></div></li>
+    <li class="phase"><div class="hd"><b>PHASE 1</b><strong>DFT extensions</strong><span class="tag f">Partly ahead</span></div><div class="bd">
+      <p>k-point sampling is implemented and certified; the thread-parallel k-point protocol is model-checked and runs are bitwise identical across thread counts. Beyond the original plan: finite-temperature occupations with free-energy, entropy and energy certificates, Anderson mixing, non-self-consistent bands and DOS, and the truncation-error certificate.</p>
+      <p><span class="k">Not started</span>LDA, MPI parallelism, 3D plane waves and pseudopotentials.</p></div></li>
+    <li class="phase"><div class="hd"><b>PHASE 2</b><strong>MD and FEM</strong><span class="tag f">FEM in progress</span></div><div class="bd">
+      <p>1D Poisson (P1) and beams (cubic Hermite) print trust reports certified against the true solution; Céa’s lemma is at T3.</p>
+      <p><span class="k">Not started</span>MD, postponed until G1 is complete.</p></div></li>
+    <li class="phase"><div class="hd"><b>PHASE 3</b><strong>Trusted kernels</strong><span class="tag n">Not started</span></div><div class="bd">
+      <p>Starting point: the interval-arithmetic kernel, whose correctness is proved against a line-by-line model (T3) and whose absence of run-time errors is proved on the C code (T4).</p></div></li>
+    <li class="phase"><div class="hd"><b>PHASE 4</b><strong>Benchmarking</strong><span class="tag n">Not started</span></div><div class="bd">
+      <p>Δ-gauge, NVE drift and manufactured-solution studies with published trust ledgers.</p></div></li>
+  </ol>
+</section>
+
+<section id="gaps">
+  <p class="sec-no">08</p>
+  <h2>Open gaps</h2>
+  <div class="prose"><p>An output without a Lean theorem is unfinished. These are the ones we know about, listed rather than hidden.</p></div>
+  <ul class="gaps">
+    <li><strong>k-point sums versus the infinite crystal</strong>Each k-point run is certified for its own discrete problem, but the error of the k-point sum relative to the infinite crystal has no bound yet; k-point energies are not variational.</li>
+    <li><strong>Grids containing the Brillouin-zone boundary</strong>No certificate; DFTK’s treatment there is also a different discrete problem, so neither side is compared.</li>
+    <li><strong>Higher-order Methfessel–Paxton, and scaling of SCF-solution certificates</strong>Checking time grows roughly with the fourth power of the supercell size; for gapped systems with the chemical potential mid-gap the SCF equations are ill-conditioned and the certificate honestly fails; uniqueness is only local.</li>
+    <li><strong>Discretisation error at finite temperature</strong>Certified at zero temperature only.</li>
+    <li><strong>Truncation limit equals the continuum energy</strong>Not yet proved.</li>
+    <li><strong>Density, eigenvalues, bands and DOS for finite-temperature and k-point runs</strong>Certified for zero-temperature Γ-point runs only.</li>
+    <li><strong>Code-level proof of the interval arithmetic</strong>The Lean model and the C code agree by review and differential tests, not by proof.</li>
+    <li><strong>FEM coverage</strong>Other load functions (logarithms, rational and piecewise functions), Neumann at both ends, variable beam stiffness and elastic supports; checking transcendental loads is slow.</li>
+  </ul>
+</section>
+
+<section id="base">
+  <p class="sec-no">09</p>
+  <h2>What is trusted without proof</h2>
+  <div class="prose"><p>Every guarantee above is conditional on this small, explicit base.</p></div>
+  <div class="tbl"><table>
+    <tbody>
+      <tr><td class="l">Lean 4</td><td>The kernel that checks every proof; Mathlib, with only the three standard axioms</td></tr>
+      <tr><td class="l">Lean compiler</td><td>Compiles the checkers into executables, together with their input parsing and decimal output (lower bounds rounded down, upper bounds up)</td></tr>
+      <tr><td class="l">TLC</td><td>The TLA+ model checker</td></tr>
+      <tr><td class="l">Frama-C / WP</td><td>With Why3, Alt-Ergo and Z3, for the run-time safety of the C kernel</td></tr>
+      <tr><td class="l">C compiler</td><td>Unverified for now; CompCert is an option for the trusted kernel</td></tr>
+      <tr><td class="l">IEEE 754</td><td>Only that round-to-nearest returns the nearest double; no error-size property is relied on</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+</main>
+</div>
+
+<footer><div class="in">
+  <span>Formal in Silico · status snapshot 30 September 2026</span>
+  <span><a href="./">Programme</a> · <a href="zh/progress.html" hreflang="zh-CN">中文版</a></span>
+</div></footer>
+</body>
+</html>
