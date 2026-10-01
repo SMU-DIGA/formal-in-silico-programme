@@ -24,3 +24,8 @@ Content is maintained from the main project's charter, trust ledger, domain
 specifications and parity trackers; every progress and domain page carries the
 snapshot date it reflects. Update the English and Chinese pages together, and
 keep the overview's per-domain numbers in step with the domain pages.
+
+Every page's footer also shows when the page last changed ("updated …"). Before
+publishing, run `python3 scripts/stamp_site.py` in the main project: pages edited
+since the last commit get the current time, the others the time of the last commit
+that changed their content. `--check` only reports pages whose stamp is out of date.
