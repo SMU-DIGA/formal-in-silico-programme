@@ -41,9 +41,9 @@
     <div class="j f"><span class="k">IEEE 754</span><span class="e">|fl(<i class="v">E<sub>h</sub></i>) − <i class="v">E<sub>h</sub></i>| ≤ <i class="v">ε</i><sub>round</sub></span></div>
   </div>
   <div class="stats">
-    <div class="stat"><b>118</b><span>claims registered in the trust ledger</span></div>
-    <div class="stat"><b>109</b><span>of them machine-proved (tier T3 or T4)</span></div>
-    <div class="stat"><b>26</b><span>at the end-to-end tier T4: checker soundness and kernel safety</span></div>
+    <div class="stat"><b>132</b><span>claims registered in the trust ledger</span></div>
+    <div class="stat"><b>123</b><span>of them machine-proved (tier T3 or T4)</span></div>
+    <div class="stat"><b>28</b><span>at the end-to-end tier T4: checker soundness and kernel safety</span></div>
     <div class="stat"><b>4</b><span>reference codes cross-checked: DFTK.jl, scikit-fem, ASE and pycalphad</span></div>
   </div>
   <div class="cta">
@@ -282,7 +282,7 @@
   </div>
   <div class="prose">
     <p><b>mini-FEM</b> follows the same pattern for goal G2: 1D Poisson with P1 elements (Dirichlet, Neumann and Robin boundaries) and the beam equation with cubic Hermite elements (clamped, pinned, free and sliding ends), with right-hand sides built from polynomials, exponentials, sines and cosines. The Lean checker returns intervals for the <b>true solution of the continuous problem</b> at every node, and a rigorous bound on the maximum error over the whole interval. Adaptive refinement uses these proved element-wise bounds as its marking criterion.</p>
-    <p><b>mini-MD</b> (1 October 2026) does the same for a 1D Lennard-Jones chain with velocity Verlet: the checker bounds the distance from the <b>true solution of Newton’s equations</b> at every step, and from the initial state over about one vibration period. <b>mini-CALPHAD</b> (goal G3) certifies binary phase equilibria from TDB databases, including the chemical potentials and which phases can appear in <i>any</i> equilibrium. See the <a href="md.html">MD</a> and <a href="calphad.html">CALPHAD</a> pages.</p>
+    <p><b>mini-MD</b> (1 October 2026) does the same for a 1D Lennard-Jones chain with velocity Verlet: the checker bounds the distance from the <b>true solution of Newton’s equations</b> at every step, and from the initial state over about one vibration period. <b>mini-CALPHAD</b> (goal G3) certifies binary phase equilibria from TDB databases — magnetic phases and whole phase diagrams included — with the chemical potentials, driving forces and which phases can appear in <i>any</i> equilibrium. See the <a href="md.html">MD</a> and <a href="calphad.html">CALPHAD</a> pages.</p>
   </div>
 </section>
 
