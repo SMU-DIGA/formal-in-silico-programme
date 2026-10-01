@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Formal in Silico · mini-MD</title>
+<meta name="description" content="mini-MD v0：Velocity Verlet 积分的一维 Lennard-Jones 原子链，Lean 证书给出计算轨道与 Newton 方程真解之间距离的严格界，对照 ASE。">
+<link rel="alternate" hreflang="en" href="../md.html">
+<link rel="alternate" hreflang="zh-CN" href="md.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@600;700;900&display=swap">
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/site.js"></script>
+<script src="../assets/chart.js"></script>
+</head>
+<body>
+
+<header class="bar"><div class="bar-in">
+  <a class="brand" href="./">Formal in Silico</a>
+  <nav class="nav" aria-label="站点">
+    <a href="./">纲领</a>
+    <a href="progress.html">进度</a>
+    <span class="sep" aria-hidden="true"></span>
+    <a class="dom" href="dft.html">DFT</a>
+    <a class="dom" href="fem.html">FEM</a>
+    <a class="dom" href="md.html" aria-current="page">MD</a>
+    <a class="dom" href="calphad.html">CALPHAD</a>
+    <a class="lang" href="../md.html" hreflang="en" lang="en">EN</a>
+  </nav>
+  <button class="theme" type="button" aria-label="切换浅色或深色主题"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zm0 1.5v11a5.5 5.5 0 0 1 0-11z"/></svg></button>
+</div></header>
+
+<div class="hero small"><div class="hero-in">
+  <nav class="domnav" aria-label="领域"><a href="progress.html">← 进度</a><a href="dft.html">mini-DFT</a><a href="fem.html">mini-FEM</a><a href="md.html" aria-current="page">mini-MD</a><a href="calphad.html">mini-CALPHAD</a></nav>
+  <p class="eyebrow">领域 · mini-MD v0 · 现状快照 2026-10-01</p>
+  <h1>mini-MD</h1>
+  <p class="lead">一维 Lennard-Jones 原子链，Velocity Verlet 积分。Lean 检查器给出计算轨道与 <b>Newton 方程真解</b>之间距离的严格界：每一步都有，从初值出发的整体界覆盖约一个振动周期；守恒量则精确计算。2026-10-01 作为纲领阶段 2 的 MD 基础版本完成，与 ASE 3.29 交叉校验。</p>
+  <div class="stats">
+    <div class="stat"><b>14</b><span>条命题登记在可信账本中：T4 4 条，T3 9 条，1 条未完成</span></div>
+    <div class="stat"><b>0.99</b><span>真实局部误差 ÷ 证书的局部界：界几乎是精确的</span></div>
+    <div class="stat"><b>≤ 5×10⁻¹⁴</b><span>与 ASE 在位置、动量、能量上的差</span></div>
+    <div class="stat"><b>约 1 个周期</b><span>由从初值出发的整体界覆盖（8 个原子时 t = 0.5）</span></div>
+  </div>
+</div></div>
+
+<div class="wrap">
+<nav class="toc" aria-label="目录">
+  <p>目录</p>
+  <ol>
+    <li><a href="#problem"><span>01</span>问题</a></li>
+    <li><a href="#report"><span>02</span>证书给出什么</a></li>
+    <li><a href="#method"><span>03</span>证书如何工作</a></li>
+    <li><a href="#horizon"><span>04</span>整体界的范围</a></li>
+    <li><a href="#claims"><span>05</span>命题</a></li>
+    <li><a href="#evidence"><span>06</span>交叉校验</a></li>
+    <li><a href="#gaps"><span>07</span>缺口</a></li>
+  </ol>
+</nav>
+<main>
+
+<section id="problem">
+  <p class="sec-no">01</p>
+  <h2>问题</h2>
+  <div class="tbl"><table><tbody>
+    <tr><td class="l">体系</td><td>直线上按次序排列的 <i class="v">N</i> ≥ 2 个原子，质量 <i class="v">m<sub>i</sub></i> &gt; 0。自由边界，全部原子对都相互作用，Lennard-Jones 势 <i class="v">φ</i>(<i class="v">r</i>) = 4<i class="v">ε</i>((<i class="v">σ</i>/<i class="v">r</i>)¹² − (<i class="v">σ</i>/<i class="v">r</i>)⁶) 不截断。</td></tr>
+    <tr><td class="l">方程</td><td><i class="v">q</i>′ = <i class="v">p</i>/<i class="v">m</i>，<i class="v">p</i>′ = <i class="v">F</i>(<i class="v">q</i>)。“真解”指这组方程的任意解，经典解都包括在内。</td></tr>
+    <tr><td class="l">积分</td><td>步长为 <i class="v">h</i> 的 Velocity Verlet：半步踢、漂移、半步踢。驱动用双精度计算，不允许乘加融合。</td></tr>
+    <tr><td class="l">输入</td><td>参数与初值取证书中的精确有理数，即驱动实际使用的 double。它们与命令行十进制数的差别不在证书范围内（假设 A-MD-01）。</td></tr>
+  </tbody></table></div>
+</section>
+
+<section id="report">
+  <p class="sec-no">02</p>
+  <h2>一次有证书的运行给出什么</h2>
+  <div class="prose"><p>8 个原子，步长 <i class="v">h</i> = 0.001，600 步，初始温度 0.01。驱动把轨道写成证书，Lean 检查器 <code>certify-md</code> 用精确有理数重新检查；下面是报告的末尾。</p></div>
+  <div class="report">
+    <div class="cmd">build/mini-md --N 8 --steps 600 --dt 0.001 --T0 0.01 --certify run.cert --verify</div>
+<pre><span class="c">…</span>
+Lean  MD_OK 8 600
+Lean  E0 <b>-7.186568898605097 -7.186568898605096</b>
+Lean  ENERGY_DRIFT 0.00000046826354893195
+Lean  MOMENTUM_DRIFT 0.00000000000000029057
+Lean  VERLET_RES 0.00000000000000044369
+Lean  LOCAL_OK <b>0.00000000279045942382</b> 0.00000004228626446212
+Lean  TRUE_OK 500 0.500000000000 <b>0.00099933951185418332</b> 0.01514386287974667751
+Lean  TRUE_HORIZON <b>500 0.500000000000</b>
+Lean  KMAX 19.447984
+Lean  EPSMAX 0.00000004460799189706</pre>
+  </div>
+  <div class="tbl"><table class="outs">
+    <thead><tr><th>行</th><th>Lean 定理保证的内容</th><th>命题</th></tr></thead>
+    <tbody>
+      <tr><td>LOCAL_OK dq dp</td><td>对每一步 <i class="v">k</i>：从计算状态 (<i class="v">Q<sub>k</sub></i>, <i class="v">P<sub>k</sub></i>) 出发的任意真解，一步之后与 (<i class="v">Q</i><sub><i class="v">k</i>+1</sub>, <i class="v">P</i><sub><i class="v">k</i>+1</sub>) 的位置误差 ≤ dq、动量误差 ≤ dp。计算轨道是真实流的 dq 伪轨道。</td><td>MD-B01</td></tr>
+      <tr><td>TRUE_OK j t dq dp</td><td>从初值出发的任意真解，在 <i class="v">t<sub>j</sub></i> 时刻与计算状态的误差 ≤ dq / dp。</td><td>MD-B02</td></tr>
+      <tr><td>TRUE_HORIZON H t</td><td>整体界覆盖 [0, <i class="v">t</i>]；其间原子保持次序，真解的能量恒等于 <i class="v">E</i>₀。</td><td>MD-B02、C01</td></tr>
+      <tr><td>E0 lo hi</td><td>初始能量 <i class="v">H</i>(<i class="v">Q</i>₀, <i class="v">P</i>₀)，精确计算后向外取整。</td><td>MD-B03</td></tr>
+      <tr><td>ENERGY_DRIFT、MOMENTUM_DRIFT</td><td>计算轨道上能量与总动量的最大变化，精确计算。</td><td>MD-B03</td></tr>
+      <tr><td>VERLET_RES d</td><td>数据满足 Verlet 的两个方程，残差 ≤ d：除了舍入，这条轨道确实是 Verlet 算出的。</td><td>MD-B04</td></tr>
+      <tr><td>KMAX、EPSMAX</td><td>诊断量（最大的 Lipschitz 常数与缺陷），不是结论。</td><td>—</td></tr>
+    </tbody>
+  </table></div>
+  <p class="note">这次运行中，计算轨道的能量漂移了 4.7×10⁻⁷，而真解的能量在 <i class="v">t</i> = 0.5 之前恒等于 <i class="v">E</i>₀。这个漂移就是 Verlet 自身 O(<i class="v">h</i>²) 的能量误差，现在它是有证书的数，而不是估计。</p>
+</section>
+
+<section id="method">
+  <p class="sec-no">03</p>
+  <h2>证书如何工作</h2>
+  <div class="prose"><p>对每一步，检查器构造一条可证明接近 Newton 方程某个解的曲线，再用管道定理推出<i>任意</i>解都留在它附近。全程用精确有理数；驱动的浮点数只是数据。</p></div>
+  <ol class="chain">
+    <li><div class="layer"><span class="no">1</span><h4>真实流的 Taylor 多项式</h4><p>在每个数据点，检查器精确算出真解对时间的前四阶导数，为每个原子得到一个四次多项式。改用 Verlet 数据点做插值会留下 O(<i class="v">h</i>) 的缺陷，因为 Verlet 的局部误差是 O(<i class="v">h</i>³)。</p></div></li>
+    <li><div class="layer"><span class="no">2</span><h4>原子互不重叠</h4><p>由多项式的区间界，每对原子在这一步内距离为正；否则检查器报告 <code>MD_FAIL</code>。</p></div></li>
+    <li><div class="layer"><span class="no">3</span><h4>缺陷</h4><p>四次多项式离 Newton 方程有多远：<i class="v">D</i> = <i class="v">m z</i>″ − <i class="v">F</i>(<i class="v">z</i>)，力的三阶导数用区间包住（MD-A03）。</p></div></li>
+    <li><div class="layer"><span class="no">4</span><h4>盒子上的 Lipschitz 常数</h4><p>向量场在曲线的 <i class="v">ρ</i> 邻域上 Lipschitz，常数由 <i class="v">φ</i>″ 的区间界给出（MD-A02）。</p></div></li>
+    <li><div class="layer"><span class="no">5</span><h4>管道定理</h4><p>Grönwall 界 <i class="v">δ</i>e<sup><i class="v">Kt</i></sup> + (<i class="v">ε</i>/<i class="v">K</i>)(e<sup><i class="v">Kt</i></sup> − 1) 小于 <i class="v">ρ</i> 时，任意解都留在盒子内并满足这个界。证明用首次离开时刻的反证，不需要事先知道解走到哪里（MD-A01、A04）。</p></div></li>
+  </ol>
+  <p class="note">局部界为什么几乎是精确的：它的主项是多项式与下一个数据点之差，也就是 Verlet 自己的局部误差 O(<i class="v">h</i>³)；缺陷项是 O(<i class="v">h</i>⁴)。三个体系中真实局部误差都是界的 0.99。</p>
+</section>
+
+<section id="horizon">
+  <p class="sec-no">04</p>
+  <h2>整体界与它的覆盖范围</h2>
+  <div class="prose"><p>多体 Lennard-Jones 轨道的逐点误差界必然指数增长：动力学是混沌的，相邻轨道按 e<sup><i class="v">Kt</i></sup> 分开。证书的界一开始就贴着真实误差（10 步后比值 0.91），然后以 <i class="v">K</i> ≈ 19 的速率增长，到 <i class="v">t</i> = 0.5（约一个振动周期）时达到管道半径。此后检查器仍然对每一步给出局部证书，但不再给出与初值真轨道的距离。</p></div>
+  <figure class="chart">
+    <h4>与真轨道的距离 · 8 个原子，h = 0.001</h4>
+    <p class="cap">各原子位置误差的最大值，对数坐标。证书的界是 Lean 的 <code>TRUE_OK</code>；真实误差相对高精度参考解（scipy DOP853，rtol 10⁻¹³）测得，只作比较，本身不严格。</p>
+    <div class="key"></div>
+    <div class="plot"></div>
+    <details><summary>查看数据</summary><div class="tablehost"></div></details>
+    <script type="application/json">{"alt": "对数坐标图：证书给出的整体误差界在 t = 0 到 0.5 之间从 2.5e-8 增长到 1e-3，真实误差在 t = 0.6 之前一直在 2e-8 到 3.4e-7 之间。", "xname": "t", "x": {"min": 0, "max": 0.6, "ticks": [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6], "label": "时间 t", "fmt": "f2", "tfmt": "f1"}, "y": {"log": true, "min": 1e-08, "max": 0.01, "ticks": [1e-08, 1e-07, 1e-06, 1e-05, 0.0001, 0.001, 0.01], "fmt": "sci"}, "series": [{"name": "证书的界（Lean，TRUE_OK）", "c": 1, "pts": [[0.01, 2.53e-08], [0.02, 5.5e-08], [0.03, 8.98e-08], [0.04, 1.3e-07], [0.05, 1.77e-07], [0.06, 2.31e-07], [0.07, 2.95e-07], [0.08, 3.68e-07], [0.09, 4.53e-07], [0.1, 5.56e-07], [0.11, 6.81e-07], [0.12, 8.32e-07], [0.13, 1.01e-06], [0.14, 1.23e-06], [0.15, 1.5e-06], [0.16, 1.82e-06], [0.17, 2.2e-06], [0.18, 2.66e-06], [0.19, 3.21e-06], [0.2, 3.87e-06], [0.21, 4.66e-06], [0.22, 5.6e-06], [0.23, 6.73e-06], [0.24, 8.09e-06], [0.25, 9.72e-06], [0.26, 1.17e-05], [0.27, 1.4e-05], [0.28, 1.68e-05], [0.29, 2.01e-05], [0.3, 2.41e-05], [0.31, 2.9e-05], [0.32, 3.48e-05], [0.33, 4.18e-05], [0.34, 5.03e-05], [0.35, 6.06e-05], [0.36, 7.29e-05], [0.37, 8.79e-05], [0.38, 0.000106], [0.39, 0.000128], [0.4, 0.000154], [0.41, 0.000185], [0.42, 0.000223], [0.43, 0.000269], [0.44, 0.000323], [0.45, 0.00039], [0.46, 0.000469], [0.47, 0.000566], [0.48, 0.000684], [0.49, 0.000826], [0.5, 0.000999]]}, {"name": "真实误差（参考解）", "c": 2, "pts": [[0.01, 2.3e-08], [0.02, 4.56e-08], [0.03, 6.7e-08], [0.04, 8.67e-08], [0.05, 1.04e-07], [0.06, 1.19e-07], [0.07, 1.3e-07], [0.08, 1.37e-07], [0.09, 1.41e-07], [0.1, 1.4e-07], [0.11, 1.4e-07], [0.12, 1.42e-07], [0.13, 1.41e-07], [0.14, 1.39e-07], [0.15, 1.34e-07], [0.16, 1.27e-07], [0.17, 1.19e-07], [0.18, 1.11e-07], [0.19, 1.02e-07], [0.2, 9.13e-08], [0.21, 1e-07], [0.22, 1.2e-07], [0.23, 1.45e-07], [0.24, 1.68e-07], [0.25, 1.88e-07], [0.26, 2.03e-07], [0.27, 2.14e-07], [0.28, 2.19e-07], [0.29, 2.2e-07], [0.3, 2.15e-07], [0.31, 2.06e-07], [0.32, 1.91e-07], [0.33, 2.05e-07], [0.34, 2.19e-07], [0.35, 2.29e-07], [0.36, 2.35e-07], [0.37, 2.37e-07], [0.38, 2.34e-07], [0.39, 2.25e-07], [0.4, 2.22e-07], [0.41, 2.52e-07], [0.42, 2.77e-07], [0.43, 2.97e-07], [0.44, 3.12e-07], [0.45, 3.19e-07], [0.46, 3.2e-07], [0.47, 3.14e-07], [0.48, 3.01e-07], [0.49, 2.81e-07], [0.5, 2.54e-07], [0.51, 2.21e-07], [0.52, 2.15e-07], [0.53, 2.48e-07], [0.54, 2.76e-07], [0.55, 2.99e-07], [0.56, 3.15e-07], [0.57, 3.24e-07], [0.58, 3.26e-07], [0.59, 3.22e-07], [0.6, 3.43e-07]]}], "hlines": [{"y": 0.001, "label": "管道半径 ρ = 10⁻³"}], "vlines": [{"x": 0.5, "label": "覆盖到 t = 0.5", "side": "left", "dy": 22}], "notes": [{"x": 0.27, "y": 3e-05, "text": "证书的界", "a": "end", "wide": true}, {"x": 0.59, "y": 1.1e-07, "text": "真实误差", "a": "end", "wide": true}], "keyref": ["管道半径 ρ"]}</script>
+  </figure>
+  <div class="prose"><p>这是问题本身的性质，不是证明技术的局限：混沌动力学不存在长时间的逐点误差界。长时间的结论要换一种形式——伪轨道的 shadowing、Verlet 修正 Hamiltonian 的向后误差分析、或轨道的统计量——都列在缺口里。</p></div>
+</section>
+
+<section id="claims">
+  <p class="sec-no">05</p>
+  <h2>可信账本中的命题</h2>
+  <div class="sbar big" role="img" aria-label="14 条命题：T4 4 条，T3 9 条，尚未达到目标 1 条">
+    <i class="sw-t4" style="flex:4"></i><i class="sw-t3" style="flex:9"></i><i class="sw-no" style="flex:1"></i>
+  </div>
+  <div class="legend">
+    <span><i class="sw-t4"></i>T4 端到端 · 4</span>
+    <span><i class="sw-t3"></i>T3 机器证明 · 9</span>
+    <span><i class="sw-no"></i>尚未达到目标 · 1</span>
+  </div>
+  <div class="tbl"><table>
+    <thead><tr><th>编号</th><th>命题</th><th>等级</th></tr></thead>
+    <tbody>
+      <tr><td class="l">MD-C01</td><td>能量守恒：原子保持次序时，真解的能量不变</td><td class="st"><span class="tag m">T3</span></td></tr>
+      <tr><td class="l">MD-C02</td><td>动量守恒：力之和为零，总动量不变</td><td class="st"><span class="tag m">T3</span></td></tr>
+      <tr><td class="l">MD-C03</td><td>解的存在：Newton 方程在 [0, <i class="v">T</i>] 上有解</td><td class="st"><span class="tag n">未达到</span></td></tr>
+      <tr><td class="l">MD-D01</td><td>Velocity Verlet 时间可逆</td><td class="st"><span class="tag m">T3</span></td></tr>
+      <tr><td class="l">MD-D02</td><td>Velocity Verlet 保持总动量</td><td class="st"><span class="tag m">T3</span></td></tr>
+      <tr><td class="l">MD-D03</td><td>Velocity Verlet 是辛映射，对 Lennard-Jones 原子链成立</td><td class="st"><span class="tag m">T3</span></td></tr>
+      <tr><td class="l">MD-A01</td><td>管道定理：Grönwall 界小于管道半径时，任意解都被限制在管道内</td><td class="st"><span class="tag m">T3</span></td></tr>
+      <tr><td class="l">MD-A02</td><td>缩放向量场在盒子上的 Lipschitz 常数</td><td class="st"><span class="tag m">T3</span></td></tr>
+      <tr><td class="l">MD-A03</td><td>四次多项式近似轨道的缺陷界</td><td class="st"><span class="tag m">T3</span></td></tr>
+      <tr><td class="l">MD-A04</td><td>一步的误差界</td><td class="st"><span class="tag m">T3</span></td></tr>
+      <tr><td class="l">MD-B01</td><td>检查器可靠：每一步的局部误差</td><td class="st"><span class="tag s">T4</span></td></tr>
+      <tr><td class="l">MD-B02</td><td>检查器可靠：从初值出发的整体误差；覆盖范围内原子保持次序、能量精确不变</td><td class="st"><span class="tag s">T4</span></td></tr>
+      <tr><td class="l">MD-B03</td><td>检查器可靠：初始能量、能量漂移与动量漂移的精确值</td><td class="st"><span class="tag s">T4</span></td></tr>
+      <tr><td class="l">MD-B04</td><td>检查器可靠：数据满足 Verlet 方程，残差不超过报告值</td><td class="st"><span class="tag s">T4</span></td></tr>
+    </tbody>
+  </table></div>
+  <p class="note">Verlet 辛性达到 T3（MD-D03）是纲领阶段 2 退出标准的一半；另一半 Céa 引理见 <a href="fem.html#claims">FEM 页</a>。</p>
+</section>
+
+<section id="evidence">
+  <p class="sec-no">06</p>
+  <h2>交叉校验与辅助证据</h2>
+  <ul class="checks">
+    <li><span>ASE 3.29（<code>LennardJones</code> + <code>VelocityVerlet</code>），5、8、12 个原子的三条链，最多 2000 步：位置 / 动量 / 能量</span><b>≤ 3.6×10⁻¹⁵ / 5.0×10⁻¹⁴ / 3.2×10⁻¹⁴</b></li>
+    <li><span>整体误差与能量漂移的阶，相对 DOP853 参考解</span><b>2.00</b></li>
+    <li><span>计算轨道上的总动量</span><b>守恒到 3×10⁻¹⁶</b></li>
+    <li><span>真实误差 ÷ Lean 的界，局部与整体，三个体系</span><b>≤ 0.99</b></li>
+    <li><span>8 个原子的整体覆盖范围：<i class="v">T</i>₀ = 0.01、<i class="v">h</i> = 0.001 / <i class="v">T</i>₀ = 0.1、<i class="v">h</i> = 0.002 / <i class="v">T</i>₀ = 0.001、<i class="v">ρ</i> = 10⁻⁴</span><b>500 / 122 / 全部 800 步</b></li>
+    <li><span>篡改证书中的一个位置</span><b>只让残差与局部界变大</b></li>
+    <li><span>负质量、原子重叠、管道半径小于一步的缺陷</span><b>MD_FAIL</b></li>
+    <li><span>检查时间，8 个原子 1000 步（随 <i class="v">N</i>² 增长）</span><b>约 50 秒</b></li>
+    <li><span>AddressSanitizer 与 UBSan 下的驱动</span><b>无报错</b></li>
+  </ul>
+</section>
+
+<section id="gaps">
+  <p class="sec-no">07</p>
+  <h2>缺口</h2>
+  <ul class="gaps">
+    <li><strong>真解的存在</strong>证书对任意解成立，管道内解唯一，但解的存在性还没有机器证明（MD-C03）。可以用截断向量场加 Picard–Lindelöf，或用能量守恒做延拓。</li>
+    <li><strong>长时间的逐点误差</strong>如上所述，由混沌决定。能量范数下的对数范数、Lohner 型线性化传播可以延长覆盖范围；真正的长时间结论需要 shadowing、修正 Hamiltonian 或统计量。</li>
+    <li><strong>统计量</strong>温度、径向分布函数、自相关都和能量一样是计算状态的精确函数，尚未实现。</li>
+    <li><strong>周期盒子、截断、恒温器、约束、二维与三维、并行</strong>未开始。截断使力不连续，管道定理需要分段光滑的推广；并行协议（原子迁移、halo 交换）按计划用 TLA+ 描述。</li>
+    <li><strong>检查时间</strong>8 个原子每步约 50 毫秒，主要花在 <i class="v">φ</i> 及其导数的精确有理数计算上；改用区间运算会快得多。</li>
+    <li><strong>C 驱动本身</strong>不受信任（T0），所有结果都经过检查器。阶段 3 计划让 Verlet 单步达到 T4。</li>
+  </ul>
+</section>
+
+</main>
+</div>
+
+<footer><div class="in">
+  <span>Formal in Silico · 现状快照 2026-10-01</span>
+  <span><a href="./">纲领</a> · <a href="progress.html">进度</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="../md.html" hreflang="en">English</a></span>
+</div></footer>
+</body>
+</html>

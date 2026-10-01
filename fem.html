@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Formal in Silico — mini-FEM</title>
+<meta name="description" content="mini-FEM: 1D finite elements whose Lean certificates bound the true solution of the continuous problem, cross-checked against scikit-fem (goal G2).">
+<link rel="alternate" hreflang="en" href="fem.html">
+<link rel="alternate" hreflang="zh-CN" href="zh/fem.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700;8..60,800&display=swap">
+<link rel="stylesheet" href="assets/style.css">
+<script src="assets/site.js"></script>
+</head>
+<body>
+
+<header class="bar"><div class="bar-in">
+  <a class="brand" href="./">Formal in Silico</a>
+  <nav class="nav" aria-label="Site">
+    <a href="./">Programme</a>
+    <a href="progress.html">Progress</a>
+    <span class="sep" aria-hidden="true"></span>
+    <a class="dom" href="dft.html">DFT</a>
+    <a class="dom" href="fem.html" aria-current="page">FEM</a>
+    <a class="dom" href="md.html">MD</a>
+    <a class="dom" href="calphad.html">CALPHAD</a>
+    <a class="lang" href="zh/fem.html" hreflang="zh-CN" lang="zh-CN">中文</a>
+  </nav>
+  <button class="theme" type="button" aria-label="Toggle light or dark theme"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zm0 1.5v11a5.5 5.5 0 0 1 0-11z"/></svg></button>
+</div></header>
+
+<div class="hero small"><div class="hero-in">
+  <nav class="domnav" aria-label="Domains"><a href="progress.html">← Progress</a><a href="dft.html">mini-DFT</a><a href="fem.html" aria-current="page">mini-FEM</a><a href="md.html">mini-MD</a><a href="calphad.html">mini-CALPHAD</a></nav>
+  <p class="eyebrow">Domain · goal G2 · status snapshot 1 October 2026</p>
+  <h1>mini-FEM</h1>
+  <p class="lead">One-dimensional finite elements — Poisson with P1 elements and beams with cubic Hermite elements — whose certificates speak about the <b>true solution of the continuous problem</b>, not just the discrete one. Goal G2 is feature parity with scikit-fem 12.0.2.</p>
+  <div class="stats">
+    <div class="stat"><b>11</b><span>claims in the trust ledger, all at T3 or T4</span></div>
+    <div class="stat"><b>11 / 26</b><span>scikit-fem parity items done, all 1D</span></div>
+    <div class="stat"><b>≤ 3×10⁻¹⁵</b><span>width of the Lean intervals for the true nodal values</span></div>
+    <div class="stat"><b>0.85 – 1.00</b><span>sampled true error ÷ proved max-error bound</span></div>
+  </div>
+</div></div>
+
+<div class="wrap">
+<nav class="toc" aria-label="Contents">
+  <p>Contents</p>
+  <ol>
+    <li><a href="#problem"><span>01</span>The problems</a></li>
+    <li><a href="#claims"><span>02</span>Claims</a></li>
+    <li><a href="#g2"><span>03</span>G2 · scikit-fem</a></li>
+    <li><a href="#outputs"><span>04</span>Certified outputs</a></li>
+    <li><a href="#evidence"><span>05</span>Cross-checks</a></li>
+    <li><a href="#gaps"><span>06</span>Open gaps</a></li>
+  </ol>
+</nav>
+<main>
+
+<section id="problem">
+  <p class="sec-no">01</p>
+  <h2>The problems</h2>
+  <div class="tbl"><table><tbody>
+      <tr><td class="l">Poisson</td><td>−<i class="v">u</i>″ = <i class="v">f</i> on (0, <i class="v">L</i>) with Dirichlet, Neumann or Robin conditions at each end (not Neumann at both); P1 linear elements on any mesh with rational nodes.</td></tr>
+      <tr><td class="l">Beam</td><td><i class="v">u</i>⁗ = <i class="v">f</i> on (0, <i class="v">L</i>) with clamped, pinned, free or sliding ends in any combination; cubic Hermite elements carrying nodal values and slopes.</td></tr>
+      <tr><td class="l">Loads</td><td>Sums and products of polynomials, e<sup><i class="v">λx</i></sup>, sin and cos (also of <i class="v">qπx</i>); the checker re-encloses them with Taylor models and never trusts the solver’s quadrature.</td></tr>
+      <tr><td class="l">Why 1D</td><td>Green’s functions and classical solutions avoid Sobolev spaces, so every statement can be about the true solution; 2D will need an H¹ model in Lean.</td></tr>
+    </tbody></table></div>
+</section>
+
+<section id="claims">
+  <p class="sec-no">02</p>
+  <h2>Claims in the trust ledger</h2>
+  <div class="sbar big" role="img" aria-label="11 claims: 3 at T4, 8 at T3">
+    <i class="sw-t4" style="flex:3"></i><i class="sw-t3" style="flex:8"></i>
+  </div>
+  <div class="legend">
+    <span><i class="sw-t4"></i>T4 end to end · 3</span>
+    <span><i class="sw-t3"></i>T3 machine proof · 8</span>
+  </div>
+  <div class="tbl"><table>
+    <thead><tr><th>Claim</th><th>Statement</th><th>Tier</th></tr></thead>
+    <tbody>
+      <tr><td class="l">FEM-C01</td><td>Poisson: the Green representation is a classical solution, and the only one</td><td class="st"><span class="tag m">T3</span></td></tr>
+      <tr><td class="l">FEM-D01</td><td>P1 nodal exactness and the discrete Green representation</td><td class="st"><span class="tag m">T3</span></td></tr>
+      <tr><td class="l">FEM-D02</td><td>Pointwise error inside an element: <i class="v">Mh</i>²/8 plus the nodal error</td><td class="st"><span class="tag m">T3</span></td></tr>
+      <tr><td class="l">FEM-D03</td><td>Céa’s lemma (abstract setting, in preparation for 2D)</td><td class="st"><span class="tag m">T3</span></td></tr>
+      <tr><td class="l">FEM-D04</td><td>Discrete maximum principle</td><td class="st"><span class="tag m">T3</span></td></tr>
+      <tr><td class="l">FEM-C02</td><td>Beam: the classical solution exists and is unique</td><td class="st"><span class="tag m">T3</span></td></tr>
+      <tr><td class="l">FEM-D05</td><td>Discrete stability of Hermite elements (no maximum principle needed)</td><td class="st"><span class="tag m">T3</span></td></tr>
+      <tr><td class="l">FEM-D06</td><td>Hermite nodal exactness and the <i class="v">h</i>⁴/384 interpolation bound</td><td class="st"><span class="tag m">T3</span></td></tr>
+      <tr><td class="l">FEM-B02</td><td>Taylor models of the load are sound</td><td class="st"><span class="tag s">T4</span></td></tr>
+      <tr><td class="l">FEM-B01</td><td>P1 checker soundness: intervals for <i class="v">u</i>(<i class="v">x<sub>i</sub></i>) and a bound on max |<i class="v">u</i> − <i class="v">u<sub>h</sub></i>|</td><td class="st"><span class="tag s">T4</span></td></tr>
+      <tr><td class="l">FEM-B03</td><td>Beam checker soundness: intervals for values and slopes, and the max-error bound</td><td class="st"><span class="tag s">T4</span></td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="g2">
+  <p class="sec-no">03</p>
+  <h2>Goal G2 — certified finite elements against scikit-fem</h2>
+  <div class="prose"><p>Reference: scikit-fem 12.0.2 on the same discrete problem. The standard is the same as G1, with one addition: wherever possible, the certificate is about the <b>true solution of the continuous problem</b>, not only the discrete one. In 1D this avoids Sobolev spaces by working with Green’s functions and classical solutions; 2D will need an H¹ model in Lean.</p></div>
+  <div class="ms">
+    <div class="row"><span class="code">F0</span><div>1D Poisson, P1 elements</div><div class="barcell"><div class="sbar"><i class="sw-done" style="flex:7"></i></div></div><span class="n">7 / 7</span></div>
+    <div class="row"><span class="code">F1</span><div>1D extensions</div><div class="barcell"><div class="sbar"><i class="sw-done" style="flex:4"></i><i class="sw-todo" style="flex:5"></i></div></div><span class="n">4 / 9</span></div>
+    <div class="row"><span class="code">F2</span><div>2D triangular meshes</div><div class="barcell"><div class="sbar"><i class="sw-todo" style="flex:5"></i></div></div><span class="n">0 / 5</span></div>
+    <div class="row"><span class="code">F3</span><div>More physics, 3D</div><div class="barcell"><div class="sbar"><i class="sw-todo" style="flex:5"></i></div></div><span class="n">0 / 5</span></div>
+  </div>
+
+  <h3 style="margin-top:32px">F0 · 1D Poisson with P1 elements — complete</h3>
+  <div class="tbl"><table class="feat">
+    <thead><tr><th>Feature</th><th>Status</th><th>What is certified</th></tr></thead>
+    <tbody>
+      <tr><td>1D meshes: uniform, graded, arbitrary rational nodes</td><td class="st"><span class="tag st-done">Done</span></td><td>The checker verifies the mesh is well ordered</td></tr>
+      <tr><td>P1 elements, stiffness and load assembly</td><td class="st"><span class="tag st-done">Done</span></td><td>The checker re-encloses the load with Taylor models and does not trust the solver’s quadrature</td></tr>
+      <tr><td>Non-homogeneous Dirichlet boundaries</td><td class="st"><span class="tag st-done">Done</span></td><td>Covered by the checker’s soundness theorem</td></tr>
+      <tr><td>Polynomial right-hand sides</td><td class="st"><span class="tag st-done">Done</span></td><td>Integrated exactly</td></tr>
+      <tr><td>Linear solve</td><td class="st"><span class="tag st-done">Done</span></td><td>The solver is untrusted; its nodal error is bounded exactly</td></tr>
+      <tr><td>True-solution nodal values and pointwise error</td><td class="st"><span class="tag st-done">Done</span></td><td>Existence and uniqueness of the classical solution, nodal exactness, the <i class="v">h</i>²/8 interpolation bound and the discrete maximum principle are all proved</td></tr>
+      <tr><td>Céa’s lemma (abstract setting)</td><td class="st"><span class="tag st-done">Done</span></td><td>Proved, in preparation for 2D</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3 style="margin-top:28px">F1 · 1D extensions</h3>
+  <div class="tbl"><table class="feat">
+    <thead><tr><th>Feature</th><th>Status</th><th>What is certified</th></tr></thead>
+    <tbody>
+      <tr><td>Neumann and Robin boundaries</td><td class="st"><span class="tag st-done">Done</span></td><td>All theory proved for general boundary conditions; Neumann at both ends is excluded</td></tr>
+      <tr><td>Non-polynomial right-hand sides</td><td class="st"><span class="tag st-done">Done</span></td><td>Sums and products of polynomials, exponentials, sines and cosines, via Taylor models with proved remainders; nodal intervals about 10<sup>−15</sup> wide</td></tr>
+      <tr><td>Hermite beam elements (fourth-order problem)</td><td class="st"><span class="tag st-done">Done</span></td><td>Clamped, pinned, free and sliding ends in any combination; rigorous intervals for both nodal values and slopes; the <i class="v">h</i>⁴/384 interpolation bound is proved</td></tr>
+      <tr><td>Adaptive refinement (1D)</td><td class="st"><span class="tag st-done">Done</span></td><td>Elements are marked by their proved error bounds, not by an estimator; the final mesh is certified</td></tr>
+      <tr><td>Variable coefficients</td><td class="st"><span class="tag st-todo">Not started</span></td><td></td></tr>
+      <tr><td>P2 and higher-order Lagrange elements</td><td class="st"><span class="tag st-todo">Not started</span></td><td></td></tr>
+      <tr><td>Eigenvalue problem</td><td class="st"><span class="tag st-todo">Not started</span></td><td>Can reuse the DFT inertia argument</td></tr>
+      <tr><td>Energy-norm error</td><td class="st"><span class="tag st-todo">Not started</span></td><td></td></tr>
+      <tr><td>Example-by-example comparison with scikit-fem’s 1D gallery</td><td class="st"><span class="tag st-todo">Not started</span></td><td></td></tr>
+    </tbody>
+  </table></div>
+
+  <details class="more"><summary>Planned: F2–F3 (10 items, none started)</summary>
+    <h4 style="margin-top:14px">F2 · 2D triangular meshes</h4>
+    <ul class="planned"><li>Triangular meshes with checker-verified shape regularity (the Sleipner lesson)</li><li>P1 and P2 triangles</li><li>A Lean model of H¹<sub>0</sub></li><li>Guaranteed-upper-bound a posteriori estimates (equilibrated fluxes)</li><li>Quadrilateral elements</li></ul>
+    <h4>F3 · more physics and 3D</h4>
+    <ul class="planned"><li>Linear elasticity (Korn’s inequality)</li><li>Stokes and mixed elements (inf-sup)</li><li>Adaptive refinement in 2D</li><li>Tetrahedral and hexahedral meshes</li><li>Parallel assembly, specified in TLA+</li></ul>
+  </details>
+</section>
+
+<section id="outputs">
+  <p class="sec-no">04</p>
+  <h2>What a certified run reports today</h2>
+  <div class="card"><h3>Rigorous statements about the true solution</h3>
+    <ul style="padding-left:1.1em;margin:8px 0 0;font-size:15px">
+        <li>an interval for <i class="v">u</i>(<i class="v">x<sub>i</sub></i>) at every node</li>
+        <li>for beams, also an interval for the slope <i class="v">u</i>′(<i class="v">x<sub>i</sub></i>)</li>
+        <li>the exact error of the solver’s own nodal values</li>
+        <li>a bound on max |<i class="v">u</i> − <i class="v">u<sub>h</sub></i>| over the whole interval, and per element</li>
+        <li>an adaptively refined mesh that meets a requested tolerance, with the tolerance certified on the final mesh</li>
+    </ul></div>
+</section>
+
+<section id="evidence">
+  <p class="sec-no">05</p>
+  <h2>Cross-checks and supporting evidence</h2>
+  <ul class="checks">
+    <li><span>11 Poisson and 6 beam cases — Lean nodal intervals contain the reference solution</span><b>width ≤ 3×10⁻¹⁵</b></li>
+    <li><span>scikit-fem nodal values against mini-FEM (Poisson / beam)</span><b>≤ 3×10⁻¹³ / 4×10⁻¹²</b></li>
+    <li><span>proved max-error bound relative to the sampled actual error</span><b>0.85 – 1.00</b></li>
+    <li><span>tampered nodal values</span><b>only widen the error bound</b></li>
+  </ul>
+</section>
+
+<section id="gaps">
+  <p class="sec-no">06</p>
+  <h2>Open gaps</h2>
+  <ul class="gaps">
+    <li><strong>Other load functions</strong>Logarithms, rational and piecewise functions need their own Taylor models; today only polynomials, exponentials, sines and cosines.</li>
+    <li><strong>Neumann at both ends</strong>The solution is defined only up to a constant; a compatibility condition and a normalisation are needed. Both driver and checker reject it.</li>
+    <li><strong>Checking time for transcendental loads</strong>About 13 ms per element, mostly in exact rational series at element midpoints; an interval series with term-wise rounding would be faster.</li>
+    <li><strong>Variable beam stiffness and elastic supports</strong>Only <i class="v">EI</i> = 1; the checker accepts any 4×4 boundary matrix, but the driver writes only the four standard end conditions.</li>
+    <li><strong>The driver itself</strong>Untrusted (T0) with no Frama-C proof; every result passes through the checker. Phase 3 plans to bring element-stiffness assembly to T4.</li>
+  </ul>
+</section>
+
+</main>
+</div>
+
+<footer><div class="in">
+  <span>Formal in Silico · status snapshot 1 October 2026</span>
+  <span><a href="./">Programme</a> · <a href="progress.html">Progress</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="zh/fem.html" hreflang="zh-CN">中文版</a></span>
+</div></footer>
+</body>
+</html>

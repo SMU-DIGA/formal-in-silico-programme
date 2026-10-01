@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Formal in Silico — mini-DFT</title>
+<meta name="description" content="mini-DFT: a one-dimensional reduced Hartree–Fock code certified in Lean, working towards feature parity with DFTK.jl (goal G1).">
+<link rel="alternate" hreflang="en" href="dft.html">
+<link rel="alternate" hreflang="zh-CN" href="zh/dft.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700;8..60,800&display=swap">
+<link rel="stylesheet" href="assets/style.css">
+<script src="assets/site.js"></script>
+</head>
+<body>
+
+<header class="bar"><div class="bar-in">
+  <a class="brand" href="./">Formal in Silico</a>
+  <nav class="nav" aria-label="Site">
+    <a href="./">Programme</a>
+    <a href="progress.html">Progress</a>
+    <span class="sep" aria-hidden="true"></span>
+    <a class="dom" href="dft.html" aria-current="page">DFT</a>
+    <a class="dom" href="fem.html">FEM</a>
+    <a class="dom" href="md.html">MD</a>
+    <a class="dom" href="calphad.html">CALPHAD</a>
+    <a class="lang" href="zh/dft.html" hreflang="zh-CN" lang="zh-CN">中文</a>
+  </nav>
+  <button class="theme" type="button" aria-label="Toggle light or dark theme"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zm0 1.5v11a5.5 5.5 0 0 1 0-11z"/></svg></button>
+</div></header>
+
+<div class="hero small"><div class="hero-in">
+  <nav class="domnav" aria-label="Domains"><a href="progress.html">← Progress</a><a href="dft.html" aria-current="page">mini-DFT</a><a href="fem.html">mini-FEM</a><a href="md.html">mini-MD</a><a href="calphad.html">mini-CALPHAD</a></nav>
+  <p class="eyebrow">Domain · goal G1 · status snapshot 1 October 2026</p>
+  <h1>mini-DFT</h1>
+  <p class="lead">A one-dimensional periodic reduced Hartree–Fock model with plane waves — the project’s first domain, where the trust ledger, the certificate checkers and trace validation were built. Goal G1 is feature parity with DFTK.jl 0.8.0 on the same discrete problem, with every output covered by a Lean theorem.</p>
+  <div class="stats">
+    <div class="stat"><b>89</b><span>claims in the trust ledger</span></div>
+    <div class="stat"><b>91%</b><span>machine-proved: 63 at T3, 18 at T4</span></div>
+    <div class="stat"><b>6 / 46</b><span>DFTK parity items done; 3 more agree but lack full certificates</span></div>
+    <div class="stat"><b>≤ 5×10⁻¹⁵</b><span>energy difference from DFTK on the same discrete problem</span></div>
+  </div>
+</div></div>
+
+<div class="wrap">
+<nav class="toc" aria-label="Contents">
+  <p>Contents</p>
+  <ol>
+    <li><a href="#ledger"><span>01</span>Trust ledger</a></li>
+    <li><a href="#g1"><span>02</span>G1 · DFTK</a></li>
+    <li><a href="#outputs"><span>03</span>Certified outputs</a></li>
+    <li><a href="#evidence"><span>04</span>Cross-checks</a></li>
+    <li><a href="#gaps"><span>05</span>Open gaps</a></li>
+  </ol>
+</nav>
+<main>
+
+<section id="ledger">
+  <p class="sec-no">01</p>
+  <h2>Claims in the trust ledger</h2>
+  <div class="prose"><p>Of the ledger’s 118 claims, 89 concern mini-DFT; they are grouped below by topic. The tiers are defined on the <a href="./#s5">programme page</a>.</p></div>
+  <div class="sbar big" role="img" aria-label="89 claims: 18 at T4, 63 at T3, 2 at T2, 1 at T0, 5 not yet reached">
+    <i class="sw-t4" style="flex:18"></i><i class="sw-t3" style="flex:63"></i><i class="sw-t2" style="flex:2"></i><i class="sw-t0" style="flex:1"></i><i class="sw-no" style="flex:5"></i>
+  </div>
+  <div class="legend">
+    <span><i class="sw-t4"></i>T4 end to end · 18</span>
+    <span><i class="sw-t3"></i>T3 machine proof · 63</span>
+    <span><i class="sw-t2"></i>T2 model-checked · 2</span>
+    <span><i class="sw-t0"></i>T0 tested · 1</span>
+    <span><i class="sw-no"></i>target not yet reached · 5</span>
+  </div>
+  <div class="rows">
+    <div class="row"><div>DFT foundations<div class="cap">discrete model · algorithm · parallelism · floating point</div></div><span class="n">19</span><div class="barcell"><div class="sbar"><i class="sw-t4" style="flex:1"></i><i class="sw-t3" style="flex:11"></i><i class="sw-t2" style="flex:2"></i><i class="sw-t0" style="flex:1"></i><i class="sw-no" style="flex:4"></i></div></div></div>
+    <div class="row"><div>Ground-state energy certificate</div><span class="n">8</span><div class="barcell"><div class="sbar"><i class="sw-t4" style="flex:1"></i><i class="sw-t3" style="flex:7"></i></div></div></div>
+    <div class="row"><div>Finite-temperature free energy</div><span class="n">14</span><div class="barcell"><div class="sbar"><i class="sw-t4" style="flex:3"></i><i class="sw-t3" style="flex:11"></i></div></div></div>
+    <div class="row"><div>Gaussian and cold smearing</div><span class="n">5</span><div class="barcell"><div class="sbar"><i class="sw-t3" style="flex:5"></i></div></div></div>
+    <div class="row"><div>SCF-solution certificates<div class="cap">Methfessel–Paxton · Marzari–Vanderbilt</div></div><span class="n">10</span><div class="barcell"><div class="sbar"><i class="sw-t4" style="flex:3"></i><i class="sw-t3" style="flex:7"></i></div></div></div>
+    <div class="row"><div>k-point sampling and supercells</div><span class="n">7</span><div class="barcell"><div class="sbar"><i class="sw-t4" style="flex:2"></i><i class="sw-t3" style="flex:5"></i></div></div></div>
+    <div class="row"><div>Discretisation error<div class="cap">truncation K → ∞ · true Gaussian potential</div></div><span class="n">13</span><div class="barcell"><div class="sbar"><i class="sw-t4" style="flex:3"></i><i class="sw-t3" style="flex:9"></i><i class="sw-no" style="flex:1"></i></div></div></div>
+    <div class="row"><div>Density and eigenvalues</div><span class="n">10</span><div class="barcell"><div class="sbar"><i class="sw-t4" style="flex:3"></i><i class="sw-t3" style="flex:7"></i></div></div></div>
+    <div class="row"><div>Band structure and density of states</div><span class="n">3</span><div class="barcell"><div class="sbar"><i class="sw-t4" style="flex:2"></i><i class="sw-t3" style="flex:1"></i></div></div></div>
+  </div>
+  <p class="note">The T4 claims are the soundness theorems of the certificate checkers (which run in exact rational arithmetic, so no floating point is involved) and the proof that the trusted C kernel has no run-time errors. The five claims below target: continuum well-posedness of 1D rHF, the a priori plane-wave estimate and linear-mixing convergence (all awaiting a literature check at T1), the equality of the truncation limit with the continuum energy, and the Lean–Rocq interface claim.</p>
+</section>
+
+<section id="g1">
+  <p class="sec-no">02</p>
+  <h2>Goal G1 — mini-DFT reaches DFTK parity</h2>
+  <div class="prose"><p>Reference: DFTK.jl 0.8.0 on the same discrete problem. Order: complete the 1D feature set (M0–M3), generalise the Lean model to <i class="v">d</i> dimensions for 2D/3D (M4–M5), then infrastructure (M6).</p></div>
+  <div class="legend">
+    <span><i class="sw-done"></i>Done — implemented, agrees, certified</span>
+    <span><i class="sw-align"></i>Agrees — certificates incomplete</span>
+    <span><i class="sw-impl"></i>Implemented — not yet compared</span>
+    <span><i class="sw-todo"></i>Not started</span>
+  </div>
+  <div class="ms">
+    <div class="row"><span class="code">M0</span><div>Existing core</div><div class="barcell"><div class="sbar"><i class="sw-done" style="flex:5"></i><i class="sw-align" style="flex:1"></i><i class="sw-impl" style="flex:3"></i></div></div><span class="n">5 / 9</span></div>
+    <div class="row"><span class="code">M1</span><div>1D solvers, occupation, k-points</div><div class="barcell"><div class="sbar"><i class="sw-done" style="flex:1"></i><i class="sw-align" style="flex:2"></i><i class="sw-todo" style="flex:4"></i></div></div><span class="n">1 / 7</span></div>
+    <div class="row"><span class="code">M2</span><div>1D physics terms</div><div class="barcell"><div class="sbar"><i class="sw-todo" style="flex:7"></i></div></div><span class="n">0 / 7</span></div>
+    <div class="row"><span class="code">M3</span><div>1D post-processing and response</div><div class="barcell"><div class="sbar"><i class="sw-todo" style="flex:9"></i></div></div><span class="n">0 / 9</span></div>
+    <div class="row"><span class="code">M4</span><div><i class="v">d</i> dimensions</div><div class="barcell"><div class="sbar"><i class="sw-todo" style="flex:7"></i></div></div><span class="n">0 / 7</span></div>
+    <div class="row"><span class="code">M5</span><div>Full 3D</div><div class="barcell"><div class="sbar"><i class="sw-todo" style="flex:4"></i></div></div><span class="n">0 / 4</span></div>
+    <div class="row"><span class="code">M6</span><div>Infrastructure and interfaces</div><div class="barcell"><div class="sbar"><i class="sw-todo" style="flex:3"></i></div></div><span class="n">0 / 3</span></div>
+  </div>
+
+  <h3 style="margin-top:32px">M0 · existing core</h3>
+  <div class="tbl"><table class="feat">
+    <thead><tr><th>Feature</th><th>Status</th><th>What is certified</th></tr></thead>
+    <tbody>
+      <tr><td>Kinetic, external (Fourier) and Hartree terms</td><td class="st"><span class="tag st-done">Done</span></td><td>Ground-state energy, density, eigenvalues and each energy component</td></tr>
+      <tr><td>Fermi–Dirac smearing and entropy</td><td class="st"><span class="tag st-done">Done</span></td><td>Free energy, entropy and energy; existence of the finite-temperature ground state and uniqueness of its density are proved</td></tr>
+      <tr><td>Γ-centred grids with an odd number of k-points</td><td class="st"><span class="tag st-done">Done</span></td><td>Per-cell energy through the equivalent supercell, plus its truncation limit</td></tr>
+      <tr><td>Even grids, Monkhorst–Pack</td><td class="st"><span class="tag st-done">Done</span></td><td>Supercell with half-integer frequencies; grids that contain the zone boundary are excluded</td></tr>
+      <tr><td>Dense diagonalisation</td><td class="st"><span class="tag st-done">Done</span></td><td>Each eigenpair enclosed by a residual bound; Sylvester inertia confirms they are the lowest ones</td></tr>
+      <tr><td>Linear, Kerker and Anderson mixing</td><td class="st"><span class="tag st-impl">Implemented</span></td><td>Does not affect the result, which is checked by certificate</td></tr>
+      <tr><td>Non-self-consistent bands, Gaussian-broadened DOS</td><td class="st"><span class="tag st-align">Agrees</span></td><td>Certified for zero-temperature Γ-point runs; finite-temperature and k-point runs not yet</td></tr>
+      <tr><td>Supercells</td><td class="st"><span class="tag st-impl">Implemented</span></td><td>Supercell equivalence is proved</td></tr>
+      <tr><td>Parallelism over k-points</td><td class="st"><span class="tag st-impl">Implemented</span></td><td>Threads rather than MPI; the protocol is model-checked (T2), results are bitwise identical across thread counts</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3 style="margin-top:28px">M1 · 1D solvers, occupation and k-points</h3>
+  <div class="tbl"><table class="feat">
+    <thead><tr><th>Feature</th><th>Status</th><th>What is certified</th></tr></thead>
+    <tbody>
+      <tr><td>Gaussian, Methfessel–Paxton, Marzari–Vanderbilt smearing</td><td class="st"><span class="tag st-align">Agrees</span><br><span class="tag st-done" style="margin-top:4px">Gaussian done</span></td><td>Gaussian: free energy, entropy and energy. MP and MV occupations can exceed 1, so there is no variational principle; instead the checker proves that the discrete SCF equations have exactly one solution near the computed one, bounds its chemical potential, and encloses its energy and free energy (free-energy interval about 5×10<sup>−14</sup> wide). DFTK’s Fermi level, energy and free energy all fall inside the Lean intervals. Missing: higher-order MP.</td></tr>
+      <tr><td>Monkhorst–Pack grids, shifts, time-reversal reduction</td><td class="st"><span class="tag st-done">Done</span></td><td>Every grid without the zone boundary is certified; DFTK’s energies lie inside the Lean intervals</td></tr>
+      <tr><td>Bands and DOS aligned with DFTK</td><td class="st"><span class="tag st-align">Agrees</span></td><td>As in M0</td></tr>
+      <tr><td>Grid-based Hamiltonian action, LOBPCG, preconditioning</td><td class="st"><span class="tag st-todo">Not started</span></td><td>Alias-free grid action is already proved</td></tr>
+      <tr><td>Adaptive band count and diagonalisation tolerance</td><td class="st"><span class="tag st-todo">Not started</span></td><td></td></tr>
+      <tr><td>LDOS, dielectric and χ<sub>0</sub> mixing; potential mixing</td><td class="st"><span class="tag st-todo">Not started</span></td><td></td></tr>
+      <tr><td>Newton’s method, direct minimisation</td><td class="st"><span class="tag st-todo">Not started</span></td><td></td></tr>
+    </tbody>
+  </table></div>
+
+  <details class="more"><summary>Planned: M2–M6 (30 items, none started)</summary>
+    <h4 style="margin-top:14px">M2 · 1D physics terms</h4>
+    <ul class="planned"><li>LDA exchange-correlation (energy no longer convex; needs local uniqueness and a posteriori estimates)</li><li>Collinear spin (LSDA), magnetic term</li><li>Local nonlinearity (Gross–Pitaevskii)</li><li>Exact exchange (Hartree–Fock, hybrids)</li><li>Atoms and pseudopotentials: local and nonlocal parts, Ewald, correction terms</li><li>Pairwise interatomic potentials</li><li>DFT+U</li></ul>
+    <h4>M3 · 1D post-processing and response</h4>
+    <ul class="planned"><li>Forces</li><li>Geometry optimisation</li><li>Stresses</li><li>Response: χ<sub>0</sub>, Hessian, DFPT</li><li>Polarisability</li><li>Phonons</li><li>Elastic constants</li><li>A posteriori error estimates and refinement</li><li>Currents</li></ul>
+    <h4>M4 · <i class="v">d</i> dimensions</h4>
+    <ul class="planned"><li>Lean model generalised to <i class="v">d</i>-dimensional lattices</li><li>2D/3D plane waves with FFTW</li><li>Arbitrary lattices, atomic structures, symmetry</li><li>HGH and UPF pseudopotentials</li><li>3D Ewald and pseudopotential correction</li><li>Anyons (2D)</li><li>DFTK examples: silicon, graphene, GaAs surface, Cohen–Bergstresser</li></ul>
+    <h4>M5 · full 3D</h4>
+    <ul class="planned"><li>GGA and meta-GGA</li><li>3D forces, stresses, phonons, elastic constants</li><li>Exact exchange (ACE)</li><li>MPI k-point parallelism, bitwise identical on 1–64 processes</li></ul>
+    <h4>M6 · infrastructure (last; may be trimmed)</h4>
+    <ul class="planned"><li>GPU</li><li>Arbitrary floating-point types, automatic differentiation</li><li>Wannier90, VTK, JSON and plotting interfaces</li></ul>
+  </details>
+</section>
+
+<section id="outputs">
+  <p class="sec-no">03</p>
+  <h2>What a certified run reports today</h2>
+  <div class="card"><h3>Rigorous intervals for</h3>
+    <ul style="padding-left:1.1em;margin:8px 0 0;font-size:15px">
+        <li>the discrete ground-state energy, and the truncation limit with a bound on the discretisation error</li>
+        <li>the energy under the true Gaussian potential, Fourier tail included</li>
+        <li>the ground-state density (Coulomb norm and pointwise) and the Hartree potential</li>
+        <li>every eigenvalue of the ground-state Hamiltonian, and the gap</li>
+        <li>kinetic, external and Hartree energy components</li>
+        <li>band energies along a path and density-of-states values</li>
+        <li>free energy, entropy and energy at finite temperature</li>
+        <li>for MP/MV smearing: a locally unique SCF solution, its chemical potential, energy and free energy</li>
+        <li>per-cell values for k-point runs, through the equivalent supercell</li>
+    </ul></div>
+</section>
+
+<section id="evidence">
+  <p class="sec-no">04</p>
+  <h2>Cross-checks and supporting evidence</h2>
+  <div class="prose"><p>Benchmarks do not raise a tier, but they catch misunderstandings: a Lean interval that excludes an independent reference value would reveal a wrong model.</p></div>
+  <ul class="checks">
+    <li><span>DFT benchmark suite, including cross-checks with DFTK.jl</span><b>110 / 110 pass</b></li>
+    <li><span>Energies (free energies) against DFTK.jl on the same discrete problem</span><b>≤ 5×10⁻¹⁵</b></li>
+    <li><span>All eigenvalues and energy components against DFTK.jl</span><b>≤ 10⁻¹²</b></li>
+    <li><span>DFTK’s Gaussian free energy, and its MP/MV Fermi level, energy and free energy</span><b>inside the Lean intervals</b></li>
+    <li><span>Reports with 1, 2, 4 and 7 threads</span><b>bitwise identical</b></li>
+    <li><span>Trace validation: runs ending converged, gap closed, max iterations, certificate failed</span><b>all accepted</b></li>
+    <li><span>Trace validation: tampered traces (claimed convergence without a certificate, a dropped record, wrong limit)</span><b>all rejected</b></li>
+    <li><span>Mutation tests on the SCF controller spec (remove the certificate check or the iteration cap)</span><b>caught by TLC</b></li>
+  </ul>
+</section>
+
+<section id="gaps">
+  <p class="sec-no">05</p>
+  <h2>Open gaps</h2>
+  <div class="prose"><p>An output without a Lean theorem is unfinished. These are the ones we know about, listed rather than hidden.</p></div>
+  <ul class="gaps">
+    <li><strong>k-point sums versus the infinite crystal</strong>Each k-point run is certified for its own discrete problem, but the error of the k-point sum relative to the infinite crystal has no bound yet; k-point energies are not variational.</li>
+    <li><strong>Grids containing the Brillouin-zone boundary</strong>No certificate; DFTK’s treatment there is also a different discrete problem, so neither side is compared.</li>
+    <li><strong>Higher-order Methfessel–Paxton, and scaling of SCF-solution certificates</strong>Checking time grows roughly with the fourth power of the supercell size; for gapped systems with the chemical potential mid-gap the SCF equations are ill-conditioned and the certificate honestly fails; uniqueness is only local.</li>
+    <li><strong>Discretisation error at finite temperature</strong>Certified at zero temperature only.</li>
+    <li><strong>Truncation limit equals the continuum energy</strong>Not yet proved.</li>
+    <li><strong>Density, eigenvalues, bands and DOS for finite-temperature and k-point runs</strong>Certified for zero-temperature Γ-point runs only.</li>
+    <li><strong>Code-level proof of the interval arithmetic</strong>The Lean model and the C code agree by review and differential tests, not by proof.</li>
+  </ul>
+</section>
+
+</main>
+</div>
+
+<footer><div class="in">
+  <span>Formal in Silico · status snapshot 1 October 2026</span>
+  <span><a href="./">Programme</a> · <a href="progress.html">Progress</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="zh/dft.html" hreflang="zh-CN">中文版</a></span>
+</div></footer>
+</body>
+</html>

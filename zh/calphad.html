@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Formal in Silico · mini-CALPHAD</title>
+<meta name="description" content="mini-CALPHAD：读 TDB 数据库求二元相平衡，Lean 证书针对真正的全局平衡，对照 pycalphad（目标 G3）。">
+<link rel="alternate" hreflang="en" href="../calphad.html">
+<link rel="alternate" hreflang="zh-CN" href="calphad.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@600;700;900&display=swap">
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/site.js"></script>
+<script src="../assets/chart.js"></script>
+</head>
+<body>
+
+<header class="bar"><div class="bar-in">
+  <a class="brand" href="./">Formal in Silico</a>
+  <nav class="nav" aria-label="站点">
+    <a href="./">纲领</a>
+    <a href="progress.html">进度</a>
+    <span class="sep" aria-hidden="true"></span>
+    <a class="dom" href="dft.html">DFT</a>
+    <a class="dom" href="fem.html">FEM</a>
+    <a class="dom" href="md.html">MD</a>
+    <a class="dom" href="calphad.html" aria-current="page">CALPHAD</a>
+    <a class="lang" href="../calphad.html" hreflang="en" lang="en">EN</a>
+  </nav>
+  <button class="theme" type="button" aria-label="切换浅色或深色主题"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zm0 1.5v11a5.5 5.5 0 0 1 0-11z"/></svg></button>
+</div></header>
+
+<div class="hero small"><div class="hero-in">
+  <nav class="domnav" aria-label="领域"><a href="progress.html">← 进度</a><a href="dft.html">mini-DFT</a><a href="fem.html">mini-FEM</a><a href="md.html">mini-MD</a><a href="calphad.html" aria-current="page">mini-CALPHAD</a></nav>
+  <p class="eyebrow">领域 · 目标 G3 · 现状快照 2026-10-01</p>
+  <h1>mini-CALPHAD</h1>
+  <p class="lead">二元合金的相平衡，读取与 pycalphad 相同的 TDB 热力学数据库。Lean 检查器认证的是数据库模型<b>真正的全局平衡</b>——在所有可能的相组合中 Gibbs 能最低者——而不只是驱动碰巧找到的解。目标 G3 设定于 2026-10-01：与 pycalphad 0.11.1 功能对齐。</p>
+  <div class="stats">
+    <div class="stat"><b>4</b><span>条命题登记在可信账本中：T4 1 条，T3 3 条</span></div>
+    <div class="stat"><b>8 / 22</b><span>项 pycalphad 对齐功能完成；C0（二元点平衡）全部完成</span></div>
+    <div class="stat"><b>17 / 17</b><span>个 pycalphad 平衡落在 Lean 的区间与窗口内</span></div>
+    <div class="stat"><b>3</b><span>个二元体系进入基准：Al–Zn、Pb–Sn、Cu–Mg</span></div>
+  </div>
+</div></div>
+
+<div class="wrap">
+<nav class="toc" aria-label="目录">
+  <p>目录</p>
+  <ol>
+    <li><a href="#model"><span>01</span>模型</a></li>
+    <li><a href="#certified"><span>02</span>证书给出什么</a></li>
+    <li><a href="#example"><span>03</span>算例</a></li>
+    <li><a href="#method"><span>04</span>检查器如何工作</a></li>
+    <li><a href="#claims"><span>05</span>命题</a></li>
+    <li><a href="#g3"><span>06</span>G3 · pycalphad</a></li>
+    <li><a href="#evidence"><span>07</span>交叉校验</a></li>
+    <li><a href="#gaps"><span>08</span>缺口</a></li>
+  </ol>
+</nav>
+<main>
+
+<section id="model">
+  <p class="sec-no">01</p>
+  <h2>模型</h2>
+  <div class="tbl"><table><tbody>
+    <tr><td class="l">体系</td><td>二元 A–B，温度与压力固定；成分 <i class="v">x</i> = <i class="v">x</i><sub>B</sub> ∈ [0, 1]。每个相给出每摩尔原子的 Gibbs 能 <i class="v">G</i>(<i class="v">x</i>)，与 pycalphad 的 <code>GM</code> 相同。</td></tr>
+    <tr><td class="l">溶体</td><td>一个混合亚点阵，其余亚点阵只有空位：理想混合 <i class="v">RT</i>(<i class="v">x</i> log <i class="v">x</i> + (1 − <i class="v">x</i>) log(1 − <i class="v">x</i>)) 加 Redlich–Kister 过剩项 <i class="v">x</i>(1 − <i class="v">x</i>) Σ <i class="v">L<sub>k</sub></i>(1 − 2<i class="v">x</i>)<sup><i class="v">k</i></sup>。</td></tr>
+    <tr><td class="l">化合物</td><td>化学计量化合物：只在一个精确成分（例如 2/3）处存在。</td></tr>
+    <tr><td class="l">参数</td><td><i class="v">T</i> 的分段 SGTE 表达式。驱动选出温度区间、展开函数引用；每一项是 <i class="v">c</i>·<i class="v">T</i><sup><i class="v">n</i></sup> 或 <i class="v">c</i>·<i class="v">T</i><sup><i class="v">n</i></sup> log <i class="v">T</i>，<i class="v">c</i> 是 TDB 中十进制串的精确乘积。</td></tr>
+    <tr><td class="l">暂不支持</td><td>磁性、有序–无序、间隙相，多个混合亚点阵，三个以上组元。这些相被跳过并在报告中列出；结论只对参与计算的相成立。</td></tr>
+  </tbody></table></div>
+  <p class="note">证书认证的是证书中写明的精确模型。把 TDB 文件翻译成这个模型由不受信任的驱动完成（假设 A-CAL-01）；基准把每个相的 <i class="v">G</i>(<i class="v">x</i>) 与 pycalphad 比较，相对误差 10⁻¹²。</p>
+</section>
+
+<section id="certified">
+  <p class="sec-no">02</p>
+  <h2>证书给出什么</h2>
+  <div class="prose">
+    <p>平衡 Gibbs 能 <i class="v">G</i>*(<i class="v">x</i>₀) 是<b>所有可行配置</b>总 Gibbs 能的下确界：可行配置是任意有限个（相、成分、摩尔分数），总成分等于 <i class="v">x</i>₀。几何上，它是各相曲线的下凸包在 <i class="v">x</i>₀ 处的值。</p>
+    <p><b>平衡</b>是一个可行配置加一条公切线 ℓ(<i class="v">y</i>) = <i class="v">μ</i><sub>A</sub>(1 − <i class="v">y</i>) + <i class="v">μ</i><sub>B</sub><i class="v">y</i>：切线在所有相的下方，并且经过这个配置；<i class="v">μ</i><sub>A</sub>、<i class="v">μ</i><sub>B</sub> 是化学势。Lean 证明了平衡使总 Gibbs 能最小（CAL-C02），并且平衡总是存在（CAL-C03）。</p>
+    <p>Gibbs 能最小化程序可能停在局部极小，漏掉一个相或一个混溶隙。检查器的结论针对<i>任意</i>可行配置与<i>任意</i>平衡，所以这类错误只会让检查失败或区间变宽，不会给出错误的结论。</p>
+  </div>
+  <div class="tbl"><table class="outs">
+    <thead><tr><th>行</th><th>Lean 定理保证的内容</th></tr></thead>
+    <tbody>
+      <tr><td>G_OK lo hi</td><td><i class="v">G</i>*(<i class="v">x</i>₀) ∈ [lo, hi]：任意可行配置的总 Gibbs 能 ≥ lo，证书中的配置 ≤ hi。</td></tr>
+      <tr><td>MU_OK A|B lo hi</td><td>任意平衡的化学势都在这个区间内。</td></tr>
+      <tr><td>WINDOW 相 a b</td><td>任意平衡中，该相的每个成分都落在它的某个窗口内。</td></tr>
+      <tr><td>ABSENT 相</td><td>该相不出现在任何平衡中。</td></tr>
+      <tr><td>EXISTS</td><td>平衡存在，所以上面的结论不是空话。</td></tr>
+      <tr><td>EPS、KAPPA、FRAC</td><td>诊断量：驱动的切线在各相下方多远，窗口判据所用的切线误差界，证书自己的配置。</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="example">
+  <p class="sec-no">03</p>
+  <h2>算例：Al–Zn 的混溶隙</h2>
+  <div class="prose"><p>Al–Zn，600 K，<i class="v">x</i>(Zn) = 0.3，使用 pycalphad 自带的 Mey（1993）数据库。在这个温度下 fcc 溶体分成两相：平衡是含锌约 22% 与 49% 的两个 fcc 相。检查器证明 LIQUID 与 HCP_A3 不出现在任何平衡中，把任意平衡中 fcc 的成分限制在两个宽不超过 3×10⁻⁷ 的窗口内，并把 <i class="v">G</i>* 与两个化学势确定到输出的最后一位，10⁻⁹ J/mol。连同检查，整个运行约 4 秒。</p></div>
+  <div class="report">
+    <div class="cmd">build/mini-calphad --tdb alzn_mey.tdb --comps AL,ZN --T 600 --x 0.3 --certify run.cert --verify</div>
+<pre><span class="c">…</span>
+Lean  G_OK <b>-22985.126672267 -22985.126672266</b>
+Lean  EPS -0.000000000002425
+Lean  FRAC FCC_A1 0.220126286673 0.705704921583
+Lean  FRAC FCC_A1 0.491533181263 0.294295078416
+Lean  MU_OK A <b>-20590.725231961 -20590.725231960</b>
+Lean  MU_OK B <b>-28572.063366314 -28572.063366313</b>
+Lean  KAPPA 0.000000000022
+Lean  ABSENT <b>LIQUID</b>
+Lean  WINDOW FCC_A1 <b>0.220126163802 0.220126409545</b>
+Lean  WINDOW FCC_A1 <b>0.491533032729 0.491533329798</b>
+Lean  ABSENT <b>HCP_A3</b>
+Lean  EXISTS</pre>
+  </div>
+  <figure class="chart">
+    <h4>Al–Zn，600 K：fcc 相与有证书的公切线</h4>
+    <p class="cap">FCC_A1 的 Gibbs 能减去公切线 ℓ，单位 J/mol。曲线两次接触 ℓ（混溶隙），圆点是 Lean 给出的两个窗口，各宽不超过 3×10⁻⁷。LIQUID 与 HCP_A3 离 ℓ 最近处也分别高出约 900 J/mol 与 380 J/mol，远在图外；检查器证明两者 ABSENT。曲线用 pycalphad 计算，仅作示意；切线与窗口来自 Lean 的报告。</p>
+    <div class="key"></div>
+    <div class="plot"></div>
+    <details><summary>查看数据</summary><div class="tablehost"></div></details>
+    <script type="application/json">{"alt": "图：Al–Zn 在 600 K 时 fcc 相的 Gibbs 能高出公切线的量。曲线在 x = 0.2201 与 x = 0.4915 处与切线相切，两者之间最高约 5.6 J/mol。", "xname": "x(Zn)", "x": {"min": 0.12, "max": 0.62, "ticks": [0.2, 0.3, 0.4, 0.5, 0.6], "label": "x(Zn)", "fmt": "f2", "tfmt": "f1"}, "y": {"log": false, "min": -7, "max": 40, "ticks": [0, 10, 20, 30, 40], "fmt": "f2", "tfmt": "f0"}, "series": [{"name": "FCC_A1：G − ℓ，J/mol（pycalphad）", "c": 1, "pts": [[0.12, 33.63], [0.13, 25.12], [0.14, 18.31], [0.15, 12.93], [0.16, 8.75], [0.17, 5.6], [0.18, 3.3], [0.19, 1.71], [0.2, 0.7], [0.21, 0.16], [0.22, 0.0], [0.23, 0.13], [0.24, 0.48], [0.25, 0.98], [0.26, 1.58], [0.27, 2.23], [0.28, 2.89], [0.29, 3.52], [0.3, 4.11], [0.31, 4.62], [0.32, 5.03], [0.33, 5.34], [0.34, 5.54], [0.35, 5.61], [0.36, 5.57], [0.37, 5.4], [0.38, 5.13], [0.39, 4.76], [0.4, 4.3], [0.41, 3.77], [0.42, 3.19], [0.43, 2.58], [0.44, 1.97], [0.45, 1.39], [0.46, 0.86], [0.47, 0.43], [0.48, 0.13], [0.49, 0.0], [0.5, 0.08], [0.51, 0.42], [0.52, 1.06], [0.53, 2.06], [0.54, 3.46], [0.55, 5.32], [0.56, 7.71], [0.57, 10.68], [0.58, 14.3], [0.59, 18.63], [0.6, 23.74], [0.61, 29.71], [0.62, 36.61]]}], "hlines": [{"y": 0, "label": "有证书的切线 ℓ", "wide": true}], "vlines": [{"x": 0.3, "label": "x₀ = 0.3", "side": "right", "dy": 0}], "marks": [{"x": 0.220126, "y": 0, "c": 2, "label": "WINDOW 0.2201262…", "short": "0.2201", "dy": 19}, {"x": 0.491533, "y": 0, "c": 2, "label": "WINDOW 0.4915332…", "short": "0.4915", "dy": 19}], "keyref": ["有证书的切线 ℓ（Lean）"]}</script>
+  </figure>
+</section>
+
+<section id="method">
+  <p class="sec-no">04</p>
+  <h2>检查器如何工作</h2>
+  <div class="prose"><p>全程用精确有理数。驱动只提供候选切线、候选配置与探测点。</p></div>
+  <ol class="chain">
+    <li><div class="layer"><span class="no">1</span><h4>参数区间</h4><p>log <i class="v">T</i> 用与 mini-DFT 共用的有理级数上下界包住；每个溶体相写成有理多项式加理想混合项，舍入误差一致有界。</p></div></li>
+    <li><div class="layer"><span class="no">2</span><h4>所有相下方的分支定界</h4><p>在每个区间上，<i class="v">G</i> − ℓ 的下界由多项式的精确 Taylor 系数、混合项的二次下界（CAL-C01）与二次函数的精确最小值给出。结果 <i class="v">e</i> ≤ 0 从下方界住所有相。</p></div></li>
+    <li><div class="layer"><span class="no">3</span><h4><i class="v">G</i>* 的区间</h4><p>任意可行配置的总 Gibbs 能 ≥ ℓ(<i class="v">x</i>₀) + <i class="v">e</i>（CAL-C02）；证书中的配置（摩尔分数按杠杆定律）给出上端。</p></div></li>
+    <li><div class="layer"><span class="no">4</span><h4>化学势</h4><p>任意平衡的切线在 <i class="v">x</i>₀ 处落在 <i class="v">G</i>* 的区间内，并且在两侧探测点处不高于各相；由此确定斜率，进而得到 <i class="v">μ</i><sub>A</sub>、<i class="v">μ</i><sub>B</sub>。</p></div></li>
+    <li><div class="layer"><span class="no">5</span><h4>成分窗口</h4><p>任意平衡的切线与证书的切线相差不超过 <i class="v">κ</i>，所以出现的相满足 <i class="v">G</i> − ℓ ≤ <i class="v">κ</i>。第二遍分支定界排除下界大于 <i class="v">κ</i> 的区间，剩下的就是窗口。</p></div></li>
+  </ol>
+  <p class="note">二分规则只影响速度与精度。可靠性只依赖证明中检查的两件事：被排除的区间下界都高于阈值，区间覆盖 [0, 1]。</p>
+</section>
+
+<section id="claims">
+  <p class="sec-no">05</p>
+  <h2>可信账本中的命题</h2>
+  <div class="sbar big" role="img" aria-label="4 条命题：T4 1 条，T3 3 条">
+    <i class="sw-t4" style="flex:1"></i><i class="sw-t3" style="flex:3"></i>
+  </div>
+  <div class="legend">
+    <span><i class="sw-t4"></i>T4 端到端 · 1</span>
+    <span><i class="sw-t3"></i>T3 机器证明 · 3</span>
+  </div>
+  <div class="tbl"><table>
+    <thead><tr><th>编号</th><th>命题</th><th>等级</th></tr></thead>
+    <tbody>
+      <tr><td class="l">CAL-C01</td><td>理想混合项 <i class="v">S</i>(<i class="v">x</i>) 在任意区间上的二次下界</td><td class="st"><span class="tag m">T3</span></td></tr>
+      <tr><td class="l">CAL-C02</td><td>平衡使总 Gibbs 能最小；出现的每个相都接触切线；<i class="v">G</i> − ℓ 的下界给出任意可行配置的下界</td><td class="st"><span class="tag m">T3</span></td></tr>
+      <tr><td class="l">CAL-C03</td><td>0 &lt; <i class="v">x</i>₀ &lt; 1 且至少有一个溶体相时，平衡存在</td><td class="st"><span class="tag m">T3</span></td></tr>
+      <tr><td class="l">CAL-B01</td><td>检查器可靠：<i class="v">G</i>* 的区间；对任意平衡，化学势区间、成分窗口与不出现的相；平衡存在</td><td class="st"><span class="tag s">T4</span></td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="g3">
+  <p class="sec-no">06</p>
+  <h2>目标 G3：带形式化证明的 CALPHAD，对照 pycalphad</h2>
+  <div class="prose"><p>参照 pycalphad 0.11.1，在同一数据库、同一组相上比较。完成标准与 G1、G2 相同，并且证书的结论必须针对数据库模型<b>真正的全局平衡</b>。顺序：先把二元体系做全（C0–C1），分支定界只在一个成分变量上进行；再做多元与亚点阵模型（C2），分支定界在单纯形的乘积上进行；最后是派生计算（C3）。</p></div>
+  <div class="legend">
+    <span><i class="sw-done"></i>完成：实现、一致、有证书</span>
+    <span><i class="sw-todo"></i>未开始</span>
+  </div>
+  <div class="ms">
+    <div class="row"><span class="code">C0</span><div>二元点平衡</div><div class="barcell"><div class="sbar"><i class="sw-done" style="flex:8"></i></div></div><span class="n">8 / 8</span></div>
+    <div class="row"><span class="code">C1</span><div>二元扩展：相图、不变反应、磁性</div><div class="barcell"><div class="sbar"><i class="sw-todo" style="flex:7"></i></div></div><span class="n">0 / 7</span></div>
+    <div class="row"><span class="code">C2</span><div>多元与亚点阵模型</div><div class="barcell"><div class="sbar"><i class="sw-todo" style="flex:4"></i></div></div><span class="n">0 / 4</span></div>
+    <div class="row"><span class="code">C3</span><div>Scheil、参数拟合、其他模型</div><div class="barcell"><div class="sbar"><i class="sw-todo" style="flex:3"></i></div></div><span class="n">0 / 3</span></div>
+  </div>
+
+  <h3 style="margin-top:32px">C0 · 二元点平衡（已全部完成）</h3>
+  <div class="tbl"><table class="feat">
+    <thead><tr><th>功能</th><th>pycalphad 对应</th><th>状态</th><th>证书</th></tr></thead>
+    <tbody>
+      <tr><td>TDB 读取：函数、分段、引用、参数</td><td><code>Database</code></td><td class="st"><span class="tag st-done">完成</span></td><td>不在可信链内（A-CAL-01）；各相 <i class="v">G</i>(<i class="v">x</i>) 与 pycalphad 的 <code>calculate</code> 逐点一致</td></tr>
+      <tr><td>代换溶体：理想混合 + Redlich–Kister</td><td><code>Model</code>（GM）</td><td class="st"><span class="tag st-done">完成</span></td><td>混合项的二次下界 CAL-C01；检查器 CAL-B01</td></tr>
+      <tr><td>化学计量化合物</td><td><code>Model</code></td><td class="st"><span class="tag st-done">完成</span></td><td>成分是精确分数，例如 2/3</td></tr>
+      <tr><td>点平衡：平衡相、成分、摩尔分数</td><td><code>equilibrium</code>（Phase、X、NP）</td><td class="st"><span class="tag st-done">完成</span></td><td>对任意平衡给出 <code>WINDOW</code> 与 <code>ABSENT</code>；证书的摩尔分数按杠杆定律精确给出</td></tr>
+      <tr><td>平衡 Gibbs 能</td><td><code>equilibrium</code>（GM）</td><td class="st"><span class="tag st-done">完成</span></td><td><code>G_OK</code>：对任意可行配置成立的全局下界</td></tr>
+      <tr><td>化学势</td><td><code>equilibrium</code>（MU）</td><td class="st"><span class="tag st-done">完成</span></td><td><code>MU_OK</code>，对任意平衡成立</td></tr>
+      <tr><td>混溶隙（同一相的两个成分）</td><td><code>equilibrium</code></td><td class="st"><span class="tag st-done">完成</span></td><td>两个窗口分别包住两个成分</td></tr>
+      <tr><td>平衡的存在性</td><td>—</td><td class="st"><span class="tag st-done">完成</span></td><td>CAL-C03：<code>EXISTS</code>，“对任意平衡”的结论因此不是空话</td></tr>
+    </tbody>
+  </table></div>
+
+  <details class="more"><summary>计划中：C1–C3（14 项，均未开始）</summary>
+    <h4 style="margin-top:14px">C1 · 二元扩展</h4>
+    <ul class="planned"><li>二元相图：每个网格点一份证书，相边界由窗口给出</li><li>不变反应（共晶、包晶）温度：证明两条公切线在 [<i class="v">T</i>₁, <i class="v">T</i>₂] 内交换</li><li>磁性贡献（Inden–Hillert–Jarl）</li><li>单相区更窄的化学势区间</li><li>热力学性质 <i class="v">H</i>、<i class="v">S</i>、<i class="v">C<sub>p</sub></i></li><li>驱动力</li><li>间隙溶体</li></ul>
+    <h4>C2 · 多元与亚点阵模型</h4>
+    <ul class="planned"><li>三元及多元溶体（Muggianu 外推、三元参数）</li><li>多个亚点阵（化合物能量形式）</li><li>有序–无序</li><li>以化学势或活度为条件</li></ul>
+    <h4>C3 · 更多计算</h4>
+    <ul class="planned"><li>Scheil 凝固</li><li>参数拟合（ESPEI）：拟合本身不受信任，结论只依赖最终数据库</li><li>离子液体与准化学模型</li></ul>
+  </details>
+</section>
+
+<section id="evidence">
+  <p class="sec-no">07</p>
+  <h2>交叉校验与辅助证据</h2>
+  <ul class="checks">
+    <li><span>每个相在 <i class="v">x</i> = <i class="v">k</i>/20 处的 <i class="v">G</i>(<i class="v">x</i>)，对照 pycalphad 的 <code>calculate</code></span><b>相对误差 ≤ 10⁻¹²</b></li>
+    <li><span>Al–Zn（Mey 1993）、Pb–Sn（Ngai–Chang 1981）、Cu–Mg 共 17 个平衡，对照 pycalphad 的 <code>equilibrium</code>：成分 / Gibbs 能</span><b>&lt; 10⁻⁶ / &lt; 10⁻⁵ J/mol</b></li>
+    <li><span>pycalphad 的 <code>GM</code>、<code>MU</code> 与平衡相成分</span><b>落在 Lean 的区间与窗口内</b></li>
+    <li><span>篡改证书</span><b>检查失败，或结论仍然正确</b></li>
+    <li><span>每个平衡的检查时间</span><b>0.1 – 6 秒</b></li>
+    <li><span>AddressSanitizer 与 UBSan 下的驱动，包括读取 pycalphad 的其他测试数据库</span><b>无报错</b></li>
+  </ul>
+</section>
+
+<section id="gaps">
+  <p class="sec-no">08</p>
+  <h2>缺口</h2>
+  <ul class="gaps">
+    <li><strong>从 TDB 文件到被认证的模型</strong>选温度区间、展开函数引用、判断相的类型都由驱动完成，不在可信链内（A-CAL-01）；基准把结果与 pycalphad 对照。</li>
+    <li><strong>单相区的化学势</strong>区间宽约 √(<i class="v">G</i>″·|EPS|)，即 10⁻⁴ 到 10⁻³ J/mol，而两相区约 10⁻⁹ J/mol。收紧需要 <i class="v">G</i> 在 <i class="v">x</i>₀ 处的导数区间（C1 的一项）。</li>
+    <li><strong>磁性、有序–无序、间隙、亚点阵与多元模型</strong>Lean 中尚未定义。驱动跳过这些相并列出；结论只对参与计算的相成立。</li>
+    <li><strong>C 驱动本身</strong>网格搜索与 Newton 迭代不受信任（T0），报告中如实标明；所有结果都经过检查器。</li>
+  </ul>
+</section>
+
+</main>
+</div>
+
+<footer><div class="in">
+  <span>Formal in Silico · 现状快照 2026-10-01</span>
+  <span><a href="./">纲领</a> · <a href="progress.html">进度</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="../calphad.html" hreflang="en">English</a></span>
+</div></footer>
+</body>
+</html>

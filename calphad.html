@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Formal in Silico — mini-CALPHAD</title>
+<meta name="description" content="mini-CALPHAD: binary phase equilibria from TDB databases with Lean certificates for the true global equilibrium, cross-checked against pycalphad (goal G3).">
+<link rel="alternate" hreflang="en" href="calphad.html">
+<link rel="alternate" hreflang="zh-CN" href="zh/calphad.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700;8..60,800&display=swap">
+<link rel="stylesheet" href="assets/style.css">
+<script src="assets/site.js"></script>
+<script src="assets/chart.js"></script>
+</head>
+<body>
+
+<header class="bar"><div class="bar-in">
+  <a class="brand" href="./">Formal in Silico</a>
+  <nav class="nav" aria-label="Site">
+    <a href="./">Programme</a>
+    <a href="progress.html">Progress</a>
+    <span class="sep" aria-hidden="true"></span>
+    <a class="dom" href="dft.html">DFT</a>
+    <a class="dom" href="fem.html">FEM</a>
+    <a class="dom" href="md.html">MD</a>
+    <a class="dom" href="calphad.html" aria-current="page">CALPHAD</a>
+    <a class="lang" href="zh/calphad.html" hreflang="zh-CN" lang="zh-CN">中文</a>
+  </nav>
+  <button class="theme" type="button" aria-label="Toggle light or dark theme"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zm0 1.5v11a5.5 5.5 0 0 1 0-11z"/></svg></button>
+</div></header>
+
+<div class="hero small"><div class="hero-in">
+  <nav class="domnav" aria-label="Domains"><a href="progress.html">← Progress</a><a href="dft.html">mini-DFT</a><a href="fem.html">mini-FEM</a><a href="md.html">mini-MD</a><a href="calphad.html" aria-current="page">mini-CALPHAD</a></nav>
+  <p class="eyebrow">Domain · goal G3 · status snapshot 1 October 2026</p>
+  <h1>mini-CALPHAD</h1>
+  <p class="lead">Phase equilibria of binary alloys, read from the same TDB thermodynamic databases that pycalphad uses. The Lean checker certifies the <b>true global equilibrium</b> of the database model — the lowest Gibbs energy over every possible combination of phases — not only the solution the driver happened to find. Goal G3, set on 1 October 2026, is feature parity with pycalphad 0.11.1.</p>
+  <div class="stats">
+    <div class="stat"><b>4</b><span>claims in the trust ledger: 1 at T4, 3 at T3</span></div>
+    <div class="stat"><b>8 / 22</b><span>pycalphad parity items done; C0, the binary point equilibrium, is complete</span></div>
+    <div class="stat"><b>17 / 17</b><span>pycalphad equilibria inside the Lean intervals and windows</span></div>
+    <div class="stat"><b>3</b><span>binary systems in the benchmark: Al–Zn, Pb–Sn, Cu–Mg</span></div>
+  </div>
+</div></div>
+
+<div class="wrap">
+<nav class="toc" aria-label="Contents">
+  <p>Contents</p>
+  <ol>
+    <li><a href="#model"><span>01</span>The model</a></li>
+    <li><a href="#certified"><span>02</span>What is certified</a></li>
+    <li><a href="#example"><span>03</span>Worked example</a></li>
+    <li><a href="#method"><span>04</span>How it works</a></li>
+    <li><a href="#claims"><span>05</span>Claims</a></li>
+    <li><a href="#g3"><span>06</span>G3 · pycalphad</a></li>
+    <li><a href="#evidence"><span>07</span>Cross-checks</a></li>
+    <li><a href="#gaps"><span>08</span>Open gaps</a></li>
+  </ol>
+</nav>
+<main>
+
+<section id="model">
+  <p class="sec-no">01</p>
+  <h2>The model</h2>
+  <div class="tbl"><table><tbody>
+    <tr><td class="l">System</td><td>Binary A–B at fixed temperature and pressure; composition <i class="v">x</i> = <i class="v">x</i><sub>B</sub> ∈ [0, 1]. Each phase has a Gibbs energy <i class="v">G</i>(<i class="v">x</i>) per mole of atoms, as pycalphad’s <code>GM</code>.</td></tr>
+    <tr><td class="l">Solutions</td><td>One mixing sublattice, the others vacancies only: ideal mixing <i class="v">RT</i>(<i class="v">x</i> log <i class="v">x</i> + (1 − <i class="v">x</i>) log(1 − <i class="v">x</i>)) plus a Redlich–Kister excess <i class="v">x</i>(1 − <i class="v">x</i>) Σ <i class="v">L<sub>k</sub></i>(1 − 2<i class="v">x</i>)<sup><i class="v">k</i></sup>.</td></tr>
+    <tr><td class="l">Compounds</td><td>Stoichiometric: they exist at one exact composition, such as 2/3.</td></tr>
+    <tr><td class="l">Parameters</td><td>Piecewise SGTE expressions in <i class="v">T</i>. The driver picks the range and expands function references; each term is <i class="v">c</i>·<i class="v">T</i><sup><i class="v">n</i></sup> or <i class="v">c</i>·<i class="v">T</i><sup><i class="v">n</i></sup> log <i class="v">T</i>, with <i class="v">c</i> the exact product of the TDB’s decimal strings.</td></tr>
+    <tr><td class="l">Not yet</td><td>Magnetic, order–disorder and interstitial phases, several mixing sublattices, more than two components. Such phases are skipped and listed in the report; the conclusions hold for the phases taken into account.</td></tr>
+  </tbody></table></div>
+  <p class="note">The certificate certifies the exact model written in it. Translating the TDB file into that model is done by the untrusted driver (assumption A-CAL-01); the benchmark checks every phase’s <i class="v">G</i>(<i class="v">x</i>) against pycalphad to a relative 10⁻¹².</p>
+</section>
+
+<section id="certified">
+  <p class="sec-no">02</p>
+  <h2>What is certified</h2>
+  <div class="prose">
+    <p>The equilibrium Gibbs energy <i class="v">G</i>*(<i class="v">x</i>₀) is the infimum of the total Gibbs energy over <b>all feasible configurations</b>: any finite collection of phases, compositions and amounts with the right overall composition. Geometrically it is the lower convex hull of all phase curves at <i class="v">x</i>₀.</p>
+    <p>An <b>equilibrium</b> is a feasible configuration together with a common tangent ℓ(<i class="v">y</i>) = <i class="v">μ</i><sub>A</sub>(1 − <i class="v">y</i>) + <i class="v">μ</i><sub>B</sub><i class="v">y</i> that lies below every phase and touches the configuration; <i class="v">μ</i><sub>A</sub> and <i class="v">μ</i><sub>B</sub> are the chemical potentials. Lean proves that equilibria minimise the total Gibbs energy (CAL-C02) and that one always exists (CAL-C03).</p>
+    <p>A Gibbs-energy minimiser can stop in a local minimum, miss a phase or miss a miscibility gap. The checker’s statements are about <i>every</i> feasible configuration and <i>every</i> equilibrium, so such a mistake can only make the check fail or widen the intervals — never produce a wrong statement.</p>
+  </div>
+  <div class="tbl"><table class="outs">
+    <thead><tr><th>Line</th><th>What the Lean theorem guarantees</th></tr></thead>
+    <tbody>
+      <tr><td>G_OK lo hi</td><td><i class="v">G</i>*(<i class="v">x</i>₀) ∈ [lo, hi]: every feasible configuration has total Gibbs energy ≥ lo, and the certificate’s configuration has ≤ hi.</td></tr>
+      <tr><td>MU_OK A|B lo hi</td><td>The chemical potentials of any equilibrium lie in these intervals.</td></tr>
+      <tr><td>WINDOW phase a b</td><td>In any equilibrium, every composition of this phase lies in one of its windows.</td></tr>
+      <tr><td>ABSENT phase</td><td>The phase appears in no equilibrium.</td></tr>
+      <tr><td>EXISTS</td><td>An equilibrium exists, so the statements above are not vacuous.</td></tr>
+      <tr><td>EPS, KAPPA, FRAC</td><td>Diagnostics: how far below the phases the driver’s tangent lies, the tangent error bound used for the windows, and the certificate’s own configuration.</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="example">
+  <p class="sec-no">03</p>
+  <h2>Worked example: a miscibility gap in Al–Zn</h2>
+  <div class="prose"><p>Al–Zn at 600 K and <i class="v">x</i>(Zn) = 0.3, with the Mey (1993) database shipped with pycalphad. At this temperature the fcc solution splits in two: the equilibrium is two fcc phases with about 22% and 49% zinc. The checker proves that LIQUID and HCP_A3 appear in no equilibrium, confines the fcc compositions of every equilibrium to two windows at most 3×10⁻⁷ wide, and pins <i class="v">G</i>* and both chemical potentials to the last printed digit, 10⁻⁹ J/mol. The run, check included, takes about four seconds.</p></div>
+  <div class="report">
+    <div class="cmd">build/mini-calphad --tdb alzn_mey.tdb --comps AL,ZN --T 600 --x 0.3 --certify run.cert --verify</div>
+<pre><span class="c">…</span>
+Lean  G_OK <b>-22985.126672267 -22985.126672266</b>
+Lean  EPS -0.000000000002425
+Lean  FRAC FCC_A1 0.220126286673 0.705704921583
+Lean  FRAC FCC_A1 0.491533181263 0.294295078416
+Lean  MU_OK A <b>-20590.725231961 -20590.725231960</b>
+Lean  MU_OK B <b>-28572.063366314 -28572.063366313</b>
+Lean  KAPPA 0.000000000022
+Lean  ABSENT <b>LIQUID</b>
+Lean  WINDOW FCC_A1 <b>0.220126163802 0.220126409545</b>
+Lean  WINDOW FCC_A1 <b>0.491533032729 0.491533329798</b>
+Lean  ABSENT <b>HCP_A3</b>
+Lean  EXISTS</pre>
+  </div>
+  <figure class="chart">
+    <h4>Al–Zn at 600 K: the fcc phase against the certified tangent</h4>
+    <p class="cap">Gibbs energy of FCC_A1 minus the common tangent ℓ, in J/mol. The curve touches ℓ twice — a miscibility gap — and the dots mark the two Lean windows, each at most 3×10⁻⁷ wide. At their closest, LIQUID is about 900 J/mol and HCP_A3 about 380 J/mol above ℓ, far off this scale; the checker proves both ABSENT. The curve is computed with pycalphad for illustration; the tangent and windows come from the Lean report.</p>
+    <div class="key"></div>
+    <div class="plot"></div>
+    <details><summary>Show the numbers</summary><div class="tablehost"></div></details>
+    <script type="application/json">{"alt": "Chart: the fcc Gibbs energy above the certified common tangent for Al–Zn at 600 K. The curve touches the tangent at x = 0.2201 and x = 0.4915 and rises to about 5.6 J/mol between them.", "xname": "x(Zn)", "x": {"min": 0.12, "max": 0.62, "ticks": [0.2, 0.3, 0.4, 0.5, 0.6], "label": "x(Zn)", "fmt": "f2", "tfmt": "f1"}, "y": {"log": false, "min": -7, "max": 40, "ticks": [0, 10, 20, 30, 40], "fmt": "f2", "tfmt": "f0"}, "series": [{"name": "FCC_A1: G − ℓ, J/mol (pycalphad)", "c": 1, "pts": [[0.12, 33.63], [0.13, 25.12], [0.14, 18.31], [0.15, 12.93], [0.16, 8.75], [0.17, 5.6], [0.18, 3.3], [0.19, 1.71], [0.2, 0.7], [0.21, 0.16], [0.22, 0.0], [0.23, 0.13], [0.24, 0.48], [0.25, 0.98], [0.26, 1.58], [0.27, 2.23], [0.28, 2.89], [0.29, 3.52], [0.3, 4.11], [0.31, 4.62], [0.32, 5.03], [0.33, 5.34], [0.34, 5.54], [0.35, 5.61], [0.36, 5.57], [0.37, 5.4], [0.38, 5.13], [0.39, 4.76], [0.4, 4.3], [0.41, 3.77], [0.42, 3.19], [0.43, 2.58], [0.44, 1.97], [0.45, 1.39], [0.46, 0.86], [0.47, 0.43], [0.48, 0.13], [0.49, 0.0], [0.5, 0.08], [0.51, 0.42], [0.52, 1.06], [0.53, 2.06], [0.54, 3.46], [0.55, 5.32], [0.56, 7.71], [0.57, 10.68], [0.58, 14.3], [0.59, 18.63], [0.6, 23.74], [0.61, 29.71], [0.62, 36.61]]}], "hlines": [{"y": 0, "label": "certified tangent ℓ", "wide": true}], "vlines": [{"x": 0.3, "label": "x₀ = 0.3", "side": "right", "dy": 0}], "marks": [{"x": 0.220126, "y": 0, "c": 2, "label": "WINDOW 0.2201262…", "short": "0.2201", "dy": 19}, {"x": 0.491533, "y": 0, "c": 2, "label": "WINDOW 0.4915332…", "short": "0.4915", "dy": 19}], "keyref": ["certified tangent ℓ (Lean)"]}</script>
+  </figure>
+</section>
+
+<section id="method">
+  <p class="sec-no">04</p>
+  <h2>How the checker works</h2>
+  <div class="prose"><p>Everything is exact rational arithmetic. The driver contributes only a candidate tangent, a candidate configuration and probe points.</p></div>
+  <ol class="chain">
+    <li><div class="layer"><span class="no">1</span><h4>Parameter intervals</h4><p>log <i class="v">T</i> is enclosed by rational series bounds shared with mini-DFT; each solution phase becomes a rational polynomial plus the ideal mixing term, with a uniform rounding error.</p></div></li>
+    <li><div class="layer"><span class="no">2</span><h4>Branch and bound below every phase</h4><p>On each interval, a lower bound for <i class="v">G</i> − ℓ comes from exact Taylor coefficients of the polynomial, the proved quadratic bound on the mixing term (CAL-C01) and the exact minimum of a quadratic. The result <i class="v">e</i> ≤ 0 bounds all phases from below.</p></div></li>
+    <li><div class="layer"><span class="no">3</span><h4>Interval for <i class="v">G</i>*</h4><p>Every feasible configuration has total Gibbs energy ≥ ℓ(<i class="v">x</i>₀) + <i class="v">e</i> (CAL-C02); the certificate’s configuration, with amounts from the lever rule, gives the upper end.</p></div></li>
+    <li><div class="layer"><span class="no">4</span><h4>Chemical potentials</h4><p>Any equilibrium tangent passes through the <i class="v">G</i>* interval at <i class="v">x</i>₀ and stays below the phases at probe points on both sides; that pins its slope, hence <i class="v">μ</i><sub>A</sub> and <i class="v">μ</i><sub>B</sub>.</p></div></li>
+    <li><div class="layer"><span class="no">5</span><h4>Composition windows</h4><p>Any equilibrium tangent is within <i class="v">κ</i> of the certificate’s, so phases present satisfy <i class="v">G</i> − ℓ ≤ <i class="v">κ</i>. A second branch-and-bound pass excludes every interval whose lower bound exceeds <i class="v">κ</i>; what remains are the windows.</p></div></li>
+  </ol>
+  <p class="note">The bisection rule affects only speed and sharpness. Soundness depends only on two facts the proof checks: every excluded interval has a lower bound above the threshold, and the intervals cover [0, 1].</p>
+</section>
+
+<section id="claims">
+  <p class="sec-no">05</p>
+  <h2>Claims in the trust ledger</h2>
+  <div class="sbar big" role="img" aria-label="4 claims: 1 at T4, 3 at T3">
+    <i class="sw-t4" style="flex:1"></i><i class="sw-t3" style="flex:3"></i>
+  </div>
+  <div class="legend">
+    <span><i class="sw-t4"></i>T4 end to end · 1</span>
+    <span><i class="sw-t3"></i>T3 machine proof · 3</span>
+  </div>
+  <div class="tbl"><table>
+    <thead><tr><th>Claim</th><th>Statement</th><th>Tier</th></tr></thead>
+    <tbody>
+      <tr><td class="l">CAL-C01</td><td>Quadratic lower bound on the ideal mixing term <i class="v">S</i>(<i class="v">x</i>) over any interval</td><td class="st"><span class="tag m">T3</span></td></tr>
+      <tr><td class="l">CAL-C02</td><td>Equilibria minimise the total Gibbs energy; every phase present touches the tangent; a lower bound on <i class="v">G</i> − ℓ bounds every feasible configuration</td><td class="st"><span class="tag m">T3</span></td></tr>
+      <tr><td class="l">CAL-C03</td><td>An equilibrium exists for 0 &lt; <i class="v">x</i>₀ &lt; 1 with at least one solution phase</td><td class="st"><span class="tag m">T3</span></td></tr>
+      <tr><td class="l">CAL-B01</td><td>Checker soundness: the interval for <i class="v">G</i>*, and for every equilibrium the chemical potentials, composition windows and absent phases; existence</td><td class="st"><span class="tag s">T4</span></td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="g3">
+  <p class="sec-no">06</p>
+  <h2>Goal G3 — certified CALPHAD against pycalphad</h2>
+  <div class="prose"><p>Reference: pycalphad 0.11.1 on the same database and the same set of phases. Same completion standard as G1 and G2, and the certificate must speak about the <b>true global equilibrium</b> of the database model. Order: complete the binary case (C0–C1), where branch and bound runs over one composition variable; then multicomponent and sublattice models (C2), where it runs over products of simplices; then derived calculations (C3).</p></div>
+  <div class="legend">
+    <span><i class="sw-done"></i>Done — implemented, agrees, certified</span>
+    <span><i class="sw-todo"></i>Not started</span>
+  </div>
+  <div class="ms">
+    <div class="row"><span class="code">C0</span><div>Binary point equilibrium</div><div class="barcell"><div class="sbar"><i class="sw-done" style="flex:8"></i></div></div><span class="n">8 / 8</span></div>
+    <div class="row"><span class="code">C1</span><div>Binary extensions: phase diagrams, invariants, magnetism</div><div class="barcell"><div class="sbar"><i class="sw-todo" style="flex:7"></i></div></div><span class="n">0 / 7</span></div>
+    <div class="row"><span class="code">C2</span><div>Multicomponent and sublattice models</div><div class="barcell"><div class="sbar"><i class="sw-todo" style="flex:4"></i></div></div><span class="n">0 / 4</span></div>
+    <div class="row"><span class="code">C3</span><div>Scheil, fitting, other models</div><div class="barcell"><div class="sbar"><i class="sw-todo" style="flex:3"></i></div></div><span class="n">0 / 3</span></div>
+  </div>
+
+  <h3 style="margin-top:32px">C0 · binary point equilibrium — complete</h3>
+  <div class="tbl"><table class="feat">
+    <thead><tr><th>Feature</th><th>pycalphad</th><th>Status</th><th>What is certified</th></tr></thead>
+    <tbody>
+      <tr><td>TDB reading: functions, piecewise ranges, references, parameters</td><td><code>Database</code></td><td class="st"><span class="tag st-done">Done</span></td><td>Outside the trust chain (A-CAL-01); every phase’s <i class="v">G</i>(<i class="v">x</i>) matches pycalphad’s <code>calculate</code> pointwise</td></tr>
+      <tr><td>Substitutional solutions: ideal mixing + Redlich–Kister</td><td><code>Model</code> (GM)</td><td class="st"><span class="tag st-done">Done</span></td><td>Quadratic mixing bound CAL-C01; checker CAL-B01</td></tr>
+      <tr><td>Stoichiometric compounds</td><td><code>Model</code></td><td class="st"><span class="tag st-done">Done</span></td><td>Composition is an exact fraction such as 2/3</td></tr>
+      <tr><td>Point equilibrium: phases, compositions, amounts</td><td><code>equilibrium</code> (Phase, X, NP)</td><td class="st"><span class="tag st-done">Done</span></td><td><code>WINDOW</code> and <code>ABSENT</code> for every equilibrium; the certificate’s amounts are exact by the lever rule</td></tr>
+      <tr><td>Equilibrium Gibbs energy</td><td><code>equilibrium</code> (GM)</td><td class="st"><span class="tag st-done">Done</span></td><td><code>G_OK</code>: a global lower bound over every feasible configuration</td></tr>
+      <tr><td>Chemical potentials</td><td><code>equilibrium</code> (MU)</td><td class="st"><span class="tag st-done">Done</span></td><td><code>MU_OK</code>, for every equilibrium</td></tr>
+      <tr><td>Miscibility gaps (two compositions of one phase)</td><td><code>equilibrium</code></td><td class="st"><span class="tag st-done">Done</span></td><td>One window around each composition</td></tr>
+      <tr><td>Existence of an equilibrium</td><td>—</td><td class="st"><span class="tag st-done">Done</span></td><td>CAL-C03: <code>EXISTS</code>, so “for every equilibrium” is never vacuous</td></tr>
+    </tbody>
+  </table></div>
+
+  <details class="more"><summary>Planned: C1–C3 (14 items, none started)</summary>
+    <h4 style="margin-top:14px">C1 · binary extensions</h4>
+    <ul class="planned"><li>Binary phase diagrams: a certificate per grid point, phase boundaries from the windows</li><li>Invariant reaction temperatures (eutectic, peritectic): prove that two common tangents exchange within [<i class="v">T</i>₁, <i class="v">T</i>₂]</li><li>Magnetic contribution (Inden–Hillert–Jarl)</li><li>Sharper chemical potentials in single-phase regions</li><li>Thermodynamic properties <i class="v">H</i>, <i class="v">S</i>, <i class="v">C<sub>p</sub></i></li><li>Driving forces</li><li>Interstitial solutions</li></ul>
+    <h4>C2 · multicomponent and sublattice models</h4>
+    <ul class="planned"><li>Ternary and higher solutions (Muggianu extrapolation, ternary parameters)</li><li>Several sublattices (compound energy formalism)</li><li>Order–disorder</li><li>Conditions on chemical potential or activity</li></ul>
+    <h4>C3 · further calculations</h4>
+    <ul class="planned"><li>Scheil solidification</li><li>Parameter fitting (ESPEI): the fit stays untrusted, conclusions depend only on the final database</li><li>Ionic liquid and quasichemical models</li></ul>
+  </details>
+</section>
+
+<section id="evidence">
+  <p class="sec-no">07</p>
+  <h2>Cross-checks and supporting evidence</h2>
+  <ul class="checks">
+    <li><span>Every phase’s <i class="v">G</i>(<i class="v">x</i>) at <i class="v">x</i> = <i class="v">k</i>/20 against pycalphad’s <code>calculate</code></span><b>relative ≤ 10⁻¹²</b></li>
+    <li><span>17 equilibria in Al–Zn (Mey 1993), Pb–Sn (Ngai–Chang 1981) and Cu–Mg against pycalphad’s <code>equilibrium</code>: compositions / Gibbs energy</span><b>&lt; 10⁻⁶ / &lt; 10⁻⁵ J/mol</b></li>
+    <li><span>pycalphad’s <code>GM</code>, <code>MU</code> and phase compositions</span><b>inside the Lean intervals and windows</b></li>
+    <li><span>Tampered certificates</span><b>fail, or still-correct conclusions</b></li>
+    <li><span>Checking time per equilibrium</span><b>0.1 – 6 s</b></li>
+    <li><span>Driver under AddressSanitizer and UBSan, including pycalphad’s other test databases</span><b>clean</b></li>
+  </ul>
+</section>
+
+<section id="gaps">
+  <p class="sec-no">08</p>
+  <h2>Open gaps</h2>
+  <ul class="gaps">
+    <li><strong>From TDB file to certified model</strong>Choosing temperature ranges, expanding function references and classifying phases is done by the driver, outside the trust chain (A-CAL-01). The benchmark compares the result with pycalphad.</li>
+    <li><strong>Chemical potentials in single-phase regions</strong>The intervals are about √(<i class="v">G</i>″·|EPS|) wide, 10⁻⁴ to 10⁻³ J/mol, against about 10⁻⁹ J/mol in two-phase regions. Tightening them needs derivative intervals at <i class="v">x</i>₀ (a C1 item).</li>
+    <li><strong>Magnetic, order–disorder, interstitial, sublattice and multicomponent models</strong>Not yet defined in Lean. The driver skips such phases and lists them; the conclusions hold only for the phases included.</li>
+    <li><strong>The driver itself</strong>Its grid search and Newton iterations are untrusted (T0) and marked so in the report; every result passes through the checker.</li>
+  </ul>
+</section>
+
+</main>
+</div>
+
+<footer><div class="in">
+  <span>Formal in Silico · status snapshot 1 October 2026</span>
+  <span><a href="./">Programme</a> · <a href="progress.html">Progress</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="zh/calphad.html" hreflang="zh-CN">中文版</a></span>
+</div></footer>
+</body>
+</html>

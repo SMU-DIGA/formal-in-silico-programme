@@ -20,6 +20,11 @@
   <nav class="nav" aria-label="站点">
     <a href="./" aria-current="page">纲领</a>
     <a href="progress.html">进度</a>
+    <span class="sep" aria-hidden="true"></span>
+    <a class="dom" href="dft.html">DFT</a>
+    <a class="dom" href="fem.html">FEM</a>
+    <a class="dom" href="md.html">MD</a>
+    <a class="dom" href="calphad.html">CALPHAD</a>
     <a class="lang" href="../" hreflang="en" lang="en">EN</a>
   </nav>
   <button class="theme" type="button" aria-label="切换浅色或深色主题"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zm0 1.5v11a5.5 5.5 0 0 1 0-11z"/></svg></button>
@@ -36,10 +41,10 @@
     <div class="j f"><span class="k">IEEE 754</span><span class="e">|fl(<i class="v">E<sub>h</sub></i>) − <i class="v">E<sub>h</sub></i>| ≤ <i class="v">ε</i><sub>round</sub></span></div>
   </div>
   <div class="stats">
-    <div class="stat"><b>100</b><span>条命题登记在可信账本中</span></div>
-    <div class="stat"><b>92</b><span>条已有机器证明（T3 或 T4）</span></div>
-    <div class="stat"><b>21</b><span>条达到端到端等级 T4：检查器可靠性与内核安全</span></div>
-    <div class="stat"><b>2</b><span>个参照程序交叉校验：DFTK.jl 与 scikit-fem</span></div>
+    <div class="stat"><b>118</b><span>条命题登记在可信账本中</span></div>
+    <div class="stat"><b>109</b><span>条已有机器证明（T3 或 T4）</span></div>
+    <div class="stat"><b>26</b><span>条达到端到端等级 T4：检查器可靠性与内核安全</span></div>
+    <div class="stat"><b>4</b><span>个参照程序交叉校验：DFTK.jl、scikit-fem、ASE 与 pycalphad</span></div>
   </div>
   <div class="cta">
     <a class="btn" href="progress.html">查看实现进度</a>
@@ -226,11 +231,15 @@
   <h2>路线图</h2>
   <div class="goal">
     <h3>当前目标 G1：DFTK 功能对齐 <span class="tag n">2026-09-29 设定</span></h3>
-    <p>让 mini-DFT 覆盖 DFTK.jl 的主要功能。只有实现、与 DFTK 在同一离散问题上一致、输出有 Lean 证书三条都满足，才算<b>完成</b>。顺序是先在 1D 做全，再把 Lean 模型推广到 <i class="v">d</i> 维做 3D，最后是基础设施与外部接口。阶段 2 的 MD 推迟到它完成之后。</p>
+    <p>让 mini-DFT 覆盖 DFTK.jl 的主要功能。只有实现、与 DFTK 在同一离散问题上一致、输出有 Lean 证书三条都满足，才算<b>完成</b>。顺序是先在 1D 做全，再把 Lean 模型推广到 <i class="v">d</i> 维做 3D，最后是基础设施与外部接口。FEM 改由并行目标 G2 推进；阶段 2 的 MD 在 2026-10-01 做出了基础版本 mini-MD v0。<a href="dft.html#g1">逐项状态 →</a></p>
   </div>
   <div class="goal">
     <h3>并行目标 G2：带形式化证明的有限元，对照 scikit-fem <span class="tag n">2026-09-30 设定</span></h3>
-    <p>用自己的 C 实现覆盖 scikit-fem 的主要功能，scikit-fem 在同一离散问题上作独立参照。完成标准与 G1 相同；能做到的地方，证书的结论针对<b>连续问题的真解</b>，而不只是离散解。先在 1D 做全，再做 2D 三角形网格。</p>
+    <p>用自己的 C 实现覆盖 scikit-fem 的主要功能，scikit-fem 在同一离散问题上作独立参照。完成标准与 G1 相同；能做到的地方，证书的结论针对<b>连续问题的真解</b>，而不只是离散解。先在 1D 做全，再做 2D 三角形网格。<a href="fem.html#g2">逐项状态 →</a></p>
+  </div>
+  <div class="goal">
+    <h3>并行目标 G3：带形式化证明的 CALPHAD，对照 pycalphad <span class="tag n">2026-10-01 设定</span></h3>
+    <p>用自己的 C 实现读 TDB 热力学数据库、求相平衡，pycalphad 在同一数据库、同一组相上作独立参照。完成标准与 G1、G2 相同；证书的结论针对数据库模型<b>真正的全局平衡</b>，而不只是驱动找到的局部解。先把二元体系做全（点平衡、相图、不变反应、磁性），再做多元与亚点阵模型。<a href="calphad.html#g3">逐项状态 →</a></p>
   </div>
   <ol class="phases">
     <li class="phase"><div class="hd"><b>阶段 0</b><strong>最小 DFT</strong><span class="tag f">进行中</span></div><div class="bd">
@@ -239,7 +248,7 @@
     <li class="phase"><div class="hd"><b>阶段 1</b><strong>DFT 扩展</strong><span class="tag f">部分提前完成</span></div><div class="bd">
       <p>一维 LDA 交换关联（凸性丢失，唯一性改为局部结论）；<i class="v">k</i> 点采样，以及 <i class="v">k</i> 点的 MPI 并行——项目第一个真正的并行协议；三维平面波与局域赝势，与 DFTK.jl 交叉校验。</p>
       <p><span class="k">退出标准</span><i class="v">k</i> 点并行在 1 到 64 个进程上结果逐位一致，运行日志全部通过 trace validation。</p></div></li>
-    <li class="phase"><div class="hd"><b>阶段 2</b><strong>推广到 MD 与 FEM</strong><span class="tag f">FEM 进行中</span></div><div class="bd">
+    <li class="phase"><div class="hd"><b>阶段 2</b><strong>推广到 MD 与 FEM</strong><span class="tag s">已达退出标准</span></div><div class="bd">
       <p>复用阶段 0 建立的框架，做两个最小版本：一维 Lennard-Jones 原子链加 Velocity Verlet；一维 Poisson 方程加 P1 线性元。TLA+ 模块覆盖 halo 交换、原子迁移、并行组装、检查点。</p>
       <p><span class="k">退出标准</span>两个最小版本都输出可信报告；Céa 引理与 Verlet 辛性达到 T3。</p></div></li>
     <li class="phase"><div class="hd"><b>阶段 3</b><strong>可信内核</strong><span class="tag n">未开始</span></div><div class="bd">
@@ -249,7 +258,7 @@
       <p>在标准基准上与既有代码比较：DFT 用 Δ 量规，MD 用 NVE 能量漂移和径向分布函数，FEM 用制造解方法检验收敛阶。</p>
       <p><span class="k">退出标准</span>公开基准结果，以及每个结果对应的可信账本。</p></div></li>
   </ol>
-  <p class="note">每个阶段与目标的逐项现状见<a href="progress.html">进度页</a>。</p>
+  <p class="note">逐项现状见<a href="progress.html">进度页</a>，以及每个领域各自的页面：<a href="dft.html">DFT</a>、<a href="fem.html">FEM</a>、<a href="md.html">MD</a>、<a href="calphad.html">CALPHAD</a>。</p>
 </section>
 
 <section id="s9">
@@ -273,6 +282,7 @@
   </div>
   <div class="prose">
     <p><b>mini-FEM</b> 在目标 G2 下沿用同一模式：一维 Poisson 方程的 P1 线性元（Dirichlet、Neumann、Robin 边界），梁方程的三次 Hermite 元（固支、简支、自由、滑动），右端项由多项式、指数、正弦、余弦组合而成。Lean 检查器给出<b>连续问题真解</b>在每个节点上的严格区间，以及整个区间上最大误差的严格上界。自适应加密以这些经过证明的单元误差界作为标记量。</p>
+    <p><b>mini-MD</b>（2026-10-01）对一维 Lennard-Jones 原子链加 Velocity Verlet 做了同样的事：检查器给出每一步与 <b>Newton 方程真解</b>的距离，以及从初值出发约一个振动周期内的整体误差界。<b>mini-CALPHAD</b>（目标 G3）为读自 TDB 数据库的二元相平衡出具证书，包括化学势，以及<i>任意</i>平衡中可能出现哪些相。详见 <a href="md.html">MD</a> 与 <a href="calphad.html">CALPHAD</a> 页。</p>
   </div>
 </section>
 
@@ -338,7 +348,7 @@
 
 <footer><div class="in">
   <span>Formal in Silico · 项目纲领 v0.3 · 随项目演进修订</span>
-  <span><a href="progress.html">实现进度</a> · <a href="../" hreflang="en">English</a></span>
+  <span><a href="progress.html">实现进度</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="../" hreflang="en">English</a></span>
 </div></footer>
 </body>
 </html>

@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Formal in Silico — mini-MD</title>
+<meta name="description" content="mini-MD v0: a Lennard-Jones chain integrated with velocity Verlet, whose Lean certificate bounds the distance to the true solution of Newton's equations; cross-checked against ASE.">
+<link rel="alternate" hreflang="en" href="md.html">
+<link rel="alternate" hreflang="zh-CN" href="zh/md.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700;8..60,800&display=swap">
+<link rel="stylesheet" href="assets/style.css">
+<script src="assets/site.js"></script>
+<script src="assets/chart.js"></script>
+</head>
+<body>
+
+<header class="bar"><div class="bar-in">
+  <a class="brand" href="./">Formal in Silico</a>
+  <nav class="nav" aria-label="Site">
+    <a href="./">Programme</a>
+    <a href="progress.html">Progress</a>
+    <span class="sep" aria-hidden="true"></span>
+    <a class="dom" href="dft.html">DFT</a>
+    <a class="dom" href="fem.html">FEM</a>
+    <a class="dom" href="md.html" aria-current="page">MD</a>
+    <a class="dom" href="calphad.html">CALPHAD</a>
+    <a class="lang" href="zh/md.html" hreflang="zh-CN" lang="zh-CN">中文</a>
+  </nav>
+  <button class="theme" type="button" aria-label="Toggle light or dark theme"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zm0 1.5v11a5.5 5.5 0 0 1 0-11z"/></svg></button>
+</div></header>
+
+<div class="hero small"><div class="hero-in">
+  <nav class="domnav" aria-label="Domains"><a href="progress.html">← Progress</a><a href="dft.html">mini-DFT</a><a href="fem.html">mini-FEM</a><a href="md.html" aria-current="page">mini-MD</a><a href="calphad.html">mini-CALPHAD</a></nav>
+  <p class="eyebrow">Domain · mini-MD v0 · status snapshot 1 October 2026</p>
+  <h1>mini-MD</h1>
+  <p class="lead">A one-dimensional Lennard-Jones chain integrated with velocity Verlet. The Lean checker bounds how far the computed trajectory is from the <b>true solution of Newton’s equations</b> — for every step, and from the initial state over about one vibration period — and computes the conserved quantities exactly. Built on 1 October 2026 as the charter’s phase-2 MD version and cross-checked against ASE 3.29.</p>
+  <div class="stats">
+    <div class="stat"><b>14</b><span>claims in the trust ledger: 4 at T4, 9 at T3, 1 open</span></div>
+    <div class="stat"><b>0.99</b><span>true local error ÷ certified local bound: the bound is almost exact</span></div>
+    <div class="stat"><b>≤ 5×10⁻¹⁴</b><span>difference from ASE in positions, momenta and energy</span></div>
+    <div class="stat"><b>≈ 1 period</b><span>covered by the global bound from the initial state (t = 0.5 for 8 atoms)</span></div>
+  </div>
+</div></div>
+
+<div class="wrap">
+<nav class="toc" aria-label="Contents">
+  <p>Contents</p>
+  <ol>
+    <li><a href="#problem"><span>01</span>The problem</a></li>
+    <li><a href="#report"><span>02</span>What is certified</a></li>
+    <li><a href="#method"><span>03</span>How it works</a></li>
+    <li><a href="#horizon"><span>04</span>The horizon</a></li>
+    <li><a href="#claims"><span>05</span>Claims</a></li>
+    <li><a href="#evidence"><span>06</span>Cross-checks</a></li>
+    <li><a href="#gaps"><span>07</span>Open gaps</a></li>
+  </ol>
+</nav>
+<main>
+
+<section id="problem">
+  <p class="sec-no">01</p>
+  <h2>The problem</h2>
+  <div class="tbl"><table><tbody>
+    <tr><td class="l">System</td><td><i class="v">N</i> ≥ 2 atoms on a line, in order, with masses <i class="v">m<sub>i</sub></i> &gt; 0. Free boundaries, every pair interacts, and the Lennard-Jones potential <i class="v">φ</i>(<i class="v">r</i>) = 4<i class="v">ε</i>((<i class="v">σ</i>/<i class="v">r</i>)¹² − (<i class="v">σ</i>/<i class="v">r</i>)⁶) is not truncated.</td></tr>
+    <tr><td class="l">Equations</td><td><i class="v">q</i>′ = <i class="v">p</i>/<i class="v">m</i>, <i class="v">p</i>′ = <i class="v">F</i>(<i class="v">q</i>). A “true solution” is any solution of these equations; every classical solution qualifies.</td></tr>
+    <tr><td class="l">Integrator</td><td>Velocity Verlet with step <i class="v">h</i>: a half kick, a drift, a half kick. The driver computes it in double precision with no fused multiply-add.</td></tr>
+    <tr><td class="l">Input</td><td>Parameters and initial state are the exact rationals written in the certificate — the doubles the driver actually used. Their difference from the decimal command line is outside the certificate (assumption A-MD-01).</td></tr>
+  </tbody></table></div>
+</section>
+
+<section id="report">
+  <p class="sec-no">02</p>
+  <h2>What a certified run reports</h2>
+  <div class="prose"><p>An 8-atom chain, 600 steps of <i class="v">h</i> = 0.001, initial temperature 0.01. The driver writes the trajectory as a certificate and the Lean checker <code>certify-md</code> re-checks it in exact rational arithmetic; this is the end of its report.</p></div>
+  <div class="report">
+    <div class="cmd">build/mini-md --N 8 --steps 600 --dt 0.001 --T0 0.01 --certify run.cert --verify</div>
+<pre><span class="c">…</span>
+Lean  MD_OK 8 600
+Lean  E0 <b>-7.186568898605097 -7.186568898605096</b>
+Lean  ENERGY_DRIFT 0.00000046826354893195
+Lean  MOMENTUM_DRIFT 0.00000000000000029057
+Lean  VERLET_RES 0.00000000000000044369
+Lean  LOCAL_OK <b>0.00000000279045942382</b> 0.00000004228626446212
+Lean  TRUE_OK 500 0.500000000000 <b>0.00099933951185418332</b> 0.01514386287974667751
+Lean  TRUE_HORIZON <b>500 0.500000000000</b>
+Lean  KMAX 19.447984
+Lean  EPSMAX 0.00000004460799189706</pre>
+  </div>
+  <div class="tbl"><table class="outs">
+    <thead><tr><th>Line</th><th>What the Lean theorem guarantees</th><th>Claim</th></tr></thead>
+    <tbody>
+      <tr><td>LOCAL_OK dq dp</td><td>For every step <i class="v">k</i>: any true solution started from the computed state (<i class="v">Q<sub>k</sub></i>, <i class="v">P<sub>k</sub></i>) is within dq in position and dp in momentum of (<i class="v">Q</i><sub><i class="v">k</i>+1</sub>, <i class="v">P</i><sub><i class="v">k</i>+1</sub>) one step later. The computed trajectory is a dq-pseudo-orbit of the true flow.</td><td>MD-B01</td></tr>
+      <tr><td>TRUE_OK j t dq dp</td><td>Any true solution from the initial state is within dq / dp of the computed state at time <i class="v">t<sub>j</sub></i>.</td><td>MD-B02</td></tr>
+      <tr><td>TRUE_HORIZON H t</td><td>The global bound covers [0, <i class="v">t</i>]; there the atoms stay ordered and the true energy is exactly <i class="v">E</i>₀.</td><td>MD-B02, C01</td></tr>
+      <tr><td>E0 lo hi</td><td>The initial energy <i class="v">H</i>(<i class="v">Q</i>₀, <i class="v">P</i>₀), computed exactly and rounded outward.</td><td>MD-B03</td></tr>
+      <tr><td>ENERGY_DRIFT, MOMENTUM_DRIFT</td><td>The largest change of energy and of total momentum along the computed trajectory, computed exactly.</td><td>MD-B03</td></tr>
+      <tr><td>VERLET_RES d</td><td>The data satisfy both Verlet equations up to d: the trajectory really is Verlet’s, apart from rounding.</td><td>MD-B04</td></tr>
+      <tr><td>KMAX, EPSMAX</td><td>Diagnostics (largest Lipschitz constant and defect), not claims.</td><td>—</td></tr>
+    </tbody>
+  </table></div>
+  <p class="note">In this run the computed energy drifts by 4.7×10⁻⁷ while the true energy stays exactly <i class="v">E</i>₀ up to <i class="v">t</i> = 0.5. The drift is Verlet’s own O(<i class="v">h</i>²) energy error — now a certified number rather than an estimate.</p>
+</section>
+
+<section id="method">
+  <p class="sec-no">03</p>
+  <h2>How the certificate works</h2>
+  <div class="prose"><p>For each step the checker builds a curve that is provably close to a solution of Newton’s equations, then uses a tube theorem to conclude that <i>every</i> solution stays close to it. Everything is exact rational arithmetic; the driver’s floating-point numbers are only data.</p></div>
+  <ol class="chain">
+    <li><div class="layer"><span class="no">1</span><h4>Taylor polynomial of the true flow</h4><p>At each data point the checker computes the true solution’s first four time derivatives exactly and forms a quartic for each atom. Interpolating the Verlet points instead would leave an O(<i class="v">h</i>) defect, because Verlet’s local error is O(<i class="v">h</i>³).</p></div></li>
+    <li><div class="layer"><span class="no">2</span><h4>Atoms stay apart</h4><p>Every pair of atoms keeps a positive distance over the step, by interval bounds on the polynomials; otherwise the checker reports <code>MD_FAIL</code>.</p></div></li>
+    <li><div class="layer"><span class="no">3</span><h4>Defect</h4><p>How far the quartic is from solving Newton’s equation, <i class="v">D</i> = <i class="v">m z</i>″ − <i class="v">F</i>(<i class="v">z</i>), with the third derivative of the force enclosed in intervals (MD-A03).</p></div></li>
+    <li><div class="layer"><span class="no">4</span><h4>Lipschitz constant on a box</h4><p>The vector field is Lipschitz on the <i class="v">ρ</i>-neighbourhood of the curve, with a constant from interval bounds on <i class="v">φ</i>″ (MD-A02).</p></div></li>
+    <li><div class="layer"><span class="no">5</span><h4>Tube theorem</h4><p>If the Grönwall bound <i class="v">δ</i>e<sup><i class="v">Kt</i></sup> + (<i class="v">ε</i>/<i class="v">K</i>)(e<sup><i class="v">Kt</i></sup> − 1) stays below <i class="v">ρ</i>, every solution stays in the box and obeys the bound. The proof argues by the first exit time, so nothing needs to be known in advance about where the solution goes (MD-A01, A04).</p></div></li>
+  </ol>
+  <p class="note">Why the local bound is almost exact: its main term is the jump between the polynomial and the next data point, which is Verlet’s own local error, O(<i class="v">h</i>³); the defect term is O(<i class="v">h</i>⁴). Across three systems the true local error is 0.99 of the bound.</p>
+</section>
+
+<section id="horizon">
+  <p class="sec-no">04</p>
+  <h2>The global bound and its horizon</h2>
+  <div class="prose"><p>A pointwise bound on a many-body Lennard-Jones trajectory has to grow exponentially: the dynamics are chaotic, and nearby trajectories separate like e<sup><i class="v">Kt</i></sup>. The certified bound starts at the true error (ratio 0.91 after 10 steps) and grows at rate <i class="v">K</i> ≈ 19 until it reaches the tube radius at <i class="v">t</i> = 0.5, about one vibration period. After that the checker still certifies every step locally, but no longer the distance from the true trajectory of the initial state.</p></div>
+  <figure class="chart">
+    <h4>Distance from the true trajectory · 8 atoms, h = 0.001</h4>
+    <p class="cap">Largest position error over the atoms, log scale. The certified bound is Lean’s <code>TRUE_OK</code>; the true error is measured against a high-accuracy reference solution (scipy DOP853, rtol 10⁻¹³), which is for comparison only and not itself rigorous.</p>
+    <div class="key"></div>
+    <div class="plot"></div>
+    <details><summary>Show the numbers</summary><div class="tablehost"></div></details>
+    <script type="application/json">{"alt": "Log-scale chart: the certified global error bound grows from 2.5e-8 to 1e-3 over t = 0 to 0.5, while the true error stays between 2e-8 and 3.4e-7 up to t = 0.6.", "xname": "t", "x": {"min": 0, "max": 0.6, "ticks": [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6], "label": "time t", "fmt": "f2", "tfmt": "f1"}, "y": {"log": true, "min": 1e-08, "max": 0.01, "ticks": [1e-08, 1e-07, 1e-06, 1e-05, 0.0001, 0.001, 0.01], "fmt": "sci"}, "series": [{"name": "Certified bound (Lean, TRUE_OK)", "c": 1, "pts": [[0.01, 2.53e-08], [0.02, 5.5e-08], [0.03, 8.98e-08], [0.04, 1.3e-07], [0.05, 1.77e-07], [0.06, 2.31e-07], [0.07, 2.95e-07], [0.08, 3.68e-07], [0.09, 4.53e-07], [0.1, 5.56e-07], [0.11, 6.81e-07], [0.12, 8.32e-07], [0.13, 1.01e-06], [0.14, 1.23e-06], [0.15, 1.5e-06], [0.16, 1.82e-06], [0.17, 2.2e-06], [0.18, 2.66e-06], [0.19, 3.21e-06], [0.2, 3.87e-06], [0.21, 4.66e-06], [0.22, 5.6e-06], [0.23, 6.73e-06], [0.24, 8.09e-06], [0.25, 9.72e-06], [0.26, 1.17e-05], [0.27, 1.4e-05], [0.28, 1.68e-05], [0.29, 2.01e-05], [0.3, 2.41e-05], [0.31, 2.9e-05], [0.32, 3.48e-05], [0.33, 4.18e-05], [0.34, 5.03e-05], [0.35, 6.06e-05], [0.36, 7.29e-05], [0.37, 8.79e-05], [0.38, 0.000106], [0.39, 0.000128], [0.4, 0.000154], [0.41, 0.000185], [0.42, 0.000223], [0.43, 0.000269], [0.44, 0.000323], [0.45, 0.00039], [0.46, 0.000469], [0.47, 0.000566], [0.48, 0.000684], [0.49, 0.000826], [0.5, 0.000999]]}, {"name": "True error (reference solution)", "c": 2, "pts": [[0.01, 2.3e-08], [0.02, 4.56e-08], [0.03, 6.7e-08], [0.04, 8.67e-08], [0.05, 1.04e-07], [0.06, 1.19e-07], [0.07, 1.3e-07], [0.08, 1.37e-07], [0.09, 1.41e-07], [0.1, 1.4e-07], [0.11, 1.4e-07], [0.12, 1.42e-07], [0.13, 1.41e-07], [0.14, 1.39e-07], [0.15, 1.34e-07], [0.16, 1.27e-07], [0.17, 1.19e-07], [0.18, 1.11e-07], [0.19, 1.02e-07], [0.2, 9.13e-08], [0.21, 1e-07], [0.22, 1.2e-07], [0.23, 1.45e-07], [0.24, 1.68e-07], [0.25, 1.88e-07], [0.26, 2.03e-07], [0.27, 2.14e-07], [0.28, 2.19e-07], [0.29, 2.2e-07], [0.3, 2.15e-07], [0.31, 2.06e-07], [0.32, 1.91e-07], [0.33, 2.05e-07], [0.34, 2.19e-07], [0.35, 2.29e-07], [0.36, 2.35e-07], [0.37, 2.37e-07], [0.38, 2.34e-07], [0.39, 2.25e-07], [0.4, 2.22e-07], [0.41, 2.52e-07], [0.42, 2.77e-07], [0.43, 2.97e-07], [0.44, 3.12e-07], [0.45, 3.19e-07], [0.46, 3.2e-07], [0.47, 3.14e-07], [0.48, 3.01e-07], [0.49, 2.81e-07], [0.5, 2.54e-07], [0.51, 2.21e-07], [0.52, 2.15e-07], [0.53, 2.48e-07], [0.54, 2.76e-07], [0.55, 2.99e-07], [0.56, 3.15e-07], [0.57, 3.24e-07], [0.58, 3.26e-07], [0.59, 3.22e-07], [0.6, 3.43e-07]]}], "hlines": [{"y": 0.001, "label": "tube radius ρ = 10⁻³"}], "vlines": [{"x": 0.5, "label": "horizon t = 0.5", "side": "left", "dy": 22}], "notes": [{"x": 0.27, "y": 3e-05, "text": "certified bound", "a": "end", "wide": true}, {"x": 0.59, "y": 1.1e-07, "text": "true error", "a": "end", "wide": true}], "keyref": ["tube radius ρ"]}</script>
+  </figure>
+  <div class="prose"><p>This is a property of the problem, not of the proof technique: long-time pointwise error bounds for chaotic dynamics do not exist. Long-time statements need a different form — shadowing of the pseudo-orbit, backward error analysis through Verlet’s modified Hamiltonian, or statistics of the trajectory — and are listed among the gaps.</p></div>
+</section>
+
+<section id="claims">
+  <p class="sec-no">05</p>
+  <h2>Claims in the trust ledger</h2>
+  <div class="sbar big" role="img" aria-label="14 claims: 4 at T4, 9 at T3, 1 not yet reached">
+    <i class="sw-t4" style="flex:4"></i><i class="sw-t3" style="flex:9"></i><i class="sw-no" style="flex:1"></i>
+  </div>
+  <div class="legend">
+    <span><i class="sw-t4"></i>T4 end to end · 4</span>
+    <span><i class="sw-t3"></i>T3 machine proof · 9</span>
+    <span><i class="sw-no"></i>target not yet reached · 1</span>
+  </div>
+  <div class="tbl"><table>
+    <thead><tr><th>Claim</th><th>Statement</th><th>Tier</th></tr></thead>
+    <tbody>
+      <tr><td class="l">MD-C01</td><td>Energy conservation: a true solution keeps its energy while the atoms stay ordered</td><td class="st"><span class="tag m">T3</span></td></tr>
+      <tr><td class="l">MD-C02</td><td>Momentum conservation: forces sum to zero, so total momentum is constant</td><td class="st"><span class="tag m">T3</span></td></tr>
+      <tr><td class="l">MD-C03</td><td>Existence: Newton’s equations have a solution on [0, <i class="v">T</i>]</td><td class="st"><span class="tag n">not reached</span></td></tr>
+      <tr><td class="l">MD-D01</td><td>Velocity Verlet is time-reversible</td><td class="st"><span class="tag m">T3</span></td></tr>
+      <tr><td class="l">MD-D02</td><td>Velocity Verlet preserves total momentum</td><td class="st"><span class="tag m">T3</span></td></tr>
+      <tr><td class="l">MD-D03</td><td>Velocity Verlet is symplectic, in particular for the Lennard-Jones chain</td><td class="st"><span class="tag m">T3</span></td></tr>
+      <tr><td class="l">MD-A01</td><td>Tube theorem: a Grönwall bound below the tube radius confines every solution</td><td class="st"><span class="tag m">T3</span></td></tr>
+      <tr><td class="l">MD-A02</td><td>Lipschitz constant of the scaled vector field on a box</td><td class="st"><span class="tag m">T3</span></td></tr>
+      <tr><td class="l">MD-A03</td><td>Defect bound for quartic approximate trajectories</td><td class="st"><span class="tag m">T3</span></td></tr>
+      <tr><td class="l">MD-A04</td><td>One-step error bound</td><td class="st"><span class="tag m">T3</span></td></tr>
+      <tr><td class="l">MD-B01</td><td>Checker soundness: local error of every step</td><td class="st"><span class="tag s">T4</span></td></tr>
+      <tr><td class="l">MD-B02</td><td>Checker soundness: global error from the initial state; ordering and exact energy on the horizon</td><td class="st"><span class="tag s">T4</span></td></tr>
+      <tr><td class="l">MD-B03</td><td>Checker soundness: initial energy, energy drift and momentum drift, computed exactly</td><td class="st"><span class="tag s">T4</span></td></tr>
+      <tr><td class="l">MD-B04</td><td>Checker soundness: the data satisfy the Verlet equations up to the reported residual</td><td class="st"><span class="tag s">T4</span></td></tr>
+    </tbody>
+  </table></div>
+  <p class="note">Verlet symplecticity at T3 (MD-D03) is half of the charter’s phase-2 exit criterion; the other half, Céa’s lemma, is on the <a href="fem.html#claims">FEM page</a>.</p>
+</section>
+
+<section id="evidence">
+  <p class="sec-no">06</p>
+  <h2>Cross-checks and supporting evidence</h2>
+  <ul class="checks">
+    <li><span>ASE 3.29 (<code>LennardJones</code> + <code>VelocityVerlet</code>), three chains of 5, 8 and 12 atoms, up to 2000 steps: positions / momenta / energy</span><b>≤ 3.6×10⁻¹⁵ / 5.0×10⁻¹⁴ / 3.2×10⁻¹⁴</b></li>
+    <li><span>Order of the global error and of the energy drift, against a DOP853 reference solution</span><b>2.00</b></li>
+    <li><span>Total momentum along the computed trajectory</span><b>conserved to 3×10⁻¹⁶</b></li>
+    <li><span>True error ÷ Lean bound, local and global, in all three systems</span><b>≤ 0.99</b></li>
+    <li><span>Global horizon for 8 atoms: <i class="v">T</i>₀ = 0.01, <i class="v">h</i> = 0.001 / <i class="v">T</i>₀ = 0.1, <i class="v">h</i> = 0.002 / <i class="v">T</i>₀ = 0.001, <i class="v">ρ</i> = 10⁻⁴</span><b>500 / 122 / all 800 steps</b></li>
+    <li><span>One tampered position in the certificate</span><b>only the residual and local bound grow</b></li>
+    <li><span>Negative mass, overlapping atoms, a tube radius smaller than one step’s defect</span><b>MD_FAIL</b></li>
+    <li><span>Checking time, 8 atoms, 1000 steps (grows as <i class="v">N</i>²)</span><b>≈ 50 s</b></li>
+    <li><span>Driver under AddressSanitizer and UBSan</span><b>clean</b></li>
+  </ul>
+</section>
+
+<section id="gaps">
+  <p class="sec-no">07</p>
+  <h2>Open gaps</h2>
+  <ul class="gaps">
+    <li><strong>Existence of the true solution</strong>The certificate holds for every solution, and within the tube the solution is unique, but existence is not yet machine-proved (MD-C03). Picard–Lindelöf on the truncated field, or continuation through energy conservation, would close it.</li>
+    <li><strong>Long-time pointwise error</strong>Inherent to chaos, as above. A logarithmic norm in the energy norm or Lohner-type linearised propagation would lengthen the horizon; truly long-time claims need shadowing, modified-Hamiltonian arguments or statistics.</li>
+    <li><strong>Statistics</strong>Temperature, radial distribution functions and autocorrelations are exact functions of the computed states, like the energy, but are not implemented yet.</li>
+    <li><strong>Periodic boxes, cutoffs, thermostats, constraints, 2D and 3D, parallelism</strong>Not started. A cutoff makes the force discontinuous, so the tube theorem needs a piecewise-smooth version; the parallel protocols (atom migration, halo exchange) are to be specified in TLA+.</li>
+    <li><strong>Checking time</strong>About 50 ms per step for 8 atoms, mostly exact rational evaluation of <i class="v">φ</i> and its derivatives; interval arithmetic would be much faster.</li>
+    <li><strong>The driver itself</strong>Untrusted (T0); every result passes through the checker. Phase 3 plans to bring one Verlet step to T4.</li>
+  </ul>
+</section>
+
+</main>
+</div>
+
+<footer><div class="in">
+  <span>Formal in Silico · status snapshot 1 October 2026</span>
+  <span><a href="./">Programme</a> · <a href="progress.html">Progress</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="zh/md.html" hreflang="zh-CN">中文版</a></span>
+</div></footer>
+</body>
+</html>

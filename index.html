@@ -20,6 +20,11 @@
   <nav class="nav" aria-label="Site">
     <a href="./" aria-current="page">Programme</a>
     <a href="progress.html">Progress</a>
+    <span class="sep" aria-hidden="true"></span>
+    <a class="dom" href="dft.html">DFT</a>
+    <a class="dom" href="fem.html">FEM</a>
+    <a class="dom" href="md.html">MD</a>
+    <a class="dom" href="calphad.html">CALPHAD</a>
     <a class="lang" href="zh/" hreflang="zh-CN" lang="zh-CN">中文</a>
   </nav>
   <button class="theme" type="button" aria-label="Toggle light or dark theme"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zm0 1.5v11a5.5 5.5 0 0 1 0-11z"/></svg></button>
@@ -36,10 +41,10 @@
     <div class="j f"><span class="k">IEEE 754</span><span class="e">|fl(<i class="v">E<sub>h</sub></i>) − <i class="v">E<sub>h</sub></i>| ≤ <i class="v">ε</i><sub>round</sub></span></div>
   </div>
   <div class="stats">
-    <div class="stat"><b>100</b><span>claims registered in the trust ledger</span></div>
-    <div class="stat"><b>92</b><span>of them machine-proved (tier T3 or T4)</span></div>
-    <div class="stat"><b>21</b><span>at the end-to-end tier T4: checker soundness and kernel safety</span></div>
-    <div class="stat"><b>2</b><span>reference codes cross-checked: DFTK.jl and scikit-fem</span></div>
+    <div class="stat"><b>118</b><span>claims registered in the trust ledger</span></div>
+    <div class="stat"><b>109</b><span>of them machine-proved (tier T3 or T4)</span></div>
+    <div class="stat"><b>26</b><span>at the end-to-end tier T4: checker soundness and kernel safety</span></div>
+    <div class="stat"><b>4</b><span>reference codes cross-checked: DFTK.jl, scikit-fem, ASE and pycalphad</span></div>
   </div>
   <div class="cta">
     <a class="btn" href="progress.html">See the progress</a>
@@ -226,11 +231,15 @@
   <h2>Roadmap</h2>
   <div class="goal">
     <h3>Current goal G1 — feature parity with DFTK <span class="tag n">set 29 Sep 2026</span></h3>
-    <p>Bring mini-DFT to the main feature set of DFTK.jl. A feature is <b>done</b> only when it is implemented, agrees with DFTK on the same discrete problem, and its output carries a Lean certificate. Order: complete everything in 1D first, then generalise the Lean model to <i class="v">d</i> dimensions for 3D, and finally infrastructure and external interfaces. MD (phase 2) is postponed until G1 is complete.</p>
+    <p>Bring mini-DFT to the main feature set of DFTK.jl. A feature is <b>done</b> only when it is implemented, agrees with DFTK on the same discrete problem, and its output carries a Lean certificate. Order: complete everything in 1D first, then generalise the Lean model to <i class="v">d</i> dimensions for 3D, and finally infrastructure and external interfaces. FEM moved to the parallel goal G2; for MD (phase 2), a basic version, mini-MD v0, was built on 1 October 2026. <a href="dft.html#g1">Status →</a></p>
   </div>
   <div class="goal">
     <h3>Parallel goal G2 — certified finite elements against scikit-fem <span class="tag n">set 30 Sep 2026</span></h3>
-    <p>Cover the main features of scikit-fem with our own C implementation, with scikit-fem as the independent reference on the same discrete problem. Same completion standard as G1, and wherever possible the certificate speaks about the <b>true solution of the continuous problem</b>, not just the discrete one. 1D first, then 2D triangular meshes.</p>
+    <p>Cover the main features of scikit-fem with our own C implementation, with scikit-fem as the independent reference on the same discrete problem. Same completion standard as G1, and wherever possible the certificate speaks about the <b>true solution of the continuous problem</b>, not just the discrete one. 1D first, then 2D triangular meshes. <a href="fem.html#g2">Status →</a></p>
+  </div>
+  <div class="goal">
+    <h3>Parallel goal G3 — certified CALPHAD against pycalphad <span class="tag n">set 1 Oct 2026</span></h3>
+    <p>Read TDB thermodynamic databases and compute phase equilibria with our own C implementation, with pycalphad as the independent reference on the same database and the same phases. Same completion standard as G1 and G2, and the certificate speaks about the <b>true global equilibrium</b> of the database model, not just the local solution the driver found. Binary systems first (point equilibria, phase diagrams, invariant reactions, magnetism), then multicomponent and sublattice models. <a href="calphad.html#g3">Status →</a></p>
   </div>
   <ol class="phases">
     <li class="phase"><div class="hd"><b>PHASE 0</b><strong>Minimal DFT</strong><span class="tag f">In progress</span></div><div class="bd">
@@ -239,7 +248,7 @@
     <li class="phase"><div class="hd"><b>PHASE 1</b><strong>DFT extensions</strong><span class="tag f">Partly ahead of plan</span></div><div class="bd">
       <p>1D LDA exchange-correlation (convexity is lost; uniqueness becomes a local result); <i class="v">k</i>-point sampling and its MPI parallelisation — the project’s first real parallel protocol; 3D plane waves with local pseudopotentials, cross-checked against DFTK.jl.</p>
       <p><span class="k">Exit</span><i class="v">k</i>-point parallel runs are bitwise identical on 1 to 64 processes and every run log passes trace validation.</p></div></li>
-    <li class="phase"><div class="hd"><b>PHASE 2</b><strong>MD and FEM</strong><span class="tag f">FEM in progress</span></div><div class="bd">
+    <li class="phase"><div class="hd"><b>PHASE 2</b><strong>MD and FEM</strong><span class="tag s">Exit criteria met</span></div><div class="bd">
       <p>Reuse the phase-0 framework for two minimal versions: a 1D Lennard-Jones chain with velocity Verlet, and 1D Poisson with P1 elements. TLA+ modules for halo exchange, atom migration, parallel assembly and checkpointing.</p>
       <p><span class="k">Exit</span>both minimal versions print trust reports; Céa’s lemma and Verlet symplecticity reach T3.</p></div></li>
     <li class="phase"><div class="hd"><b>PHASE 3</b><strong>Trusted kernels</strong><span class="tag n">Not started</span></div><div class="bd">
@@ -249,7 +258,7 @@
       <p>Standard benchmarks against established codes: the Δ-gauge for DFT, NVE energy drift and radial distribution functions for MD, the method of manufactured solutions for FEM convergence rates.</p>
       <p><span class="k">Exit</span>published benchmark results, each with its trust ledger.</p></div></li>
   </ol>
-  <p class="note">Detailed, item-by-item status for each phase and goal is on the <a href="progress.html">progress page</a>.</p>
+  <p class="note">Detailed, item-by-item status is on the <a href="progress.html">progress page</a> and on one page per domain: <a href="dft.html">DFT</a>, <a href="fem.html">FEM</a>, <a href="md.html">MD</a>, <a href="calphad.html">CALPHAD</a>.</p>
 </section>
 
 <section id="s9">
@@ -273,6 +282,7 @@
   </div>
   <div class="prose">
     <p><b>mini-FEM</b> follows the same pattern for goal G2: 1D Poisson with P1 elements (Dirichlet, Neumann and Robin boundaries) and the beam equation with cubic Hermite elements (clamped, pinned, free and sliding ends), with right-hand sides built from polynomials, exponentials, sines and cosines. The Lean checker returns intervals for the <b>true solution of the continuous problem</b> at every node, and a rigorous bound on the maximum error over the whole interval. Adaptive refinement uses these proved element-wise bounds as its marking criterion.</p>
+    <p><b>mini-MD</b> (1 October 2026) does the same for a 1D Lennard-Jones chain with velocity Verlet: the checker bounds the distance from the <b>true solution of Newton’s equations</b> at every step, and from the initial state over about one vibration period. <b>mini-CALPHAD</b> (goal G3) certifies binary phase equilibria from TDB databases, including the chemical potentials and which phases can appear in <i>any</i> equilibrium. See the <a href="md.html">MD</a> and <a href="calphad.html">CALPHAD</a> pages.</p>
   </div>
 </section>
 
@@ -338,7 +348,7 @@
 
 <footer><div class="in">
   <span>Formal in Silico · Programme v0.3 · revised as the project evolves</span>
-  <span><a href="progress.html">Progress</a> · <a href="zh/" hreflang="zh-CN">中文版</a></span>
+  <span><a href="progress.html">Progress</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="zh/" hreflang="zh-CN">中文版</a></span>
 </div></footer>
 </body>
 </html>

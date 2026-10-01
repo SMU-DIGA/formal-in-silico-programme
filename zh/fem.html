@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Formal in Silico · mini-FEM</title>
+<meta name="description" content="mini-FEM：一维有限元，Lean 证书给出连续问题真解的严格界，对照 scikit-fem（目标 G2）。">
+<link rel="alternate" hreflang="en" href="../fem.html">
+<link rel="alternate" hreflang="zh-CN" href="fem.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@600;700;900&display=swap">
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/site.js"></script>
+</head>
+<body>
+
+<header class="bar"><div class="bar-in">
+  <a class="brand" href="./">Formal in Silico</a>
+  <nav class="nav" aria-label="站点">
+    <a href="./">纲领</a>
+    <a href="progress.html">进度</a>
+    <span class="sep" aria-hidden="true"></span>
+    <a class="dom" href="dft.html">DFT</a>
+    <a class="dom" href="fem.html" aria-current="page">FEM</a>
+    <a class="dom" href="md.html">MD</a>
+    <a class="dom" href="calphad.html">CALPHAD</a>
+    <a class="lang" href="../fem.html" hreflang="en" lang="en">EN</a>
+  </nav>
+  <button class="theme" type="button" aria-label="切换浅色或深色主题"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zm0 1.5v11a5.5 5.5 0 0 1 0-11z"/></svg></button>
+</div></header>
+
+<div class="hero small"><div class="hero-in">
+  <nav class="domnav" aria-label="领域"><a href="progress.html">← 进度</a><a href="dft.html">mini-DFT</a><a href="fem.html" aria-current="page">mini-FEM</a><a href="md.html">mini-MD</a><a href="calphad.html">mini-CALPHAD</a></nav>
+  <p class="eyebrow">领域 · 目标 G2 · 现状快照 2026-10-01</p>
+  <h1>mini-FEM</h1>
+  <p class="lead">一维有限元：Poisson 方程的 P1 线性元与梁方程的三次 Hermite 元。证书的结论针对<b>连续问题的真解</b>，而不只是离散解。目标 G2：与 scikit-fem 12.0.2 功能对齐。</p>
+  <div class="stats">
+    <div class="stat"><b>11</b><span>条命题登记在可信账本中，全部达到 T3 或 T4</span></div>
+    <div class="stat"><b>11 / 26</b><span>项 scikit-fem 对齐功能完成，均为一维</span></div>
+    <div class="stat"><b>≤ 3×10⁻¹⁵</b><span>真解节点值的 Lean 区间宽度</span></div>
+    <div class="stat"><b>0.85 – 1.00</b><span>采样得到的真实误差 ÷ 证明的最大误差界</span></div>
+  </div>
+</div></div>
+
+<div class="wrap">
+<nav class="toc" aria-label="目录">
+  <p>目录</p>
+  <ol>
+    <li><a href="#problem"><span>01</span>问题</a></li>
+    <li><a href="#claims"><span>02</span>命题</a></li>
+    <li><a href="#g2"><span>03</span>G2 · scikit-fem</a></li>
+    <li><a href="#outputs"><span>04</span>有证书的输出</a></li>
+    <li><a href="#evidence"><span>05</span>交叉校验</a></li>
+    <li><a href="#gaps"><span>06</span>缺口</a></li>
+  </ol>
+</nav>
+<main>
+
+<section id="problem">
+  <p class="sec-no">01</p>
+  <h2>问题</h2>
+  <div class="tbl"><table><tbody>
+      <tr><td class="l">Poisson</td><td>(0, <i class="v">L</i>) 上 −<i class="v">u</i>″ = <i class="v">f</i>，两端各取 Dirichlet、Neumann 或 Robin 条件（两端都是 Neumann 除外）；任意有理节点网格上的 P1 线性元。</td></tr>
+      <tr><td class="l">梁</td><td>(0, <i class="v">L</i>) 上 <i class="v">u</i>⁗ = <i class="v">f</i>，两端为固支、简支、自由、滑动的任意组合；三次 Hermite 元，未知量是节点值与节点斜率。</td></tr>
+      <tr><td class="l">右端项</td><td>多项式、e<sup><i class="v">λx</i></sup>、sin、cos（包括 <i class="v">qπx</i> 的）的和与积；检查器用 Taylor 模型重新包住它们，不信任求解器的数值积分。</td></tr>
+      <tr><td class="l">为什么先做一维</td><td>Green 函数与经典解可以绕开 Sobolev 空间，所以每个结论都能针对真解；二维需要 Lean 中的 H¹ 模型。</td></tr>
+    </tbody></table></div>
+</section>
+
+<section id="claims">
+  <p class="sec-no">02</p>
+  <h2>可信账本中的命题</h2>
+  <div class="sbar big" role="img" aria-label="11 条命题：T4 3 条，T3 8 条">
+    <i class="sw-t4" style="flex:3"></i><i class="sw-t3" style="flex:8"></i>
+  </div>
+  <div class="legend">
+    <span><i class="sw-t4"></i>T4 端到端 · 3</span>
+    <span><i class="sw-t3"></i>T3 机器证明 · 8</span>
+  </div>
+  <div class="tbl"><table>
+    <thead><tr><th>编号</th><th>命题</th><th>等级</th></tr></thead>
+    <tbody>
+      <tr><td class="l">FEM-C01</td><td>Poisson：Green 表示是经典解，并且是唯一的经典解</td><td class="st"><span class="tag m">T3</span></td></tr>
+      <tr><td class="l">FEM-D01</td><td>P1 的节点精确性与离散 Green 表示</td><td class="st"><span class="tag m">T3</span></td></tr>
+      <tr><td class="l">FEM-D02</td><td>单元内的逐点误差：<i class="v">Mh</i>²/8 加节点误差</td><td class="st"><span class="tag m">T3</span></td></tr>
+      <tr><td class="l">FEM-D03</td><td>Céa 引理（抽象形式，为二维做准备）</td><td class="st"><span class="tag m">T3</span></td></tr>
+      <tr><td class="l">FEM-D04</td><td>离散最大值原理</td><td class="st"><span class="tag m">T3</span></td></tr>
+      <tr><td class="l">FEM-C02</td><td>梁：经典解存在且唯一</td><td class="st"><span class="tag m">T3</span></td></tr>
+      <tr><td class="l">FEM-D05</td><td>Hermite 元的离散稳定性（不需要最大值原理）</td><td class="st"><span class="tag m">T3</span></td></tr>
+      <tr><td class="l">FEM-D06</td><td>Hermite 元的节点精确性与 <i class="v">h</i>⁴/384 插值误差界</td><td class="st"><span class="tag m">T3</span></td></tr>
+      <tr><td class="l">FEM-B02</td><td>右端项的 Taylor 模型可靠</td><td class="st"><span class="tag s">T4</span></td></tr>
+      <tr><td class="l">FEM-B01</td><td>P1 检查器可靠：<i class="v">u</i>(<i class="v">x<sub>i</sub></i>) 的区间与 max |<i class="v">u</i> − <i class="v">u<sub>h</sub></i>| 的上界</td><td class="st"><span class="tag s">T4</span></td></tr>
+      <tr><td class="l">FEM-B03</td><td>梁检查器可靠：节点值与斜率的区间，以及最大误差界</td><td class="st"><span class="tag s">T4</span></td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="g2">
+  <p class="sec-no">03</p>
+  <h2>目标 G2：带形式化证明的有限元，对照 scikit-fem</h2>
+  <div class="prose"><p>参照 scikit-fem 12.0.2，在同一离散问题上比较。完成标准与 G1 相同，另加一条：能做到的地方，证书的结论针对<b>连续问题的真解</b>，而不只是离散解。一维时可以绕开 Sobolev 空间，用 Green 函数与经典解；二维需要 Lean 中的 H¹ 模型。</p></div>
+  <div class="ms">
+    <div class="row"><span class="code">F0</span><div>一维 Poisson，P1 元</div><div class="barcell"><div class="sbar"><i class="sw-done" style="flex:7"></i></div></div><span class="n">7 / 7</span></div>
+    <div class="row"><span class="code">F1</span><div>一维扩展</div><div class="barcell"><div class="sbar"><i class="sw-done" style="flex:4"></i><i class="sw-todo" style="flex:5"></i></div></div><span class="n">4 / 9</span></div>
+    <div class="row"><span class="code">F2</span><div>二维三角形网格</div><div class="barcell"><div class="sbar"><i class="sw-todo" style="flex:5"></i></div></div><span class="n">0 / 5</span></div>
+    <div class="row"><span class="code">F3</span><div>更多物理与三维</div><div class="barcell"><div class="sbar"><i class="sw-todo" style="flex:5"></i></div></div><span class="n">0 / 5</span></div>
+  </div>
+
+  <h3 style="margin-top:32px">F0 · 一维 Poisson，P1 元：已全部完成</h3>
+  <div class="tbl"><table class="feat">
+    <thead><tr><th>功能</th><th>状态</th><th>证书覆盖</th></tr></thead>
+    <tbody>
+      <tr><td>一维网格：均匀、加密、任意有理节点</td><td class="st"><span class="tag st-done">完成</span></td><td>检查器验证节点有序</td></tr>
+      <tr><td>P1 线性元、刚度与载荷组装</td><td class="st"><span class="tag st-done">完成</span></td><td>检查器用 Taylor 模型重新包住载荷，不信任求解器的数值积分</td></tr>
+      <tr><td>非齐次 Dirichlet 边界</td><td class="st"><span class="tag st-done">完成</span></td><td>由检查器的可靠性定理覆盖</td></tr>
+      <tr><td>多项式右端</td><td class="st"><span class="tag st-done">完成</span></td><td>精确积分</td></tr>
+      <tr><td>线性方程组求解</td><td class="st"><span class="tag st-done">完成</span></td><td>求解器不受信任，它的节点误差有精确的界</td></tr>
+      <tr><td>真解的节点值与逐点误差界</td><td class="st"><span class="tag st-done">完成</span></td><td>经典解存在唯一、节点精确性、<i class="v">h</i>²/8 插值误差、离散最大值原理均已证明</td></tr>
+      <tr><td>Céa 引理（抽象空间）</td><td class="st"><span class="tag st-done">完成</span></td><td>已证明，为二维做准备</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3 style="margin-top:28px">F1 · 一维扩展</h3>
+  <div class="tbl"><table class="feat">
+    <thead><tr><th>功能</th><th>状态</th><th>证书覆盖</th></tr></thead>
+    <tbody>
+      <tr><td>Neumann、Robin 边界</td><td class="st"><span class="tag st-done">完成</span></td><td>全部理论按一般边界条件证明；两端 Neumann 除外</td></tr>
+      <tr><td>非多项式右端</td><td class="st"><span class="tag st-done">完成</span></td><td>多项式、指数、正弦、余弦的和与积，用余项经过证明的 Taylor 模型；节点区间宽约 10<sup>−15</sup></td></tr>
+      <tr><td>Hermite 梁元（四阶问题）</td><td class="st"><span class="tag st-done">完成</span></td><td>固支、简支、自由、滑动的任意组合；节点值与斜率都有严格区间；<i class="v">h</i>⁴/384 插值误差已证明</td></tr>
+      <tr><td>自适应加密（一维）</td><td class="st"><span class="tag st-done">完成</span></td><td>按经过证明的单元误差界标记，而不是估计量；最终网格有证书</td></tr>
+      <tr><td>变系数方程</td><td class="st"><span class="tag st-todo">未开始</span></td><td></td></tr>
+      <tr><td>P2 及高阶 Lagrange 元</td><td class="st"><span class="tag st-todo">未开始</span></td><td></td></tr>
+      <tr><td>特征值问题</td><td class="st"><span class="tag st-todo">未开始</span></td><td>可复用 DFT 的惯性论证</td></tr>
+      <tr><td>能量范数误差</td><td class="st"><span class="tag st-todo">未开始</span></td><td></td></tr>
+      <tr><td>与 scikit-fem 的一维示例逐一对照</td><td class="st"><span class="tag st-todo">未开始</span></td><td></td></tr>
+    </tbody>
+  </table></div>
+
+  <details class="more"><summary>计划中：F2–F3（10 项，均未开始）</summary>
+    <h4 style="margin-top:14px">F2 · 二维三角形网格</h4>
+    <ul class="planned"><li>三角形网格，形状正则性由检查器验证（Sleipner 的教训）</li><li>P1、P2 三角形元</li><li>H¹<sub>0</sub> 的 Lean 模型</li><li>保证上界的后验估计（平衡通量）</li><li>四边形元</li></ul>
+    <h4>F3 · 更多物理与三维</h4>
+    <ul class="planned"><li>线弹性（Korn 不等式）</li><li>Stokes 与混合元（inf-sup 条件）</li><li>二维自适应加密</li><li>四面体、六面体网格</li><li>并行组装，用 TLA+ 规范</li></ul>
+  </details>
+</section>
+
+<section id="outputs">
+  <p class="sec-no">04</p>
+  <h2>一次有证书的运行现在能给出什么</h2>
+  <div class="card"><h3>关于真解的严格结论</h3>
+    <ul style="padding-left:1.1em;margin:8px 0 0;font-size:15px">
+        <li>每个节点上 <i class="v">u</i>(<i class="v">x<sub>i</sub></i>) 的区间</li>
+        <li>梁问题另有斜率 <i class="v">u</i>′(<i class="v">x<sub>i</sub></i>) 的区间</li>
+        <li>求解器自己算出的节点值的精确误差</li>
+        <li>整个区间上 max |<i class="v">u</i> − <i class="v">u<sub>h</sub></i>| 的上界，以及逐单元的上界</li>
+        <li>自适应加密到指定容差的网格，容差在最终网格上有证书</li>
+    </ul></div>
+</section>
+
+<section id="evidence">
+  <p class="sec-no">05</p>
+  <h2>交叉校验与辅助证据</h2>
+  <ul class="checks">
+    <li><span>11 个 Poisson、6 个梁用例，Lean 节点区间都包含参考解</span><b>宽度 ≤ 3×10⁻¹⁵</b></li>
+    <li><span>scikit-fem 与 mini-FEM 的节点值差（Poisson / 梁）</span><b>≤ 3×10⁻¹³ / 4×10⁻¹²</b></li>
+    <li><span>证明的最大误差界与采样到的实际误差之比</span><b>0.85 – 1.00</b></li>
+    <li><span>篡改节点值</span><b>只让误差界变大</b></li>
+  </ul>
+</section>
+
+<section id="gaps">
+  <p class="sec-no">06</p>
+  <h2>缺口</h2>
+  <ul class="gaps">
+    <li><strong>其他右端函数</strong>对数、分式、分段函数需要各自的 Taylor 模型；现在只有多项式、指数、正弦、余弦。</li>
+    <li><strong>两端 Neumann 条件</strong>解只确定到一个常数，需要相容性条件与规范化；驱动与检查器现在都拒绝。</li>
+    <li><strong>超越函数右端的检查时间</strong>每个单元约 13 毫秒，主要花在中点处的精确有理级数；改为逐项舍入的区间级数会更快。</li>
+    <li><strong>梁的变刚度与弹性支承</strong>只有 <i class="v">EI</i> = 1；检查器接受任意 4×4 边界矩阵，驱动只写出四种标准端部条件。</li>
+    <li><strong>C 驱动本身</strong>不受信任（T0），没有 Frama-C 证明；所有结果都经过检查器。阶段 3 计划让单元刚度组装达到 T4。</li>
+  </ul>
+</section>
+
+</main>
+</div>
+
+<footer><div class="in">
+  <span>Formal in Silico · 现状快照 2026-10-01</span>
+  <span><a href="./">纲领</a> · <a href="progress.html">进度</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="../fem.html" hreflang="en">English</a></span>
+</div></footer>
+</body>
+</html>
