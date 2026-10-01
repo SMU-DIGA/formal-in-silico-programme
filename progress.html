@@ -176,13 +176,14 @@
     </tbody>
   </table></div>
   <p class="note">Each domain also has its own modelling conventions — for example that the certified problem uses the exact rationals written in the certificate, or that the TDB database is translated correctly — named on its page where they apply.</p>
+  <p class="note">The C drivers that write those problems are untrusted, but they are kept honest. Their reports are checked line by line against the checkers’ own output. Their thread protocol is replayed against its TLA+ specification. They are fuzzed under AddressSanitizer and UBSan, and they reject any input they cannot write into a certificate exactly. All of this runs in <code>make verify-all</code>. The largest remaining gap is that the checkers neither recompute nor echo the problem data in a certificate.</p>
 </section>
 
 </main>
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · status snapshot 1 October 2026<span class="updated"> · updated <time datetime="2026-10-01T20:11+08:00">2026-10-01 20:11 UTC+8</time></span></span>
+  <span>Formal in Silico · status snapshot 1 October 2026<span class="updated"> · updated <time datetime="2026-10-01T23:54+08:00">2026-10-01 23:54 UTC+8</time></span></span>
   <span><a href="./">Programme</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="zh/progress.html" hreflang="zh-CN">中文版</a></span>
 </div></footer>
 </body>

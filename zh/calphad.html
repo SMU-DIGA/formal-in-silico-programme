@@ -272,6 +272,8 @@ Lean  EXISTS</pre>
     <li><span>篡改的证书</span><b>失败，或仍然正确的结论</b></li>
     <li><span>每个平衡的检查时间；整个基准</span><b>0.1 – 2.4 秒；218 秒</b></li>
     <li><span>驱动在 AddressSanitizer 与 UBSan 下运行点平衡与相图</span><b>无报告</b></li>
+    <li><span>报告校验：报告中每一行 <code>Lean</code> 都是检查器自己的输出；检查器拒绝、崩溃或不存在时驱动以错误退出</span><b>通过</b></li>
+    <li><span>收紧输入解析后，在 AddressSanitizer 与 UBSan 下对驱动做模糊测试（约 34 000 个变异输入）</span><b>无内存错误、未定义行为与崩溃</b></li>
   </ul>
   <p class="note">Al–Fe 在 1000 K、<i class="v">x</i> = 0.9 时，pycalphad 多相 <code>equilibrium</code> 的 <code>GM</code> 比它自己的 <code>calculate</code> 与单相平衡在同一点高 6×10⁻⁶ J/mol，恰好落在 Lean 区间之外。证书是对的；基准对 pycalphad <code>GM</code> 的容差因此取 10⁻⁵ J/mol。</p>
 </section>
@@ -280,7 +282,7 @@ Lean  EXISTS</pre>
   <p class="sec-no">10</p>
   <h2>尚未解决的缺口</h2>
   <ul class="gaps">
-    <li><strong>从 TDB 文件到认证的模型</strong>选温度区间、展开函数引用、判断相的类型由驱动完成，不在可信链内（A-CAL-01）。基准把结果与 pycalphad 对照。</li>
+    <li><strong>从 TDB 文件到认证的模型</strong>选温度区间、展开函数引用、判断相的类型由驱动完成，不在可信链内（A-CAL-01）。基准把结果与 pycalphad 对照。模糊测试曾发现一些输入让驱动写出另一个模型的证书、检查器照样接受：<code>3*T**1.5</code> 被读成 3<i class="v">T</i> + 0.5，系数在定长缓冲区里被截断，精确位置比运算溢出导致相被丢掉，<code>0.25*2</code> 这样的命令行数值在驱动和检查器里含义不同。10 月 1 日起驱动拒绝一切无法精确翻译的输入；此前被静默读错的三个 pycalphad 测试数据库现在与 pycalphad 读法一致，另有四个无法精确翻译的数据库改为报错。检查器仍然既不重算也不回显模型。</li>
     <li><strong>相图的完整性</strong>列出的每个区域在中点处有证书；区域划分是否完整、中点之间与网格温度之间的情况都没有证书。计划：用相邻证书的切线把中间任意成分处的平衡切线夹住。</li>
     <li><strong>有序–无序、间隙溶体、亚点阵与多元模型</strong>Lean 中尚未定义。驱动跳过这些相并列出；结论只对参与计算的相成立。<code>TC</code> 或 <code>BMAGN</code> 依赖 log <i class="v">T</i> 的磁性相也被跳过。</li>
     <li><strong>驱动本身</strong>网格搜索与 Newton 迭代不受信任（T0），报告中如此标注；所有结果都经过检查器。</li>
@@ -291,7 +293,7 @@ Lean  EXISTS</pre>
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · 现状快照 2026-10-01<span class="updated"> · 更新于 <time datetime="2026-10-01T20:11+08:00">2026-10-01 20:11 UTC+8</time></span></span>
+  <span>Formal in Silico · 现状快照 2026-10-01<span class="updated"> · 更新于 <time datetime="2026-10-01T23:54+08:00">2026-10-01 23:54 UTC+8</time></span></span>
   <span><a href="./">纲领</a> · <a href="progress.html">进度</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="../calphad.html" hreflang="en">English</a></span>
 </div></footer>
 </body>

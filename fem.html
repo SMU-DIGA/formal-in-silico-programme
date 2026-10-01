@@ -166,6 +166,8 @@
     <li><span>scikit-fem nodal values against mini-FEM (Poisson / beam)</span><b>≤ 3×10⁻¹³ / 4×10⁻¹²</b></li>
     <li><span>proved max-error bound relative to the sampled actual error</span><b>0.85 – 1.00</b></li>
     <li><span>tampered nodal values</span><b>only widen the error bound</b></li>
+    <li><span>Report validation: every <code>Lean</code> line in a report is the checker’s own output; a rejecting, crashing or missing checker makes the driver exit with an error</span><b>pass</b></li>
+    <li><span>Fuzzing of the driver under AddressSanitizer and UBSan (about 14 000 mutated inputs), after hardening its input parsing</span><b>no memory errors, undefined behaviour or crashes</b></li>
   </ul>
 </section>
 
@@ -177,7 +179,7 @@
     <li><strong>Neumann at both ends</strong>The solution is defined only up to a constant; a compatibility condition and a normalisation are needed. Both driver and checker reject it.</li>
     <li><strong>Checking time for transcendental loads</strong>About 13 ms per element, mostly in exact rational series at element midpoints; an interval series with term-wise rounding would be faster.</li>
     <li><strong>Variable beam stiffness and elastic supports</strong>Only <i class="v">EI</i> = 1; the checker accepts any 4×4 boundary matrix, but the driver writes only the four standard end conditions.</li>
-    <li><strong>The driver itself</strong>Untrusted (T0) with no Frama-C proof; every result passes through the checker. Phase 3 plans to bring element-stiffness assembly to T4.</li>
+    <li><strong>The driver itself</strong>Untrusted (T0) with no Frama-C proof; every result passes through the checker. Since 1 October it parses numbers strictly and rejects inputs it cannot write exactly (fuzzing had found a right-hand side truncated at 4 KB and NaN parameters written as zero); the boundary data and load in the certificate are still not echoed by the checker. Phase 3 plans to bring element-stiffness assembly to T4.</li>
   </ul>
 </section>
 
@@ -185,7 +187,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · status snapshot 1 October 2026<span class="updated"> · updated <time datetime="2026-10-01T08:30+08:00">2026-10-01 08:30 UTC+8</time></span></span>
+  <span>Formal in Silico · status snapshot 1 October 2026<span class="updated"> · updated <time datetime="2026-10-01T23:54+08:00">2026-10-01 23:54 UTC+8</time></span></span>
   <span><a href="./">Programme</a> · <a href="progress.html">Progress</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="zh/fem.html" hreflang="zh-CN">中文版</a></span>
 </div></footer>
 </body>

@@ -178,6 +178,8 @@ Lean  EPSMAX 0.00000004460799189706</pre>
     <li><span>负质量、原子重叠、管道半径小于一步的缺陷</span><b>MD_FAIL</b></li>
     <li><span>检查时间，8 个原子 1000 步（随 <i class="v">N</i>² 增长）</span><b>约 50 秒</b></li>
     <li><span>AddressSanitizer 与 UBSan 下的驱动</span><b>无报错</b></li>
+    <li><span>报告校验：报告中每一行 <code>Lean</code> 都是检查器自己的输出；检查器拒绝、崩溃或不存在时驱动以错误退出</span><b>通过</b></li>
+    <li><span>收紧输入解析后，在 AddressSanitizer 与 UBSan 下对驱动做模糊测试（约 10 000 个变异输入）</span><b>无内存错误、未定义行为与崩溃</b></li>
   </ul>
 </section>
 
@@ -190,7 +192,7 @@ Lean  EPSMAX 0.00000004460799189706</pre>
     <li><strong>统计量</strong>温度、径向分布函数、自相关都和能量一样是计算状态的精确函数，尚未实现。</li>
     <li><strong>周期盒子、截断、恒温器、约束、二维与三维、并行</strong>未开始。截断使力不连续，管道定理需要分段光滑的推广；并行协议（原子迁移、halo 交换）按计划用 TLA+ 描述。</li>
     <li><strong>检查时间</strong>8 个原子每步约 50 毫秒，主要花在 <i class="v">φ</i> 及其导数的精确有理数计算上；改用区间运算会快得多。</li>
-    <li><strong>C 驱动本身</strong>不受信任（T0），所有结果都经过检查器。阶段 3 计划让 Verlet 单步达到 T4。</li>
+    <li><strong>C 驱动本身</strong>不受信任（T0），所有结果都经过检查器。10 月 1 日起拒绝非有限或格式错误的参数，积分出现非有限状态时停止；证书中的初值与 Lennard-Jones 参数除 <code>E0</code> 外仍不由检查器回显。阶段 3 计划让 Verlet 单步达到 T4。</li>
   </ul>
 </section>
 
@@ -198,7 +200,7 @@ Lean  EPSMAX 0.00000004460799189706</pre>
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · 现状快照 2026-10-01<span class="updated"> · 更新于 <time datetime="2026-10-01T08:30+08:00">2026-10-01 08:30 UTC+8</time></span></span>
+  <span>Formal in Silico · 现状快照 2026-10-01<span class="updated"> · 更新于 <time datetime="2026-10-01T23:54+08:00">2026-10-01 23:54 UTC+8</time></span></span>
   <span><a href="./">纲领</a> · <a href="progress.html">进度</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="../md.html" hreflang="en">English</a></span>
 </div></footer>
 </body>

@@ -180,7 +180,7 @@
   <h2>交叉校验与辅助证据</h2>
   <div class="prose"><p>基准不提升可信等级，但能发现理解上的错误：如果 Lean 区间排除了一个独立的参考值，就说明模型写错了。</p></div>
   <ul class="checks">
-    <li><span>DFT 基准，含与 DFTK.jl 的交叉校验（9 月 30 日的运行，此后加入了 LDA 用例；LDA 证书也通过 <code>make verify-quick</code>）</span><b>110 / 110 通过</b></li>
+    <li><span>DFT 基准，含与 DFTK.jl 的交叉校验（10 月 1 日的运行）</span><b>143 / 143 通过</b></li>
     <li><span>同一离散问题上与 DFTK.jl 的能量（自由能）差</span><b>≤ 5×10⁻¹⁵</b></li>
     <li><span>与 DFTK.jl 的全部本征值与能量分项差</span><b>≤ 10⁻¹²</b></li>
     <li><span>DFTK 的 Gaussian 自由能，以及 MP/MV 的费米能级、能量、自由能</span><b>落在 Lean 区间内</b></li>
@@ -190,6 +190,10 @@
     <li><span>Trace validation：收敛、能隙闭合、达到迭代上限、证书未通过四种结局</span><b>全部接受</b></li>
     <li><span>Trace validation：篡改的轨迹（证书未通过却报告收敛、丢失记录、上限不符）</span><b>全部拒绝</b></li>
     <li><span>SCF 控制器规范的变异测试（去掉证书检查或迭代上限）</span><b>TLC 均能发现</b></li>
+    <li><span>k 点线程的 trace validation：每次领取、汇合与累加都按协议规范重放，1、4、7 个线程</span><b>全部接受</b></li>
+    <li><span>篡改的线程日志（重复领取、领取顺序与计数器不符、累加顺序错误、退出前汇合、缺少求化学势的步骤）</span><b>全部拒绝</b></li>
+    <li><span>报告校验：报告中每一行 <code>Lean</code> 都是检查器自己的输出；检查器拒绝、崩溃或不存在时驱动以错误退出</span><b>通过</b></li>
+    <li><span>收紧输入解析后，在 AddressSanitizer 与 UBSan 下对驱动做模糊测试（约 4 000 个变异输入）</span><b>无内存错误、未定义行为与崩溃</b></li>
   </ul>
 </section>
 
@@ -205,6 +209,7 @@
     <li><strong>有限温度的离散误差</strong>目前只有零温的证书。</li>
     <li><strong>截断极限等于连续模型的能量</strong>尚未证明。</li>
     <li><strong>有限温度与 k 点运行的密度、本征值、能带与态密度</strong>目前只有零温 Γ 点的证书。</li>
+    <li><strong>证书中写的问题</strong>外势系数、周期长度、截断、电子数、温度与展宽函数由不受信任的驱动写出；检查器认证的正是这个问题，但既不重算也不回显它（A-DFT-05）。只有高斯外势的几行把系数与真实势对照。</li>
     <li><strong>区间算术的代码层证明</strong>Lean 模型与 C 代码的一致性只有逐行对照与差分测试，没有证明。</li>
   </ul>
 </section>
@@ -213,7 +218,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · 现状快照 2026-10-01<span class="updated"> · 更新于 <time datetime="2026-10-01T20:11+08:00">2026-10-01 20:11 UTC+8</time></span></span>
+  <span>Formal in Silico · 现状快照 2026-10-01<span class="updated"> · 更新于 <time datetime="2026-10-01T23:54+08:00">2026-10-01 23:54 UTC+8</time></span></span>
   <span><a href="./">纲领</a> · <a href="progress.html">进度</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="../dft.html" hreflang="en">English</a></span>
 </div></footer>
 </body>

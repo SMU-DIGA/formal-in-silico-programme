@@ -180,7 +180,7 @@
   <h2>Cross-checks and supporting evidence</h2>
   <div class="prose"><p>Benchmarks do not raise a tier, but they catch misunderstandings: a Lean interval that excludes an independent reference value would reveal a wrong model.</p></div>
   <ul class="checks">
-    <li><span>DFT benchmark suite, including cross-checks with DFTK.jl (run of 30 September, before the LDA cases were added; the LDA certificates also pass <code>make verify-quick</code>)</span><b>110 / 110 pass</b></li>
+    <li><span>DFT benchmark suite, including cross-checks with DFTK.jl (run of 1 October)</span><b>143 / 143 pass</b></li>
     <li><span>Energies (free energies) against DFTK.jl on the same discrete problem</span><b>≤ 5×10⁻¹⁵</b></li>
     <li><span>All eigenvalues and energy components against DFTK.jl</span><b>≤ 10⁻¹²</b></li>
     <li><span>DFTK’s Gaussian free energy, and its MP/MV Fermi level, energy and free energy</span><b>inside the Lean intervals</b></li>
@@ -190,6 +190,10 @@
     <li><span>Trace validation: runs ending converged, gap closed, max iterations, certificate failed</span><b>all accepted</b></li>
     <li><span>Trace validation: tampered traces (claimed convergence without a certificate, a dropped record, wrong limit)</span><b>all rejected</b></li>
     <li><span>Mutation tests on the SCF controller spec (remove the certificate check or the iteration cap)</span><b>caught by TLC</b></li>
+    <li><span>Trace validation of the k-point threads: every claim, join and reduction step replayed against the protocol, 1, 4 and 7 threads</span><b>all accepted</b></li>
+    <li><span>Tampered thread logs (double claim, claim out of counter order, reduction out of order, join before exit, missing chemical-potential step)</span><b>all rejected</b></li>
+    <li><span>Report validation: every <code>Lean</code> line in a report is the checker’s own output; a rejecting, crashing or missing checker makes the driver exit with an error</span><b>pass</b></li>
+    <li><span>Fuzzing of the driver under AddressSanitizer and UBSan (about 4 000 mutated inputs), after hardening its input parsing</span><b>no memory errors, undefined behaviour or crashes</b></li>
   </ul>
 </section>
 
@@ -205,6 +209,7 @@
     <li><strong>Discretisation error at finite temperature</strong>Certified at zero temperature only.</li>
     <li><strong>Truncation limit equals the continuum energy</strong>Not yet proved.</li>
     <li><strong>Density, eigenvalues, bands and DOS for finite-temperature and k-point runs</strong>Certified for zero-temperature Γ-point runs only.</li>
+    <li><strong>The problem written in the certificate</strong>The potential coefficients, cell length, cutoff, electron count, temperature and smearing are written by the untrusted driver; the checker certifies exactly that problem but neither recomputes nor echoes it (A-DFT-05). Only the Gaussian-potential lines compare the coefficients with the true potential.</li>
     <li><strong>Code-level proof of the interval arithmetic</strong>The Lean model and the C code agree by review and differential tests, not by proof.</li>
   </ul>
 </section>
@@ -213,7 +218,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · status snapshot 1 October 2026<span class="updated"> · updated <time datetime="2026-10-01T20:11+08:00">2026-10-01 20:11 UTC+8</time></span></span>
+  <span>Formal in Silico · status snapshot 1 October 2026<span class="updated"> · updated <time datetime="2026-10-01T23:54+08:00">2026-10-01 23:54 UTC+8</time></span></span>
   <span><a href="./">Programme</a> · <a href="progress.html">Progress</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="zh/dft.html" hreflang="zh-CN">中文版</a></span>
 </div></footer>
 </body>

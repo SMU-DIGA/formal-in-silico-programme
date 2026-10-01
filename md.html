@@ -178,6 +178,8 @@ Lean  EPSMAX 0.00000004460799189706</pre>
     <li><span>Negative mass, overlapping atoms, a tube radius smaller than one step’s defect</span><b>MD_FAIL</b></li>
     <li><span>Checking time, 8 atoms, 1000 steps (grows as <i class="v">N</i>²)</span><b>≈ 50 s</b></li>
     <li><span>Driver under AddressSanitizer and UBSan</span><b>clean</b></li>
+    <li><span>Report validation: every <code>Lean</code> line in a report is the checker’s own output; a rejecting, crashing or missing checker makes the driver exit with an error</span><b>pass</b></li>
+    <li><span>Fuzzing of the driver under AddressSanitizer and UBSan (about 10 000 mutated inputs), after hardening its input parsing</span><b>no memory errors, undefined behaviour or crashes</b></li>
   </ul>
 </section>
 
@@ -190,7 +192,7 @@ Lean  EPSMAX 0.00000004460799189706</pre>
     <li><strong>Statistics</strong>Temperature, radial distribution functions and autocorrelations are exact functions of the computed states, like the energy, but are not implemented yet.</li>
     <li><strong>Periodic boxes, cutoffs, thermostats, constraints, 2D and 3D, parallelism</strong>Not started. A cutoff makes the force discontinuous, so the tube theorem needs a piecewise-smooth version; the parallel protocols (atom migration, halo exchange) are to be specified in TLA+.</li>
     <li><strong>Checking time</strong>About 50 ms per step for 8 atoms, mostly exact rational evaluation of <i class="v">φ</i> and its derivatives; interval arithmetic would be much faster.</li>
-    <li><strong>The driver itself</strong>Untrusted (T0); every result passes through the checker. Phase 3 plans to bring one Verlet step to T4.</li>
+    <li><strong>The driver itself</strong>Untrusted (T0); every result passes through the checker. Since 1 October it rejects non-finite or malformed parameters and stops if the integration produces a non-finite state; the initial state and the Lennard-Jones parameters in the certificate are still not echoed by the checker beyond <code>E0</code>. Phase 3 plans to bring one Verlet step to T4.</li>
   </ul>
 </section>
 
@@ -198,7 +200,7 @@ Lean  EPSMAX 0.00000004460799189706</pre>
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · status snapshot 1 October 2026<span class="updated"> · updated <time datetime="2026-10-01T08:30+08:00">2026-10-01 08:30 UTC+8</time></span></span>
+  <span>Formal in Silico · status snapshot 1 October 2026<span class="updated"> · updated <time datetime="2026-10-01T23:54+08:00">2026-10-01 23:54 UTC+8</time></span></span>
   <span><a href="./">Programme</a> · <a href="progress.html">Progress</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="zh/md.html" hreflang="zh-CN">中文版</a></span>
 </div></footer>
 </body>

@@ -166,6 +166,8 @@
     <li><span>scikit-fem 与 mini-FEM 的节点值差（Poisson / 梁）</span><b>≤ 3×10⁻¹³ / 4×10⁻¹²</b></li>
     <li><span>证明的最大误差界与采样到的实际误差之比</span><b>0.85 – 1.00</b></li>
     <li><span>篡改节点值</span><b>只让误差界变大</b></li>
+    <li><span>报告校验：报告中每一行 <code>Lean</code> 都是检查器自己的输出；检查器拒绝、崩溃或不存在时驱动以错误退出</span><b>通过</b></li>
+    <li><span>收紧输入解析后，在 AddressSanitizer 与 UBSan 下对驱动做模糊测试（约 14 000 个变异输入）</span><b>无内存错误、未定义行为与崩溃</b></li>
   </ul>
 </section>
 
@@ -177,7 +179,7 @@
     <li><strong>两端 Neumann 条件</strong>解只确定到一个常数，需要相容性条件与规范化；驱动与检查器现在都拒绝。</li>
     <li><strong>超越函数右端的检查时间</strong>每个单元约 13 毫秒，主要花在中点处的精确有理级数；改为逐项舍入的区间级数会更快。</li>
     <li><strong>梁的变刚度与弹性支承</strong>只有 <i class="v">EI</i> = 1；检查器接受任意 4×4 边界矩阵，驱动只写出四种标准端部条件。</li>
-    <li><strong>C 驱动本身</strong>不受信任（T0），没有 Frama-C 证明；所有结果都经过检查器。阶段 3 计划让单元刚度组装达到 T4。</li>
+    <li><strong>C 驱动本身</strong>不受信任（T0），没有 Frama-C 证明；所有结果都经过检查器。10 月 1 日起严格解析数值，无法精确写出的输入一律拒绝（模糊测试曾发现右端项在 4 KB 处被截断、NaN 参数被写成 0）；证书中的边界数据与载荷仍不由检查器回显。阶段 3 计划让单元刚度组装达到 T4。</li>
   </ul>
 </section>
 
@@ -185,7 +187,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · 现状快照 2026-10-01<span class="updated"> · 更新于 <time datetime="2026-10-01T08:30+08:00">2026-10-01 08:30 UTC+8</time></span></span>
+  <span>Formal in Silico · 现状快照 2026-10-01<span class="updated"> · 更新于 <time datetime="2026-10-01T23:54+08:00">2026-10-01 23:54 UTC+8</time></span></span>
   <span><a href="./">纲领</a> · <a href="progress.html">进度</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="../fem.html" hreflang="en">English</a></span>
 </div></footer>
 </body>

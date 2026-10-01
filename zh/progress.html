@@ -176,13 +176,14 @@
     </tbody>
   </table></div>
   <p class="note">每个领域另有自己的建模约定，例如被认证的问题取证书中的精确有理数、TDB 数据库的翻译正确等，在各领域页面中相应的位置注明。</p>
+  <p class="note">写出这些问题的 C 驱动不受信任，但有几道检查：报告逐行与检查器自己的输出对照；线程协议按 TLA+ 规范重放；在 AddressSanitizer 与 UBSan 下做模糊测试；无法精确写进证书的输入一律拒绝。这些都在 <code>make verify-all</code> 中运行。最大的剩余缺口是检查器既不重算也不回显证书中的问题数据。</p>
 </section>
 
 </main>
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · 现状快照 2026-10-01<span class="updated"> · 更新于 <time datetime="2026-10-01T20:11+08:00">2026-10-01 20:11 UTC+8</time></span></span>
+  <span>Formal in Silico · 现状快照 2026-10-01<span class="updated"> · 更新于 <time datetime="2026-10-01T23:54+08:00">2026-10-01 23:54 UTC+8</time></span></span>
   <span><a href="./">纲领</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="../progress.html" hreflang="en">English</a></span>
 </div></footer>
 </body>

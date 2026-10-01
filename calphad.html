@@ -272,6 +272,8 @@ Lean  EXISTS</pre>
     <li><span>Tampered certificates</span><b>fail, or still-correct conclusions</b></li>
     <li><span>Checking time per equilibrium; whole benchmark</span><b>0.1 – 2.4 s; 218 s</b></li>
     <li><span>Driver under AddressSanitizer and UBSan, point equilibria and phase diagrams</span><b>clean</b></li>
+    <li><span>Report validation: every <code>Lean</code> line in a report is the checker’s own output; a rejecting, crashing or missing checker makes the driver exit with an error</span><b>pass</b></li>
+    <li><span>Fuzzing of the driver under AddressSanitizer and UBSan (about 34 000 mutated inputs), after hardening its input parsing</span><b>no memory errors, undefined behaviour or crashes</b></li>
   </ul>
   <p class="note">At Al–Fe 1000 K, <i class="v">x</i> = 0.9, pycalphad’s multiphase <code>equilibrium</code> returns a <code>GM</code> 6×10⁻⁶ J/mol above its own <code>calculate</code> and its single-phase equilibrium at the same point — just outside the Lean interval. The certificate is right; the benchmark tolerance on pycalphad’s <code>GM</code> is 10⁻⁵ J/mol for this reason.</p>
 </section>
@@ -280,7 +282,7 @@ Lean  EXISTS</pre>
   <p class="sec-no">10</p>
   <h2>Open gaps</h2>
   <ul class="gaps">
-    <li><strong>From TDB file to certified model</strong>Choosing temperature ranges, expanding function references and classifying phases is done by the driver, outside the trust chain (A-CAL-01). The benchmark compares the result with pycalphad.</li>
+    <li><strong>From TDB file to certified model</strong>Choosing temperature ranges, expanding function references and classifying phases is done by the driver, outside the trust chain (A-CAL-01). The benchmark compares the result with pycalphad. Fuzzing found inputs for which the driver wrote a certificate for a different model, which the checker then accepted: <code>3*T**1.5</code> read as 3<i class="v">T</i> + 0.5, coefficients truncated in fixed buffers, a phase dropped by overflow in exact site-ratio arithmetic, and command-line numbers such as <code>0.25*2</code> that the driver and the checker read differently. Since 1 October the driver rejects every input it cannot translate exactly; three of pycalphad’s test databases that it had silently misread are now read as pycalphad reads them, and four it cannot translate exactly are rejected. The checker still neither recomputes nor echoes the model.</li>
     <li><strong>Completeness of a phase diagram</strong>Each listed region is certified at its midpoint; that the list is complete, and the regions between the midpoints and between grid temperatures, are not. Planned: neighbouring certificates’ tangents bracket the equilibrium tangent at any composition in between.</li>
     <li><strong>Order–disorder, interstitial, sublattice and multicomponent models</strong>Not yet defined in Lean. The driver skips such phases and lists them; the conclusions hold only for the phases included. Magnetic phases whose <code>TC</code> or <code>BMAGN</code> depends on log <i class="v">T</i> are also skipped.</li>
     <li><strong>The driver itself</strong>Its grid search and Newton iterations are untrusted (T0) and marked so in the report; every result passes through the checker.</li>
@@ -291,7 +293,7 @@ Lean  EXISTS</pre>
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · status snapshot 1 October 2026<span class="updated"> · updated <time datetime="2026-10-01T20:11+08:00">2026-10-01 20:11 UTC+8</time></span></span>
+  <span>Formal in Silico · status snapshot 1 October 2026<span class="updated"> · updated <time datetime="2026-10-01T23:54+08:00">2026-10-01 23:54 UTC+8</time></span></span>
   <span><a href="./">Programme</a> · <a href="progress.html">Progress</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="zh/calphad.html" hreflang="zh-CN">中文版</a></span>
 </div></footer>
 </body>
