@@ -32,12 +32,12 @@
 
 <div class="hero small"><div class="hero-in">
   <nav class="domnav" aria-label="Domains"><a href="progress.html">← Progress</a><a href="dft.html" aria-current="page">mini-DFT</a><a href="fem.html">mini-FEM</a><a href="md.html">mini-MD</a><a href="calphad.html">mini-CALPHAD</a></nav>
-  <p class="eyebrow">Domain · goal G1 · status snapshot 1 October 2026</p>
+  <p class="eyebrow">Domain · goal G1 · status snapshot 2 October 2026</p>
   <h1>mini-DFT</h1>
   <p class="lead">A one-dimensional periodic reduced Hartree–Fock model with plane waves — the project’s first domain, where the trust ledger, the certificate checkers and trace validation were built. Goal G1 is feature parity with DFTK.jl 0.8.0 on the same discrete problem, with every output covered by a Lean theorem.</p>
   <div class="stats">
-    <div class="stat"><b>102</b><span>claims in the trust ledger</span></div>
-    <div class="stat"><b>92%</b><span>machine-proved: 74 at T3, 20 at T4</span></div>
+    <div class="stat"><b>104</b><span>claims in the trust ledger</span></div>
+    <div class="stat"><b>92%</b><span>machine-proved: 76 at T3, 20 at T4</span></div>
     <div class="stat"><b>6 / 46</b><span>DFTK parity items done; 4 more agree but lack full certificates, LDA among them</span></div>
     <div class="stat"><b>≤ 5×10⁻¹⁵</b><span>energy difference from DFTK on the same discrete problem</span></div>
   </div>
@@ -59,13 +59,13 @@
 <section id="ledger">
   <p class="sec-no">01</p>
   <h2>Claims in the trust ledger</h2>
-  <div class="prose"><p>Of the ledger’s 132 claims, 102 concern mini-DFT; they are grouped below by topic. The tiers are defined on the <a href="./#s5">programme page</a>.</p></div>
-  <div class="sbar big" role="img" aria-label="102 claims: 20 at T4, 74 at T3, 2 at T2, 1 at T0, 5 not yet reached">
-    <i class="sw-t4" style="flex:20"></i><i class="sw-t3" style="flex:74"></i><i class="sw-t2" style="flex:2"></i><i class="sw-t0" style="flex:1"></i><i class="sw-no" style="flex:5"></i>
+  <div class="prose"><p>Of the ledger’s 134 claims, 104 concern mini-DFT; they are grouped below by topic. The tiers are defined on the <a href="./#s5">programme page</a>.</p></div>
+  <div class="sbar big" role="img" aria-label="104 claims: 20 at T4, 76 at T3, 2 at T2, 1 at T0, 5 not yet reached">
+    <i class="sw-t4" style="flex:20"></i><i class="sw-t3" style="flex:76"></i><i class="sw-t2" style="flex:2"></i><i class="sw-t0" style="flex:1"></i><i class="sw-no" style="flex:5"></i>
   </div>
   <div class="legend">
     <span><i class="sw-t4"></i>T4 end to end · 20</span>
-    <span><i class="sw-t3"></i>T3 machine proof · 74</span>
+    <span><i class="sw-t3"></i>T3 machine proof · 76</span>
     <span><i class="sw-t2"></i>T2 model-checked · 2</span>
     <span><i class="sw-t0"></i>T0 tested · 1</span>
     <span><i class="sw-no"></i>target not yet reached · 5</span>
@@ -80,7 +80,7 @@
     <div class="row"><div>Discretisation error<div class="cap">truncation K → ∞ · true Gaussian potential</div></div><span class="n">13</span><div class="barcell"><div class="sbar"><i class="sw-t4" style="flex:3"></i><i class="sw-t3" style="flex:9"></i><i class="sw-no" style="flex:1"></i></div></div></div>
     <div class="row"><div>Density and eigenvalues</div><span class="n">10</span><div class="barcell"><div class="sbar"><i class="sw-t4" style="flex:3"></i><i class="sw-t3" style="flex:7"></i></div></div></div>
     <div class="row"><div>Band structure and density of states</div><span class="n">3</span><div class="barcell"><div class="sbar"><i class="sw-t4" style="flex:2"></i><i class="sw-t3" style="flex:1"></i></div></div></div>
-    <div class="row"><div>LDA exchange (Slater)<div class="cap">exchange on a real-space grid · nonlinear SCF-solution certificates · energy</div></div><span class="n">13</span><div class="barcell"><div class="sbar"><i class="sw-t4" style="flex:2"></i><i class="sw-t3" style="flex:11"></i></div></div></div>
+    <div class="row"><div>LDA exchange-correlation (Slater, PW92)<div class="cap">exchange-correlation on a real-space grid · nonlinear SCF-solution certificates · energy · PW92 interval bounds</div></div><span class="n">15</span><div class="barcell"><div class="sbar"><i class="sw-t4" style="flex:2"></i><i class="sw-t3" style="flex:13"></i></div></div></div>
   </div>
   <p class="note">The T4 claims are the soundness theorems of the certificate checkers (which run in exact rational arithmetic, so no floating point is involved) and the proof that the trusted C kernel has no run-time errors. The five claims below target: continuum well-posedness of 1D rHF, the a priori plane-wave estimate and linear-mixing convergence (all awaiting a literature check at T1), the equality of the truncation limit with the continuum energy, and the Lean–Rocq interface claim.</p>
 </section>
@@ -139,7 +139,7 @@
   <div class="tbl"><table class="feat">
     <thead><tr><th>Feature</th><th>Status</th><th>What is certified</th></tr></thead>
     <tbody>
-      <tr><td>LDA exchange-correlation (Slater exchange, PW92 correlation)</td><td class="st"><span class="tag st-align">Agrees</span></td><td>Evaluated on the same real-space grid as DFTK (<i class="v">M</i> = 4<i class="v">K</i> + 1 points); six systems — zero temperature, Fermi–Dirac, Marzari–Vanderbilt, Gaussian with Monkhorst–Pack k-points, bands and DOS — agree with DFTK in energy, every component and every eigenvalue. The energy is no longer convex, so there is no variational certificate; for Slater exchange at the Γ point with MV or first-order MP smearing, the checker proves that the nonlinear SCF equations have exactly one solution within about 10⁻¹² of the computed one and encloses its chemical potential, energy (exchange included) and free energy (DFT-X01–X13). DFTK’s Fermi level, energy and free energy fall inside the Lean intervals. Missing: PW92 correlation, zero temperature, Fermi–Dirac and Gaussian smearing, k-points.</td></tr>
+      <tr><td>LDA exchange-correlation (Slater exchange, PW92 correlation)</td><td class="st"><span class="tag st-align">Agrees</span></td><td>Evaluated on the same real-space grid as DFTK (<i class="v">M</i> = 4<i class="v">K</i> + 1 points); six systems — zero temperature, Fermi–Dirac, Marzari–Vanderbilt, Gaussian with Monkhorst–Pack k-points, bands and DOS — agree with DFTK in energy, every component and every eigenvalue. The energy is no longer convex, so there is no variational certificate; for Slater exchange, with or without PW92 correlation, at the Γ point with MV or first-order MP smearing, the checker proves that the nonlinear SCF equations have exactly one solution within about 10⁻¹² of the computed one and encloses its chemical potential, energy (exchange-correlation included) and free energy (DFT-X01–X15). For PW92 the correlation is written in <i class="v">s</i> = √<i class="v">r</i><sub>s</sub>, where every derivative of its logarithm becomes a rational function regular at <i class="v">s</i> = 0; the checker encloses it by interval arithmetic and bounds |<i class="v">v</i>′| and |<i class="v">v</i>″| for all densities above the grid minimum. DFTK’s Fermi level, energy and free energy fall inside the Lean intervals. Missing: zero temperature, Fermi–Dirac and Gaussian smearing, k-points.</td></tr>
     </tbody>
   </table></div>
 
@@ -170,7 +170,7 @@
         <li>band energies along a path and density-of-states values</li>
         <li>free energy, entropy and energy at finite temperature</li>
         <li>for MP/MV smearing: a locally unique SCF solution, its chemical potential, energy and free energy</li>
-        <li>for LDA (Slater exchange) with MP/MV smearing: a locally unique solution of the nonlinear SCF equations, its chemical potential, energy including the exchange energy, and free energy</li>
+        <li>for LDA (Slater exchange, or Slater exchange with PW92 correlation) with MP/MV smearing: a locally unique solution of the nonlinear SCF equations, its chemical potential, energy including the exchange-correlation energy, and free energy</li>
         <li>per-cell values for k-point runs, through the equivalent supercell</li>
     </ul></div>
 </section>
@@ -180,7 +180,7 @@
   <h2>Cross-checks and supporting evidence</h2>
   <div class="prose"><p>Benchmarks do not raise a tier, but they catch misunderstandings: a Lean interval that excludes an independent reference value would reveal a wrong model.</p></div>
   <ul class="checks">
-    <li><span>DFT benchmark suite, including cross-checks with DFTK.jl (run of 1 October)</span><b>143 / 143 pass</b></li>
+    <li><span>DFT benchmark suite, including cross-checks with DFTK.jl (run of 2 October)</span><b>149 / 149 pass</b></li>
     <li><span>Energies (free energies) against DFTK.jl on the same discrete problem</span><b>≤ 5×10⁻¹⁵</b></li>
     <li><span>All eigenvalues and energy components against DFTK.jl</span><b>≤ 10⁻¹²</b></li>
     <li><span>DFTK’s Gaussian free energy, and its MP/MV Fermi level, energy and free energy</span><b>inside the Lean intervals</b></li>
@@ -205,7 +205,7 @@
     <li><strong>k-point sums versus the infinite crystal</strong>Each k-point run is certified for its own discrete problem, but the error of the k-point sum relative to the infinite crystal has no bound yet; k-point energies are not variational.</li>
     <li><strong>Grids containing the Brillouin-zone boundary</strong>No certificate; DFTK’s treatment there is also a different discrete problem, so neither side is compared.</li>
     <li><strong>Higher-order Methfessel–Paxton, and scaling of SCF-solution certificates</strong>Checking time grows roughly with the fourth power of the supercell size; for gapped systems with the chemical potential mid-gap the SCF equations are ill-conditioned and the certificate honestly fails; uniqueness is only local.</li>
-    <li><strong>LDA beyond Slater exchange at Γ with MP/MV</strong>PW92 correlation, zero temperature, Fermi–Dirac and Gaussian smearing and k-points agree with DFTK but have no certificate yet; the LDA energy interval is a first-order estimate, and only grids with <i class="v">M</i> = 4<i class="v">K</i> + 1 points are covered.</li>
+    <li><strong>LDA beyond Γ with MP/MV</strong>Zero temperature, Fermi–Dirac and Gaussian smearing and k-points agree with DFTK but have no certificate yet; the LDA energy interval is a first-order estimate, and only grids with <i class="v">M</i> = 4<i class="v">K</i> + 1 points are covered.</li>
     <li><strong>Discretisation error at finite temperature</strong>Certified at zero temperature only.</li>
     <li><strong>Truncation limit equals the continuum energy</strong>Not yet proved.</li>
     <li><strong>Density, eigenvalues, bands and DOS for finite-temperature and k-point runs</strong>Certified for zero-temperature Γ-point runs only.</li>
@@ -218,7 +218,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · status snapshot 1 October 2026<span class="updated"> · updated <time datetime="2026-10-01T23:54+08:00">2026-10-01 23:54 UTC+8</time></span></span>
+  <span>Formal in Silico · status snapshot 2 October 2026<span class="updated"> · updated <time datetime="2026-10-02T13:06+08:00">2026-10-02 13:06 UTC+8</time></span></span>
   <span><a href="./">Programme</a> · <a href="progress.html">Progress</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="zh/dft.html" hreflang="zh-CN">中文版</a></span>
 </div></footer>
 </body>
