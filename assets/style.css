@@ -368,3 +368,19 @@ footer a{color:var(--muted)}
   .nav a{font-size:13px;padding:6px 5px}
   .nav .lang{margin-left:2px}
 }
+
+/* ---------- showcases ---------- */
+.case{margin:24px 0}
+.case h3{margin-top:0}
+.case h3 .tag{margin-left:6px}
+.case h4{margin:22px 0 0}
+.case .tbl{margin:10px 0 0}
+.case .chart{margin:18px 0 0}
+.case td.v{font:400 12.5px/1.6 var(--mono);overflow-wrap:anywhere;min-width:180px}
+.case .note{margin-top:12px}
+.case details.run{margin-top:18px}
+.case details.run summary{cursor:pointer;font-size:14.5px;font-weight:500;color:var(--ink-2)}
+.case details.run .report{margin:10px 0 0}
+.svgfig svg{display:block;width:100%;height:auto}
+/* 窄屏：顶栏放不下第三个链接时，“纲领”由左边的站名链接代替 */
+@media (max-width:480px){.nav > a[href="./"]{display:none}}
