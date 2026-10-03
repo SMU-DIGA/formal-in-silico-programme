@@ -31,12 +31,12 @@
 </div></header>
 
 <div class="hero small"><div class="hero-in">
-  <p class="eyebrow">Status snapshot · 2 October 2026</p>
+  <p class="eyebrow">Status snapshot · 3 October 2026</p>
   <h1>Progress</h1>
   <p class="lead">Where the programme stands across its four domains: how many claims have reached which trust tier, how far each domain is towards its reference code, and which roadmap phases are done. Each domain has its own page with the item-by-item status, cross-checks and open gaps. A feature counts as <b>done</b> only when it is implemented, agrees with the reference code, <i>and</i> every number it outputs is covered by a Lean theorem.</p>
   <div class="stats">
-    <div class="stat"><b>134</b><span>claims in the trust ledger across four domains</span></div>
-    <div class="stat"><b>93%</b><span>machine-proved: 97 at T3, 28 at T4</span></div>
+    <div class="stat"><b>138</b><span>claims in the trust ledger across four domains</span></div>
+    <div class="stat"><b>93%</b><span>machine-proved: 101 at T3, 28 at T4</span></div>
     <div class="stat"><b>4</b><span>reference codes cross-checked: DFTK.jl, scikit-fem, ASE, pycalphad</span></div>
     <div class="stat"><b>3</b><span>parallel parity goals: G1 DFTK, G2 scikit-fem, G3 pycalphad</span></div>
   </div>
@@ -64,7 +64,7 @@
       <span class="ref">Goal G1 · reference DFTK.jl 0.8.0</span>
       <h3>mini-DFT</h3>
       <p>1D periodic reduced Hartree–Fock with plane waves: ground state, finite temperature, smearing, k-points, bands and DOS, and now LDA exchange.</p>
-      <div class="kv"><b>104</b><span>claims, 20 at T4 and 76 at T3</span><b>6 / 46</b><span>DFTK parity items done, 4 more agree</span><b>≤ 5×10⁻¹⁵</b><span>energy difference from DFTK</span></div>
+      <div class="kv"><b>108</b><span>claims, 20 at T4 and 80 at T3</span><b>7 / 46</b><span>DFTK parity items done, 3 more agree</span><b>≤ 5×10⁻¹⁵</b><span>energy difference from DFTK</span></div>
       <span class="go">Status of mini-DFT →</span>
     </a>
     <a class="domain s" href="fem.html">
@@ -95,18 +95,18 @@
   <p class="sec-no">02</p>
   <h2>The trust ledger</h2>
   <div class="prose"><p>Every claim the project makes is registered with its tier, its evidence and the assumptions it depends on. Every line of a run report cites one of these claims. The tiers are defined on the <a href="./#s5">programme page</a>; a claim is only ever marked at the tier it has actually reached.</p></div>
-  <div class="sbar big" role="img" aria-label="134 claims: 28 at T4, 97 at T3, 2 at T2, 1 at T0, 6 not yet reached">
-    <i class="sw-t4" style="flex:28"></i><i class="sw-t3" style="flex:97"></i><i class="sw-t2" style="flex:2"></i><i class="sw-t0" style="flex:1"></i><i class="sw-no" style="flex:6"></i>
+  <div class="sbar big" role="img" aria-label="138 claims: 28 at T4, 101 at T3, 2 at T2, 1 at T0, 6 not yet reached">
+    <i class="sw-t4" style="flex:28"></i><i class="sw-t3" style="flex:101"></i><i class="sw-t2" style="flex:2"></i><i class="sw-t0" style="flex:1"></i><i class="sw-no" style="flex:6"></i>
   </div>
   <div class="legend">
     <span><i class="sw-t4"></i>T4 end to end · 28</span>
-    <span><i class="sw-t3"></i>T3 machine proof · 97</span>
+    <span><i class="sw-t3"></i>T3 machine proof · 101</span>
     <span><i class="sw-t2"></i>T2 model-checked · 2</span>
     <span><i class="sw-t0"></i>T0 tested · 1</span>
     <span><i class="sw-no"></i>target not yet reached · 6</span>
   </div>
   <div class="rows">
-    <div class="row"><div><a href="dft.html#ledger">mini-DFT</a><div class="cap">foundations · energy · free energy · smearing · k-points · truncation · density · bands · LDA</div></div><span class="n">104</span><div class="barcell"><div class="sbar"><i class="sw-t4" style="flex:20"></i><i class="sw-t3" style="flex:76"></i><i class="sw-t2" style="flex:2"></i><i class="sw-t0" style="flex:1"></i><i class="sw-no" style="flex:5"></i></div></div></div>
+    <div class="row"><div><a href="dft.html#ledger">mini-DFT</a><div class="cap">foundations · energy · free energy · smearing · k-points · truncation · density · bands · LDA</div></div><span class="n">108</span><div class="barcell"><div class="sbar"><i class="sw-t4" style="flex:20"></i><i class="sw-t3" style="flex:80"></i><i class="sw-t2" style="flex:2"></i><i class="sw-t0" style="flex:1"></i><i class="sw-no" style="flex:5"></i></div></div></div>
     <div class="row"><div><a href="fem.html#claims">mini-FEM</a><div class="cap">Poisson · beams · load Taylor models</div></div><span class="n">11</span><div class="barcell"><div class="sbar"><i class="sw-t4" style="flex:3"></i><i class="sw-t3" style="flex:8"></i></div></div></div>
     <div class="row"><div><a href="md.html#claims">mini-MD</a><div class="cap">conservation · Verlet structure · tube theorem · checker</div></div><span class="n">14</span><div class="barcell"><div class="sbar"><i class="sw-t4" style="flex:4"></i><i class="sw-t3" style="flex:9"></i><i class="sw-no" style="flex:1"></i></div></div></div>
     <div class="row"><div><a href="calphad.html#claims">mini-CALPHAD</a><div class="cap">mixing bound · equilibrium · existence · magnetism · checker</div></div><span class="n">5</span><div class="barcell"><div class="sbar"><i class="sw-t4" style="flex:1"></i><i class="sw-t3" style="flex:4"></i></div></div></div>
@@ -132,7 +132,7 @@
   <h2>Goals and roadmap phases</h2>
   <div class="goal">
     <h3>G1 — mini-DFT reaches DFTK parity <span class="tag n">set 29 Sep 2026</span></h3>
-    <p>6 of 46 items done and 4 more agree with DFTK; LDA exchange now has SCF-solution certificates at the Γ point with MP/MV smearing. 1D first, then <i class="v">d</i> dimensions. <a href="dft.html#g1">Item-by-item status →</a></p>
+    <p>7 of 46 items done and 3 more agree with DFTK; Gaussian, Marzari–Vanderbilt and Methfessel–Paxton smearing of any order are now complete, and LDA has SCF-solution certificates at the Γ point with every finite-temperature smearing. 1D first, then <i class="v">d</i> dimensions. <a href="dft.html#g1">Item-by-item status →</a></p>
   </div>
   <div class="goal">
     <h3>G2 — certified finite elements against scikit-fem <span class="tag n">set 30 Sep 2026</span></h3>
@@ -148,7 +148,7 @@
       <p><span class="k">Remaining</span>literature checks for continuum well-posedness, the a priori plane-wave estimate and linear-mixing convergence (target T1); the Lean–Rocq interface claim; a code-level proof of the interval arithmetic (now T3, target T4).</p></div></li>
     <li class="phase"><div class="hd"><b>PHASE 1</b><strong>DFT extensions</strong><span class="tag f">Partly ahead</span></div><div class="bd">
       <p>k-point sampling is implemented and certified; the thread-parallel k-point protocol is model-checked and runs are bitwise identical across thread counts. Beyond the original plan: finite-temperature occupations with free-energy, entropy and energy certificates, Anderson mixing, non-self-consistent bands and DOS, and the truncation-error certificate.</p>
-      <p><span class="k">LDA</span>Slater exchange and PW92 correlation certified at the Γ point with MP/MV smearing; zero temperature, other smearings and k-points agree with DFTK without certificates yet.</p>
+      <p><span class="k">LDA</span>Slater exchange and PW92 correlation certified at the Γ point with Fermi–Dirac, Gaussian, MV or MP smearing; zero temperature and k-points agree with DFTK without certificates yet.</p>
       <p><span class="k">Not started</span>MPI parallelism, 3D plane waves and pseudopotentials.</p></div></li>
     <li class="phase"><div class="hd"><b>PHASE 2</b><strong>MD and FEM</strong><span class="tag s">Exit criteria met</span></div><div class="bd">
       <p>Both minimal versions print trust reports. mini-FEM: 1D Poisson (P1) and beams (cubic Hermite), certified against the true solution. mini-MD v0 (1 Oct 2026): a 1D Lennard-Jones chain with velocity Verlet, certified against the true trajectory. Céa’s lemma (FEM-D03) and Verlet symplecticity (MD-D03) are both at T3.</p>
@@ -183,7 +183,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · status snapshot 2 October 2026<span class="updated"> · updated <time datetime="2026-10-02T13:06+08:00">2026-10-02 13:06 UTC+8</time></span></span>
+  <span>Formal in Silico · status snapshot 3 October 2026<span class="updated"> · updated <time datetime="2026-10-03T08:53+08:00">2026-10-03 08:53 UTC+8</time></span></span>
   <span><a href="./">Programme</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="zh/progress.html" hreflang="zh-CN">中文版</a></span>
 </div></footer>
 </body>
