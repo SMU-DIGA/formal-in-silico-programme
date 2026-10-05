@@ -34,14 +34,14 @@
 
 <div class="hero small"><div class="hero-in">
   <nav class="domnav" aria-label="领域"><a href="progress.html">← 进度</a><a href="dft.html">mini-DFT</a><a href="fem.html">mini-FEM</a><a href="md.html">mini-MD</a><a href="calphad.html" aria-current="page">mini-CALPHAD</a></nav>
-  <p class="eyebrow">领域 · 目标 G3 · 现状快照 2026-10-01</p>
+  <p class="eyebrow">领域 · 目标 G3 · 现状快照 2026-10-05</p>
   <h1>mini-CALPHAD</h1>
-  <p class="lead">二元合金的相平衡，读取与 pycalphad 相同的 TDB 热力学数据库。Lean 检查器认证的是数据库模型<b>真正的全局平衡</b>——在所有可能的相组合中 Gibbs 能最低者——而不只是驱动碰巧找到的解。目标 G3 设定于 2026-10-01：与 pycalphad 0.11.1 功能对齐。</p>
+  <p class="lead">二元合金的相平衡，读取与 pycalphad 相同的 TDB 热力学数据库。Lean 检查器认证的是数据库模型<b>真正的全局平衡</b>——在所有可能的相组合中 Gibbs 能最低者——而不只是驱动碰巧找到的解。10 月 4 日起检查器自己读 TDB 文件，结论直接关于数据库定义的模型；另一种证书可以证明某个相<i>没有</i>混溶隙。目标 G3 设定于 2026-10-01：与 pycalphad 0.11.1 功能对齐。</p>
   <div class="stats">
-    <div class="stat"><b>5</b><span>条命题登记在可信账本中：T4 1 条，T3 4 条</span></div>
-    <div class="stat"><b>12 / 23</b><span>项 pycalphad 对齐功能完成：C0 全部，C1 中的相图、磁性、驱动力与单相区化学势</span></div>
+    <div class="stat"><b>15</b><span>条命题登记在可信账本中：T4 5 条，T3 9 条，另有 TDB 读法的 Lean 定义（T0）</span></div>
+    <div class="stat"><b>16 / 25</b><span>项 pycalphad 对齐功能完成：C0 全部；C1 中带区域划分证书的相图、磁性、驱动力与单相区化学势；C2 中至多两个混合亚点阵的亚点阵相与以化学势为条件</span></div>
     <div class="stat"><b>29 / 29</b><span>个 pycalphad 平衡落在 Lean 的区间与窗口内</span></div>
-    <div class="stat"><b>203</b><span>份相图证书，五个体系：Al–Zn、Pb–Sn、Cu–Mg、带磁性的 Cr–Fe 与 Al–Fe</span></div>
+    <div class="stat"><b>246 650</b><span>个网格点，17 个数据库的 316 个二元体系，<a href="#audit">数据库审计</a>中每点都有与 TDB 文件绑定的证书</span></div>
   </div>
 </div></div>
 
@@ -54,11 +54,13 @@
     <li><a href="#example"><span>03</span>实例</a></li>
     <li><a href="#magnetic"><span>04</span>磁性</a></li>
     <li><a href="#diagrams"><span>05</span>相图</a></li>
-    <li><a href="#method"><span>06</span>检查器如何工作</a></li>
-    <li><a href="#claims"><span>07</span>命题</a></li>
-    <li><a href="#g3"><span>08</span>G3 · pycalphad</a></li>
-    <li><a href="#evidence"><span>09</span>交叉校验</a></li>
-    <li><a href="#gaps"><span>10</span>缺口</a></li>
+    <li><a href="#convex"><span>06</span>没有混溶隙</a></li>
+    <li><a href="#method"><span>07</span>检查器如何工作</a></li>
+    <li><a href="#claims"><span>08</span>命题</a></li>
+    <li><a href="#g3"><span>09</span>G3 · pycalphad</a></li>
+    <li><a href="#evidence"><span>10</span>交叉校验</a></li>
+    <li><a href="#audit"><span>11</span>数据库审计</a></li>
+    <li><a href="#gaps"><span>12</span>缺口</a></li>
   </ol>
 </nav>
 <main>
@@ -71,10 +73,11 @@
     <tr><td class="l">代换溶体</td><td>一个混合亚点阵，其余亚点阵只有空位：理想混合 <i class="v">RT</i>(<i class="v">x</i> log <i class="v">x</i> + (1 − <i class="v">x</i>) log(1 − <i class="v">x</i>)) 加 Redlich–Kister 过剩项 <i class="v">x</i>(1 − <i class="v">x</i>) Σ <i class="v">L<sub>k</sub></i>(1 − 2<i class="v">x</i>)<sup><i class="v">k</i></sup>。</td></tr>
     <tr><td class="l">磁性</td><td>可选的 Inden–Hillert–Jarl 项 <i class="v">RT</i> log(1 + <i class="v">β</i>(<i class="v">x</i>)) <i class="v">g</i>(<i class="v">T</i><sub>c</sub>(<i class="v">x</i>)/<i class="v">T</i>)：<i class="v">T</i><sub>c</sub> 与 <i class="v">β</i> 是 <code>TC</code>、<code>BMAGN</code> 参数的 Redlich–Kister 和，为负时除以反铁磁因子。<i class="v">g</i> 的两支在 <i class="v">T</i> = <i class="v">T</i><sub>c</sub> 处的值与斜率都相等——Lean 对任意结构因子 <i class="v">p</i> 证明了这个恒等式。</td></tr>
     <tr><td class="l">化合物</td><td>化学计量化合物：只在一个精确成分（例如 2/3）存在。</td></tr>
-    <tr><td class="l">参数</td><td><i class="v">T</i> 的分段 SGTE 表达式。驱动选出区间、展开函数引用；每一项是 <i class="v">c</i>·<i class="v">T</i><sup><i class="v">n</i></sup> 或 <i class="v">c</i>·<i class="v">T</i><sup><i class="v">n</i></sup> log <i class="v">T</i>，<i class="v">c</i> 是 TDB 中十进制串的精确乘积。</td></tr>
-    <tr><td class="l">尚不支持</td><td>有序–无序模型中的有序相（无序相与 pycalphad 一样照常计算）、间隙溶体、多个混合亚点阵、多于两个组元。这些相被跳过并在报告中列出；结论只对参与计算的相成立。</td></tr>
+    <tr><td class="l">亚点阵相</td><td>化合物能量形式中有一个或两个混合亚点阵 (A,B)、其余亚点阵被 A、B 或空位占满的相（CAL-C06、C07），例如 θ = (Al)<sub>2</sub>(Al,Cu)<sub>1</sub>、Laves 相 C15 = (Cu,Mg)<sub>2</sub>(Cu,Mg)<sub>1</sub>。一个混合亚点阵时成分是它上面分数的仿射函数；两个时相的 Gibbs 能是满足成分约束的内部状态（两个分数）的最小值，与 pycalphad 在内部自由度上最小化相同，检查器在内部状态的正方形上做二维分支定界。</td></tr>
+    <tr><td class="l">参数</td><td><i class="v">T</i> 的分段 SGTE 表达式。选出 <i class="v">T</i> 所在的区间（<i class="v">T</i><sub>lo</sub> ≤ <i class="v">T</i> &lt; <i class="v">T</i><sub>hi</sub>，与 pycalphad 相同），展开函数引用；每一项是 <i class="v">c</i>·<i class="v">T</i><sup><i class="v">n</i></sup> 或 <i class="v">c</i>·<i class="v">T</i><sup><i class="v">n</i></sup> log <i class="v">T</i>，<i class="v">c</i> 是 TDB 中十进制串的精确乘积。</td></tr>
+    <tr><td class="l">尚不支持</td><td>有序–无序模型中的有序相（无序相与 pycalphad 一样照常计算）、间隙溶体、三个以上混合亚点阵、缺少端元或有互易参数的亚点阵相、亚点阵相的磁性项、只由 A、B 构成的分子物种、多于两个组元。这些相被跳过并在报告中列出；结论只对参与计算的相成立。</td></tr>
   </tbody></table></div>
-  <p class="note">证书认证的是证书里写的精确模型。把 TDB 文件翻译成这个模型由不受信任的驱动完成（假设 A-CAL-01）；基准把每个相的 <i class="v">G</i>(<i class="v">x</i>) 与 pycalphad 逐点对照，相对差不超过 5×10⁻¹²（pycalphad 在 <i class="v">T</i><sub>c</sub> 上加 10⁻⁹ 防止奇点，证书用精确的连续形式）。</p>
+  <p class="note">10 月 4 日起检查器自己读 TDB 文件。在 <code>--tdb</code> 模式下（驱动从 TDB 文件验证运行结果时都用这个模式），Lean 的 <code>modelOfTdb</code> 从文件构造模型（温度区间、函数引用、物种、相的类型、位置数、磁性常数），检查器要求它与证书的模型相等（CAL-I01、B02），驱动的翻译因此不再受信任。剩下要信任的（假设 A-CAL-01）是这个约 800 行的 Lean 定义按原意读 TDB 文件；基准在 COST 507 的全部二元体系上把它与驱动对照，并把每个相的 <i class="v">G</i>(<i class="v">x</i>) 与 pycalphad 逐点对照，相对差不超过 5×10⁻¹²（pycalphad 在 <i class="v">T</i><sub>c</sub> 上加 10⁻⁹ 防止奇点，证书用精确的连续形式）。不加 <code>--tdb</code> 时，证书认证的是证书里写的精确模型。</p>
 </section>
 
 <section id="certified">
@@ -94,6 +97,8 @@
       <tr><td>ABSENT 相</td><td>该相不出现在任何平衡中。</td></tr>
       <tr><td>DF_OK 相 lo hi</td><td>该相的驱动力 max<sub><i class="v">x</i></sub> (ℓ*(<i class="v">x</i>) − <i class="v">G</i>(<i class="v">x</i>))（pycalphad 的 <code>DF</code>，亚稳相为负，稳定相为 0），ℓ* 是任意平衡的切线。它是对所有成分的全局最大值。</td></tr>
       <tr><td>EXISTS</td><td>平衡存在，所以上面的结论不是空话。</td></tr>
+      <tr><td>PROBLEM、UNSUPPORTED、MODEL_OK</td><td><code>--tdb</code> 模式：<code>PROBLEM</code> 回显 TDB 文件、组元、<i class="v">T</i>、<i class="v">x</i>₀、<i class="v">R</i> 与相表；<code>UNSUPPORTED</code> 列出没有参与计算的相及原因；<code>MODEL_OK</code> 之后的每一行都是关于 TDB 文件定义的模型的结论（CAL-B02）。</td></tr>
+      <tr><td>CONVEX 相 T</td><td>来自单独的凸性证书：该相在 <i class="v">T</i> 处没有混溶隙（<a href="#convex">第 06 节</a>）。</td></tr>
       <tr><td>TANGENT、EPS、KAPPA、FRAC</td><td>诊断信息：用的是谁的切线（单相区由检查器自己计算）、它在各相下方多远、窗口用到的切线误差界，以及证书自己的配置。</td></tr>
     </tbody>
   </table></div>
@@ -167,12 +172,24 @@ Lean  EXISTS</pre>
   <div class="prose">
     <p><code>--map T1:T2:dT</code> 在温度网格的每个温度上求等温截面：驱动沿下凸包把 [0, 1] 分成单相区与公切线，用 Newton 法细化每条公切线，并在每个区域的中点写一份点平衡证书。两相区证书的两个窗口就是该温度下认证的相界，其余相在那里被证明不出现。</p>
     <p>基准：Pb–Sn 300–600 K（43 个区域）、Al–Zn 400–900 K（35 个，含 fcc 混溶隙）、Cu–Mg 600–1300 K（31 个）、Cr–Fe 400–900 K（31 个）、Al–Fe 700–1700 K（63 个区域、34 条公切线，含纯铁附近的 γ 环）。203 份证书全部通过，相界窗口宽不超过 2×10⁻⁶，pycalphad 的 <code>equilibrium</code> 在每个证书点给出相同的相与成分。认证的相界点落在 pycalphad <code>binplot</code> 的曲线上；Al–Fe 在 1300–1430 K 之间 <code>binplot</code> 漏画了 Al<sub>2</sub>Fe 区，而 pycalphad 自己的 <code>equilibrium</code> 与我们的证书都有这个区。</p>
+    <p>10 月 5 日起每个网格温度另有一份<b>区域划分证书</b>（CAL-C09、B05）。平衡切线的斜率随总成分单调，点平衡锚点夹住其间任意 <i class="v">x</i>₀ 处的平衡切线，检查器对 [0, 1] 中<i>每一个</i> <i class="v">x</i>₀ 证明任意平衡可能含哪些相：结果是覆盖 [0, 1] 的区域表，包括单相区、带相界窗口的两相区，以及相界处分辨不了的窄区间。基准：7 个体系、67 个温度，174 个单相区、201 个两相区，分辨不了的区间最宽 5.4×10⁻⁸；成分网格上 3346 个点的 pycalphad <code>equilibrium</code> 全部落在相组成相同的认证区域内。</p>
   </div>
-  <p class="note">认证的是列出的每个区域在中点处的平衡。区域划分是否完整（会不会漏掉比驱动网格间距 5×10⁻⁴ 更窄的两相区）、网格温度之间的情况都不在证书内；基准在成分网格上把区域划分与 pycalphad 逐点对照。</p>
+  <p class="note">区域划分在每个网格温度上有证书，网格温度之间没有。单相区证明的是“只有这个相、成分在窗口内”；窗口内的混溶隙只能由凸性证书排除。</p>
+</section>
+
+<section id="convex">
+  <p class="sec-no">06</p>
+  <h2>没有混溶隙：凸性证书</h2>
+  <div class="prose">
+    <p>点平衡证书能证明一个相在 (<i class="v">T</i>, <i class="v">x</i>₀) 处<i>有</i>混溶隙（它的窗口不含 <i class="v">x</i>₀），却不能证明在较低温度下<i>没有</i>，所以混溶隙出现的温度只有一侧有证明。10 月 4 日起，另一种证书补上了另一侧：对无磁性的代换溶体，它证明 (0, 1) 上 <i class="v">a</i>·<i class="v">G</i>″(<i class="v">x</i>) &gt; 0，于是 <i class="v">G</i> 在 [0, 1] 上严格凸（CAL-C05）。</p>
+    <p>固定 <i class="v">T</i> 时，参数精确地分解为 <i class="v">P</i>₀(<i class="v">x</i>) + (log <i class="v">T</i>)·<i class="v">P</i>₁(<i class="v">x</i>)，<i class="v">P</i>₀、<i class="v">P</i>₁ 是精确的有理多项式，所以 <i class="v">a</i>·<i class="v">G</i>″ = <i class="v">P</i>₀″ + (log <i class="v">T</i>) <i class="v">P</i>₁″ + <i class="v">aRT</i>(1/<i class="v">x</i> + 1/(1 − <i class="v">x</i>))；log <i class="v">T</i> 只作为一个系数出现，用有理上下界包住。检查器在 [0, 1] 上自己做分支定界——驱动只提供模型，同样与 TDB 文件绑定——输出 <code>CONVEX</code> 相 <i class="v">T</i>（CAL-B03）。Lean 由此证明：任意平衡（任意成分）中该相的各份成分相同；如果模型只有这一个相，单相状态在每个 <i class="v">x</i>₀ 处都是平衡。每份证书检查 0.1–0.2 秒。</p>
+    <p>与点平衡证书一起，混溶隙出现的温度就有了两侧的证明。基准中——COST 507 的 Al–Ce、Fe–Si、Mg–Si、Cu–Si 液相，Dupin (2001) Al–Ni 数据库的液相，以及 Al–Zn 的 fcc 相——检查器能证明凸的最高温度定位到 1 K（Al–Zn 的混溶隙在低温一侧，取最低温度），pycalphad 的 <i class="v">G</i>″ 每次都在随后的 1 K 内变号。</p>
+  </div>
+  <p class="note"><code>CONVEX</code> 是关于单个温度的结论；两个温度之间没有证书，所以在一个区间内是否只变化一次没有证明。<code>CAL_FAIL</code> 不是“有混溶隙”的证明——那要由点平衡的窗口给出。磁性相暂不支持：需要磁性项二阶导数的界，而 CAL-C04 只给出割线斜率。</p>
 </section>
 
 <section id="method">
-  <p class="sec-no">06</p>
+  <p class="sec-no">07</p>
   <h2>检查器如何工作</h2>
   <div class="prose"><p>全程是精确的有理数运算。驱动只提供候选切线、候选配置、探测点，以及每个相的最低点附近的一个成分。</p></div>
   <ol class="chain">
@@ -187,14 +204,15 @@ Lean  EXISTS</pre>
 </section>
 
 <section id="claims">
-  <p class="sec-no">07</p>
+  <p class="sec-no">08</p>
   <h2>可信账本中的命题</h2>
-  <div class="sbar big" role="img" aria-label="5 条命题：T4 1 条，T3 4 条">
-    <i class="sw-t4" style="flex:1"></i><i class="sw-t3" style="flex:4"></i>
+  <div class="sbar big" role="img" aria-label="15 条命题：T4 5 条，T3 9 条，T0 1 条">
+    <i class="sw-t4" style="flex:5"></i><i class="sw-t3" style="flex:9"></i><i class="sw-t0" style="flex:1"></i>
   </div>
   <div class="legend">
-    <span><i class="sw-t4"></i>T4 端到端 · 1</span>
-    <span><i class="sw-t3"></i>T3 机器证明 · 4</span>
+    <span><i class="sw-t4"></i>T4 端到端 · 5</span>
+    <span><i class="sw-t3"></i>T3 机器证明 · 9</span>
+    <span><i class="sw-t0"></i>T0 经对照的定义 · 1</span>
   </div>
   <div class="tbl"><table>
     <thead><tr><th>命题</th><th>内容</th><th>等级</th></tr></thead>
@@ -203,13 +221,23 @@ Lean  EXISTS</pre>
       <tr><td class="l">CAL-C02</td><td>平衡使总 Gibbs 能最小；出现的每个相都接触切线；<i class="v">G</i> − ℓ 的下界给出每个可行配置的下界</td><td class="st"><span class="tag m">T3</span></td></tr>
       <tr><td class="l">CAL-C03</td><td>0 &lt; <i class="v">x</i>₀ &lt; 1 且至少有一个代换溶体时平衡存在，包括磁性相（它们的 Gibbs 能连续）</td><td class="st"><span class="tag m">T3</span></td></tr>
       <tr><td class="l">CAL-C04</td><td>Inden–Hillert–Jarl 磁性项的区间界（割线斜率）：任意区间上带二阶误差的多项式下界，有理点处的上界</td><td class="st"><span class="tag m">T3</span></td></tr>
+      <tr><td class="l">CAL-C05</td><td>没有混溶隙：无磁性代换溶体在 (0, 1) 上 <i class="v">a</i>·<i class="v">G</i>″ &gt; 0 时 <i class="v">G</i> 在 [0, 1] 上严格凸；于是任意平衡中该相的各份成分相同，模型只有这一个相时单相状态在每个 <i class="v">x</i>₀ 处都是平衡</td><td class="st"><span class="tag m">T3</span></td></tr>
+      <tr><td class="l">CAL-C06</td><td>一个混合亚点阵的亚点阵相：成分是位置分数 <i class="v">y</i> 的仿射函数，混合项下界与存在性的论证在 <i class="v">y</i> ∈ [0, 1] 上照搬</td><td class="st"><span class="tag m">T3</span></td></tr>
+      <tr><td class="l">CAL-C07</td><td>两个混合亚点阵的相：<i class="v">G</i>(<i class="v">x</i>) 是约束线段上内部状态的 <i class="v">H</i>/<i class="v">m</i> 的最小值，可以取到且连续；内部状态正方形的盒子上的下界，椭圆投影给出的成分窗口</td><td class="st"><span class="tag m">T3</span></td></tr>
+      <tr><td class="l">CAL-C08</td><td>给定化学势 μ<sub>B</sub>：过 (1, μ<sub>B</sub>) 的一条直线在所有相下方、某个相的一点不高于另一条这样的直线时，平衡存在</td><td class="st"><span class="tag m">T3</span></td></tr>
+      <tr><td class="l">CAL-C09</td><td>等温截面：平衡切线的斜率随 <i class="v">x</i>₀ 单调；任意可行配置在 <i class="v">x</i>₀ 两侧各有一份；在递增的点上有上界的仿射函数不高于相邻两点的弦或两端的射线之一</td><td class="st"><span class="tag m">T3</span></td></tr>
       <tr><td class="l">CAL-B01</td><td>检查器可靠：<i class="v">G</i>* 的区间，以及任意平衡的化学势、成分窗口、不出现的相与驱动力；平衡存在</td><td class="st"><span class="tag s">T4</span></td></tr>
+      <tr><td class="l">CAL-I01</td><td>TDB 的读法：<code>modelOfTdb</code>，TDB 文本在 <i class="v">T</i> 处为两个组元与一组相定义的二元模型。这是定义而不是定理：它是否忠实于数据库只能对照驱动与 pycalphad</td><td class="st"><span class="tag n">T0</span></td></tr>
+      <tr><td class="l">CAL-B02</td><td>问题绑定：检查器在 <code>--tdb</code> 模式下接受时，由 TDB 文件构造的模型等于证书的模型，CAL-B01 的全部结论对它成立</td><td class="st"><span class="tag s">T4</span></td></tr>
+      <tr><td class="l">CAL-B03</td><td>凸性检查器可靠：<code>CONVEX</code> 蕴含严格凸与没有混溶隙（CAL-C05），对由 TDB 文件构造的模型同样成立</td><td class="st"><span class="tag s">T4</span></td></tr>
+      <tr><td class="l">CAL-B04</td><td>化学势条件的检查器可靠（pycalphad 的 <code>v.MU('B')</code>）：给定 μ<sub>B</sub> 时任意平衡的另一个化学势 μ<sub>A</sub>、总成分与 Gibbs 能的区间，成分窗口与驱动力；平衡存在</td><td class="st"><span class="tag s">T4</span></td></tr>
+      <tr><td class="l">CAL-B05</td><td>区域划分的检查器可靠：各区域覆盖 [0, 1]，区域内每个 <i class="v">x</i>₀ 处的任意平衡都是声称的相组成，成分在声称的窗口内</td><td class="st"><span class="tag s">T4</span></td></tr>
     </tbody>
   </table></div>
 </section>
 
 <section id="g3">
-  <p class="sec-no">08</p>
+  <p class="sec-no">09</p>
   <h2>目标 G3——对照 pycalphad 的带证书 CALPHAD</h2>
   <div class="prose"><p>参照：pycalphad 0.11.1，同一数据库、同一组相。完成标准与 G1、G2 相同，而且证书必须针对数据库模型<b>真正的全局平衡</b>。顺序：先做完二元（C0–C1），分支定界在一个成分变量上进行；再做多元与亚点阵模型（C2），分支定界在单纯形的乘积上进行；最后是派生计算（C3）。</p></div>
   <div class="legend">
@@ -218,8 +246,8 @@ Lean  EXISTS</pre>
   </div>
   <div class="ms">
     <div class="row"><span class="code">C0</span><div>二元点平衡</div><div class="barcell"><div class="sbar"><i class="sw-done" style="flex:8"></i></div></div><span class="n">8 / 8</span></div>
-    <div class="row"><span class="code">C1</span><div>二元扩展：相图、磁性、不变反应</div><div class="barcell"><div class="sbar"><i class="sw-done" style="flex:4"></i><i class="sw-todo" style="flex:4"></i></div></div><span class="n">4 / 8</span></div>
-    <div class="row"><span class="code">C2</span><div>多元与亚点阵模型</div><div class="barcell"><div class="sbar"><i class="sw-todo" style="flex:4"></i></div></div><span class="n">0 / 4</span></div>
+    <div class="row"><span class="code">C1</span><div>二元扩展：相图、磁性、不变反应</div><div class="barcell"><div class="sbar"><i class="sw-done" style="flex:5"></i><i class="sw-todo" style="flex:3"></i></div></div><span class="n">5 / 8</span></div>
+    <div class="row"><span class="code">C2</span><div>多元与亚点阵模型</div><div class="barcell"><div class="sbar"><i class="sw-done" style="flex:3"></i><i class="sw-todo" style="flex:3"></i></div></div><span class="n">3 / 6</span></div>
     <div class="row"><span class="code">C3</span><div>Scheil、拟合与其他模型</div><div class="barcell"><div class="sbar"><i class="sw-todo" style="flex:3"></i></div></div><span class="n">0 / 3</span></div>
   </div>
 
@@ -227,9 +255,9 @@ Lean  EXISTS</pre>
   <div class="tbl"><table class="feat">
     <thead><tr><th>功能</th><th>pycalphad</th><th>状态</th><th>认证的内容</th></tr></thead>
     <tbody>
-      <tr><td>TDB 读取：函数、分段、引用、参数</td><td><code>Database</code></td><td class="st"><span class="tag st-done">完成</span></td><td>不在可信链内（A-CAL-01）；每个相的 <i class="v">G</i>(<i class="v">x</i>) 与 pycalphad 的 <code>calculate</code> 逐点一致</td></tr>
+      <tr><td>TDB 读取：函数、分段、引用、参数</td><td><code>Database</code></td><td class="st"><span class="tag st-done">完成</span></td><td>10 月 4 日起也在 Lean 中读取：<code>--tdb</code> 模式下检查器从文件构造模型（CAL-I01、B02）。读法本身是一个定义，与驱动和 pycalphad 的 <code>calculate</code> 对照（A-CAL-01）</td></tr>
       <tr><td>代换溶体：理想混合 + Redlich–Kister</td><td><code>Model</code>（GM）</td><td class="st"><span class="tag st-done">完成</span></td><td>混合项二次下界 CAL-C01；检查器 CAL-B01</td></tr>
-      <tr><td>化学计量化合物</td><td><code>Model</code></td><td class="st"><span class="tag st-done">完成</span></td><td>成分是精确分数，例如 2/3</td></tr>
+      <tr><td>化学计量化合物</td><td><code>Model</code></td><td class="st"><span class="tag st-done">完成</span></td><td>成分是精确分数，例如 2/3；<i class="v">x</i>₀ 恰好落在凸包上的化合物处时，化学势是一个区间，宽度就是真实的不唯一性</td></tr>
       <tr><td>点平衡：平衡相、成分、摩尔分数</td><td><code>equilibrium</code>（Phase、X、NP）</td><td class="st"><span class="tag st-done">完成</span></td><td>对任意平衡的 <code>WINDOW</code> 与 <code>ABSENT</code>；证书的摩尔分数由杠杆定律精确给出</td></tr>
       <tr><td>平衡 Gibbs 能</td><td><code>equilibrium</code>（GM）</td><td class="st"><span class="tag st-done">完成</span></td><td><code>G_OK</code>：对每个可行配置成立的全局下界</td></tr>
       <tr><td>化学势</td><td><code>equilibrium</code>（MU）</td><td class="st"><span class="tag st-done">完成</span></td><td><code>MU_OK</code>，对任意平衡成立</td></tr>
@@ -238,31 +266,31 @@ Lean  EXISTS</pre>
     </tbody>
   </table></div>
 
-  <h3 style="margin-top:28px">C1 · 二元扩展——8 项完成 4 项</h3>
+  <h3 style="margin-top:28px">C1 · 二元扩展——8 项完成 5 项</h3>
   <div class="tbl"><table class="feat">
     <thead><tr><th>功能</th><th>pycalphad</th><th>状态</th><th>认证的内容</th></tr></thead>
     <tbody>
-      <tr><td><i class="v">T</i>–<i class="v">x</i> 网格上的二元相图</td><td><code>binplot</code>、<code>map</code></td><td class="st"><span class="tag st-done">完成</span></td><td>每个温度的每个区域一份证书；相界由公切线证书的窗口给出。区域划分的完整性不在证书内（见缺口）</td></tr>
+      <tr><td><i class="v">T</i>–<i class="v">x</i> 网格上的二元相图</td><td><code>binplot</code>、<code>map</code></td><td class="st"><span class="tag st-done">完成</span></td><td>每个温度的每个区域一份证书；相界由公切线证书的窗口给出；每个温度另有一份区域划分证书（见下一行）</td></tr>
       <tr><td>磁性贡献（Inden–Hillert–Jarl）</td><td><code>Model</code>（TC、BMAGN）</td><td class="st"><span class="tag st-done">完成</span></td><td>CAL-C04（割线斜率界）与磁性相的 CAL-C03；Cr–Fe、Al–Fe 进入基准</td></tr>
       <tr><td>驱动力</td><td><code>DormantPhase(…).driving_force</code></td><td class="st"><span class="tag st-done">完成</span></td><td><code>DF_OK</code>，对任意平衡成立；是对所有成分的全局最大值，pycalphad 求的是局部值</td></tr>
       <tr><td>单相区的化学势收紧</td><td><code>equilibrium</code>（MU）</td><td class="st"><span class="tag st-done">完成</span></td><td>检查器自己的有理切线：宽度从约 10⁻⁴ 降到 10⁻⁸–10⁻⁷ J/mol</td></tr>
-      <tr><td>等温截面的完整性</td><td>—</td><td class="st"><span class="tag st-todo">未开始</span></td><td></td></tr>
+      <tr><td>等温截面的完整性</td><td>—</td><td class="st"><span class="tag st-done">完成</span></td><td>CAL-C09、B05：由锚点之间单调的切线斜率得到 [0, 1] 中每个 <i class="v">x</i>₀ 处任意平衡的相组成</td></tr>
       <tr><td>不变反应（共晶、包晶）温度</td><td><code>map</code></td><td class="st"><span class="tag st-todo">未开始</span></td><td></td></tr>
       <tr><td>热力学性质 <i class="v">H</i>、<i class="v">S</i>、<i class="v">C<sub>p</sub></i></td><td><code>calculate</code></td><td class="st"><span class="tag st-todo">未开始</span></td><td></td></tr>
       <tr><td>间隙溶体</td><td><code>Model</code></td><td class="st"><span class="tag st-todo">未开始</span></td><td></td></tr>
     </tbody>
   </table></div>
 
-  <details class="more"><summary>计划：C2–C3（7 项，均未开始）</summary>
+  <details class="more"><summary>计划：C2–C3（9 项，3 项完成）</summary>
     <h4 style="margin-top:14px">C2 · 多元与亚点阵模型</h4>
-    <ul class="planned"><li>三元及多元溶体（Muggianu 外推、三元参数）</li><li>多个亚点阵（化合物能量形式）</li><li>有序–无序</li><li>以化学势或活度为条件</li></ul>
+    <ul class="planned"><li>三元及多元溶体（Muggianu 外推、三元参数）</li><li>多个亚点阵（化合物能量形式）：一个或两个混合亚点阵已完成（CAL-C06、C07，2026-10-04、05）；更多混合亚点阵、互易参数未开始</li><li>有序–无序</li><li>以化学势为条件：已完成（CAL-C08、B04，2026-10-05），<code>--mu B=</code> 认证任意平衡的 μ<sub>A</sub>、总成分与相组成；以活度为条件未开始</li></ul>
     <h4>C3 · 更多计算</h4>
     <ul class="planned"><li>Scheil 凝固</li><li>参数拟合（ESPEI）：拟合本身不受信任，结论只依赖最终的数据库</li><li>离子液体与准化学模型</li></ul>
   </details>
 </section>
 
 <section id="evidence">
-  <p class="sec-no">09</p>
+  <p class="sec-no">10</p>
   <h2>交叉校验与佐证</h2>
   <ul class="checks">
     <li><span>每个相在 <i class="v">x</i> = <i class="v">k</i>/20 处的 <i class="v">G</i>(<i class="v">x</i>) 对照 pycalphad 的 <code>calculate</code></span><b>相对差 ≤ 5×10⁻¹²</b></li>
@@ -270,6 +298,13 @@ Lean  EXISTS</pre>
     <li><span>pycalphad 的 <code>GM</code>、<code>MU</code> 与平衡相成分</span><b>落在 Lean 的区间与窗口内</b></li>
     <li><span>141 个驱动力：pycalphad <code>DormantPhase</code> 的值落在 Lean 区间内；6 处 pycalphad 停在局部解，用它自己的 <code>calculate</code> 在我们的取值点处求值，落在区间内</span><b>全部一致</b></li>
     <li><span>相图：五个体系 203 份证书；每个证书点 pycalphad 的平衡相与成分</span><b>全部通过，窗口 ≤ 2×10⁻⁶</b></li>
+    <li><span>区域划分证书：7 个体系、67 个温度；成分网格上 3346 个点的 pycalphad <code>equilibrium</code></span><b>全部落在相组成相同的认证区域内</b></li>
+    <li><span>以 μ<sub>B</sub> 为条件：Al–Zn、Cu–Mg、Cr–Fe 与 COST 507 Al–Cu、Cu–Mg 中 16 个点，μ<sub>B</sub> 取 pycalphad 的 <code>MU(B)</code>；同一条件下 pycalphad 的 <code>MU(A)</code>、平衡相成分、总成分与 <code>GM</code></span><b>都在 Lean 的区间与窗口内</b></li>
+    <li><span>Lean 的 TDB 读法对照驱动的翻译：基准的每个数据库、相表与平衡点，以及 COST 507 的全部二元体系在 800 K 与 1300 K（595 份证书、6518 个相）</span><b>模型完全相同；跳过的相与原因相同</b></li>
+    <li><span>证书中的一个模型系数改动 0.01%</span><b>不加 <code>--tdb</code> 时被接受，加 <code>--tdb</code> 时被拒绝</b></li>
+    <li><span>六个混溶隙的凸性证书（液相 Al–Ce、Fe–Si、Mg–Si、Cu–Si、Al–Ni；fcc Al–Zn）：温度二分到 1 K；两侧 pycalphad 的 <i class="v">G</i>″ 与只含该相的 <code>equilibrium</code></span><b>全部一致</b></li>
+    <li><span>已知答案：只有一个液相的规则溶液（<i class="v">L</i>₀ = 4000 J/mol），<i class="v">G</i> 与两个化学势有闭式；正对照：驱动把温度写错 1 K</span><b>落在 Lean 区间内；能发现</b></li>
+    <li><span>COST 507 Al–Y：300 K 时端际固溶度 1 − <i class="v">x</i> ≈ 3×10⁻³⁷（写成精确十进制），以及 <i class="v">x</i>₀ 恰为化合物 AlY 的成分</span><b>有证书</b></li>
     <li><span>篡改的证书</span><b>失败，或仍然正确的结论</b></li>
     <li><span>每个平衡的检查时间；整个基准</span><b>0.1 – 2.4 秒；218 秒</b></li>
     <li><span>驱动在 AddressSanitizer 与 UBSan 下运行点平衡与相图</span><b>无报告</b></li>
@@ -279,13 +314,41 @@ Lean  EXISTS</pre>
   <p class="note">Al–Fe 在 1000 K、<i class="v">x</i> = 0.9 时，pycalphad 多相 <code>equilibrium</code> 的 <code>GM</code> 比它自己的 <code>calculate</code> 与单相平衡在同一点高 6×10⁻⁶ J/mol，恰好落在 Lean 区间之外。证书是对的；基准对 pycalphad <code>GM</code> 的容差因此取 10⁻⁵ J/mol。</p>
 </section>
 
+<section id="audit">
+  <p class="sec-no">11</p>
+  <h2>研究结果：CALPHAD 数据库的严格审计</h2>
+  <div class="prose">
+    <p>两个浮点软件回答不了的问题：公开的数据库在多大的温度、成分范围内给出物理上合理的平衡？通用求解器在哪些点没有找到真正的全局平衡？两者都需要“不存在更低的相组合”“这个相不出现”这样的结论，而这正是证书给出的。审计取 pycalphad 自带的 17 个数据库（其中包括 COST 507）的每个二元体系，网格从 300 K 起每 100 K 一点，直到数据库参数的温度上限（至多 6000 K），成分 <i class="v">x</i> = 0.02、0.06、…、0.98；每个点写一份证书，用 <code>--tdb</code> 模式对照 TDB 文件本身检查，并在同一组相上运行 pycalphad。</p>
+    <p><b>316 个二元体系、246 650 个网格点，每个点都有 Lean 检查器针对该 TDB 文件定义的模型接受的证书。</b></p>
+  </div>
+  <h3 style="margin-top:28px">反常的液相混溶隙</h3>
+  <div class="prose"><p>五个体系的液相在高温下失去凸性，液相混溶隙随温度<i>升高</i>才出现——这是参数外推的缺陷，而这些文件声明参数适用到 6000 K。每个出现温度都被夹在 1 K 内，两端都有证明：较低一端是凸性证书，较高一端是只含液相、窗口不含 <i class="v">x</i>₀ 的点平衡证书。</p></div>
+  <div class="tbl"><table>
+    <thead><tr><th>数据库</th><th>体系</th><th>没有液相隙（有证明）</th><th>有液相隙（有证明）</th><th>最高网格温度处液相的两支</th></tr></thead>
+    <tbody>
+      <tr><td class="l">COST 507</td><td>Fe–Si</td><td>2177 K</td><td>2178 K</td><td>3500 K：0.548 / 0.994</td></tr>
+      <tr><td class="l">COST 507</td><td>Mg–Si</td><td>2554 K</td><td>2555 K</td><td>2900 K：0.568 / 0.866</td></tr>
+      <tr><td class="l">COST 507</td><td>Cu–Si</td><td>2603 K</td><td>2604 K</td><td>3100 K：0.029 / 0.388</td></tr>
+      <tr><td class="l">COST 507</td><td>Al–Ce</td><td>2758 K</td><td>2759 K</td><td>2800 K：0.708 / 0.836</td></tr>
+      <tr><td class="l">Al–Ni（Dupin 2001）</td><td>Al–Ni</td><td>5053 K</td><td>5054 K</td><td>5900 K：0.286 / 0.664</td></tr>
+    </tbody>
+  </table></div>
+  <ul class="gaps">
+    <li><strong>pycalphad 漏掉的混溶隙</strong>Fe–Ni 数据库 <code>FeNi_deep_branching</code> 在 700 K、<i class="v">x</i>(Ni) = 0.98 处，pycalphad 在同一组相上给出单相 fcc。证书证明平衡是两个 fcc 相，成分在 <i class="v">x</i>(Ni) = 0.9774 与 0.9881 附近——一个很窄的混溶隙——并且 pycalphad 的 Gibbs 能至少高出 0.37 J/mol。COST 507 的 Fe–Mg（1000 K，<i class="v">x</i> = 0.5）平衡相相同，但 pycalphad 的 Gibbs 能至少高出 1.47 J/mol。其余约 25 万个点上，pycalphad 的值落在 Lean 区间内或高出不到 1 J/mol。</li>
+    <li><strong>pycalphad 漏掉 Laves 相</strong>加入两个混合亚点阵的相之后（CAL-C07），COST 507 的 Cr–Ti 在 300 K、<i class="v">x</i>(Ti) = 0.34 处 pycalphad 给出单相 hcp（Gibbs 能 +812.7 J/mol），证书证明平衡是 C15 Laves 相与 <code>ALM_D019</code> 两相，Gibbs 能 −9006.96 J/mol：pycalphad 至少高出 9.8 kJ/mol（共 32 个网格点）。Mn–Ti 有 4 个点 pycalphad 停在 C14 Laves 相内部状态的局部解（至少高 4.5 J/mol）。</li>
+    <li><strong>审计查出的驱动漏洞</strong>只由 A、B 构成的分子物种（例如 COST 507 中 CU6Y 的 CU2）被当作无关元素丢掉，驱动认证的模型与 TDB 文件不同；pycalphad 的 Gibbs 能比 Lean 下界低到 128 J/mol，模型不一致就是这样暴露的。漏洞已修正，Lean 的 TDB 读法把这样的相标为不支持。</li>
+  </ul>
+  <p class="note">局限：结论只对列出的网格点成立，网格之间的相界与混溶隙边缘没有证书。驱动暂不能建模的相（三个以上混合亚点阵、缺少端元的亚点阵相、有序–无序、间隙）被跳过——“不是平衡”这类结论不受影响，但“这个相出现”只对参与计算的相成立。是否是缺陷要由人判断：真实的液相混溶隙（例如 Al–Pb）或在两个组元熔点以上稳定的化合物都可能是物理的。报告与代表性证书存档在 <code>research/calphad-audit/</code>，由 <code>make verify-all</code> 重新检查。</p>
+</section>
+
 <section id="gaps">
-  <p class="sec-no">10</p>
+  <p class="sec-no">12</p>
   <h2>尚未解决的缺口</h2>
   <ul class="gaps">
-    <li><strong>从 TDB 文件到认证的模型</strong>选温度区间、展开函数引用、判断相的类型由驱动完成，不在可信链内（A-CAL-01）。基准把结果与 pycalphad 对照。模糊测试曾发现一些输入让驱动写出另一个模型的证书、检查器照样接受：<code>3*T**1.5</code> 被读成 3<i class="v">T</i> + 0.5，系数在定长缓冲区里被截断，精确位置比运算溢出导致相被丢掉，<code>0.25*2</code> 这样的命令行数值在驱动和检查器里含义不同。10 月 1 日起驱动拒绝一切无法精确翻译的输入；此前被静默读错的三个 pycalphad 测试数据库现在与 pycalphad 读法一致，另有四个无法精确翻译的数据库改为报错。检查器仍然既不重算也不回显模型。</li>
-    <li><strong>相图的完整性</strong>列出的每个区域在中点处有证书；区域划分是否完整、中点之间与网格温度之间的情况都没有证书。计划：用相邻证书的切线把中间任意成分处的平衡切线夹住。</li>
-    <li><strong>有序–无序、间隙溶体、亚点阵与多元模型</strong>Lean 中尚未定义。驱动跳过这些相并列出；结论只对参与计算的相成立。<code>TC</code> 或 <code>BMAGN</code> 依赖 log <i class="v">T</i> 的磁性相也被跳过。</li>
+    <li><strong>从 TDB 文件到认证的模型</strong>10 月 4 日起检查器在 Lean 中从 TDB 文件构造模型（CAL-I01、B02），驱动的翻译不再在可信链内。剩下的是 Lean 的定义是否按原意读 TDB 文件（A-CAL-01）：它只有与驱动和 pycalphad 的对照（T0），没有更高的证据。不加 <code>--tdb</code> 检查的证书（例如 TDB 从管道读入时）仍只认证证书里写的模型。此前模糊测试曾发现驱动把一些输入翻译成另一个模型、检查器照样接受（<code>3*T**1.5</code> 被读成 3<i class="v">T</i> + 0.5、系数被截断、相被丢掉），数据库审计又发现分子物种被丢掉；这些都已修正，Lean 的读法对拒绝或跳过哪些输入遵循同样的规则。</li>
+    <li><strong>没有混溶隙：磁性相与温度之间</strong>凸性证书只覆盖单个温度下的无磁性代换溶体。磁性相需要磁性项二阶导数的界；两个温度之间没有证书；<code>CAL_FAIL</code> 不是有混溶隙的证明。</li>
+    <li><strong>网格温度之间的相图</strong>10 月 5 日起区域划分证书覆盖每个网格温度下的所有成分；网格温度之间没有证书，单相区窗口内的混溶隙需要另外的凸性证书。</li>
+    <li><strong>有序–无序、间隙溶体、更多亚点阵与多元模型</strong>Lean 中尚未定义（一个或两个混合亚点阵的相已经支持）。驱动跳过这些相并列出；结论只对参与计算的相成立。<code>TC</code> 或 <code>BMAGN</code> 依赖 log <i class="v">T</i> 的磁性相也被跳过。</li>
     <li><strong>驱动本身</strong>网格搜索与 Newton 迭代不受信任（T0），报告中如此标注；所有结果都经过检查器。</li>
   </ul>
 </section>
@@ -294,7 +357,7 @@ Lean  EXISTS</pre>
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · 现状快照 2026-10-01<span class="updated"> · 更新于 <time datetime="2026-10-03T09:48+08:00">2026-10-03 09:48 UTC+8</time></span></span>
+  <span>Formal in Silico · 现状快照 2026-10-05<span class="updated"> · 更新于 <time datetime="2026-10-05T23:25+08:00">2026-10-05 23:25 UTC+8</time></span></span>
   <span><a href="./">纲领</a> · <a href="progress.html">进度</a> · <a href="showcases.html">成果展示</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="../calphad.html" hreflang="en">English</a></span>
 </div></footer>
 </body>

@@ -33,12 +33,12 @@
 
 <div class="hero small"><div class="hero-in">
   <nav class="domnav" aria-label="Domains"><a href="progress.html">← Progress</a><a href="dft.html" aria-current="page">mini-DFT</a><a href="fem.html">mini-FEM</a><a href="md.html">mini-MD</a><a href="calphad.html">mini-CALPHAD</a></nav>
-  <p class="eyebrow">Domain · goal G1 · status snapshot 3 October 2026</p>
+  <p class="eyebrow">Domain · goal G1 · status snapshot 5 October 2026</p>
   <h1>mini-DFT</h1>
   <p class="lead">A one-dimensional periodic reduced Hartree–Fock model with plane waves — the project’s first domain, where the trust ledger, the certificate checkers and trace validation were built. Goal G1 is feature parity with DFTK.jl 0.8.0 on the same discrete problem, with every output covered by a Lean theorem.</p>
   <div class="stats">
-    <div class="stat"><b>108</b><span>claims in the trust ledger</span></div>
-    <div class="stat"><b>93%</b><span>machine-proved: 80 at T3, 20 at T4</span></div>
+    <div class="stat"><b>119</b><span>claims in the trust ledger</span></div>
+    <div class="stat"><b>93%</b><span>machine-proved: 84 at T3, 27 at T4</span></div>
     <div class="stat"><b>7 / 46</b><span>DFTK parity items done; 3 more agree but lack full certificates, LDA among them</span></div>
     <div class="stat"><b>≤ 5×10⁻¹⁵</b><span>energy difference from DFTK on the same discrete problem</span></div>
   </div>
@@ -51,8 +51,10 @@
     <li><a href="#ledger"><span>01</span>Trust ledger</a></li>
     <li><a href="#g1"><span>02</span>G1 · DFTK</a></li>
     <li><a href="#outputs"><span>03</span>Certified outputs</a></li>
-    <li><a href="#evidence"><span>04</span>Cross-checks</a></li>
-    <li><a href="#gaps"><span>05</span>Open gaps</a></li>
+    <li><a href="#binding"><span>04</span>Problem binding</a></li>
+    <li><a href="#evidence"><span>05</span>Cross-checks</a></li>
+    <li><a href="#multiple"><span>06</span>Several SCF solutions</a></li>
+    <li><a href="#gaps"><span>07</span>Open gaps</a></li>
   </ol>
 </nav>
 <main>
@@ -60,30 +62,32 @@
 <section id="ledger">
   <p class="sec-no">01</p>
   <h2>Claims in the trust ledger</h2>
-  <div class="prose"><p>Of the ledger’s 138 claims, 108 concern mini-DFT; they are grouped below by topic. The tiers are defined on the <a href="./#s5">programme page</a>.</p></div>
-  <div class="sbar big" role="img" aria-label="108 claims: 20 at T4, 80 at T3, 2 at T2, 1 at T0, 5 not yet reached">
-    <i class="sw-t4" style="flex:20"></i><i class="sw-t3" style="flex:80"></i><i class="sw-t2" style="flex:2"></i><i class="sw-t0" style="flex:1"></i><i class="sw-no" style="flex:5"></i>
+  <div class="prose"><p>Of the ledger’s 164 claims, 119 concern mini-DFT; they are grouped below by topic. The tiers are defined on the <a href="./#s5">programme page</a>.</p></div>
+  <div class="sbar big" role="img" aria-label="119 claims: 27 at T4, 84 at T3, 2 at T2, 4 at T1, 1 at T0, 1 with no tier yet">
+    <i class="sw-t4" style="flex:27"></i><i class="sw-t3" style="flex:84"></i><i class="sw-t2" style="flex:2"></i><i class="sw-t1" style="flex:4"></i><i class="sw-t0" style="flex:1"></i><i class="sw-no" style="flex:1"></i>
   </div>
   <div class="legend">
-    <span><i class="sw-t4"></i>T4 end to end · 20</span>
-    <span><i class="sw-t3"></i>T3 machine proof · 80</span>
+    <span><i class="sw-t4"></i>T4 end to end · 27</span>
+    <span><i class="sw-t3"></i>T3 machine proof · 84</span>
     <span><i class="sw-t2"></i>T2 model-checked · 2</span>
+    <span><i class="sw-t1"></i>T1 paper proof · 4</span>
     <span><i class="sw-t0"></i>T0 tested · 1</span>
-    <span><i class="sw-no"></i>target not yet reached · 5</span>
+    <span><i class="sw-no"></i>no tier yet · 1</span>
   </div>
   <div class="rows">
-    <div class="row"><div>DFT foundations<div class="cap">discrete model · algorithm · parallelism · floating point</div></div><span class="n">19</span><div class="barcell"><div class="sbar"><i class="sw-t4" style="flex:1"></i><i class="sw-t3" style="flex:11"></i><i class="sw-t2" style="flex:2"></i><i class="sw-t0" style="flex:1"></i><i class="sw-no" style="flex:4"></i></div></div></div>
+    <div class="row"><div>DFT foundations<div class="cap">discrete model · algorithm · parallelism · floating point</div></div><span class="n">19</span><div class="barcell"><div class="sbar"><i class="sw-t4" style="flex:1"></i><i class="sw-t3" style="flex:11"></i><i class="sw-t2" style="flex:2"></i><i class="sw-t1" style="flex:3"></i><i class="sw-t0" style="flex:1"></i><i class="sw-no" style="flex:1"></i></div></div></div>
     <div class="row"><div>Ground-state energy certificate</div><span class="n">8</span><div class="barcell"><div class="sbar"><i class="sw-t4" style="flex:1"></i><i class="sw-t3" style="flex:7"></i></div></div></div>
     <div class="row"><div>Finite-temperature free energy</div><span class="n">14</span><div class="barcell"><div class="sbar"><i class="sw-t4" style="flex:3"></i><i class="sw-t3" style="flex:11"></i></div></div></div>
     <div class="row"><div>Gaussian and cold smearing</div><span class="n">5</span><div class="barcell"><div class="sbar"><i class="sw-t3" style="flex:5"></i></div></div></div>
     <div class="row"><div>SCF-solution certificates<div class="cap">Methfessel–Paxton of any order · Marzari–Vanderbilt</div></div><span class="n">12</span><div class="barcell"><div class="sbar"><i class="sw-t4" style="flex:3"></i><i class="sw-t3" style="flex:9"></i></div></div></div>
     <div class="row"><div>k-point sampling and supercells</div><span class="n">7</span><div class="barcell"><div class="sbar"><i class="sw-t4" style="flex:2"></i><i class="sw-t3" style="flex:5"></i></div></div></div>
-    <div class="row"><div>Discretisation error<div class="cap">truncation K → ∞ · true Gaussian potential</div></div><span class="n">13</span><div class="barcell"><div class="sbar"><i class="sw-t4" style="flex:3"></i><i class="sw-t3" style="flex:9"></i><i class="sw-no" style="flex:1"></i></div></div></div>
+    <div class="row"><div>Discretisation error<div class="cap">truncation K → ∞ · true Gaussian potential</div></div><span class="n">13</span><div class="barcell"><div class="sbar"><i class="sw-t4" style="flex:3"></i><i class="sw-t3" style="flex:9"></i><i class="sw-t1" style="flex:1"></i></div></div></div>
+    <div class="row"><div>Problem binding: the external potential<div class="cap">named potentials in Lean and their Fourier series · certificate problem equals the named one at Γ and with k-points · Gaussian deviation bound · mandatory for every certificate</div></div><span class="n">6</span><div class="barcell"><div class="sbar"><i class="sw-t4" style="flex:4"></i><i class="sw-t3" style="flex:2"></i></div></div></div>
     <div class="row"><div>Density and eigenvalues</div><span class="n">10</span><div class="barcell"><div class="sbar"><i class="sw-t4" style="flex:3"></i><i class="sw-t3" style="flex:7"></i></div></div></div>
-    <div class="row"><div>Band structure and density of states</div><span class="n">3</span><div class="barcell"><div class="sbar"><i class="sw-t4" style="flex:2"></i><i class="sw-t3" style="flex:1"></i></div></div></div>
-    <div class="row"><div>LDA exchange-correlation (Slater, PW92)<div class="cap">exchange-correlation on a real-space grid · nonlinear SCF-solution certificates · energy · PW92 interval bounds · Fermi–Dirac and Gaussian occupations</div></div><span class="n">17</span><div class="barcell"><div class="sbar"><i class="sw-t4" style="flex:2"></i><i class="sw-t3" style="flex:15"></i></div></div></div>
+    <div class="row"><div>Band structure and density of states<div class="cap">zero temperature · finite-temperature SCF solutions, rHF and LDA</div></div><span class="n">5</span><div class="barcell"><div class="sbar"><i class="sw-t4" style="flex:4"></i><i class="sw-t3" style="flex:1"></i></div></div></div>
+    <div class="row"><div>LDA exchange-correlation (Slater, PW92)<div class="cap">exchange-correlation on a real-space grid · nonlinear SCF-solution certificates · energy · PW92 interval bounds · Fermi–Dirac and Gaussian occupations · k-point supercell</div></div><span class="n">20</span><div class="barcell"><div class="sbar"><i class="sw-t4" style="flex:3"></i><i class="sw-t3" style="flex:17"></i></div></div></div>
   </div>
-  <p class="note">The T4 claims are the soundness theorems of the certificate checkers (which run in exact rational arithmetic, so no floating point is involved) and the proof that the trusted C kernel has no run-time errors. The five claims below target: continuum well-posedness of 1D rHF, the a priori plane-wave estimate and linear-mixing convergence (all awaiting a literature check at T1), the equality of the truncation limit with the continuum energy, and the Lean–Rocq interface claim.</p>
+  <p class="note">The T4 claims are the soundness theorems of the certificate checkers (which run in exact rational arithmetic, so no floating point is involved) and the proof that the trusted C kernel has no run-time errors. Four claims rest on paper proofs (T1, in <code>domains/dft/notes/</code>; no published result covers the 1D periodic Hartree kernel directly): continuum well-posedness of 1D rHF, the a priori plane-wave estimate and the local convergence of linear mixing for α &lt; 2/λ<sub>max</sub> of the dielectric operator are at their target; the equality of the truncation limit with the continuum energy targets a Lean proof (T3). The Lean–Rocq interface claim has no tier yet.</p>
 </section>
 
 <section id="g1">
@@ -98,7 +102,7 @@
   </div>
   <div class="ms">
     <div class="row"><span class="code">M0</span><div>Existing core</div><div class="barcell"><div class="sbar"><i class="sw-done" style="flex:5"></i><i class="sw-align" style="flex:1"></i><i class="sw-impl" style="flex:3"></i></div></div><span class="n">5 / 9</span></div>
-    <div class="row"><span class="code">M1</span><div>1D solvers, occupation, k-points</div><div class="barcell"><div class="sbar"><i class="sw-done" style="flex:1"></i><i class="sw-align" style="flex:2"></i><i class="sw-todo" style="flex:4"></i></div></div><span class="n">1 / 7</span></div>
+    <div class="row"><span class="code">M1</span><div>1D solvers, occupation, k-points</div><div class="barcell"><div class="sbar"><i class="sw-done" style="flex:2"></i><i class="sw-align" style="flex:1"></i><i class="sw-todo" style="flex:4"></i></div></div><span class="n">2 / 7</span></div>
     <div class="row"><span class="code">M2</span><div>1D physics terms</div><div class="barcell"><div class="sbar"><i class="sw-align" style="flex:1"></i><i class="sw-todo" style="flex:6"></i></div></div><span class="n">0 / 7</span></div>
     <div class="row"><span class="code">M3</span><div>1D post-processing and response</div><div class="barcell"><div class="sbar"><i class="sw-todo" style="flex:9"></i></div></div><span class="n">0 / 9</span></div>
     <div class="row"><span class="code">M4</span><div><i class="v">d</i> dimensions</div><div class="barcell"><div class="sbar"><i class="sw-todo" style="flex:7"></i></div></div><span class="n">0 / 7</span></div>
@@ -110,13 +114,13 @@
   <div class="tbl"><table class="feat">
     <thead><tr><th>Feature</th><th>Status</th><th>What is certified</th></tr></thead>
     <tbody>
-      <tr><td>Kinetic, external (Fourier) and Hartree terms</td><td class="st"><span class="tag st-done">Done</span></td><td>Ground-state energy, density, eigenvalues and each energy component</td></tr>
+      <tr><td>Kinetic, external (Fourier) and Hartree terms</td><td class="st"><span class="tag st-done">Done</span></td><td>Ground-state energy, density, eigenvalues and each energy component; since 4 October the checker also verifies the external potential against its Lean definition (DFT-I02, I03, V09)</td></tr>
       <tr><td>Fermi–Dirac smearing and entropy</td><td class="st"><span class="tag st-done">Done</span></td><td>Free energy, entropy and energy; existence of the finite-temperature ground state and uniqueness of its density are proved</td></tr>
       <tr><td>Γ-centred grids with an odd number of k-points</td><td class="st"><span class="tag st-done">Done</span></td><td>Per-cell energy through the equivalent supercell, plus its truncation limit</td></tr>
       <tr><td>Even grids, Monkhorst–Pack</td><td class="st"><span class="tag st-done">Done</span></td><td>Supercell with half-integer frequencies; grids that contain the zone boundary are excluded</td></tr>
       <tr><td>Dense diagonalisation</td><td class="st"><span class="tag st-done">Done</span></td><td>Each eigenpair enclosed by a residual bound; Sylvester inertia confirms they are the lowest ones</td></tr>
       <tr><td>Linear, Kerker and Anderson mixing</td><td class="st"><span class="tag st-impl">Implemented</span></td><td>Does not affect the result, which is checked by certificate</td></tr>
-      <tr><td>Non-self-consistent bands, Gaussian-broadened DOS</td><td class="st"><span class="tag st-align">Agrees</span></td><td>Certified for zero-temperature Γ-point runs; finite-temperature and k-point runs not yet</td></tr>
+      <tr><td>Non-self-consistent bands, Gaussian-broadened DOS</td><td class="st"><span class="tag st-align">Agrees</span></td><td>Certified for zero-temperature Γ-point runs and, since 4 October, for finite-temperature Γ-point SCF-solution certificates — rHF with MV, MP, Fermi–Dirac or Gaussian smearing, and LDA (DFT-S04, S05); DFTK’s bands and DOS fall inside the Lean intervals. k-point runs not yet</td></tr>
       <tr><td>Supercells</td><td class="st"><span class="tag st-impl">Implemented</span></td><td>Supercell equivalence is proved</td></tr>
       <tr><td>Parallelism over k-points</td><td class="st"><span class="tag st-impl">Implemented</span></td><td>Threads rather than MPI; the protocol is model-checked (T2), results are bitwise identical across thread counts</td></tr>
     </tbody>
@@ -140,7 +144,7 @@
   <div class="tbl"><table class="feat">
     <thead><tr><th>Feature</th><th>Status</th><th>What is certified</th></tr></thead>
     <tbody>
-      <tr><td>LDA exchange-correlation (Slater exchange, PW92 correlation)</td><td class="st"><span class="tag st-align">Agrees</span></td><td>Evaluated on the same real-space grid as DFTK (<i class="v">M</i> = 4<i class="v">K</i> + 1 points); six systems — zero temperature, Fermi–Dirac, Marzari–Vanderbilt, Gaussian with Monkhorst–Pack k-points, bands and DOS — agree with DFTK in energy, every component and every eigenvalue. The energy is no longer convex, so there is no variational certificate; for Slater exchange, with or without PW92 correlation, at the Γ point with any finite-temperature smearing (Fermi–Dirac, Gaussian, MV, or MP of any order), the checker proves that the nonlinear SCF equations have exactly one solution within about 10⁻¹² of the computed one and encloses its chemical potential, energy (exchange-correlation included) and free energy (DFT-X01–X15). For PW92 the correlation is written in <i class="v">s</i> = √<i class="v">r</i><sub>s</sub>, where every derivative of its logarithm becomes a rational function regular at <i class="v">s</i> = 0; the checker encloses it by interval arithmetic and bounds |<i class="v">v</i>′| and |<i class="v">v</i>″| for all densities above the grid minimum. The Fermi–Dirac occupation 1/(1 + <i class="v">e</i><sup><i class="v">x</i></sup>) has its own proved derivative bounds, and its entropy is proved equal to the binary entropy used by the variational certificates (DFT-X16, X17). DFTK’s Fermi level, energy and free energy fall inside the Lean intervals. Missing: zero temperature, k-points.</td></tr>
+      <tr><td>LDA exchange-correlation (Slater exchange, PW92 correlation)</td><td class="st"><span class="tag st-align">Agrees</span></td><td>Evaluated on the same real-space grid as DFTK (<i class="v">M</i> = 4<i class="v">K</i> + 1 points); six systems — zero temperature, Fermi–Dirac, Marzari–Vanderbilt, Gaussian with Monkhorst–Pack k-points, bands and DOS — agree with DFTK in energy, every component and every eigenvalue. The energy is no longer convex, so there is no variational certificate; for Slater exchange, with or without PW92 correlation, at the Γ point with any finite-temperature smearing (Fermi–Dirac, Gaussian, MV, or MP of any order), the checker proves that the nonlinear SCF equations have exactly one solution within about 10⁻¹² of the computed one and encloses its chemical potential, energy (exchange-correlation included) and free energy (DFT-X01–X15). For PW92 the correlation is written in <i class="v">s</i> = √<i class="v">r</i><sub>s</sub>, where every derivative of its logarithm becomes a rational function regular at <i class="v">s</i> = 0; the checker encloses it by interval arithmetic and bounds |<i class="v">v</i>′| and |<i class="v">v</i>″| for all densities above the grid minimum. The Fermi–Dirac occupation 1/(1 + <i class="v">e</i><sup><i class="v">x</i></sup>) has its own proved derivative bounds, and its entropy is proved equal to the binary entropy used by the variational certificates (DFT-X16, X17). DFTK’s Fermi level, energy and free energy fall inside the Lean intervals. With Monkhorst–Pack k-points the certificate describes the equivalent supercell on a grid of <i class="v">n</i><sub>k</sub>·<i class="v">M</i> points: shifting by one cell is then a grid shift, so the exchange-correlation potential is equivariant, the unique solution is cell-periodic, and the per-cell energy and free energy — exchange-correlation integrated on the cell grid, as DFTK does — are enclosed (DFT-X18–X20); the supercell grid must satisfy <i class="v">M</i><sub>s</sub> ≥ 4<i class="v">K</i><sub>s</sub> + 1, so these runs use <i class="v">M</i> = 4<i class="v">K</i> + 3, and DFTK on the same grid lands inside the intervals. Missing: zero temperature.</td></tr>
     </tbody>
   </table></div>
 
@@ -168,27 +172,53 @@
         <li>the ground-state density (Coulomb norm and pointwise) and the Hartree potential</li>
         <li>every eigenvalue of the ground-state Hamiltonian, and the gap</li>
         <li>kinetic, external and Hartree energy components</li>
-        <li>band energies along a path and density-of-states values</li>
+        <li>band energies along a path and density-of-states values, at zero temperature and for finite-temperature Γ-point SCF solutions (rHF and LDA)</li>
         <li>free energy, entropy and energy at finite temperature</li>
         <li>for MP (any order) and MV smearing: a locally unique SCF solution, its chemical potential, energy and free energy</li>
-        <li>for LDA (Slater exchange, or Slater exchange with PW92 correlation) at finite temperature, with any of the four smearings: a locally unique solution of the nonlinear SCF equations, its chemical potential, energy including the exchange-correlation energy, and free energy</li>
+        <li>for LDA (Slater exchange, or Slater exchange with PW92 correlation) at finite temperature, with any of the four smearings, at the Γ point or with k-points: a locally unique solution of the nonlinear SCF equations, its chemical potential, energy including the exchange-correlation energy, and free energy</li>
         <li>per-cell values for k-point runs, through the equivalent supercell</li>
     </ul></div>
+  <p class="note">Every certificate written since 4 October also names its external potential, and the checker prints the problem it certified before any result (next section).</p>
+</section>
+
+<section id="binding">
+  <p class="sec-no">04</p>
+  <h2>Problem binding: which potential was certified</h2>
+  <div class="prose">
+    <p>Until 3 October a certificate carried the external potential only as Fourier coefficients written by the untrusted driver, and the checker certified whatever problem those coefficients described (assumption A-DFT-05): a driver that computed the wrong potential produced a self-consistent certificate that the checker accepted. Since 4 October every certificate the driver writes carries a <code>pot</code> line naming the potential — free electrons, a cosine <i class="v">V</i>₀ cos(2π<i class="v">Rx</i>/<i class="v">L</i>) or the periodised Gaussian double well, with the exact doubles used for <i class="v">V</i>₀ and <i class="v">σ</i> and the number of copies <i class="v">R</i> per cell — and the checker compares the coefficients with Lean’s own definition of that potential. Lean also proves that these coefficients are the Fourier series of the real-space potential (DFT-V07), so they are not one more convention to trust.</p>
+  </div>
+  <div class="tbl"><table class="outs">
+    <thead><tr><th>Line</th><th>What it means</th></tr></thead>
+    <tbody>
+      <tr><td>PROBLEM …</td><td>The problem being certified, in exact decimals: the potential and its parameters, <i class="v">L</i>, <i class="v">K</i>, electron pairs, number of k-points and, by certificate kind, temperature, smearing, exchange-correlation and grid size. Echoed, not recomputed; <code>make verify-all</code> compares it with the command line.</td></tr>
+      <tr><td>POT_OK exact</td><td>Free electrons and cosine: every coefficient equals Lean’s, so the certified problem <i>is</i> the named problem — at the Γ point (DFT-I02) and, for k-point supercells, the per-cell problem (DFT-I03). Every result of the certificate is then a statement about the named potential.</td></tr>
+      <tr><td>POT_OK gauss d</td><td>Gaussian double well: its coefficients involve √(2π) and exp, so the checker encloses Lean’s exact coefficients in rational intervals and proves an ℓ¹ deviation of at most <i class="v">d</i> (about 10⁻¹⁵). Variational certificates — zero or finite temperature, Γ point or k-points — also print <code>GAUSS_OK</code> intervals about the named potential, widened by 2<i class="v">N</i>·<i class="v">d</i> (DFT-V09).</td></tr>
+      <tr><td>POT_FAIL</td><td>The coefficients are not those of the named potential, or the certificate has no <code>pot</code> line at all (since 5 October the binding is mandatory, DFT-I04); nothing else is printed.</td></tr>
+    </tbody>
+  </table></div>
+  <p class="note">Since 5 October the <code>pot</code> line is mandatory (DFT-I04): the checker runs the binding first for every kind of certificate and rejects one without a <code>pot</code> line, so a driver cannot escape the binding by leaving it out. The archived showcase and research certificates, written before the binding, now carry the <code>pot</code> line too (regenerated, or added after checking that their problem data match the current driver line by line). Caveats, as in the ledger: for the Gaussian potential, SCF-solution, entropy, spectral and band results are about the certificate’s coefficients, within <i class="v">d</i> of the named potential, until a perturbation estimate is proved. What remains trusted is that Lean’s definition of the named potentials matches the one the specification describes.</p>
 </section>
 
 <section id="evidence">
-  <p class="sec-no">04</p>
+  <p class="sec-no">05</p>
   <h2>Cross-checks and supporting evidence</h2>
   <div class="prose"><p>Benchmarks do not raise a tier, but they catch misunderstandings: a Lean interval that excludes an independent reference value would reveal a wrong model.</p></div>
   <ul class="checks">
-    <li><span>DFT benchmark suite, including cross-checks with DFTK.jl (run of 3 October)</span><b>169 / 169 pass</b></li>
+    <li><span>DFT benchmark suite, including cross-checks with DFTK.jl (run of 4 October)</span><b>167 / 167 pass</b></li>
     <li><span>Energies (free energies) against DFTK.jl on the same discrete problem</span><b>≤ 5×10⁻¹⁵</b></li>
     <li><span>All eigenvalues and energy components against DFTK.jl</span><b>≤ 10⁻¹²</b></li>
     <li><span>DFTK’s Gaussian free energy, and its MP (first and second order) and MV Fermi level, energy and free energy</span><b>inside the Lean intervals</b></li>
     <li><span>LDA against DFTK.jl with the same grid: energies, components including exchange-correlation, eigenvalues (six systems); for certified LDA runs DFTK’s Fermi level, energy and free energy</span><b>agree; inside the Lean intervals</b></li>
     <li><span>LDA SCF-solution certificate, <i class="v">K</i> = 8 (Marzari–Vanderbilt): radius of uniqueness / energy interval / free-energy interval / checking time</span><b>4×10⁻¹² / 1×10⁻⁸ / 2×10⁻¹⁵ / 6 s</b></li>
     <li><span>LDA SCF-solution certificates with Fermi–Dirac and Gaussian smearing, <i class="v">K</i> = 8: radius of uniqueness / energy interval / free-energy interval / checking time</span><b>1–8×10⁻¹² / 4×10⁻⁹–2×10⁻⁸ / 4×10⁻¹³–1×10⁻¹² / 8–14 s</b></li>
+    <li><span>k-point LDA certificates (equivalent supercell, <i class="v">n</i><sub>k</sub> = 2–4, <i class="v">K</i> = 4, <i class="v">M</i> = 19): radius of uniqueness / per-cell energy interval / free-energy interval / checking time</span><b>2–9×10⁻¹² / 1×10⁻⁹–2×10⁻⁸ / 3×10⁻¹⁵–8×10⁻¹⁴ / 9–53 s</b></li>
+    <li><span>Band and DOS certificates for finite-temperature SCF solutions (double well, <i class="v">L</i> = 10, <i class="v">K</i> = 8, <i class="v">T</i> = 0.01): half-width of the band intervals for rHF with MV / LDA (PW92, Fermi–Dirac); DFTK’s non-self-consistent bands and DOS</span><b>≈ 10⁻¹¹ / ≈ 10⁻⁹; inside the Lean intervals</b></li>
     <li><span>SCF-solution certificates for Methfessel–Paxton of order 2, 3, 4, <i class="v">K</i> = 8: radius of uniqueness / free-energy interval</span><b>1–6×10⁻¹² / 4×10⁻¹⁴–5×10⁻¹³</b></li>
+    <li><span>Problem binding: a driver that solves another potential while the <code>pot</code> line names the requested one (free electrons at Γ and with k-points, LDA at Γ and with k-points, Gaussian at zero temperature and with MV); a Gaussian <i class="v">V</i>₀ of 2.001 written as 2</span><b>POT_FAIL</b></li>
+    <li><span>Problem binding: one coefficient changed in its last bit</span><b>POT_FAIL</b></li>
+    <li><span>Problem binding: every DFT test certificate with its <code>pot</code> line removed (and each of the three entropy certificates on its own)</span><b>POT_FAIL</b></li>
+    <li><span>Known answers computed from the command line, not the certificate: free electrons at zero temperature (<i class="v">E</i> = π²/2, π²/54 per cell with k-points), at finite temperature (<i class="v">F</i>, <i class="v">S</i>, <i class="v">E</i>) and with Γ-point and k-point LDA (<i class="v">μ</i>, <i class="v">E</i>, <i class="v">F</i>, computed independently with mpmath)</span><b>inside the Lean intervals</b></li>
+    <li><span>A driver run with <i class="v">L</i> off by 0.001: the certificate is self-consistent and the checker accepts it</span><b>caught by the known answer and the <code>PROBLEM</code> echo</b></li>
     <li><span>Reports with 1, 2, 4 and 7 threads</span><b>bitwise identical</b></li>
     <li><span>Trace validation: runs ending converged, gap closed, max iterations, certificate failed</span><b>all accepted</b></li>
     <li><span>Trace validation: tampered traces (claimed convergence without a certificate, a dropped record, wrong limit)</span><b>all rejected</b></li>
@@ -196,23 +226,43 @@
     <li><span>Trace validation of the k-point threads: every claim, join and reduction step replayed against the protocol, 1, 4 and 7 threads</span><b>all accepted</b></li>
     <li><span>Tampered thread logs (double claim, claim out of counter order, reduction out of order, join before exit, missing chemical-potential step)</span><b>all rejected</b></li>
     <li><span>Report validation: every <code>Lean</code> line in a report is the checker’s own output; a rejecting, crashing or missing checker makes the driver exit with an error</span><b>pass</b></li>
-    <li><span>Fuzzing of the driver under AddressSanitizer and UBSan (about 4 000 mutated inputs), after hardening its input parsing</span><b>no memory errors, undefined behaviour or crashes</b></li>
+    <li><span>Fuzzing of the driver under AddressSanitizer and UBSan (about 4 000 mutated inputs), after hardening its input parsing; on 4 October it found that a huge k-point count made the supercell certificate ask for about 10¹⁴ bytes, and such certificates are now refused as too large</span><b>no memory errors, undefined behaviour or crashes</b></li>
   </ul>
 </section>
 
+<section id="multiple">
+  <p class="sec-no">06</p>
+  <h2>Research result: several exact SCF solutions</h2>
+  <div class="prose">
+    <p>The rHF energy is convex, so its SCF solution is unique. LDA exchange is concave, and uniqueness can fail — but a floating-point SCF that lands on different points from different starting densities does not prove it: they could be approximations of one solution, or of none. SCF-solution certificates can. Each proves that exactly one solution lies in a ball around its centre, so accepted certificates for the same problem whose balls are pairwise disjoint prove as many distinct exact solutions.</p>
+    <p>For a 1D LDA electron gas (Slater exchange with PW92 correlation) with four electrons per period <i class="v">L</i> = 0.6, a cosine potential of period <i class="v">L</i>/4 (<i class="v">V</i>₀ = 20), <i class="v">K</i> = 6, <i class="v">M</i> = 25 grid points and Fermi–Dirac smearing at <i class="v">T</i> = 0.03, five certificates with byte-identical problem data are accepted by the Lean checker. Their radii are at most 1.6×10⁻¹² and their centres 0.048–0.096 apart, so the discrete SCF equations have <b>at least five distinct exact solutions</b>, with pairwise different densities. Disjoint free-energy intervals also order them: the symmetric solution is not the lowest.</p>
+  </div>
+  <div class="tbl"><table>
+    <thead><tr><th>Solution</th><th>Starting density</th><th>Radius <i class="v">r</i></th><th>Free energy <i class="v">F</i>, Lean interval</th></tr></thead>
+    <tbody>
+      <tr><td class="l">0</td><td>charge-density wave, φ = π/2</td><td>1.59×10⁻¹²</td><td>[102.565322714574288, 102.565322714624328]</td></tr>
+      <tr><td class="l">1</td><td>charge-density wave, φ = 3π/2</td><td>1.51×10⁻¹²</td><td>[102.565322714574313, 102.565322714617116]</td></tr>
+      <tr><td class="l">2</td><td>charge-density wave, φ = π</td><td>1.37×10⁻¹²</td><td>[102.578707142620807, 102.578707142638557]</td></tr>
+      <tr><td class="l">3</td><td>charge-density wave, φ = 0</td><td>1.37×10⁻¹²</td><td>[102.578707142620873, 102.578707142625617]</td></tr>
+      <tr><td class="l">4</td><td>uniform (symmetric solution)</td><td>2.13×10⁻¹³</td><td>[102.604009214520563, 102.604009214563429]</td></tr>
+    </tbody>
+  </table></div>
+  <p class="note">Mechanism: the half-filled shell <i class="v">k</i> = ±2π/<i class="v">L</i> forms a charge-density wave under exchange, and the potential, which has only frequency-4 components, pins its phase at a few discrete values; φ = 0 and π are related only by a shift the 25-point grid does not have, so they are genuinely different solutions. Limits: the result is about this discrete problem (<i class="v">K</i> = 6, <i class="v">M</i> = 25) — floating-point runs find five solutions at <i class="v">K</i> = 8, 12 and 16 too, without certificates; it is a lower bound on the number of solutions, not a count, and which are stable is not proved; it is an open-shell effect of a small cell at the Γ point, not a bulk instability. The certificates predate the problem binding and have no <code>pot</code> line, which does not affect the conclusion since all five share the same problem data. They are archived in <code>research/kohn-sham-multiplicity/</code> and re-checked by <code>make verify-all</code>.</p>
+</section>
+
 <section id="gaps">
-  <p class="sec-no">05</p>
+  <p class="sec-no">07</p>
   <h2>Open gaps</h2>
   <div class="prose"><p>An output without a Lean theorem is unfinished. These are the ones we know about, listed rather than hidden.</p></div>
   <ul class="gaps">
     <li><strong>k-point sums versus the infinite crystal</strong>Each k-point run is certified for its own discrete problem, but the error of the k-point sum relative to the infinite crystal has no bound yet; k-point energies are not variational.</li>
     <li><strong>Grids containing the Brillouin-zone boundary</strong>No certificate; DFTK’s treatment there is also a different discrete problem, so neither side is compared.</li>
-    <li><strong>Scaling of SCF-solution certificates</strong>Checking time grows roughly with the fourth power of the supercell size; the derivative bounds used for higher-order Methfessel–Paxton are several times the true maxima and loosen as the order rises; for gapped systems with the chemical potential mid-gap the SCF equations are ill-conditioned and the certificate honestly fails; uniqueness is only local.</li>
-    <li><strong>LDA at zero temperature and with k-points</strong>Both agree with DFTK but have no certificate yet; the LDA energy interval is a first-order estimate, and only grids with <i class="v">M</i> = 4<i class="v">K</i> + 1 points are covered.</li>
+    <li><strong>Scaling of SCF-solution certificates</strong>Checking time grows roughly with the fourth power of the supercell size; the derivative bounds used for higher-order Methfessel–Paxton are several times the true maxima and loosen as the order rises; for gapped systems with the chemical potential mid-gap the SCF equations are ill-conditioned and the certificate honestly fails; uniqueness is only local, and for LDA several solutions do exist (<a href="#multiple">above</a>).</li>
+    <li><strong>LDA at zero temperature</strong>Agrees with DFTK but has no certificate yet; k-point LDA certificates need <i class="v">M</i> ≥ 4<i class="v">K</i> + 3 (the default 4<i class="v">K</i> + 1 only agrees with DFTK); near-insulating systems (∂<i class="v">N</i>/∂μ ≈ 0) fail the SCF-solution certificate; the LDA energy interval is a first-order estimate.</li>
     <li><strong>Discretisation error at finite temperature</strong>Certified at zero temperature only.</li>
-    <li><strong>Truncation limit equals the continuum energy</strong>Not yet proved.</li>
-    <li><strong>Density, eigenvalues, bands and DOS for finite-temperature and k-point runs</strong>Certified for zero-temperature Γ-point runs only.</li>
-    <li><strong>The problem written in the certificate</strong>The potential coefficients, cell length, cutoff, electron count, temperature and smearing are written by the untrusted driver; the checker certifies exactly that problem but neither recomputes nor echoes it (A-DFT-05). Only the Gaussian-potential lines compare the coefficients with the true potential.</li>
+    <li><strong>Truncation limit equals the continuum energy</strong>Paper proof only (T1); not yet proved in Lean.</li>
+    <li><strong>Density, eigenvalues, bands and DOS beyond zero temperature</strong>All certified for zero-temperature Γ-point runs; bands and DOS also for finite-temperature Γ-point SCF-solution certificates. Missing: bands and DOS of k-point runs (the supercell’s bands must be folded back to the cell’s Bloch sectors) and of finite-temperature variational certificates (Fermi–Dirac or Gaussian without <code>--scf-cert</code>), and the density, eigenvalues and energy components at finite temperature.</li>
+    <li><strong>The rest of the problem written in the certificate</strong>Since 4 October the external potential is checked against its Lean definition (A-DFT-05, <a href="#binding">above</a>). The other problem data — cell length, cutoff, electron count, temperature, smearing, exchange-correlation, grid size, number of k-points — are the problem itself: the checker echoes their exact values but cannot recompute them, and only <code>make verify-all</code> compares them with the command line (T0); the k-point weights of bands and the DOS width are not echoed. Certificates without a <code>pot</code> line still certify only the potential written in them, and Gaussian-potential SCF-solution, spectral and band results are about the certificate’s coefficients (within about 10⁻¹⁵ of the named potential).</li>
     <li><strong>Code-level proof of the interval arithmetic</strong>The Lean model and the C code agree by review and differential tests, not by proof.</li>
   </ul>
 </section>
@@ -221,7 +271,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · status snapshot 3 October 2026<span class="updated"> · updated <time datetime="2026-10-03T09:48+08:00">2026-10-03 09:48 UTC+8</time></span></span>
+  <span>Formal in Silico · status snapshot 5 October 2026<span class="updated"> · updated <time datetime="2026-10-05T23:25+08:00">2026-10-05 23:25 UTC+8</time></span></span>
   <span><a href="./">Programme</a> · <a href="progress.html">Progress</a> · <a href="showcases.html">Showcases</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="zh/dft.html" hreflang="zh-CN">中文版</a></span>
 </div></footer>
 </body>

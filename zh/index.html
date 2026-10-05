@@ -42,14 +42,15 @@
     <div class="j f"><span class="k">IEEE 754</span><span class="e">|fl(<i class="v">E<sub>h</sub></i>) − <i class="v">E<sub>h</sub></i>| ≤ <i class="v">ε</i><sub>round</sub></span></div>
   </div>
   <div class="stats">
-    <div class="stat"><b>138</b><span>条命题登记在可信账本中</span></div>
-    <div class="stat"><b>129</b><span>条已有机器证明（T3 或 T4）</span></div>
-    <div class="stat"><b>28</b><span>条达到端到端等级 T4：检查器可靠性与内核安全</span></div>
+    <div class="stat"><b>164</b><span>条命题登记在可信账本中</span></div>
+    <div class="stat"><b>155</b><span>条已有机器证明（T3 或 T4）</span></div>
+    <div class="stat"><b>41</b><span>条达到端到端等级 T4：检查器可靠性与内核安全</span></div>
     <div class="stat"><b>4</b><span>个参照程序交叉校验：DFTK.jl、scikit-fem、ASE 与 pycalphad</span></div>
   </div>
   <div class="cta">
     <a class="btn" href="progress.html">查看实现进度</a>
     <a class="btn ghost" href="#s2">阅读核心主张</a>
+    <a class="btn ghost" href="#news">最新动态</a>
   </div>
 </div></div>
 
@@ -57,6 +58,7 @@
 <nav class="toc" aria-label="目录">
   <p>目录</p>
   <ol>
+    <li><a href="#news"><span>•</span>动态</a></li>
     <li><a href="#s1"><span>§1</span>动机</a></li>
     <li><a href="#s2"><span>§2</span>核心主张</a></li>
     <li><a href="#s3"><span>§3</span>两层形式化</a></li>
@@ -71,6 +73,66 @@
   </ol>
 </nav>
 <main>
+
+<section id="news">
+  <p class="sec-no">动态</p>
+  <h2>动态</h2>
+  <div class="prose"><p>四个领域新增的功能、研究结果，以及论文与本网站的变化，新的在前。逐项状态见<a href="progress.html">实现进度</a>；这里引用的命题都登记在可信账本中。</p></div>
+  <ol class="news">
+    <li><time datetime="2026-10-06">2026-10-06</time><ul>
+      <li><span class="tag n">论文</span>论文稿补上了 10 月 5 日的工作；账本现有 164 条命题，其中 155 条有机器证明。</li>
+    </ul></li>
+    <li><time datetime="2026-10-05">2026-10-05</time><ul>
+      <li><span class="tag n">CALPHAD</span>相图在每个网格温度上有完整性证书：区域划分证书对 [0, 1] 中的每个总成分给出任意平衡含有哪些相（CAL-C09、B05）。<a href="calphad.html#diagrams">详情 →</a></li>
+      <li><span class="tag n">CALPHAD</span>给定化学势的平衡（pycalphad 的 <code>v.MU</code>）：任意平衡的另一个化学势、总成分与相组成（CAL-C08、B04）。</li>
+      <li><span class="tag n">CALPHAD</span>两个混合亚点阵的相，包括 Laves 相（CAL-C07）；数据库审计重新运行，支持的（相, 体系）共 3470 个。</li>
+      <li><span class="tag n">FEM</span>两端 Neumann 条件：检查器认证均值为零的解，多项式右端精确判定相容性（FEM-C03、D07、B04）；新增一个成果展示。<a href="fem.html#g2">详情 →</a></li>
+      <li><span class="tag n">MD</span>证明原子链的 Newton 方程对所有时间有唯一解，证书因此针对真轨道（MD-C03、C04、B05）。<a href="md.html#claims">详情 →</a></li>
+      <li><span class="tag n">DFT</span>问题绑定改为必需：没有写明外势的证书一律拒绝（DFT-I04）。<a href="dft.html#binding">详情 →</a></li>
+      <li><span class="tag n">DFT</span>阶段 0：连续适定性、平面波先验误差估计与线性混合收敛以纸面证明达到目标 T1，线性混合的条件得到订正（DFT-C01、D06、A01）。</li>
+      <li><span class="tag n">工具</span>Python 包 <code>fis</code>：运行并检查各领域，审计 TDB 文件，输出 JSON；四份已执行的教程 notebook。</li>
+    </ul></li>
+    <li><time datetime="2026-10-04">2026-10-04</time><ul>
+      <li><span class="tag n">研究</span>对 pycalphad 自带的 17 个数据库做严格审计：316 个二元体系的 246 650 个平衡，五个反常液相混溶隙被夹在 1 K 内，以及 pycalphad 漏掉的平衡。<a href="calphad.html#audit">详情 →</a></li>
+      <li><span class="tag n">研究</span>证明一个离散 LDA Kohn–Sham 问题至少有五个两两不同的精确解。<a href="dft.html#multiple">详情 →</a></li>
+      <li><span class="tag n">CALPHAD</span>检查器自己读 TDB 文件（CAL-I01、B02）；凸性证书证明一个相没有混溶隙（CAL-C05、B03）；一个混合亚点阵的亚点阵相（CAL-C06）。</li>
+      <li><span class="tag n">DFT</span>证书按 Lean 中命名外势的定义核对（DFT-I02、I03、V07–V09）；有限温度的 SCF 解有能带与态密度证书（DFT-S04、S05）。</li>
+    </ul></li>
+  </ol>
+  <details class="news-more"><summary>更早：2026-09-27 至 10-03</summary>
+  <ol class="news">
+    <li><time datetime="2026-10-03">2026-10-03</time><ul>
+      <li><span class="tag n">DFT</span>LDA 的 SCF 解证书覆盖 Fermi–Dirac、Gaussian 与任意阶 Methfessel–Paxton 展宽，以及 Monkhorst–Pack k 点（DFT-X16–X20、T30、T31）。</li>
+      <li><span class="tag n">检查</span>检查器可靠性定理的陈述用指纹固定；证书测试加入已知答案与正对照。</li>
+      <li><span class="tag n">网站</span><a href="showcases.html">成果展示页</a>：存档的有证书的运行，每个都与参照程序对照。</li>
+    </ul></li>
+    <li><time datetime="2026-10-02">2026-10-02</time><ul>
+      <li><span class="tag n">DFT</span>加 PW92 关联的 LDA 有证书（<code>--xc lda</code>）。</li>
+    </ul></li>
+    <li><time datetime="2026-10-01">2026-10-01</time><ul>
+      <li><span class="tag n">MD</span>新领域 mini-MD v0：一维 Lennard-Jones 原子链加 Velocity Verlet，证书针对真轨道。</li>
+      <li><span class="tag n">CALPHAD</span>新领域与目标 G3：TDB 数据库的二元相平衡有证书，随后是磁性、相图与驱动力。</li>
+      <li><span class="tag n">DFT</span>Slater 交换的 LDA 有 SCF 解证书。</li>
+      <li><span class="tag n">检查</span>一条命令 <code>make verify-all</code> 重新检查整个仓库；驱动在 sanitizer 下做模糊测试，运行报告与 k 点线程轨迹逐一校验。</li>
+    </ul></li>
+    <li><time datetime="2026-09-30">2026-09-30</time><ul>
+      <li><span class="tag n">FEM</span>新领域 mini-FEM 与目标 G2：P1 元针对真解给出证书，随后是 Robin 与 Neumann 边界、超越函数右端与三次 Hermite 梁。</li>
+      <li><span class="tag n">DFT</span>Gaussian、Methfessel–Paxton 与 Marzari–Vanderbilt 展宽有证书；偶数 Monkhorst–Pack 网格。</li>
+      <li><span class="tag n">网站</span>本网站上线，中英文两版。</li>
+    </ul></li>
+    <li><time datetime="2026-09-29">2026-09-29</time><ul>
+      <li><span class="tag n">纲领</span>设定目标 G1：与 DFTK 功能对齐。</li>
+      <li><span class="tag n">DFT</span>密度、本征值、各能量分项、能带与态密度有证书；与 DFTK 交叉校验。</li>
+    </ul></li>
+    <li><time datetime="2026-09-28">2026-09-28</time><ul>
+      <li><span class="tag n">DFT</span>mini-DFT 的 C 实现；Lean 检查器认证能量、自由能、k 点运行与截断误差；区间算术内核对 C 代码的 Lean 模型证明，并经 Frama-C 检查。</li>
+    </ul></li>
+    <li><time datetime="2026-09-27">2026-09-27</time><ul>
+      <li><span class="tag n">纲领</span>纲领与 mini-DFT 的骨架：可信账本、Lean 与 TLA+ 规范；SCF 控制器经 TLC 模型检验。</li>
+    </ul></li>
+  </ol>
+  </details>
+</section>
 
 <section id="s1">
   <p class="sec-no">§1</p>
@@ -317,7 +379,7 @@
   </div>
   <h3 style="margin-top:28px">待决问题</h3>
   <ul class="prose">
-    <li><b>一维 rHF 的连续理论。</b>现有文献主要处理三维 Coulomb 相互作用；一维周期 Hartree 核下的适定性需要找到对应文献，或者自己补一个证明。</li>
+    <li><b>一维 rHF 的连续理论。</b>2026-10-05 已解决到 T1：文献中没有直接覆盖一维周期 Hartree 核的结果，项目自己补了纸面证明（零温与有限温度的基态存在、密度唯一，截断极限等于连续能量，解析外势下平面波的指数收敛）。剩下的是机器化，与下一条有关。</li>
     <li><b>Sobolev 空间的机器化深度。</b>先公理化到什么程度，哪些定理值得优先证明？</li>
     <li><b>随机性。</b>Langevin 动力学和随机初猜涉及概率性质，TLA+ 只描述不确定性。</li>
     <li><b>GPU。</b>异步流和弱内存模型如何进入 TLA+ 规范。</li>
@@ -333,7 +395,7 @@
     <li>S. Boldo, F. Clément, J.-C. Filliâtre, M. Mayero, G. Melquiond, P. Weis. Wave equation numerical resolution: a comprehensive mechanized proof of a C program. <i>Journal of Automated Reasoning</i> 50(4), 2013.</li>
     <li>S. Boldo, F. Clément, F. Faissole, V. Martin, M. Mayero. A Coq formal proof of the Lax–Milgram theorem. CPP 2017.</li>
     <li>J. P. Solovej. Proof of the ionization conjecture in a reduced Hartree–Fock model. <i>Inventiones Mathematicae</i> 104, 1991.</li>
-    <li>E. Cancès, A. Deleurme, M. Lewin. A new approach to the modeling of local defects in crystals: the reduced Hartree–Fock case. <i>Communications in Mathematical Physics</i> 281, 2008.</li>
+    <li>E. Cancès, A. Deleurence, M. Lewin. A new approach to the modeling of local defects in crystals: the reduced Hartree–Fock case. <i>Communications in Mathematical Physics</i> 281, 2008.</li>
     <li>E. Cancès, R. Chakir, Y. Maday. Numerical analysis of the planewave discretization of some orbital-free and Kohn–Sham models. <i>ESAIM: M2AN</i> 46(2), 2012.</li>
     <li>M. F. Herbst, A. Levitt, E. Cancès. DFTK: A Julian approach for simulating electrons in solids. JuliaCon Proceedings, 2021.</li>
     <li>E. Hairer, C. Lubich, G. Wanner. <i>Geometric Numerical Integration</i>, 2nd ed. Springer, 2006.</li>
@@ -348,7 +410,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · 项目纲领 v0.3 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-10-03T09:48+08:00">2026-10-03 09:48 UTC+8</time></span></span>
+  <span>Formal in Silico · 项目纲领 v0.3 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-10-06T01:18+08:00">2026-10-06 01:18 UTC+8</time></span></span>
   <span><a href="progress.html">实现进度</a> · <a href="showcases.html">成果展示</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="../" hreflang="en">English</a></span>
 </div></footer>
 </body>

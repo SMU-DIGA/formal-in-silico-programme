@@ -33,12 +33,12 @@
 
 <div class="hero small"><div class="hero-in">
   <nav class="domnav" aria-label="领域"><a href="progress.html">← 进度</a><a href="dft.html" aria-current="page">mini-DFT</a><a href="fem.html">mini-FEM</a><a href="md.html">mini-MD</a><a href="calphad.html">mini-CALPHAD</a></nav>
-  <p class="eyebrow">领域 · 目标 G1 · 现状快照 2026-10-03</p>
+  <p class="eyebrow">领域 · 目标 G1 · 现状快照 2026-10-05</p>
   <h1>mini-DFT</h1>
   <p class="lead">一维周期约化 Hartree–Fock 模型，平面波离散。这是项目的第一个领域，可信账本、证书检查器与 trace validation 都在这里建立。目标 G1：在同一离散问题上与 DFTK.jl 0.8.0 功能对齐，每个输出都有 Lean 定理保证。</p>
   <div class="stats">
-    <div class="stat"><b>108</b><span>条命题登记在可信账本中</span></div>
-    <div class="stat"><b>93%</b><span>已有机器证明：T3 80 条，T4 20 条</span></div>
+    <div class="stat"><b>119</b><span>条命题登记在可信账本中</span></div>
+    <div class="stat"><b>93%</b><span>已有机器证明：T3 84 条，T4 27 条</span></div>
     <div class="stat"><b>7 / 46</b><span>项 DFTK 对齐功能完成；另有 3 项已一致、证书不全，其中包括 LDA</span></div>
     <div class="stat"><b>≤ 5×10⁻¹⁵</b><span>与 DFTK 在同一离散问题上的能量差</span></div>
   </div>
@@ -51,8 +51,10 @@
     <li><a href="#ledger"><span>01</span>可信账本</a></li>
     <li><a href="#g1"><span>02</span>G1 · DFTK</a></li>
     <li><a href="#outputs"><span>03</span>有证书的输出</a></li>
-    <li><a href="#evidence"><span>04</span>交叉校验</a></li>
-    <li><a href="#gaps"><span>05</span>缺口</a></li>
+    <li><a href="#binding"><span>04</span>问题绑定</a></li>
+    <li><a href="#evidence"><span>05</span>交叉校验</a></li>
+    <li><a href="#multiple"><span>06</span>多个 SCF 解</a></li>
+    <li><a href="#gaps"><span>07</span>缺口</a></li>
   </ol>
 </nav>
 <main>
@@ -60,30 +62,32 @@
 <section id="ledger">
   <p class="sec-no">01</p>
   <h2>可信账本中的命题</h2>
-  <div class="prose"><p>账本的 138 条命题中有 108 条属于 mini-DFT，下面按主题分组。等级的定义见<a href="./#s5">纲领页</a>。</p></div>
-  <div class="sbar big" role="img" aria-label="108 条命题：T4 20 条，T3 80 条，T2 2 条，T0 1 条，尚未达到目标 5 条">
-    <i class="sw-t4" style="flex:20"></i><i class="sw-t3" style="flex:80"></i><i class="sw-t2" style="flex:2"></i><i class="sw-t0" style="flex:1"></i><i class="sw-no" style="flex:5"></i>
+  <div class="prose"><p>账本的 164 条命题中有 119 条属于 mini-DFT，下面按主题分组。等级的定义见<a href="./#s5">纲领页</a>。</p></div>
+  <div class="sbar big" role="img" aria-label="119 条命题：T4 27 条，T3 84 条，T2 2 条，T1 4 条，T0 1 条，尚无等级 1 条">
+    <i class="sw-t4" style="flex:27"></i><i class="sw-t3" style="flex:84"></i><i class="sw-t2" style="flex:2"></i><i class="sw-t1" style="flex:4"></i><i class="sw-t0" style="flex:1"></i><i class="sw-no" style="flex:1"></i>
   </div>
   <div class="legend">
-    <span><i class="sw-t4"></i>T4 端到端 · 20</span>
-    <span><i class="sw-t3"></i>T3 机器证明 · 80</span>
+    <span><i class="sw-t4"></i>T4 端到端 · 27</span>
+    <span><i class="sw-t3"></i>T3 机器证明 · 84</span>
     <span><i class="sw-t2"></i>T2 模型检验 · 2</span>
+    <span><i class="sw-t1"></i>T1 纸面证明 · 4</span>
     <span><i class="sw-t0"></i>T0 测试 · 1</span>
-    <span><i class="sw-no"></i>尚未达到目标 · 5</span>
+    <span><i class="sw-no"></i>尚无等级 · 1</span>
   </div>
   <div class="rows">
-    <div class="row"><div>DFT 基础命题<div class="cap">离散模型 · 算法 · 并行 · 浮点</div></div><span class="n">19</span><div class="barcell"><div class="sbar"><i class="sw-t4" style="flex:1"></i><i class="sw-t3" style="flex:11"></i><i class="sw-t2" style="flex:2"></i><i class="sw-t0" style="flex:1"></i><i class="sw-no" style="flex:4"></i></div></div></div>
+    <div class="row"><div>DFT 基础命题<div class="cap">离散模型 · 算法 · 并行 · 浮点</div></div><span class="n">19</span><div class="barcell"><div class="sbar"><i class="sw-t4" style="flex:1"></i><i class="sw-t3" style="flex:11"></i><i class="sw-t2" style="flex:2"></i><i class="sw-t1" style="flex:3"></i><i class="sw-t0" style="flex:1"></i><i class="sw-no" style="flex:1"></i></div></div></div>
     <div class="row"><div>基态能量证书</div><span class="n">8</span><div class="barcell"><div class="sbar"><i class="sw-t4" style="flex:1"></i><i class="sw-t3" style="flex:7"></i></div></div></div>
     <div class="row"><div>有限温度自由能证书</div><span class="n">14</span><div class="barcell"><div class="sbar"><i class="sw-t4" style="flex:3"></i><i class="sw-t3" style="flex:11"></i></div></div></div>
     <div class="row"><div>Gaussian 展宽与冷展宽</div><span class="n">5</span><div class="barcell"><div class="sbar"><i class="sw-t3" style="flex:5"></i></div></div></div>
     <div class="row"><div>SCF 解证书<div class="cap">任意阶 Methfessel–Paxton · Marzari–Vanderbilt</div></div><span class="n">12</span><div class="barcell"><div class="sbar"><i class="sw-t4" style="flex:3"></i><i class="sw-t3" style="flex:9"></i></div></div></div>
     <div class="row"><div>k 点采样与超胞等价</div><span class="n">7</span><div class="barcell"><div class="sbar"><i class="sw-t4" style="flex:2"></i><i class="sw-t3" style="flex:5"></i></div></div></div>
-    <div class="row"><div>离散误差<div class="cap">截断 K → ∞ · 真实高斯外势</div></div><span class="n">13</span><div class="barcell"><div class="sbar"><i class="sw-t4" style="flex:3"></i><i class="sw-t3" style="flex:9"></i><i class="sw-no" style="flex:1"></i></div></div></div>
+    <div class="row"><div>离散误差<div class="cap">截断 K → ∞ · 真实高斯外势</div></div><span class="n">13</span><div class="barcell"><div class="sbar"><i class="sw-t4" style="flex:3"></i><i class="sw-t3" style="flex:9"></i><i class="sw-t1" style="flex:1"></i></div></div></div>
+    <div class="row"><div>问题绑定：证书的外势<div class="cap">Lean 中的命名外势及其 Fourier 级数 · Γ 点与 k 点的证书问题等于命名问题 · 高斯外势的偏差界 · 每种证书都必须绑定</div></div><span class="n">6</span><div class="barcell"><div class="sbar"><i class="sw-t4" style="flex:4"></i><i class="sw-t3" style="flex:2"></i></div></div></div>
     <div class="row"><div>基态密度与本征值证书</div><span class="n">10</span><div class="barcell"><div class="sbar"><i class="sw-t4" style="flex:3"></i><i class="sw-t3" style="flex:7"></i></div></div></div>
-    <div class="row"><div>能带结构与态密度证书</div><span class="n">3</span><div class="barcell"><div class="sbar"><i class="sw-t4" style="flex:2"></i><i class="sw-t3" style="flex:1"></i></div></div></div>
-    <div class="row"><div>LDA 交换关联（Slater、PW92）<div class="cap">实空间网格上的交换关联项 · 非线性 SCF 解证书 · 能量 · PW92 的区间界 · Fermi–Dirac 与 Gaussian 占据</div></div><span class="n">17</span><div class="barcell"><div class="sbar"><i class="sw-t4" style="flex:2"></i><i class="sw-t3" style="flex:15"></i></div></div></div>
+    <div class="row"><div>能带结构与态密度证书<div class="cap">零温 · 有限温度的 SCF 解（rHF 与 LDA）</div></div><span class="n">5</span><div class="barcell"><div class="sbar"><i class="sw-t4" style="flex:4"></i><i class="sw-t3" style="flex:1"></i></div></div></div>
+    <div class="row"><div>LDA 交换关联（Slater、PW92）<div class="cap">实空间网格上的交换关联项 · 非线性 SCF 解证书 · 能量 · PW92 的区间界 · Fermi–Dirac 与 Gaussian 占据 · k 点超胞</div></div><span class="n">20</span><div class="barcell"><div class="sbar"><i class="sw-t4" style="flex:3"></i><i class="sw-t3" style="flex:17"></i></div></div></div>
   </div>
-  <p class="note">T4 命题是各个证书检查器的可靠性定理（检查器全程用精确有理数，不涉及浮点）与 C 可信内核无运行时错误的证明。尚未达到目标的 5 条：一维 rHF 的连续适定性、平面波先验误差估计、线性混合的收敛（三者都在等待文献核对，目标 T1），截断极限等于连续模型的能量，以及 Lean 与 Rocq 的接口命题。</p>
+  <p class="note">T4 命题是各个证书检查器的可靠性定理（检查器全程用精确有理数，不涉及浮点）与 C 可信内核无运行时错误的证明。纸面证明（T1，<code>domains/dft/notes/</code>；文献中没有直接覆盖一维周期 Hartree 核的结果）的 4 条：一维 rHF 的连续适定性、平面波先验误差估计、线性混合在 α &lt; 2/λ<sub>max</sub>（介电算子的最大本征值）时的局部收敛已达目标；截断极限等于连续模型的能量目标是 Lean 证明（T3）。尚无等级的是 Lean 与 Rocq 的接口命题。</p>
 </section>
 
 <section id="g1">
@@ -98,7 +102,7 @@
   </div>
   <div class="ms">
     <div class="row"><span class="code">M0</span><div>已有功能</div><div class="barcell"><div class="sbar"><i class="sw-done" style="flex:5"></i><i class="sw-align" style="flex:1"></i><i class="sw-impl" style="flex:3"></i></div></div><span class="n">5 / 9</span></div>
-    <div class="row"><span class="code">M1</span><div>一维求解器、占据与 k 点</div><div class="barcell"><div class="sbar"><i class="sw-done" style="flex:1"></i><i class="sw-align" style="flex:2"></i><i class="sw-todo" style="flex:4"></i></div></div><span class="n">1 / 7</span></div>
+    <div class="row"><span class="code">M1</span><div>一维求解器、占据与 k 点</div><div class="barcell"><div class="sbar"><i class="sw-done" style="flex:2"></i><i class="sw-align" style="flex:1"></i><i class="sw-todo" style="flex:4"></i></div></div><span class="n">2 / 7</span></div>
     <div class="row"><span class="code">M2</span><div>一维物理项</div><div class="barcell"><div class="sbar"><i class="sw-align" style="flex:1"></i><i class="sw-todo" style="flex:6"></i></div></div><span class="n">0 / 7</span></div>
     <div class="row"><span class="code">M3</span><div>一维后处理与响应</div><div class="barcell"><div class="sbar"><i class="sw-todo" style="flex:9"></i></div></div><span class="n">0 / 9</span></div>
     <div class="row"><span class="code">M4</span><div><i class="v">d</i> 维</div><div class="barcell"><div class="sbar"><i class="sw-todo" style="flex:7"></i></div></div><span class="n">0 / 7</span></div>
@@ -110,13 +114,13 @@
   <div class="tbl"><table class="feat">
     <thead><tr><th>功能</th><th>状态</th><th>证书覆盖</th></tr></thead>
     <tbody>
-      <tr><td>动能、外势（Fourier 系数）、Hartree 项</td><td class="st"><span class="tag st-done">完成</span></td><td>基态能量、密度、本征值与各能量分项</td></tr>
+      <tr><td>动能、外势（Fourier 系数）、Hartree 项</td><td class="st"><span class="tag st-done">完成</span></td><td>基态能量、密度、本征值与各能量分项；10 月 4 日起检查器还按 Lean 中的定义核对外势（DFT-I02、I03、V09）</td></tr>
       <tr><td>Fermi–Dirac 展宽与熵</td><td class="st"><span class="tag st-done">完成</span></td><td>自由能、熵与能量；有限温度基态的存在性与密度唯一性已证明</td></tr>
       <tr><td>Γ 中心、奇数个 k 点</td><td class="st"><span class="tag st-done">完成</span></td><td>经等价超胞给出每个原胞的能量及其截断极限</td></tr>
       <tr><td>偶数个 k 点、Monkhorst–Pack 网格</td><td class="st"><span class="tag st-done">完成</span></td><td>半整数频率的等价超胞；含区界的网格除外</td></tr>
       <tr><td>稠密对角化</td><td class="st"><span class="tag st-done">完成</span></td><td>残差界给出每个本征对的包含区间，Sylvester 惯性确认它们是最低的几个</td></tr>
       <tr><td>线性、Kerker、Anderson 混合</td><td class="st"><span class="tag st-impl">实现</span></td><td>不影响结果，结果由证书检查</td></tr>
-      <tr><td>非自洽能带、高斯展宽态密度</td><td class="st"><span class="tag st-align">对齐</span></td><td>零温 Γ 点运行有证书；有限温度与 k 点运行尚无</td></tr>
+      <tr><td>非自洽能带、高斯展宽态密度</td><td class="st"><span class="tag st-align">对齐</span></td><td>零温 Γ 点运行有证书；10 月 4 日起有限温度 Γ 点的 SCF 解证书也有（rHF 的 MV、MP、Fermi–Dirac、Gaussian 展宽与 LDA，DFT-S04、S05），DFTK 的能带与态密度落在 Lean 区间内。k 点运行尚无</td></tr>
       <tr><td>超胞</td><td class="st"><span class="tag st-impl">实现</span></td><td>超胞等价已证明</td></tr>
       <tr><td>k 点并行</td><td class="st"><span class="tag st-impl">实现</span></td><td>线程而非 MPI；并行协议经模型检验（T2），不同线程数结果逐位一致</td></tr>
     </tbody>
@@ -140,7 +144,7 @@
   <div class="tbl"><table class="feat">
     <thead><tr><th>功能</th><th>状态</th><th>认证的内容</th></tr></thead>
     <tbody>
-      <tr><td>LDA 交换关联（Slater 交换、PW92 关联）</td><td class="st"><span class="tag st-align">对齐</span></td><td>在与 DFTK 相同的实空间网格（<i class="v">M</i> = 4<i class="v">K</i> + 1 点）上求值；零温、Fermi–Dirac、Marzari–Vanderbilt、Gaussian 加 Monkhorst–Pack k 点、能带与态密度等六个体系的能量、各分项与全部本征值都与 DFTK 一致。能量不再凸，没有变分证书；对 Γ 点的 Slater 交换（无论是否加 PW92 关联）加任一有限温度展宽（Fermi–Dirac、Gaussian、MV 或任意阶 MP），检查器证明非线性 SCF 方程在计算解约 10⁻¹² 的邻域内恰有一个解，并给出它的化学势、能量（含交换关联能）与自由能的区间（DFT-X01–X15）。PW92 关联以 <i class="v">s</i> = √<i class="v">r</i><sub>s</sub> 为变量，对数项的各阶导数都化为在 <i class="v">s</i> = 0 处正则的有理式；检查器用区间算术包住它，并对网格最小密度以上的全部密度给出 |<i class="v">v</i>′|、|<i class="v">v</i>″| 的上界。Fermi–Dirac 占据 1/(1 + <i class="v">e</i><sup><i class="v">x</i></sup>) 的导数界另行证明，其熵证明等于变分证书所用的二元熵（DFT-X16、X17）。DFTK 的费米能级、能量与自由能都落在 Lean 区间内。缺：零温、k 点。</td></tr>
+      <tr><td>LDA 交换关联（Slater 交换、PW92 关联）</td><td class="st"><span class="tag st-align">对齐</span></td><td>在与 DFTK 相同的实空间网格（<i class="v">M</i> = 4<i class="v">K</i> + 1 点）上求值；零温、Fermi–Dirac、Marzari–Vanderbilt、Gaussian 加 Monkhorst–Pack k 点、能带与态密度等六个体系的能量、各分项与全部本征值都与 DFTK 一致。能量不再凸，没有变分证书；对 Γ 点的 Slater 交换（无论是否加 PW92 关联）加任一有限温度展宽（Fermi–Dirac、Gaussian、MV 或任意阶 MP），检查器证明非线性 SCF 方程在计算解约 10⁻¹² 的邻域内恰有一个解，并给出它的化学势、能量（含交换关联能）与自由能的区间（DFT-X01–X15）。PW92 关联以 <i class="v">s</i> = √<i class="v">r</i><sub>s</sub> 为变量，对数项的各阶导数都化为在 <i class="v">s</i> = 0 处正则的有理式；检查器用区间算术包住它，并对网格最小密度以上的全部密度给出 |<i class="v">v</i>′|、|<i class="v">v</i>″| 的上界。Fermi–Dirac 占据 1/(1 + <i class="v">e</i><sup><i class="v">x</i></sup>) 的导数界另行证明，其熵证明等于变分证书所用的二元熵（DFT-X16、X17）。DFTK 的费米能级、能量与自由能都落在 Lean 区间内。Monkhorst–Pack k 点的证书描述等价超胞，网格为 <i class="v">n</i><sub>k</sub>·<i class="v">M</i> 点：这时平移一个原胞就是网格平移，交换关联势等变，唯一的解以原胞为周期，每个原胞的能量与自由能（交换关联能在原胞网格上求积，与 DFTK 相同）有严格区间（DFT-X18–X20）；超胞网格要满足 <i class="v">M</i><sub>s</sub> ≥ 4<i class="v">K</i><sub>s</sub> + 1，所以这些运行取 <i class="v">M</i> = 4<i class="v">K</i> + 3，同一网格上的 DFTK 结果落在区间内。缺：零温。</td></tr>
     </tbody>
   </table></div>
 
@@ -168,27 +172,53 @@
         <li>基态密度（Coulomb 范数与逐点）与 Hartree 势的误差</li>
         <li>基态 Hamiltonian 的全部本征值与能隙</li>
         <li>动能、外势能、Hartree 能三个分项</li>
-        <li>沿路径的能带与态密度的取值</li>
+        <li>沿路径的能带与态密度的取值：零温，以及有限温度 Γ 点的 SCF 解（rHF 与 LDA）</li>
         <li>有限温度下的自由能、熵与能量</li>
         <li>任意阶 MP、MV 展宽：局部唯一的 SCF 解、其化学势、能量与自由能</li>
-        <li>LDA（Slater 交换，或 Slater 交换加 PW92 关联）在有限温度下加四种展宽中的任一种：非线性 SCF 方程局部唯一的解、其化学势、含交换关联能的能量与自由能</li>
+        <li>LDA（Slater 交换，或 Slater 交换加 PW92 关联）在有限温度下加四种展宽中的任一种，Γ 点或 k 点：非线性 SCF 方程局部唯一的解、其化学势、含交换关联能的能量与自由能</li>
         <li>k 点运行：经等价超胞给出每个原胞的值</li>
     </ul></div>
+  <p class="note">10 月 4 日以后写出的每张证书还写明它的外势，检查器在给出任何结论之前先输出它认证的问题（见下一节）。</p>
+</section>
+
+<section id="binding">
+  <p class="sec-no">04</p>
+  <h2>问题绑定：认证的是哪个外势</h2>
+  <div class="prose">
+    <p>10 月 3 日之前，证书里的外势只是不受信任的驱动写下的一组 Fourier 系数，检查器认证的就是这组系数描述的问题（假设 A-DFT-05）：驱动算错外势时，写出的证书照样自洽，检查器照样接受。10 月 4 日起，驱动写的每张证书都有一行 <code>pot</code>，写明外势——自由电子、余弦 <i class="v">V</i>₀ cos(2π<i class="v">Rx</i>/<i class="v">L</i>) 或周期化的高斯双势阱，连同 <i class="v">V</i>₀、<i class="v">σ</i> 所用双精度数的精确值与每个原胞内的份数 <i class="v">R</i>——检查器把系数与 Lean 自己对这个外势的定义对照。Lean 还证明了这些系数就是实空间外势的 Fourier 级数（DFT-V07），所以它们不是又一条需要信任的约定。</p>
+  </div>
+  <div class="tbl"><table class="outs">
+    <thead><tr><th>行</th><th>含义</th></tr></thead>
+    <tbody>
+      <tr><td>PROBLEM …</td><td>被认证的问题，精确十进制：外势及其参数、<i class="v">L</i>、<i class="v">K</i>、电子对数、k 点个数，以及按证书种类的温度、展宽、交换关联与网格点数。只回显、不重算；<code>make verify-all</code> 把它与命令行对照。</td></tr>
+      <tr><td>POT_OK exact</td><td>自由电子与余弦：每个系数都等于 Lean 的系数，所以被认证的问题<i>就是</i>命名的问题——Γ 点（DFT-I02），以及 k 点超胞的原胞问题（DFT-I03）。证书的每一条结论于是都是关于命名外势的。</td></tr>
+      <tr><td>POT_OK gauss d</td><td>高斯双势阱：系数含 √(2π) 与 exp，检查器用有理区间包住 Lean 的精确系数，证明 ℓ¹ 偏差不超过 <i class="v">d</i>（约 10⁻¹⁵）。变分证书——零温或有限温度、Γ 点或 k 点——另外输出关于命名外势的 <code>GAUSS_OK</code> 区间，放宽 2<i class="v">N</i>·<i class="v">d</i>（DFT-V09）。</td></tr>
+      <tr><td>POT_FAIL</td><td>系数不是命名外势的系数，或者证书根本没有 <code>pot</code> 行（10 月 5 日起绑定是必需的，DFT-I04）；不输出任何其他结论。</td></tr>
+    </tbody>
+  </table></div>
+  <p class="note">10 月 5 日起 <code>pot</code> 行是必需的（DFT-I04）：检查器对每一种证书先做问题绑定，没有 <code>pot</code> 行的证书被拒绝，驱动不能靠省略这一行绕过绑定。写于问题绑定之前、存档的成果展示与研究证书也已带上 <code>pot</code> 行（重新生成，或核对问题数据与当前驱动逐行相同后补上）。与账本一致的保留：高斯外势的 SCF 解、熵、谱与能带的结论在扰动估计证明之前仍关于证书中的系数，与命名外势相差不超过 <i class="v">d</i>。剩下要信任的是 Lean 对命名外势的定义与规格中描述的外势一致。</p>
 </section>
 
 <section id="evidence">
-  <p class="sec-no">04</p>
+  <p class="sec-no">05</p>
   <h2>交叉校验与辅助证据</h2>
   <div class="prose"><p>基准不提升可信等级，但能发现理解上的错误：如果 Lean 区间排除了一个独立的参考值，就说明模型写错了。</p></div>
   <ul class="checks">
-    <li><span>DFT 基准，含与 DFTK.jl 的交叉校验（10 月 3 日的运行）</span><b>169 / 169 通过</b></li>
+    <li><span>DFT 基准，含与 DFTK.jl 的交叉校验（10 月 4 日的运行）</span><b>167 / 167 通过</b></li>
     <li><span>同一离散问题上与 DFTK.jl 的能量（自由能）差</span><b>≤ 5×10⁻¹⁵</b></li>
     <li><span>与 DFTK.jl 的全部本征值与能量分项差</span><b>≤ 10⁻¹²</b></li>
     <li><span>DFTK 的 Gaussian 自由能，以及 MP（1 阶与 2 阶）、MV 的费米能级、能量、自由能</span><b>落在 Lean 区间内</b></li>
     <li><span>LDA 在相同网格上对照 DFTK.jl：能量、含交换关联的各分项、本征值（六个体系）；有证书的 LDA 运行中 DFTK 的费米能级、能量、自由能</span><b>一致；落在 Lean 区间内</b></li>
     <li><span>LDA 的 SCF 解证书，<i class="v">K</i> = 8（Marzari–Vanderbilt）：唯一性半径 / 能量区间 / 自由能区间 / 检查时间</span><b>4×10⁻¹² / 1×10⁻⁸ / 2×10⁻¹⁵ / 6 秒</b></li>
     <li><span>Fermi–Dirac 与 Gaussian 展宽的 LDA SCF 解证书，<i class="v">K</i> = 8：唯一性半径 / 能量区间 / 自由能区间 / 检查时间</span><b>1–8×10⁻¹² / 4×10⁻⁹–2×10⁻⁸ / 4×10⁻¹³–1×10⁻¹² / 8–14 秒</b></li>
+    <li><span>k 点 LDA 证书（等价超胞，<i class="v">n</i><sub>k</sub> = 2–4，<i class="v">K</i> = 4，<i class="v">M</i> = 19）：唯一性半径 / 每个原胞的能量区间 / 自由能区间 / 检查时间</span><b>2–9×10⁻¹² / 1×10⁻⁹–2×10⁻⁸ / 3×10⁻¹⁵–8×10⁻¹⁴ / 9–53 秒</b></li>
+    <li><span>有限温度 SCF 解的能带与态密度证书（双势阱，<i class="v">L</i> = 10，<i class="v">K</i> = 8，<i class="v">T</i> = 0.01）：能带区间的半宽，rHF 加 MV / LDA（PW92，Fermi–Dirac）；DFTK 的非自洽能带与态密度</span><b>≈ 10⁻¹¹ / ≈ 10⁻⁹；落在 Lean 区间内</b></li>
     <li><span>2、3、4 阶 Methfessel–Paxton 的 SCF 解证书，<i class="v">K</i> = 8：唯一性半径 / 自由能区间</span><b>1–6×10⁻¹² / 4×10⁻¹⁴–5×10⁻¹³</b></li>
+    <li><span>问题绑定：驱动求解另一个外势、<code>pot</code> 行仍写所要求的外势（自由电子的 Γ 点与 k 点、LDA 的 Γ 点与 k 点、高斯的零温与 MV）；高斯的 <i class="v">V</i>₀ 用 2.001 而写成 2</span><b>POT_FAIL</b></li>
+    <li><span>问题绑定：一个系数改动最后一位</span><b>POT_FAIL</b></li>
+    <li><span>问题绑定：每个 DFT 用例的证书去掉 <code>pot</code> 行（三温度的三张证书另外逐张去掉）</span><b>POT_FAIL</b></li>
+    <li><span>由命令行而不是证书算出的已知答案：自由电子的零温（<i class="v">E</i> = π²/2，k 点每个原胞 π²/54）、有限温度（<i class="v">F</i>、<i class="v">S</i>、<i class="v">E</i>）与 Γ 点、k 点 LDA（<i class="v">μ</i>、<i class="v">E</i>、<i class="v">F</i>，用 mpmath 独立计算）</span><b>落在 Lean 区间内</b></li>
+    <li><span>驱动把 <i class="v">L</i> 写错 0.001：证书自洽，检查器接受</span><b>由已知答案与 <code>PROBLEM</code> 回显发现</b></li>
     <li><span>1、2、4、7 个线程的运行报告</span><b>逐位一致</b></li>
     <li><span>Trace validation：收敛、能隙闭合、达到迭代上限、证书未通过四种结局</span><b>全部接受</b></li>
     <li><span>Trace validation：篡改的轨迹（证书未通过却报告收敛、丢失记录、上限不符）</span><b>全部拒绝</b></li>
@@ -196,23 +226,43 @@
     <li><span>k 点线程的 trace validation：每次领取、汇合与累加都按协议规范重放，1、4、7 个线程</span><b>全部接受</b></li>
     <li><span>篡改的线程日志（重复领取、领取顺序与计数器不符、累加顺序错误、退出前汇合、缺少求化学势的步骤）</span><b>全部拒绝</b></li>
     <li><span>报告校验：报告中每一行 <code>Lean</code> 都是检查器自己的输出；检查器拒绝、崩溃或不存在时驱动以错误退出</span><b>通过</b></li>
-    <li><span>收紧输入解析后，在 AddressSanitizer 与 UBSan 下对驱动做模糊测试（约 4 000 个变异输入）</span><b>无内存错误、未定义行为与崩溃</b></li>
+    <li><span>收紧输入解析后，在 AddressSanitizer 与 UBSan 下对驱动做模糊测试（约 4 000 个变异输入）；10 月 4 日它发现极大的 k 点个数使超胞证书要申请约 10¹⁴ 字节，这样的证书现在以“证书过大”拒绝</span><b>无内存错误、未定义行为与崩溃</b></li>
   </ul>
 </section>
 
+<section id="multiple">
+  <p class="sec-no">06</p>
+  <h2>研究结果：多个精确的 SCF 解</h2>
+  <div class="prose">
+    <p>rHF 的能量是凸的，SCF 解唯一。LDA 的交换项是凹的，唯一性可能失去——但浮点 SCF 从不同的初始密度收敛到不同的点并不能说明这一点：它们可能是同一个解的不同近似，也可能根本不是解。SCF 解证书可以：每张证书证明以它的中心为球心的球内恰有一个解，所以同一问题的几张通过检查的证书，球两两不相交时，就证明了同样多个不同的精确解。</p>
+    <p>一维 LDA 电子气（Slater 交换加 PW92 关联），每个周期 <i class="v">L</i> = 0.6 内 4 个电子，周期 <i class="v">L</i>/4 的余弦外势（<i class="v">V</i>₀ = 20），<i class="v">K</i> = 6，网格 <i class="v">M</i> = 25 点，Fermi–Dirac 展宽 <i class="v">T</i> = 0.03：问题数据逐字节相同的五张证书都被 Lean 检查器接受。半径至多 1.6×10⁻¹²，中心两两相距 0.048–0.096，所以离散 SCF 方程<b>至少有五个两两不同的精确解</b>，密度也两两不同。自由能区间不相交，也给出了它们的次序：对称解不是自由能最低的解。</p>
+  </div>
+  <div class="tbl"><table>
+    <thead><tr><th>解</th><th>初始密度</th><th>半径 <i class="v">r</i></th><th>自由能 <i class="v">F</i> 的 Lean 区间</th></tr></thead>
+    <tbody>
+      <tr><td class="l">0</td><td>电荷密度波，φ = π/2</td><td>1.59×10⁻¹²</td><td>[102.565322714574288, 102.565322714624328]</td></tr>
+      <tr><td class="l">1</td><td>电荷密度波，φ = 3π/2</td><td>1.51×10⁻¹²</td><td>[102.565322714574313, 102.565322714617116]</td></tr>
+      <tr><td class="l">2</td><td>电荷密度波，φ = π</td><td>1.37×10⁻¹²</td><td>[102.578707142620807, 102.578707142638557]</td></tr>
+      <tr><td class="l">3</td><td>电荷密度波，φ = 0</td><td>1.37×10⁻¹²</td><td>[102.578707142620873, 102.578707142625617]</td></tr>
+      <tr><td class="l">4</td><td>均匀（对称解）</td><td>2.13×10⁻¹³</td><td>[102.604009214520563, 102.604009214563429]</td></tr>
+    </tbody>
+  </table></div>
+  <p class="note">机理：半满的 <i class="v">k</i> = ±2π/<i class="v">L</i> 壳层在交换作用下形成电荷密度波，外势只有频率 4 的分量，把它的相位钉在几个离散的值上；φ = 0 与 π 只差一个 25 点网格没有的平移，所以是真正不同的解。局限：结论关于这个离散问题（<i class="v">K</i> = 6，<i class="v">M</i> = 25）——浮点计算在 <i class="v">K</i> = 8、12、16 也找到 5 个解，但没有证书；这是解的个数的下界而不是计数，哪些解稳定没有证明；这是小周期单胞在 Γ 点的开壳层效应，不是体材料的不稳定性。这些证书写于问题绑定之前，没有 <code>pot</code> 行；五张证书的问题数据相同，所以不影响结论。证书存档在 <code>research/kohn-sham-multiplicity/</code>，由 <code>make verify-all</code> 重新检查。</p>
+</section>
+
 <section id="gaps">
-  <p class="sec-no">05</p>
+  <p class="sec-no">07</p>
   <h2>缺口</h2>
   <div class="prose"><p>没有 Lean 定理的输出算未完成。下面是已知的缺口，如实列出。</p></div>
   <ul class="gaps">
     <li><strong>k 点求和相对无限晶体的误差</strong>每次 k 点运行对它自己的离散问题有证书，但 k 点求和相对无限晶体的误差还没有界；k 点能量不是变分的。</li>
     <li><strong>含布里渊区边界的 k 网格</strong>没有证书；DFTK 在区界上的处理也不是同一个离散问题，两边都不比较。</li>
-    <li><strong>SCF 解证书的规模</strong>检查时间约按超胞阶数的四次方增长；高阶 Methfessel–Paxton 所用的导数界是真实最大值的数倍，阶数越高越松；有能隙体系在化学势取能隙中间时 SCF 方程病态，证书如实不通过；唯一性只是局部的。</li>
-    <li><strong>零温与 k 点的 LDA</strong>二者与 DFTK 一致，但还没有证书；LDA 的能量区间是一阶估计，只覆盖 <i class="v">M</i> = 4<i class="v">K</i> + 1 点的网格。</li>
+    <li><strong>SCF 解证书的规模</strong>检查时间约按超胞阶数的四次方增长；高阶 Methfessel–Paxton 所用的导数界是真实最大值的数倍，阶数越高越松；有能隙体系在化学势取能隙中间时 SCF 方程病态，证书如实不通过；唯一性只是局部的，而 LDA 确实可以有多个解（见<a href="#multiple">上文</a>）。</li>
+    <li><strong>零温 LDA</strong>与 DFTK 一致，但还没有证书；k 点 LDA 的证书要 <i class="v">M</i> ≥ 4<i class="v">K</i> + 3（缺省的 4<i class="v">K</i> + 1 只与 DFTK 对齐）；接近绝缘体（∂<i class="v">N</i>/∂μ ≈ 0）的体系 SCF 解证书不通过；LDA 的能量区间是一阶估计。</li>
     <li><strong>有限温度的离散误差</strong>目前只有零温的证书。</li>
-    <li><strong>截断极限等于连续模型的能量</strong>尚未证明。</li>
-    <li><strong>有限温度与 k 点运行的密度、本征值、能带与态密度</strong>目前只有零温 Γ 点的证书。</li>
-    <li><strong>证书中写的问题</strong>外势系数、周期长度、截断、电子数、温度与展宽函数由不受信任的驱动写出；检查器认证的正是这个问题，但既不重算也不回显它（A-DFT-05）。只有高斯外势的几行把系数与真实势对照。</li>
+    <li><strong>截断极限等于连续模型的能量</strong>只有纸面证明（T1），尚未在 Lean 中证明。</li>
+    <li><strong>零温以外的密度、本征值、能带与态密度</strong>零温 Γ 点的运行全部有证书；能带与态密度另外覆盖有限温度 Γ 点的 SCF 解证书。尚缺：k 点运行（超胞的能带要归到原胞的 Bloch 扇区）与有限温度变分证书（Fermi–Dirac 或 Gaussian 不加 <code>--scf-cert</code>）的能带与态密度，以及有限温度下的密度、本征值与能量分项。</li>
+    <li><strong>证书中写的其余问题数据</strong>10 月 4 日起外势由检查器按 Lean 中的定义核对（A-DFT-05，见<a href="#binding">上文</a>）。其余问题数据——周期长度、截断、电子数、温度、展宽、交换关联、网格点数、k 点个数——本身就是问题：检查器回显它们的精确值但无法重算，只有 <code>make verify-all</code> 把它们与命令行对照（T0）；能带的 k 点权重与态密度的展宽不回显。没有 <code>pot</code> 行的证书仍只认证证书里写的外势；高斯外势的 SCF 解、谱与能带的结论仍关于证书中的系数（与命名外势相差约 10⁻¹⁵ 以内）。</li>
     <li><strong>区间算术的代码层证明</strong>Lean 模型与 C 代码的一致性只有逐行对照与差分测试，没有证明。</li>
   </ul>
 </section>
@@ -221,7 +271,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · 现状快照 2026-10-03<span class="updated"> · 更新于 <time datetime="2026-10-03T09:48+08:00">2026-10-03 09:48 UTC+8</time></span></span>
+  <span>Formal in Silico · 现状快照 2026-10-05<span class="updated"> · 更新于 <time datetime="2026-10-05T23:25+08:00">2026-10-05 23:25 UTC+8</time></span></span>
   <span><a href="./">纲领</a> · <a href="progress.html">进度</a> · <a href="showcases.html">成果展示</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="../dft.html" hreflang="en">English</a></span>
 </div></footer>
 </body>

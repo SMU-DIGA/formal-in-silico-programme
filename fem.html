@@ -33,12 +33,12 @@
 
 <div class="hero small"><div class="hero-in">
   <nav class="domnav" aria-label="Domains"><a href="progress.html">← Progress</a><a href="dft.html">mini-DFT</a><a href="fem.html" aria-current="page">mini-FEM</a><a href="md.html">mini-MD</a><a href="calphad.html">mini-CALPHAD</a></nav>
-  <p class="eyebrow">Domain · goal G2 · status snapshot 1 October 2026</p>
+  <p class="eyebrow">Domain · goal G2 · status snapshot 5 October 2026</p>
   <h1>mini-FEM</h1>
   <p class="lead">One-dimensional finite elements — Poisson with P1 elements and beams with cubic Hermite elements — whose certificates speak about the <b>true solution of the continuous problem</b>, not just the discrete one. Goal G2 is feature parity with scikit-fem 12.0.2.</p>
   <div class="stats">
-    <div class="stat"><b>11</b><span>claims in the trust ledger, all at T3 or T4</span></div>
-    <div class="stat"><b>11 / 26</b><span>scikit-fem parity items done, all 1D</span></div>
+    <div class="stat"><b>14</b><span>claims in the trust ledger, all at T3 or T4</span></div>
+    <div class="stat"><b>12 / 27</b><span>scikit-fem parity items done, all 1D</span></div>
     <div class="stat"><b>≤ 3×10⁻¹⁵</b><span>width of the Lean intervals for the true nodal values</span></div>
     <div class="stat"><b>0.85 – 1.00</b><span>sampled true error ÷ proved max-error bound</span></div>
   </div>
@@ -62,7 +62,7 @@
   <p class="sec-no">01</p>
   <h2>The problems</h2>
   <div class="tbl"><table><tbody>
-      <tr><td class="l">Poisson</td><td>−<i class="v">u</i>″ = <i class="v">f</i> on (0, <i class="v">L</i>) with Dirichlet, Neumann or Robin conditions at each end (not Neumann at both); P1 linear elements on any mesh with rational nodes.</td></tr>
+      <tr><td class="l">Poisson</td><td>−<i class="v">u</i>″ = <i class="v">f</i> on (0, <i class="v">L</i>) with Dirichlet, Neumann or Robin conditions at each end (Neumann at both ends: the projected problem, normalised by ∫<i class="v">u</i> = 0); P1 linear elements on any mesh with rational nodes.</td></tr>
       <tr><td class="l">Beam</td><td><i class="v">u</i>⁗ = <i class="v">f</i> on (0, <i class="v">L</i>) with clamped, pinned, free or sliding ends in any combination; cubic Hermite elements carrying nodal values and slopes.</td></tr>
       <tr><td class="l">Loads</td><td>Sums and products of polynomials, e<sup><i class="v">λx</i></sup>, sin and cos (also of <i class="v">qπx</i>); the checker re-encloses them with Taylor models and never trusts the solver’s quadrature.</td></tr>
       <tr><td class="l">Why 1D</td><td>Green’s functions and classical solutions avoid Sobolev spaces, so every statement can be about the true solution; 2D will need an H¹ model in Lean.</td></tr>
@@ -72,12 +72,12 @@
 <section id="claims">
   <p class="sec-no">02</p>
   <h2>Claims in the trust ledger</h2>
-  <div class="sbar big" role="img" aria-label="11 claims: 3 at T4, 8 at T3">
-    <i class="sw-t4" style="flex:3"></i><i class="sw-t3" style="flex:8"></i>
+  <div class="sbar big" role="img" aria-label="14 claims: 4 at T4, 10 at T3">
+    <i class="sw-t4" style="flex:4"></i><i class="sw-t3" style="flex:10"></i>
   </div>
   <div class="legend">
-    <span><i class="sw-t4"></i>T4 end to end · 3</span>
-    <span><i class="sw-t3"></i>T3 machine proof · 8</span>
+    <span><i class="sw-t4"></i>T4 end to end · 4</span>
+    <span><i class="sw-t3"></i>T3 machine proof · 10</span>
   </div>
   <div class="tbl"><table>
     <thead><tr><th>Claim</th><th>Statement</th><th>Tier</th></tr></thead>
@@ -92,6 +92,9 @@
       <tr><td class="l">FEM-D06</td><td>Hermite nodal exactness and the <i class="v">h</i>⁴/384 interpolation bound</td><td class="st"><span class="tag m">T3</span></td></tr>
       <tr><td class="l">FEM-B02</td><td>Taylor models of the load are sound</td><td class="st"><span class="tag s">T4</span></td></tr>
       <tr><td class="l">FEM-B01</td><td>P1 checker soundness: intervals for <i class="v">u</i>(<i class="v">x<sub>i</sub></i>) and a bound on max |<i class="v">u</i> − <i class="v">u<sub>h</sub></i>|</td><td class="st"><span class="tag s">T4</span></td></tr>
+      <tr><td class="l">FEM-C03</td><td>Neumann at both ends: the projected problem −<i class="v">u</i>″ = <i class="v">f</i> − <i class="v">c̄</i> has exactly one classical solution with ∫<i class="v">u</i> = 0; <i class="v">c̄</i> = 0 when the data are compatible</td><td class="st"><span class="tag m">T3</span></td></tr>
+      <tr><td class="l">FEM-D07</td><td>Neumann at both ends: the true nodal values solve the discrete equations up to one constant <i class="v">s</i>, given by the element integrals</td><td class="st"><span class="tag m">T3</span></td></tr>
+      <tr><td class="l">FEM-B04</td><td>Two-sided Neumann checker soundness: intervals for the compatibility defect <i class="v">c̄</i>, the constant <i class="v">s</i>, the true nodal values, and the max-error bound</td><td class="st"><span class="tag s">T4</span></td></tr>
       <tr><td class="l">FEM-B03</td><td>Beam checker soundness: intervals for values and slopes, and the max-error bound</td><td class="st"><span class="tag s">T4</span></td></tr>
     </tbody>
   </table></div>
@@ -103,7 +106,7 @@
   <div class="prose"><p>Reference: scikit-fem 12.0.2 on the same discrete problem. The standard is the same as G1, with one addition: wherever possible, the certificate is about the <b>true solution of the continuous problem</b>, not only the discrete one. In 1D this avoids Sobolev spaces by working with Green’s functions and classical solutions; 2D will need an H¹ model in Lean.</p></div>
   <div class="ms">
     <div class="row"><span class="code">F0</span><div>1D Poisson, P1 elements</div><div class="barcell"><div class="sbar"><i class="sw-done" style="flex:7"></i></div></div><span class="n">7 / 7</span></div>
-    <div class="row"><span class="code">F1</span><div>1D extensions</div><div class="barcell"><div class="sbar"><i class="sw-done" style="flex:4"></i><i class="sw-todo" style="flex:5"></i></div></div><span class="n">4 / 9</span></div>
+    <div class="row"><span class="code">F1</span><div>1D extensions</div><div class="barcell"><div class="sbar"><i class="sw-done" style="flex:5"></i><i class="sw-todo" style="flex:5"></i></div></div><span class="n">5 / 10</span></div>
     <div class="row"><span class="code">F2</span><div>2D triangular meshes</div><div class="barcell"><div class="sbar"><i class="sw-todo" style="flex:5"></i></div></div><span class="n">0 / 5</span></div>
     <div class="row"><span class="code">F3</span><div>More physics, 3D</div><div class="barcell"><div class="sbar"><i class="sw-todo" style="flex:5"></i></div></div><span class="n">0 / 5</span></div>
   </div>
@@ -126,7 +129,8 @@
   <div class="tbl"><table class="feat">
     <thead><tr><th>Feature</th><th>Status</th><th>What is certified</th></tr></thead>
     <tbody>
-      <tr><td>Neumann and Robin boundaries</td><td class="st"><span class="tag st-done">Done</span></td><td>All theory proved for general boundary conditions; Neumann at both ends is excluded</td></tr>
+      <tr><td>Neumann and Robin boundaries</td><td class="st"><span class="tag st-done">Done</span></td><td>All theory proved for general boundary conditions</td></tr>
+      <tr><td>Neumann at both ends (pure Neumann problem)</td><td class="st"><span class="tag st-done">Done</span></td><td>Normalised by ∫<i class="v">u</i> = 0, as scikit-fem’s Lagrange-multiplier solution; the checker proves the compatibility defect <i class="v">c̄</i> and certifies the projected problem (FEM-C03, D07, B04)</td></tr>
       <tr><td>Non-polynomial right-hand sides</td><td class="st"><span class="tag st-done">Done</span></td><td>Sums and products of polynomials, exponentials, sines and cosines, via Taylor models with proved remainders; nodal intervals about 10<sup>−15</sup> wide</td></tr>
       <tr><td>Hermite beam elements (fourth-order problem)</td><td class="st"><span class="tag st-done">Done</span></td><td>Clamped, pinned, free and sliding ends in any combination; rigorous intervals for both nodal values and slopes; the <i class="v">h</i>⁴/384 interpolation bound is proved</td></tr>
       <tr><td>Adaptive refinement (1D)</td><td class="st"><span class="tag st-done">Done</span></td><td>Elements are marked by their proved error bounds, not by an estimator; the final mesh is certified</td></tr>
@@ -177,7 +181,6 @@
   <h2>Open gaps</h2>
   <ul class="gaps">
     <li><strong>Other load functions</strong>Logarithms, rational and piecewise functions need their own Taylor models; today only polynomials, exponentials, sines and cosines.</li>
-    <li><strong>Neumann at both ends</strong>The solution is defined only up to a constant; a compatibility condition and a normalisation are needed. Both driver and checker reject it.</li>
     <li><strong>Checking time for transcendental loads</strong>About 13 ms per element, mostly in exact rational series at element midpoints; an interval series with term-wise rounding would be faster.</li>
     <li><strong>Variable beam stiffness and elastic supports</strong>Only <i class="v">EI</i> = 1; the checker accepts any 4×4 boundary matrix, but the driver writes only the four standard end conditions.</li>
     <li><strong>The driver itself</strong>Untrusted (T0) with no Frama-C proof; every result passes through the checker. Since 1 October it parses numbers strictly and rejects inputs it cannot write exactly (fuzzing had found a right-hand side truncated at 4 KB and NaN parameters written as zero); the boundary data and load in the certificate are still not echoed by the checker. Phase 3 plans to bring element-stiffness assembly to T4.</li>
@@ -188,7 +191,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · status snapshot 1 October 2026<span class="updated"> · updated <time datetime="2026-10-03T09:48+08:00">2026-10-03 09:48 UTC+8</time></span></span>
+  <span>Formal in Silico · status snapshot 5 October 2026<span class="updated"> · updated <time datetime="2026-10-05T23:25+08:00">2026-10-05 23:25 UTC+8</time></span></span>
   <span><a href="./">Programme</a> · <a href="progress.html">Progress</a> · <a href="showcases.html">Showcases</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="zh/fem.html" hreflang="zh-CN">中文版</a></span>
 </div></footer>
 </body>

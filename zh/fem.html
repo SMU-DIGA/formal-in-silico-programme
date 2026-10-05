@@ -33,12 +33,12 @@
 
 <div class="hero small"><div class="hero-in">
   <nav class="domnav" aria-label="领域"><a href="progress.html">← 进度</a><a href="dft.html">mini-DFT</a><a href="fem.html" aria-current="page">mini-FEM</a><a href="md.html">mini-MD</a><a href="calphad.html">mini-CALPHAD</a></nav>
-  <p class="eyebrow">领域 · 目标 G2 · 现状快照 2026-10-01</p>
+  <p class="eyebrow">领域 · 目标 G2 · 现状快照 2026-10-05</p>
   <h1>mini-FEM</h1>
   <p class="lead">一维有限元：Poisson 方程的 P1 线性元与梁方程的三次 Hermite 元。证书的结论针对<b>连续问题的真解</b>，而不只是离散解。目标 G2：与 scikit-fem 12.0.2 功能对齐。</p>
   <div class="stats">
-    <div class="stat"><b>11</b><span>条命题登记在可信账本中，全部达到 T3 或 T4</span></div>
-    <div class="stat"><b>11 / 26</b><span>项 scikit-fem 对齐功能完成，均为一维</span></div>
+    <div class="stat"><b>14</b><span>条命题登记在可信账本中，全部达到 T3 或 T4</span></div>
+    <div class="stat"><b>12 / 27</b><span>项 scikit-fem 对齐功能完成，均为一维</span></div>
     <div class="stat"><b>≤ 3×10⁻¹⁵</b><span>真解节点值的 Lean 区间宽度</span></div>
     <div class="stat"><b>0.85 – 1.00</b><span>采样得到的真实误差 ÷ 证明的最大误差界</span></div>
   </div>
@@ -62,7 +62,7 @@
   <p class="sec-no">01</p>
   <h2>问题</h2>
   <div class="tbl"><table><tbody>
-      <tr><td class="l">Poisson</td><td>(0, <i class="v">L</i>) 上 −<i class="v">u</i>″ = <i class="v">f</i>，两端各取 Dirichlet、Neumann 或 Robin 条件（两端都是 Neumann 除外）；任意有理节点网格上的 P1 线性元。</td></tr>
+      <tr><td class="l">Poisson</td><td>(0, <i class="v">L</i>) 上 −<i class="v">u</i>″ = <i class="v">f</i>，两端各取 Dirichlet、Neumann 或 Robin 条件（两端都是 Neumann 时求投影问题，以 ∫<i class="v">u</i> = 0 规范化）；任意有理节点网格上的 P1 线性元。</td></tr>
       <tr><td class="l">梁</td><td>(0, <i class="v">L</i>) 上 <i class="v">u</i>⁗ = <i class="v">f</i>，两端为固支、简支、自由、滑动的任意组合；三次 Hermite 元，未知量是节点值与节点斜率。</td></tr>
       <tr><td class="l">右端项</td><td>多项式、e<sup><i class="v">λx</i></sup>、sin、cos（包括 <i class="v">qπx</i> 的）的和与积；检查器用 Taylor 模型重新包住它们，不信任求解器的数值积分。</td></tr>
       <tr><td class="l">为什么先做一维</td><td>Green 函数与经典解可以绕开 Sobolev 空间，所以每个结论都能针对真解；二维需要 Lean 中的 H¹ 模型。</td></tr>
@@ -72,12 +72,12 @@
 <section id="claims">
   <p class="sec-no">02</p>
   <h2>可信账本中的命题</h2>
-  <div class="sbar big" role="img" aria-label="11 条命题：T4 3 条，T3 8 条">
-    <i class="sw-t4" style="flex:3"></i><i class="sw-t3" style="flex:8"></i>
+  <div class="sbar big" role="img" aria-label="14 条命题：T4 4 条，T3 10 条">
+    <i class="sw-t4" style="flex:4"></i><i class="sw-t3" style="flex:10"></i>
   </div>
   <div class="legend">
-    <span><i class="sw-t4"></i>T4 端到端 · 3</span>
-    <span><i class="sw-t3"></i>T3 机器证明 · 8</span>
+    <span><i class="sw-t4"></i>T4 端到端 · 4</span>
+    <span><i class="sw-t3"></i>T3 机器证明 · 10</span>
   </div>
   <div class="tbl"><table>
     <thead><tr><th>编号</th><th>命题</th><th>等级</th></tr></thead>
@@ -92,6 +92,9 @@
       <tr><td class="l">FEM-D06</td><td>Hermite 元的节点精确性与 <i class="v">h</i>⁴/384 插值误差界</td><td class="st"><span class="tag m">T3</span></td></tr>
       <tr><td class="l">FEM-B02</td><td>右端项的 Taylor 模型可靠</td><td class="st"><span class="tag s">T4</span></td></tr>
       <tr><td class="l">FEM-B01</td><td>P1 检查器可靠：<i class="v">u</i>(<i class="v">x<sub>i</sub></i>) 的区间与 max |<i class="v">u</i> − <i class="v">u<sub>h</sub></i>| 的上界</td><td class="st"><span class="tag s">T4</span></td></tr>
+      <tr><td class="l">FEM-C03</td><td>两端 Neumann：投影问题 −<i class="v">u</i>″ = <i class="v">f</i> − <i class="v">c̄</i> 满足 ∫<i class="v">u</i> = 0 的经典解存在且唯一；数据相容时 <i class="v">c̄</i> = 0</td><td class="st"><span class="tag m">T3</span></td></tr>
+      <tr><td class="l">FEM-D07</td><td>两端 Neumann：真解的节点值差一个常数 <i class="v">s</i> 满足离散方程，<i class="v">s</i> 由单元积分给出</td><td class="st"><span class="tag m">T3</span></td></tr>
+      <tr><td class="l">FEM-B04</td><td>两端 Neumann 检查器可靠：相容性缺陷 <i class="v">c̄</i>、常数 <i class="v">s</i>、真解节点值的区间与最大误差界</td><td class="st"><span class="tag s">T4</span></td></tr>
       <tr><td class="l">FEM-B03</td><td>梁检查器可靠：节点值与斜率的区间，以及最大误差界</td><td class="st"><span class="tag s">T4</span></td></tr>
     </tbody>
   </table></div>
@@ -103,7 +106,7 @@
   <div class="prose"><p>参照 scikit-fem 12.0.2，在同一离散问题上比较。完成标准与 G1 相同，另加一条：能做到的地方，证书的结论针对<b>连续问题的真解</b>，而不只是离散解。一维时可以绕开 Sobolev 空间，用 Green 函数与经典解；二维需要 Lean 中的 H¹ 模型。</p></div>
   <div class="ms">
     <div class="row"><span class="code">F0</span><div>一维 Poisson，P1 元</div><div class="barcell"><div class="sbar"><i class="sw-done" style="flex:7"></i></div></div><span class="n">7 / 7</span></div>
-    <div class="row"><span class="code">F1</span><div>一维扩展</div><div class="barcell"><div class="sbar"><i class="sw-done" style="flex:4"></i><i class="sw-todo" style="flex:5"></i></div></div><span class="n">4 / 9</span></div>
+    <div class="row"><span class="code">F1</span><div>一维扩展</div><div class="barcell"><div class="sbar"><i class="sw-done" style="flex:5"></i><i class="sw-todo" style="flex:5"></i></div></div><span class="n">5 / 10</span></div>
     <div class="row"><span class="code">F2</span><div>二维三角形网格</div><div class="barcell"><div class="sbar"><i class="sw-todo" style="flex:5"></i></div></div><span class="n">0 / 5</span></div>
     <div class="row"><span class="code">F3</span><div>更多物理与三维</div><div class="barcell"><div class="sbar"><i class="sw-todo" style="flex:5"></i></div></div><span class="n">0 / 5</span></div>
   </div>
@@ -126,7 +129,8 @@
   <div class="tbl"><table class="feat">
     <thead><tr><th>功能</th><th>状态</th><th>证书覆盖</th></tr></thead>
     <tbody>
-      <tr><td>Neumann、Robin 边界</td><td class="st"><span class="tag st-done">完成</span></td><td>全部理论按一般边界条件证明；两端 Neumann 除外</td></tr>
+      <tr><td>Neumann、Robin 边界</td><td class="st"><span class="tag st-done">完成</span></td><td>全部理论按一般边界条件证明</td></tr>
+      <tr><td>两端 Neumann（纯 Neumann 问题）</td><td class="st"><span class="tag st-done">完成</span></td><td>以 ∫<i class="v">u</i> = 0 规范化，与 scikit-fem 加 Lagrange 乘子的解相同；检查器证明相容性缺陷 <i class="v">c̄</i> 的区间并认证投影问题（FEM-C03、D07、B04）</td></tr>
       <tr><td>非多项式右端</td><td class="st"><span class="tag st-done">完成</span></td><td>多项式、指数、正弦、余弦的和与积，用余项经过证明的 Taylor 模型；节点区间宽约 10<sup>−15</sup></td></tr>
       <tr><td>Hermite 梁元（四阶问题）</td><td class="st"><span class="tag st-done">完成</span></td><td>固支、简支、自由、滑动的任意组合；节点值与斜率都有严格区间；<i class="v">h</i>⁴/384 插值误差已证明</td></tr>
       <tr><td>自适应加密（一维）</td><td class="st"><span class="tag st-done">完成</span></td><td>按经过证明的单元误差界标记，而不是估计量；最终网格有证书</td></tr>
@@ -177,7 +181,6 @@
   <h2>缺口</h2>
   <ul class="gaps">
     <li><strong>其他右端函数</strong>对数、分式、分段函数需要各自的 Taylor 模型；现在只有多项式、指数、正弦、余弦。</li>
-    <li><strong>两端 Neumann 条件</strong>解只确定到一个常数，需要相容性条件与规范化；驱动与检查器现在都拒绝。</li>
     <li><strong>超越函数右端的检查时间</strong>每个单元约 13 毫秒，主要花在中点处的精确有理级数；改为逐项舍入的区间级数会更快。</li>
     <li><strong>梁的变刚度与弹性支承</strong>只有 <i class="v">EI</i> = 1；检查器接受任意 4×4 边界矩阵，驱动只写出四种标准端部条件。</li>
     <li><strong>C 驱动本身</strong>不受信任（T0），没有 Frama-C 证明；所有结果都经过检查器。10 月 1 日起严格解析数值，无法精确写出的输入一律拒绝（模糊测试曾发现右端项在 4 KB 处被截断、NaN 参数被写成 0）；证书中的边界数据与载荷仍不由检查器回显。阶段 3 计划让单元刚度组装达到 T4。</li>
@@ -188,7 +191,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · 现状快照 2026-10-01<span class="updated"> · 更新于 <time datetime="2026-10-03T09:48+08:00">2026-10-03 09:48 UTC+8</time></span></span>
+  <span>Formal in Silico · 现状快照 2026-10-05<span class="updated"> · 更新于 <time datetime="2026-10-05T23:25+08:00">2026-10-05 23:25 UTC+8</time></span></span>
   <span><a href="./">纲领</a> · <a href="progress.html">进度</a> · <a href="showcases.html">成果展示</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="../fem.html" hreflang="en">English</a></span>
 </div></footer>
 </body>

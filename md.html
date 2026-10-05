@@ -34,11 +34,11 @@
 
 <div class="hero small"><div class="hero-in">
   <nav class="domnav" aria-label="Domains"><a href="progress.html">← Progress</a><a href="dft.html">mini-DFT</a><a href="fem.html">mini-FEM</a><a href="md.html" aria-current="page">mini-MD</a><a href="calphad.html">mini-CALPHAD</a></nav>
-  <p class="eyebrow">Domain · mini-MD v0 · status snapshot 1 October 2026</p>
+  <p class="eyebrow">Domain · mini-MD v0 · status snapshot 5 October 2026</p>
   <h1>mini-MD</h1>
   <p class="lead">A one-dimensional Lennard-Jones chain integrated with velocity Verlet. The Lean checker bounds how far the computed trajectory is from the <b>true solution of Newton’s equations</b> — for every step, and from the initial state over about one vibration period — and computes the conserved quantities exactly. Built on 1 October 2026 as the charter’s phase-2 MD version and cross-checked against ASE 3.29.</p>
   <div class="stats">
-    <div class="stat"><b>14</b><span>claims in the trust ledger: 4 at T4, 9 at T3, 1 open</span></div>
+    <div class="stat"><b>16</b><span>claims in the trust ledger: 5 at T4, 11 at T3</span></div>
     <div class="stat"><b>0.99</b><span>true local error ÷ certified local bound: the bound is almost exact</span></div>
     <div class="stat"><b>≤ 5×10⁻¹⁴</b><span>difference from ASE in positions, momenta and energy</span></div>
     <div class="stat"><b>≈ 1 period</b><span>covered by the global bound from the initial state (t = 0.5 for 8 atoms)</span></div>
@@ -65,7 +65,7 @@
   <h2>The problem</h2>
   <div class="tbl"><table><tbody>
     <tr><td class="l">System</td><td><i class="v">N</i> ≥ 2 atoms on a line, in order, with masses <i class="v">m<sub>i</sub></i> &gt; 0. Free boundaries, every pair interacts, and the Lennard-Jones potential <i class="v">φ</i>(<i class="v">r</i>) = 4<i class="v">ε</i>((<i class="v">σ</i>/<i class="v">r</i>)¹² − (<i class="v">σ</i>/<i class="v">r</i>)⁶) is not truncated.</td></tr>
-    <tr><td class="l">Equations</td><td><i class="v">q</i>′ = <i class="v">p</i>/<i class="v">m</i>, <i class="v">p</i>′ = <i class="v">F</i>(<i class="v">q</i>). A “true solution” is any solution of these equations; every classical solution qualifies.</td></tr>
+    <tr><td class="l">Equations</td><td><i class="v">q</i>′ = <i class="v">p</i>/<i class="v">m</i>, <i class="v">p</i>′ = <i class="v">F</i>(<i class="v">q</i>). A “true solution” is any solution of these equations; every classical solution qualifies. From ordered initial positions it exists for all time and is unique (MD-C03).</td></tr>
     <tr><td class="l">Integrator</td><td>Velocity Verlet with step <i class="v">h</i>: a half kick, a drift, a half kick. The driver computes it in double precision with no fused multiply-add.</td></tr>
     <tr><td class="l">Input</td><td>Parameters and initial state are the exact rationals written in the certificate — the doubles the driver actually used. Their difference from the decimal command line is outside the certificate (assumption A-MD-01).</td></tr>
   </tbody></table></div>
@@ -136,20 +136,20 @@ Lean  EPSMAX 0.00000004460799189706</pre>
 <section id="claims">
   <p class="sec-no">05</p>
   <h2>Claims in the trust ledger</h2>
-  <div class="sbar big" role="img" aria-label="14 claims: 4 at T4, 9 at T3, 1 not yet reached">
-    <i class="sw-t4" style="flex:4"></i><i class="sw-t3" style="flex:9"></i><i class="sw-no" style="flex:1"></i>
+  <div class="sbar big" role="img" aria-label="16 claims: 5 at T4, 11 at T3">
+    <i class="sw-t4" style="flex:5"></i><i class="sw-t3" style="flex:11"></i>
   </div>
   <div class="legend">
-    <span><i class="sw-t4"></i>T4 end to end · 4</span>
-    <span><i class="sw-t3"></i>T3 machine proof · 9</span>
-    <span><i class="sw-no"></i>target not yet reached · 1</span>
+    <span><i class="sw-t4"></i>T4 end to end · 5</span>
+    <span><i class="sw-t3"></i>T3 machine proof · 11</span>
   </div>
   <div class="tbl"><table>
     <thead><tr><th>Claim</th><th>Statement</th><th>Tier</th></tr></thead>
     <tbody>
       <tr><td class="l">MD-C01</td><td>Energy conservation: a true solution keeps its energy while the atoms stay ordered</td><td class="st"><span class="tag m">T3</span></td></tr>
       <tr><td class="l">MD-C02</td><td>Momentum conservation: forces sum to zero, so total momentum is constant</td><td class="st"><span class="tag m">T3</span></td></tr>
-      <tr><td class="l">MD-C03</td><td>Existence: Newton’s equations have a solution on [0, <i class="v">T</i>]</td><td class="st"><span class="tag n">not reached</span></td></tr>
+      <tr><td class="l">MD-C03</td><td>Existence and uniqueness: from initial positions in increasing order, Newton’s equations have a unique solution for all time</td><td class="st"><span class="tag m">T3</span></td></tr>
+      <tr><td class="l">MD-C04</td><td>A priori bounds: every solution stays ordered and conserves energy, with interatomic distances above an <i class="v">r</i>₀ &gt; 0 fixed by the initial energy</td><td class="st"><span class="tag m">T3</span></td></tr>
       <tr><td class="l">MD-D01</td><td>Velocity Verlet is time-reversible</td><td class="st"><span class="tag m">T3</span></td></tr>
       <tr><td class="l">MD-D02</td><td>Velocity Verlet preserves total momentum</td><td class="st"><span class="tag m">T3</span></td></tr>
       <tr><td class="l">MD-D03</td><td>Velocity Verlet is symplectic, in particular for the Lennard-Jones chain</td><td class="st"><span class="tag m">T3</span></td></tr>
@@ -161,6 +161,7 @@ Lean  EPSMAX 0.00000004460799189706</pre>
       <tr><td class="l">MD-B02</td><td>Checker soundness: global error from the initial state; ordering and exact energy on the horizon</td><td class="st"><span class="tag s">T4</span></td></tr>
       <tr><td class="l">MD-B03</td><td>Checker soundness: initial energy, energy drift and momentum drift, computed exactly</td><td class="st"><span class="tag s">T4</span></td></tr>
       <tr><td class="l">MD-B04</td><td>Checker soundness: the data satisfy the Verlet equations up to the reported residual</td><td class="st"><span class="tag s">T4</span></td></tr>
+      <tr><td class="l">MD-B05</td><td>Checker soundness: the true solution behind the local and global bounds exists and is unique</td><td class="st"><span class="tag s">T4</span></td></tr>
     </tbody>
   </table></div>
   <p class="note">Verlet symplecticity at T3 (MD-D03) is half of the charter’s phase-2 exit criterion; the other half, Céa’s lemma, is on the <a href="fem.html#claims">FEM page</a>.</p>
@@ -175,6 +176,7 @@ Lean  EPSMAX 0.00000004460799189706</pre>
     <li><span>Total momentum along the computed trajectory</span><b>conserved to 3×10⁻¹⁶</b></li>
     <li><span>True error ÷ Lean bound, local and global, in all three systems</span><b>≤ 0.99</b></li>
     <li><span>Global horizon for 8 atoms: <i class="v">T</i>₀ = 0.01, <i class="v">h</i> = 0.001 / <i class="v">T</i>₀ = 0.1, <i class="v">h</i> = 0.002 / <i class="v">T</i>₀ = 0.001, <i class="v">ρ</i> = 10⁻⁴</span><b>500 / 122 / all 800 steps</b></li>
+    <li><span>Known answer: a 4-atom chain at rest with spacing 1.125 (an exact double), whose initial energy is the sum of the pair potentials; positive control with the driver run at a spacing 0.001 off</span><b>inside the Lean interval; caught</b></li>
     <li><span>One tampered position in the certificate</span><b>only the residual and local bound grow</b></li>
     <li><span>Negative mass, overlapping atoms, a tube radius smaller than one step’s defect</span><b>MD_FAIL</b></li>
     <li><span>Checking time, 8 atoms, 1000 steps (grows as <i class="v">N</i>²)</span><b>≈ 50 s</b></li>
@@ -188,7 +190,6 @@ Lean  EPSMAX 0.00000004460799189706</pre>
   <p class="sec-no">07</p>
   <h2>Open gaps</h2>
   <ul class="gaps">
-    <li><strong>Existence of the true solution</strong>The certificate holds for every solution, and within the tube the solution is unique, but existence is not yet machine-proved (MD-C03). Picard–Lindelöf on the truncated field, or continuation through energy conservation, would close it.</li>
     <li><strong>Long-time pointwise error</strong>Inherent to chaos, as above. A logarithmic norm in the energy norm or Lohner-type linearised propagation would lengthen the horizon; truly long-time claims need shadowing, modified-Hamiltonian arguments or statistics.</li>
     <li><strong>Statistics</strong>Temperature, radial distribution functions and autocorrelations are exact functions of the computed states, like the energy, but are not implemented yet.</li>
     <li><strong>Periodic boxes, cutoffs, thermostats, constraints, 2D and 3D, parallelism</strong>Not started. A cutoff makes the force discontinuous, so the tube theorem needs a piecewise-smooth version; the parallel protocols (atom migration, halo exchange) are to be specified in TLA+.</li>
@@ -201,7 +202,7 @@ Lean  EPSMAX 0.00000004460799189706</pre>
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · status snapshot 1 October 2026<span class="updated"> · updated <time datetime="2026-10-03T09:48+08:00">2026-10-03 09:48 UTC+8</time></span></span>
+  <span>Formal in Silico · status snapshot 5 October 2026<span class="updated"> · updated <time datetime="2026-10-05T23:25+08:00">2026-10-05 23:25 UTC+8</time></span></span>
   <span><a href="./">Programme</a> · <a href="progress.html">Progress</a> · <a href="showcases.html">Showcases</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="zh/md.html" hreflang="zh-CN">中文版</a></span>
 </div></footer>
 </body>

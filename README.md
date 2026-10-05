@@ -27,6 +27,12 @@ specifications and parity trackers; every progress and domain page carries the
 snapshot date it reflects. Update the English and Chinese pages together, and
 keep the overview's per-domain numbers in step with the domain pages.
 
+The programme page (`index.html`, `zh/index.html`) opens with a News section
+(`#news`): one dated entry per feature, research result, or paper and site change,
+newest first, with the claim IDs it rests on. Add an entry in both languages
+whenever a ledger claim, parity item or showcase is added; entries older than
+the three most recent days go inside the "Earlier" `<details>` block.
+
 Every page's footer also shows when the page last changed ("updated …"). Before
 publishing, run `python3 scripts/stamp_site.py` in the main project: pages edited
 since the last commit get the current time, the others the time of the last commit

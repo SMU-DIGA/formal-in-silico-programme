@@ -42,14 +42,15 @@
     <div class="j f"><span class="k">IEEE 754</span><span class="e">|fl(<i class="v">E<sub>h</sub></i>) − <i class="v">E<sub>h</sub></i>| ≤ <i class="v">ε</i><sub>round</sub></span></div>
   </div>
   <div class="stats">
-    <div class="stat"><b>138</b><span>claims registered in the trust ledger</span></div>
-    <div class="stat"><b>129</b><span>of them machine-proved (tier T3 or T4)</span></div>
-    <div class="stat"><b>28</b><span>at the end-to-end tier T4: checker soundness and kernel safety</span></div>
+    <div class="stat"><b>164</b><span>claims registered in the trust ledger</span></div>
+    <div class="stat"><b>155</b><span>of them machine-proved (tier T3 or T4)</span></div>
+    <div class="stat"><b>41</b><span>at the end-to-end tier T4: checker soundness and kernel safety</span></div>
     <div class="stat"><b>4</b><span>reference codes cross-checked: DFTK.jl, scikit-fem, ASE and pycalphad</span></div>
   </div>
   <div class="cta">
     <a class="btn" href="progress.html">See the progress</a>
     <a class="btn ghost" href="#s2">Read the core claim</a>
+    <a class="btn ghost" href="#news">What is new</a>
   </div>
 </div></div>
 
@@ -57,6 +58,7 @@
 <nav class="toc" aria-label="Contents">
   <p>Contents</p>
   <ol>
+    <li><a href="#news"><span>•</span>News</a></li>
     <li><a href="#s1"><span>01</span>Motivation</a></li>
     <li><a href="#s2"><span>02</span>Core claim</a></li>
     <li><a href="#s3"><span>03</span>Two layers</a></li>
@@ -71,6 +73,66 @@
   </ol>
 </nav>
 <main>
+
+<section id="news">
+  <p class="sec-no">News</p>
+  <h2>What is new</h2>
+  <div class="prose"><p>Features added to the four domains, research results, and changes to the paper and this site, newest first. Item-by-item status is on the <a href="progress.html">progress page</a>; every claim cited here is in the trust ledger.</p></div>
+  <ol class="news">
+    <li><time datetime="2026-10-06">6 Oct 2026</time><ul>
+      <li><span class="tag n">Paper</span>The paper draft now covers the work of 5 October; the ledger stands at 164 claims, 155 of them machine-proved.</li>
+    </ul></li>
+    <li><time datetime="2026-10-05">5 Oct 2026</time><ul>
+      <li><span class="tag n">CALPHAD</span>Phase diagrams are certified complete at every grid temperature: a partition certificate states, for every overall composition in [0, 1], which phases any equilibrium contains (CAL-C09, B05). <a href="calphad.html#diagrams">Details →</a></li>
+      <li><span class="tag n">CALPHAD</span>Equilibria at a prescribed chemical potential, pycalphad’s <code>v.MU</code>: the other chemical potential, the overall composition and the phases of every equilibrium (CAL-C08, B04).</li>
+      <li><span class="tag n">CALPHAD</span>Sublattice phases with two mixing sublattices, Laves phases among them (CAL-C07); the database audit was re-run with 3470 supported phase–system pairs.</li>
+      <li><span class="tag n">FEM</span>Neumann conditions at both ends: the checker certifies the mean-zero solution and decides compatibility exactly for polynomial loads (FEM-C03, D07, B04); a new showcase. <a href="fem.html#g2">Details →</a></li>
+      <li><span class="tag n">MD</span>Newton’s equations for the chain are proved to have a unique solution for all time, so the certificates are about the true trajectory (MD-C03, C04, B05). <a href="md.html#claims">Details →</a></li>
+      <li><span class="tag n">DFT</span>Problem binding is mandatory: a certificate that does not name its external potential is rejected (DFT-I04). <a href="dft.html#binding">Details →</a></li>
+      <li><span class="tag n">DFT</span>Phase 0: continuum well-posedness, the a priori plane-wave estimate and linear-mixing convergence reach their target T1 as paper proofs, and the mixing condition is corrected (DFT-C01, D06, A01).</li>
+      <li><span class="tag n">Tools</span>The <code>fis</code> Python package runs and checks every domain and audits a TDB file, with JSON output; four executed tutorial notebooks.</li>
+    </ul></li>
+    <li><time datetime="2026-10-04">4 Oct 2026</time><ul>
+      <li><span class="tag n">Research</span>A certified audit of the 17 databases shipped with pycalphad: 246 650 equilibria in 316 binary systems, five anomalous liquid miscibility gaps bracketed to 1 K, and equilibria that pycalphad misses. <a href="calphad.html#audit">Details →</a></li>
+      <li><span class="tag n">Research</span>A discrete LDA Kohn–Sham problem is proved to have at least five distinct exact solutions. <a href="dft.html#multiple">Details →</a></li>
+      <li><span class="tag n">CALPHAD</span>The checker reads the TDB file itself (CAL-I01, B02); convexity certificates prove that a phase has no miscibility gap (CAL-C05, B03); sublattice phases with one mixing sublattice (CAL-C06).</li>
+      <li><span class="tag n">DFT</span>Certificates are checked against a Lean definition of the named external potential (DFT-I02, I03, V07–V09); finite-temperature SCF solutions get band and DOS certificates (DFT-S04, S05).</li>
+    </ul></li>
+  </ol>
+  <details class="news-more"><summary>Earlier: 27 September – 3 October 2026</summary>
+  <ol class="news">
+    <li><time datetime="2026-10-03">3 Oct 2026</time><ul>
+      <li><span class="tag n">DFT</span>LDA SCF-solution certificates with Fermi–Dirac, Gaussian and any-order Methfessel–Paxton smearing, and with Monkhorst–Pack k-points (DFT-X16–X20, T30, T31).</li>
+      <li><span class="tag n">Checks</span>The statements of the checker soundness theorems are pinned by fingerprints; certificate tests gain known answers and positive controls.</li>
+      <li><span class="tag n">Site</span>The <a href="showcases.html">showcases page</a>: archived certified runs, each against the reference code.</li>
+    </ul></li>
+    <li><time datetime="2026-10-02">2 Oct 2026</time><ul>
+      <li><span class="tag n">DFT</span>LDA with PW92 correlation certified (<code>--xc lda</code>).</li>
+    </ul></li>
+    <li><time datetime="2026-10-01">1 Oct 2026</time><ul>
+      <li><span class="tag n">MD</span>New domain: mini-MD v0, a Lennard-Jones chain with velocity Verlet, certified against the true trajectory.</li>
+      <li><span class="tag n">CALPHAD</span>New domain and goal G3: certified binary phase equilibria from TDB databases, then magnetism, phase diagrams and driving forces.</li>
+      <li><span class="tag n">DFT</span>LDA Slater exchange with SCF-solution certificates.</li>
+      <li><span class="tag n">Checks</span>One command, <code>make verify-all</code>, re-checks the repository; the drivers are fuzzed under sanitizers, and run reports and k-point thread traces are validated.</li>
+    </ul></li>
+    <li><time datetime="2026-09-30">30 Sep 2026</time><ul>
+      <li><span class="tag n">FEM</span>New domain: mini-FEM and goal G2, P1 elements certified against the true solution, then Robin and Neumann boundaries, transcendental loads and cubic Hermite beams.</li>
+      <li><span class="tag n">DFT</span>Gaussian, Methfessel–Paxton and Marzari–Vanderbilt smearing with certificates; even Monkhorst–Pack grids.</li>
+      <li><span class="tag n">Site</span>This site goes online, in English and Chinese.</li>
+    </ul></li>
+    <li><time datetime="2026-09-29">29 Sep 2026</time><ul>
+      <li><span class="tag n">Programme</span>Goal G1 set: feature parity with DFTK.</li>
+      <li><span class="tag n">DFT</span>Certified densities, eigenvalues, energy terms, band structures and densities of states; cross-checks against DFTK.</li>
+    </ul></li>
+    <li><time datetime="2026-09-28">28 Sep 2026</time><ul>
+      <li><span class="tag n">DFT</span>mini-DFT in C; Lean checkers certify energies, free energies, k-point runs and the truncation error; the interval kernel is proved against a Lean model of the C code and checked by Frama-C.</li>
+    </ul></li>
+    <li><time datetime="2026-09-27">27 Sep 2026</time><ul>
+      <li><span class="tag n">Programme</span>The charter and the mini-DFT scaffold: trust ledger, Lean and TLA+ specifications; the SCF controller is model-checked with TLC.</li>
+    </ul></li>
+  </ol>
+  </details>
+</section>
 
 <section id="s1">
   <p class="sec-no">§1</p>
@@ -317,7 +379,7 @@
   </div>
   <h3 style="margin-top:28px">Open questions</h3>
   <ul class="prose">
-    <li><b>Continuum theory of 1D rHF.</b> The literature treats the 3D Coulomb interaction; for the 1D periodic Hartree kernel we need to find a reference or supply a proof.</li>
+    <li><b>Continuum theory of 1D rHF.</b> Resolved at T1 on 5 October 2026: no published result covers the 1D periodic Hartree kernel directly, so the project supplies paper proofs (existence and unique density at zero and finite temperature, the cutoff limit equals the continuum energy, exponential plane-wave convergence for analytic potentials). What remains is to machine-check them, which ties in with the next question.</li>
     <li><b>How deep to formalise Sobolev spaces</b> — what to axiomatise first, and which theorems to prove first.</li>
     <li><b>Randomness.</b> Langevin dynamics and random initial guesses involve probabilistic properties; TLA+ only describes nondeterminism.</li>
     <li><b>GPUs.</b> How asynchronous streams and weak memory models enter a TLA+ specification.</li>
@@ -333,7 +395,7 @@
     <li>S. Boldo, F. Clément, J.-C. Filliâtre, M. Mayero, G. Melquiond, P. Weis. Wave equation numerical resolution: a comprehensive mechanized proof of a C program. <i>Journal of Automated Reasoning</i> 50(4), 2013.</li>
     <li>S. Boldo, F. Clément, F. Faissole, V. Martin, M. Mayero. A Coq formal proof of the Lax–Milgram theorem. CPP 2017.</li>
     <li>J. P. Solovej. Proof of the ionization conjecture in a reduced Hartree–Fock model. <i>Inventiones Mathematicae</i> 104, 1991.</li>
-    <li>E. Cancès, A. Deleurme, M. Lewin. A new approach to the modeling of local defects in crystals: the reduced Hartree–Fock case. <i>Communications in Mathematical Physics</i> 281, 2008.</li>
+    <li>E. Cancès, A. Deleurence, M. Lewin. A new approach to the modeling of local defects in crystals: the reduced Hartree–Fock case. <i>Communications in Mathematical Physics</i> 281, 2008.</li>
     <li>E. Cancès, R. Chakir, Y. Maday. Numerical analysis of the planewave discretization of some orbital-free and Kohn–Sham models. <i>ESAIM: M2AN</i> 46(2), 2012.</li>
     <li>M. F. Herbst, A. Levitt, E. Cancès. DFTK: A Julian approach for simulating electrons in solids. JuliaCon Proceedings, 2021.</li>
     <li>E. Hairer, C. Lubich, G. Wanner. <i>Geometric Numerical Integration</i>, 2nd ed. Springer, 2006.</li>
@@ -348,7 +410,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · Programme v0.3 · revised as the project evolves<span class="updated"> · updated <time datetime="2026-10-03T09:48+08:00">2026-10-03 09:48 UTC+8</time></span></span>
+  <span>Formal in Silico · Programme v0.3 · revised as the project evolves<span class="updated"> · updated <time datetime="2026-10-06T01:18+08:00">2026-10-06 01:18 UTC+8</time></span></span>
   <span><a href="progress.html">Progress</a> · <a href="showcases.html">Showcases</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="zh/" hreflang="zh-CN">中文版</a></span>
 </div></footer>
 </body>

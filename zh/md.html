@@ -34,11 +34,11 @@
 
 <div class="hero small"><div class="hero-in">
   <nav class="domnav" aria-label="领域"><a href="progress.html">← 进度</a><a href="dft.html">mini-DFT</a><a href="fem.html">mini-FEM</a><a href="md.html" aria-current="page">mini-MD</a><a href="calphad.html">mini-CALPHAD</a></nav>
-  <p class="eyebrow">领域 · mini-MD v0 · 现状快照 2026-10-01</p>
+  <p class="eyebrow">领域 · mini-MD v0 · 现状快照 2026-10-05</p>
   <h1>mini-MD</h1>
   <p class="lead">一维 Lennard-Jones 原子链，Velocity Verlet 积分。Lean 检查器给出计算轨道与 <b>Newton 方程真解</b>之间距离的严格界：每一步都有，从初值出发的整体界覆盖约一个振动周期；守恒量则精确计算。2026-10-01 作为纲领阶段 2 的 MD 基础版本完成，与 ASE 3.29 交叉校验。</p>
   <div class="stats">
-    <div class="stat"><b>14</b><span>条命题登记在可信账本中：T4 4 条，T3 9 条，1 条未完成</span></div>
+    <div class="stat"><b>16</b><span>条命题登记在可信账本中：T4 5 条，T3 11 条</span></div>
     <div class="stat"><b>0.99</b><span>真实局部误差 ÷ 证书的局部界：界几乎是精确的</span></div>
     <div class="stat"><b>≤ 5×10⁻¹⁴</b><span>与 ASE 在位置、动量、能量上的差</span></div>
     <div class="stat"><b>约 1 个周期</b><span>由从初值出发的整体界覆盖（8 个原子时 t = 0.5）</span></div>
@@ -65,7 +65,7 @@
   <h2>问题</h2>
   <div class="tbl"><table><tbody>
     <tr><td class="l">体系</td><td>直线上按次序排列的 <i class="v">N</i> ≥ 2 个原子，质量 <i class="v">m<sub>i</sub></i> &gt; 0。自由边界，全部原子对都相互作用，Lennard-Jones 势 <i class="v">φ</i>(<i class="v">r</i>) = 4<i class="v">ε</i>((<i class="v">σ</i>/<i class="v">r</i>)¹² − (<i class="v">σ</i>/<i class="v">r</i>)⁶) 不截断。</td></tr>
-    <tr><td class="l">方程</td><td><i class="v">q</i>′ = <i class="v">p</i>/<i class="v">m</i>，<i class="v">p</i>′ = <i class="v">F</i>(<i class="v">q</i>)。“真解”指这组方程的任意解，经典解都包括在内。</td></tr>
+    <tr><td class="l">方程</td><td><i class="v">q</i>′ = <i class="v">p</i>/<i class="v">m</i>，<i class="v">p</i>′ = <i class="v">F</i>(<i class="v">q</i>)。“真解”指这组方程的任意解，经典解都包括在内。初始位置按编号递增时，真解对所有时间存在且唯一（MD-C03）。</td></tr>
     <tr><td class="l">积分</td><td>步长为 <i class="v">h</i> 的 Velocity Verlet：半步踢、漂移、半步踢。驱动用双精度计算，不允许乘加融合。</td></tr>
     <tr><td class="l">输入</td><td>参数与初值取证书中的精确有理数，即驱动实际使用的 double。它们与命令行十进制数的差别不在证书范围内（假设 A-MD-01）。</td></tr>
   </tbody></table></div>
@@ -136,20 +136,20 @@ Lean  EPSMAX 0.00000004460799189706</pre>
 <section id="claims">
   <p class="sec-no">05</p>
   <h2>可信账本中的命题</h2>
-  <div class="sbar big" role="img" aria-label="14 条命题：T4 4 条，T3 9 条，尚未达到目标 1 条">
-    <i class="sw-t4" style="flex:4"></i><i class="sw-t3" style="flex:9"></i><i class="sw-no" style="flex:1"></i>
+  <div class="sbar big" role="img" aria-label="16 条命题：T4 5 条，T3 11 条">
+    <i class="sw-t4" style="flex:5"></i><i class="sw-t3" style="flex:11"></i>
   </div>
   <div class="legend">
-    <span><i class="sw-t4"></i>T4 端到端 · 4</span>
-    <span><i class="sw-t3"></i>T3 机器证明 · 9</span>
-    <span><i class="sw-no"></i>尚未达到目标 · 1</span>
+    <span><i class="sw-t4"></i>T4 端到端 · 5</span>
+    <span><i class="sw-t3"></i>T3 机器证明 · 11</span>
   </div>
   <div class="tbl"><table>
     <thead><tr><th>编号</th><th>命题</th><th>等级</th></tr></thead>
     <tbody>
       <tr><td class="l">MD-C01</td><td>能量守恒：原子保持次序时，真解的能量不变</td><td class="st"><span class="tag m">T3</span></td></tr>
       <tr><td class="l">MD-C02</td><td>动量守恒：力之和为零，总动量不变</td><td class="st"><span class="tag m">T3</span></td></tr>
-      <tr><td class="l">MD-C03</td><td>解的存在：Newton 方程在 [0, <i class="v">T</i>] 上有解</td><td class="st"><span class="tag n">未达到</span></td></tr>
+      <tr><td class="l">MD-C03</td><td>解的存在与唯一：初始位置按编号递增时，Newton 方程的解对所有时间存在且唯一</td><td class="st"><span class="tag m">T3</span></td></tr>
+      <tr><td class="l">MD-C04</td><td>先验界：任意解保持次序、能量守恒，原子间距大于由初始能量决定的 <i class="v">r</i>₀ &gt; 0</td><td class="st"><span class="tag m">T3</span></td></tr>
       <tr><td class="l">MD-D01</td><td>Velocity Verlet 时间可逆</td><td class="st"><span class="tag m">T3</span></td></tr>
       <tr><td class="l">MD-D02</td><td>Velocity Verlet 保持总动量</td><td class="st"><span class="tag m">T3</span></td></tr>
       <tr><td class="l">MD-D03</td><td>Velocity Verlet 是辛映射，对 Lennard-Jones 原子链成立</td><td class="st"><span class="tag m">T3</span></td></tr>
@@ -161,6 +161,7 @@ Lean  EPSMAX 0.00000004460799189706</pre>
       <tr><td class="l">MD-B02</td><td>检查器可靠：从初值出发的整体误差；覆盖范围内原子保持次序、能量精确不变</td><td class="st"><span class="tag s">T4</span></td></tr>
       <tr><td class="l">MD-B03</td><td>检查器可靠：初始能量、能量漂移与动量漂移的精确值</td><td class="st"><span class="tag s">T4</span></td></tr>
       <tr><td class="l">MD-B04</td><td>检查器可靠：数据满足 Verlet 方程，残差不超过报告值</td><td class="st"><span class="tag s">T4</span></td></tr>
+      <tr><td class="l">MD-B05</td><td>检查器可靠：局部与整体误差界所说的真解存在且唯一</td><td class="st"><span class="tag s">T4</span></td></tr>
     </tbody>
   </table></div>
   <p class="note">Verlet 辛性达到 T3（MD-D03）是纲领阶段 2 退出标准的一半；另一半 Céa 引理见 <a href="fem.html#claims">FEM 页</a>。</p>
@@ -175,6 +176,7 @@ Lean  EPSMAX 0.00000004460799189706</pre>
     <li><span>计算轨道上的总动量</span><b>守恒到 3×10⁻¹⁶</b></li>
     <li><span>真实误差 ÷ Lean 的界，局部与整体，三个体系</span><b>≤ 0.99</b></li>
     <li><span>8 个原子的整体覆盖范围：<i class="v">T</i>₀ = 0.01、<i class="v">h</i> = 0.001 / <i class="v">T</i>₀ = 0.1、<i class="v">h</i> = 0.002 / <i class="v">T</i>₀ = 0.001、<i class="v">ρ</i> = 10⁻⁴</span><b>500 / 122 / 全部 800 步</b></li>
+    <li><span>已知答案：间距 1.125（double 精确值）、静止的 4 原子链，初始能量等于对势之和；正对照：驱动把间距写错 0.001</span><b>落在 Lean 区间内；能发现</b></li>
     <li><span>篡改证书中的一个位置</span><b>只让残差与局部界变大</b></li>
     <li><span>负质量、原子重叠、管道半径小于一步的缺陷</span><b>MD_FAIL</b></li>
     <li><span>检查时间，8 个原子 1000 步（随 <i class="v">N</i>² 增长）</span><b>约 50 秒</b></li>
@@ -188,7 +190,6 @@ Lean  EPSMAX 0.00000004460799189706</pre>
   <p class="sec-no">07</p>
   <h2>缺口</h2>
   <ul class="gaps">
-    <li><strong>真解的存在</strong>证书对任意解成立，管道内解唯一，但解的存在性还没有机器证明（MD-C03）。可以用截断向量场加 Picard–Lindelöf，或用能量守恒做延拓。</li>
     <li><strong>长时间的逐点误差</strong>如上所述，由混沌决定。能量范数下的对数范数、Lohner 型线性化传播可以延长覆盖范围；真正的长时间结论需要 shadowing、修正 Hamiltonian 或统计量。</li>
     <li><strong>统计量</strong>温度、径向分布函数、自相关都和能量一样是计算状态的精确函数，尚未实现。</li>
     <li><strong>周期盒子、截断、恒温器、约束、二维与三维、并行</strong>未开始。截断使力不连续，管道定理需要分段光滑的推广；并行协议（原子迁移、halo 交换）按计划用 TLA+ 描述。</li>
@@ -201,7 +202,7 @@ Lean  EPSMAX 0.00000004460799189706</pre>
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · 现状快照 2026-10-01<span class="updated"> · 更新于 <time datetime="2026-10-03T09:48+08:00">2026-10-03 09:48 UTC+8</time></span></span>
+  <span>Formal in Silico · 现状快照 2026-10-05<span class="updated"> · 更新于 <time datetime="2026-10-05T23:25+08:00">2026-10-05 23:25 UTC+8</time></span></span>
   <span><a href="./">纲领</a> · <a href="progress.html">进度</a> · <a href="showcases.html">成果展示</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="../md.html" hreflang="en">English</a></span>
 </div></footer>
 </body>
