@@ -27,8 +27,8 @@ specifications and parity trackers; every progress and domain page carries the
 snapshot date it reflects. Update the English and Chinese pages together, and
 keep the overview's per-domain numbers in step with the domain pages.
 
-The programme page (`index.html`, `zh/index.html`) opens with a News section
-(`#news`): one dated entry per feature, research result, or paper and site change,
+The programme page (`index.html`, `zh/index.html`) has a News band (`#news`)
+between the hero and the numbered sections: one dated entry per feature, research result, or paper and site change,
 newest first, with the claim IDs it rests on. Add an entry in both languages
 whenever a ledger claim, parity item or showcase is added; entries older than
 the three most recent days go inside the "Earlier" `<details>` block.
