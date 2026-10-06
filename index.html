@@ -60,6 +60,9 @@
   <h2>News</h2>
   <div class="prose"><p>Features added to the four domains, research results, and changes to the paper and this site, newest first. Item-by-item status is on the <a href="progress.html">progress page</a>; every claim cited here is in the trust ledger.</p></div>
   <ol class="news">
+    <li><time datetime="2026-10-07">7 Oct 2026</time><ul>
+      <li><span class="tag n">Programme</span>A plan draft for a new direction, mini-CSP: crystal-structure search (symmetry-constrained random generation, local relaxation, particle-swarm updates, deduplication) with pair potentials, written from the published algorithm, with certificates for the structures it finds and proofs of the search code itself. Not started; the plan is in <code>docs/plan-mini-csp.md</code>.</li>
+    </ul></li>
     <li><time datetime="2026-10-06">6 Oct 2026</time><ul>
       <li><span class="tag n">DFT</span>Collinear spin, first version: <code>--spin collinear</code> solves LSDA with spin-polarised Slater exchange and an optional uniform Zeeman field at the Γ point and finite temperature. The checker proves that an exact LSDA SCF solution exists near the certificate and is unique there, and bounds its magnetisation and chemical potential; DFTK’s values lie inside the intervals (DFT-X26–X28). <a href="dft.html#lsda">Details →</a></li>
       <li><span class="tag n">DFT</span>Band structures and densities of states of k-point runs are certified: for rHF with any smearing, for LDA and for zero-temperature rHF, the checker bounds the bands of the primitive-cell Bloch Hamiltonian built from the block average of the supercell solution. DFTK’s <code>compute_bands</code> and <code>compute_dos</code> values lie inside the intervals (DFT-S06–S08). <a href="dft.html#outputs">Details →</a></li>
@@ -82,15 +85,15 @@
       <li><span class="tag n">DFT</span>Phase 0: continuum well-posedness, the a priori plane-wave estimate and linear-mixing convergence reach their target T1 as paper proofs, and the mixing condition is corrected (DFT-C01, D06, A01).</li>
       <li><span class="tag n">Tools</span>The <code>fis</code> Python package runs and checks every domain and audits a TDB file, with JSON output; four executed tutorial notebooks.</li>
     </ul></li>
+  </ol>
+  <details class="news-more"><summary>Earlier: 27 September – 4 October 2026</summary>
+  <ol class="news">
     <li><time datetime="2026-10-04">4 Oct 2026</time><ul>
       <li><span class="tag n">Research</span>A certified audit of the 17 databases shipped with pycalphad: 246 650 equilibria in 316 binary systems, five anomalous liquid miscibility gaps bracketed to 1 K, and equilibria that pycalphad misses. <a href="calphad.html#audit">Details →</a></li>
       <li><span class="tag n">Research</span>A discrete LDA Kohn–Sham problem is proved to have at least five distinct exact solutions. <a href="dft.html#multiple">Details →</a></li>
       <li><span class="tag n">CALPHAD</span>The checker reads the TDB file itself (CAL-I01, B02); convexity certificates prove that a phase has no miscibility gap (CAL-C05, B03); sublattice phases with one mixing sublattice (CAL-C06).</li>
       <li><span class="tag n">DFT</span>Certificates are checked against a Lean definition of the named external potential (DFT-I02, I03, V07–V09); finite-temperature SCF solutions get band and DOS certificates (DFT-S04, S05).</li>
     </ul></li>
-  </ol>
-  <details class="news-more"><summary>Earlier: 27 September – 3 October 2026</summary>
-  <ol class="news">
     <li><time datetime="2026-10-03">3 Oct 2026</time><ul>
       <li><span class="tag n">DFT</span>LDA SCF-solution certificates with Fermi–Dirac, Gaussian and any-order Methfessel–Paxton smearing, and with Monkhorst–Pack k-points (DFT-X16–X20, T30, T31).</li>
       <li><span class="tag n">Checks</span>The statements of the checker soundness theorems are pinned by fingerprints; certificate tests gain known answers and positive controls.</li>
@@ -420,7 +423,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · Programme v0.3 · revised as the project evolves<span class="updated"> · updated <time datetime="2026-10-06T23:51+08:00">2026-10-06 23:51 UTC+8</time></span></span>
+  <span>Formal in Silico · Programme v0.3 · revised as the project evolves<span class="updated"> · updated <time datetime="2026-10-07T00:01+08:00">2026-10-07 00:01 UTC+8</time></span></span>
   <span><a href="progress.html">Progress</a> · <a href="showcases.html">Showcases</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="zh/" hreflang="zh-CN">中文版</a></span>
 </div></footer>
 </body>

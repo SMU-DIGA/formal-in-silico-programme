@@ -60,6 +60,9 @@
   <h2>动态</h2>
   <div class="prose"><p>四个领域新增的功能、研究结果，以及论文与本网站的变化，新的在前。逐项状态见<a href="progress.html">实现进度</a>；这里引用的命题都登记在可信账本中。</p></div>
   <ol class="news">
+    <li><time datetime="2026-10-07">2026-10-07</time><ul>
+      <li><span class="tag n">纲领</span>新方向的计划草案 mini-CSP：晶体结构搜索（对称约束的随机生成、局部弛豫、粒子群更新、结构去重），能量模型用对势，依据公开发表的算法从零实现；找到的结构由证书检查，搜索代码本身也要证明。尚未开工，计划见 <code>docs/plan-mini-csp.md</code>。</li>
+    </ul></li>
     <li><time datetime="2026-10-06">2026-10-06</time><ul>
       <li><span class="tag n">DFT</span>共线自旋的第一版：<code>--spin collinear</code> 在 Γ 点、有限温度下求解 LSDA，交换取自旋极化的 Slater 交换，可加均匀 Zeeman 场。检查器证明证书附近存在精确的 LSDA SCF 解、在那里唯一，并给出它的磁化与化学势的区间；DFTK 的值都在区间内（DFT-X26–X28）。<a href="dft.html#lsda">详情 →</a></li>
       <li><span class="tag n">DFT</span>k 点运行的能带与态密度有了证书：rHF（任意展宽）、LDA 与零温 rHF，检查器给出由超胞解的块平均构造的原胞 Bloch Hamiltonian 的能带区间。DFTK 的 <code>compute_bands</code> 与 <code>compute_dos</code> 的值都在区间内（DFT-S06–S08）。<a href="dft.html#outputs">详情 →</a></li>
@@ -82,15 +85,15 @@
       <li><span class="tag n">DFT</span>阶段 0：连续适定性、平面波先验误差估计与线性混合收敛以纸面证明达到目标 T1，线性混合的条件得到订正（DFT-C01、D06、A01）。</li>
       <li><span class="tag n">工具</span>Python 包 <code>fis</code>：运行并检查各领域，审计 TDB 文件，输出 JSON；四份已执行的教程 notebook。</li>
     </ul></li>
+  </ol>
+  <details class="news-more"><summary>更早：2026-09-27 至 10-04</summary>
+  <ol class="news">
     <li><time datetime="2026-10-04">2026-10-04</time><ul>
       <li><span class="tag n">研究</span>对 pycalphad 自带的 17 个数据库做严格审计：316 个二元体系的 246 650 个平衡，五个反常液相混溶隙被夹在 1 K 内，以及 pycalphad 漏掉的平衡。<a href="calphad.html#audit">详情 →</a></li>
       <li><span class="tag n">研究</span>证明一个离散 LDA Kohn–Sham 问题至少有五个两两不同的精确解。<a href="dft.html#multiple">详情 →</a></li>
       <li><span class="tag n">CALPHAD</span>检查器自己读 TDB 文件（CAL-I01、B02）；凸性证书证明一个相没有混溶隙（CAL-C05、B03）；一个混合亚点阵的亚点阵相（CAL-C06）。</li>
       <li><span class="tag n">DFT</span>证书按 Lean 中命名外势的定义核对（DFT-I02、I03、V07–V09）；有限温度的 SCF 解有能带与态密度证书（DFT-S04、S05）。</li>
     </ul></li>
-  </ol>
-  <details class="news-more"><summary>更早：2026-09-27 至 10-03</summary>
-  <ol class="news">
     <li><time datetime="2026-10-03">2026-10-03</time><ul>
       <li><span class="tag n">DFT</span>LDA 的 SCF 解证书覆盖 Fermi–Dirac、Gaussian 与任意阶 Methfessel–Paxton 展宽，以及 Monkhorst–Pack k 点（DFT-X16–X20、T30、T31）。</li>
       <li><span class="tag n">检查</span>检查器可靠性定理的陈述用指纹固定；证书测试加入已知答案与正对照。</li>
@@ -420,7 +423,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · 项目纲领 v0.3 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-10-06T23:51+08:00">2026-10-06 23:51 UTC+8</time></span></span>
+  <span>Formal in Silico · 项目纲领 v0.3 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-10-07T00:01+08:00">2026-10-07 00:01 UTC+8</time></span></span>
   <span><a href="progress.html">实现进度</a> · <a href="showcases.html">成果展示</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="../" hreflang="en">English</a></span>
 </div></footer>
 </body>
