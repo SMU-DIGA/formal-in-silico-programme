@@ -42,9 +42,9 @@
     <div class="j f"><span class="k">IEEE 754</span><span class="e">|fl(<i class="v">E<sub>h</sub></i>) − <i class="v">E<sub>h</sub></i>| ≤ <i class="v">ε</i><sub>round</sub></span></div>
   </div>
   <div class="stats">
-    <div class="stat"><b>178</b><span>claims registered in the trust ledger</span></div>
-    <div class="stat"><b>170</b><span>of them machine-proved (tier T3 or T4)</span></div>
-    <div class="stat"><b>51</b><span>at the end-to-end tier T4: checker soundness, kernel safety and kernel floating point</span></div>
+    <div class="stat"><b>184</b><span>claims registered in the trust ledger</span></div>
+    <div class="stat"><b>176</b><span>of them machine-proved (tier T3 or T4)</span></div>
+    <div class="stat"><b>55</b><span>at the end-to-end tier T4: checker soundness, kernel safety and kernel floating point</span></div>
     <div class="stat"><b>4</b><span>reference codes cross-checked: DFTK.jl, scikit-fem, ASE and pycalphad</span></div>
   </div>
   <div class="cta">
@@ -61,13 +61,15 @@
   <div class="prose"><p>Features added to the four domains, research results, and changes to the paper and this site, newest first. Item-by-item status is on the <a href="progress.html">progress page</a>; every claim cited here is in the trust ledger.</p></div>
   <ol class="news">
     <li><time datetime="2026-10-06">6 Oct 2026</time><ul>
+      <li><span class="tag n">DFT</span>Band structures and densities of states of k-point runs are certified: for rHF with any smearing, for LDA and for zero-temperature rHF, the checker bounds the bands of the primitive-cell Bloch Hamiltonian built from the block average of the supercell solution. DFTK’s <code>compute_bands</code> and <code>compute_dos</code> values lie inside the intervals (DFT-S06–S08). <a href="dft.html#outputs">Details →</a></li>
+      <li><span class="tag n">CALPHAD</span>Thermodynamic properties of a phase at fixed composition, pycalphad’s <code>calculate</code> GM, SM, HM and CPM: <code>--calc n</code> certifies <i class="v">G</i>, <i class="v">S</i>, <i class="v">H</i> and <i class="v">C<sub>p</sub></i> from exact symbolic temperature derivatives of the database parameters; 713 points in 21 systems agree with pycalphad (CAL-C11, I02, B07). The pycalphad property item is complete. <a href="calphad.html#certified">Details →</a></li>
       <li><span class="tag n">DFT</span>Decision D1 settled: Frama-C’s floating-point model is the code-level tool. The interval kernel’s charge interval, residual bound and inertia count are proved correct on the C code itself under WP’s IEEE 754 model (DFT-F01, F02 now T4; the eigenvalue count from the exact elimination is a Lean theorem). The Lean/Rocq interface claim DFT-I01 is withdrawn; phase 0 meets its exit criteria. <a href="#s10">Details →</a></li>
       <li><span class="tag n">DFT</span>LDA at zero temperature is certified: under a spectral gap the checker proves that an exact zero-temperature LDA SCF solution exists near the certificate, is unique there, and bounds its energy, at the Γ point and with Monkhorst–Pack k-points (DFT-X21–X25). The LDA item of the DFTK plan is complete. <a href="dft.html#outputs">Details →</a></li>
       <li><span class="tag n">DFT</span>Gaussian external potentials: SCF solutions (rHF and LDA), zero-temperature spectra, bands and DOS, and entropy and energy now hold for the <i>named</i> potential, not only for the certificate’s rounded coefficients, through a proved perturbation estimate (DFT-V10–V14). <a href="dft.html#binding">Details →</a></li>
       <li><span class="tag n">CALPHAD</span>Equilibria at a prescribed activity, <code>--acr B=a --ref PHASE</code>: the checker computes μ<sub>B</sub> = G<sub>ref</sub>(1) + RT ln a itself as a rational interval, and one certificate covers the whole interval (CAL-C10, B06). The pycalphad activity item is complete. <a href="calphad.html#certified">Details →</a></li>
       <li><span class="tag n">FEM</span>Eigenvalues of the 1D Laplacian with P1 elements (<code>--eigs n</code>, Dirichlet, Neumann or Robin ends): the checker counts eigenvalues below rational shifts with an exact LDLᵀ and Sylvester’s law of inertia for the pencil <i class="v">K</i>x = λ<i class="v">M</i>x, giving each discrete eigenvalue in an interval of relative width about 2×10⁻¹⁵ (FEM-D08, D09, B05). <a href="fem.html#g2">Details →</a></li>
       <li><span class="tag n">Checks</span>An adversarial review of the checkers, with the attacker in control of the certificate: seven flaws fixed (forged names that injected output lines, huge exponents that hung the checkers, a DOS printed for an incomplete k-point set, unchecked echoes) and six weaker points recorded. A new <code>verify_all</code> step replays the forged certificates on every run. <a href="progress.html#how">Details →</a></li>
-      <li><span class="tag n">Paper</span>The paper draft now covers the work of 5 and 6 October; the ledger stands at 178 claims, 170 of them machine-proved.</li>
+      <li><span class="tag n">Paper</span>The paper draft now covers the work of 5 and 6 October; the ledger stands at 184 claims, 176 of them machine-proved.</li>
     </ul></li>
     <li><time datetime="2026-10-05">5 Oct 2026</time><ul>
       <li><span class="tag n">CALPHAD</span>Phase diagrams are certified complete at every grid temperature: a partition certificate states, for every overall composition in [0, 1], which phases any equilibrium contains (CAL-C09, B05). <a href="calphad.html#diagrams">Details →</a></li>
@@ -417,7 +419,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · Programme v0.3 · revised as the project evolves<span class="updated"> · updated <time datetime="2026-10-06T12:05+08:00">2026-10-06 12:05 UTC+8</time></span></span>
+  <span>Formal in Silico · Programme v0.3 · revised as the project evolves<span class="updated"> · updated <time datetime="2026-10-06T20:17+08:00">2026-10-06 20:17 UTC+8</time></span></span>
   <span><a href="progress.html">Progress</a> · <a href="showcases.html">Showcases</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="zh/" hreflang="zh-CN">中文版</a></span>
 </div></footer>
 </body>

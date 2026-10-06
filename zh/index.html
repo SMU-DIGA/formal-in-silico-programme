@@ -42,9 +42,9 @@
     <div class="j f"><span class="k">IEEE 754</span><span class="e">|fl(<i class="v">E<sub>h</sub></i>) − <i class="v">E<sub>h</sub></i>| ≤ <i class="v">ε</i><sub>round</sub></span></div>
   </div>
   <div class="stats">
-    <div class="stat"><b>178</b><span>条命题登记在可信账本中</span></div>
-    <div class="stat"><b>170</b><span>条已有机器证明（T3 或 T4）</span></div>
-    <div class="stat"><b>51</b><span>条达到端到端等级 T4：检查器可靠性、内核安全与内核浮点</span></div>
+    <div class="stat"><b>184</b><span>条命题登记在可信账本中</span></div>
+    <div class="stat"><b>176</b><span>条已有机器证明（T3 或 T4）</span></div>
+    <div class="stat"><b>55</b><span>条达到端到端等级 T4：检查器可靠性、内核安全与内核浮点</span></div>
     <div class="stat"><b>4</b><span>个参照程序交叉校验：DFTK.jl、scikit-fem、ASE 与 pycalphad</span></div>
   </div>
   <div class="cta">
@@ -61,13 +61,15 @@
   <div class="prose"><p>四个领域新增的功能、研究结果，以及论文与本网站的变化，新的在前。逐项状态见<a href="progress.html">实现进度</a>；这里引用的命题都登记在可信账本中。</p></div>
   <ol class="news">
     <li><time datetime="2026-10-06">2026-10-06</time><ul>
+      <li><span class="tag n">DFT</span>k 点运行的能带与态密度有了证书：rHF（任意展宽）、LDA 与零温 rHF，检查器给出由超胞解的块平均构造的原胞 Bloch Hamiltonian 的能带区间。DFTK 的 <code>compute_bands</code> 与 <code>compute_dos</code> 的值都在区间内（DFT-S06–S08）。<a href="dft.html#outputs">详情 →</a></li>
+      <li><span class="tag n">CALPHAD</span>相在固定成分处的热力学性质，即 pycalphad <code>calculate</code> 的 GM、SM、HM、CPM：<code>--calc n</code> 由数据库参数对温度的精确符号导数给出 <i class="v">G</i>、<i class="v">S</i>、<i class="v">H</i>、<i class="v">C<sub>p</sub></i> 的区间；21 个体系 713 个点与 pycalphad 一致（CAL-C11、I02、B07）。pycalphad 对齐计划中的热力学性质一项完成。<a href="calphad.html#certified">详情 →</a></li>
       <li><span class="tag n">DFT</span>决定 D1 定案：代码层用 Frama-C 的浮点模型。区间算术内核的电荷区间、残差上界与惯性计数在 WP 的 IEEE 754 模型下直接对 C 代码证明（DFT-F01、F02 升到 T4；由精确消去得到本征值个数是 Lean 定理）。Lean 与 Rocq 的接口命题 DFT-I01 撤销；阶段 0 达到退出标准。<a href="#s10">详情 →</a></li>
       <li><span class="tag n">DFT</span>零温 LDA 有了证书：在能隙条件下，检查器证明证书附近存在精确的零温 LDA SCF 解、在那里唯一，并给出它的能量区间，Γ 点与 Monkhorst–Pack k 点都支持（DFT-X21–X25）。DFTK 对齐计划中的 LDA 一项完成。<a href="dft.html#outputs">详情 →</a></li>
       <li><span class="tag n">DFT</span>高斯外势：SCF 解（rHF 与 LDA）、零温的谱、能带与态密度、熵与能量的结论，经由一条已证明的扰动估计，现在对<i>命名</i>外势成立，而不只是对证书中舍入后的系数（DFT-V10–V14）。<a href="dft.html#binding">详情 →</a></li>
       <li><span class="tag n">CALPHAD</span>活度给定的平衡，<code>--acr B=a --ref 相</code>：检查器自己把 μ<sub>B</sub> = G<sub>ref</sub>(1) + RT ln a 算成有理区间，一份证书覆盖整个区间（CAL-C10、B06）。pycalphad 对齐计划中的活度一项完成。<a href="calphad.html#certified">详情 →</a></li>
       <li><span class="tag n">FEM</span>一维 Laplace 算子的 P1 本征值（<code>--eigs n</code>，两端 Dirichlet、Neumann 或 Robin）：检查器在有理移位处用精确的 LDLᵀ 与矩阵束 <i class="v">K</i>x = λ<i class="v">M</i>x 的 Sylvester 惯性定理计数，给出每个离散本征值的区间，相对宽度约 2×10⁻¹⁵（FEM-D08、D09、B05）。<a href="fem.html#g2">详情 →</a></li>
       <li><span class="tag n">检查</span>对检查器做了一次对抗式复审（攻击者控制证书）：修复七处缺陷（伪造的名字注入输出行、巨大指数让检查器卡死、k 点不全时仍输出态密度、回显未全部核对），另记录六处较弱的地方。<code>verify_all</code> 新增一步，每次重放这些伪造证书。<a href="progress.html#how">详情 →</a></li>
-      <li><span class="tag n">论文</span>论文稿补上了 10 月 5 日与 6 日的工作；账本现有 178 条命题，其中 170 条有机器证明。</li>
+      <li><span class="tag n">论文</span>论文稿补上了 10 月 5 日与 6 日的工作；账本现有 184 条命题，其中 176 条有机器证明。</li>
     </ul></li>
     <li><time datetime="2026-10-05">2026-10-05</time><ul>
       <li><span class="tag n">CALPHAD</span>相图在每个网格温度上有完整性证书：区域划分证书对 [0, 1] 中的每个总成分给出任意平衡含有哪些相（CAL-C09、B05）。<a href="calphad.html#diagrams">详情 →</a></li>
@@ -417,7 +419,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · 项目纲领 v0.3 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-10-06T12:05+08:00">2026-10-06 12:05 UTC+8</time></span></span>
+  <span>Formal in Silico · 项目纲领 v0.3 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-10-06T20:17+08:00">2026-10-06 20:17 UTC+8</time></span></span>
   <span><a href="progress.html">实现进度</a> · <a href="showcases.html">成果展示</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="../" hreflang="en">English</a></span>
 </div></footer>
 </body>

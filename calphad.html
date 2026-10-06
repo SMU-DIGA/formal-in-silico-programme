@@ -38,8 +38,8 @@
   <h1>mini-CALPHAD</h1>
   <p class="lead">Phase equilibria of binary alloys, read from the same TDB thermodynamic databases that pycalphad uses. The Lean checker certifies the <b>true global equilibrium</b> of the database model — the lowest Gibbs energy over every possible combination of phases — not only the solution the driver happened to find. Since 4 October the checker reads the TDB file itself, so its conclusions are about the model the database defines, and a second kind of certificate proves that a phase has <i>no</i> miscibility gap. Goal G3, set on 1 October 2026, is feature parity with pycalphad 0.11.1.</p>
   <div class="stats">
-    <div class="stat"><b>17</b><span>claims in the trust ledger: 6 at T4, 10 at T3, and the Lean reading of TDB files, a definition at T0</span></div>
-    <div class="stat"><b>17 / 25</b><span>pycalphad parity items done: all of C0; in C1 phase diagrams with certified region partitions, magnetism, driving forces and sharp chemical potentials; in C2 sublattice phases with up to two mixing sublattices and conditions on a chemical potential or an activity</span></div>
+    <div class="stat"><b>20</b><span>claims in the trust ledger: 7 at T4, 12 at T3, and the Lean reading of TDB files, a definition at T0</span></div>
+    <div class="stat"><b>18 / 25</b><span>pycalphad parity items done: all of C0; in C1 phase diagrams with certified region partitions, magnetism, driving forces, sharp chemical potentials and thermodynamic properties; in C2 sublattice phases with up to two mixing sublattices and conditions on a chemical potential or an activity</span></div>
     <div class="stat"><b>29 / 29</b><span>pycalphad equilibria inside the Lean intervals and windows</span></div>
     <div class="stat"><b>246 650</b><span>grid points in 316 binary systems from 17 databases, each certified against its TDB file in the <a href="#audit">database audit</a></span></div>
   </div>
@@ -98,6 +98,8 @@
       <tr><td>DF_OK phase lo hi</td><td>The driving force max<sub><i class="v">x</i></sub> (ℓ*(<i class="v">x</i>) − <i class="v">G</i>(<i class="v">x</i>)) of the phase — pycalphad’s <code>DF</code>, negative for metastable phases, 0 for stable ones — for the tangent ℓ* of any equilibrium. It is the global maximum over all compositions.</td></tr>
       <tr><td>EXISTS</td><td>An equilibrium exists, so the statements above are not vacuous.</td></tr>
       <tr><td>REF_OK lo hi</td><td>With a prescribed activity <i class="v">a</i> of B (<code>--acr B=a --ref PHASE</code>, since 6 October): the reference energy <i class="v">G</i><sub>ref</sub>(1) of pure B in the reference phase, computed by the checker; μ<sub>B</sub> = <i class="v">G</i><sub>ref</sub>(1) + <i class="v">RT</i> ln <i class="v">a</i> is irrational in general, so the remaining lines hold for every μ<sub>B</sub> in the resulting rational interval, and with it for the true one (CAL-B06).</td></tr>
+      <tr><td>PROP phase x G … S … H … CP …</td><td>From a separate property certificate (<code>--calc n</code>, since 6 October): at fixed composition — for a phase with two mixing sublattices, at a fixed internal state, as in pycalphad’s <code>calculate</code> — the phase’s Gibbs energy per mole of atoms is twice differentiable in <i class="v">T</i>, and <i class="v">G</i>, <i class="v">S</i> = −∂<i class="v">G</i>/∂<i class="v">T</i>, <i class="v">H</i> = <i class="v">G</i> − <i class="v">T</i>∂<i class="v">G</i>/∂<i class="v">T</i> and <i class="v">C<sub>p</sub></i> = −<i class="v">T</i>∂²<i class="v">G</i>/∂<i class="v">T</i>² lie in the four intervals. The derivatives are exact and symbolic: a parameter’s derivative is again a sum of terms <i class="v">c</i>·<i class="v">T</i><sup><i class="v">n</i></sup>(log <i class="v">T</i>)<sup><i class="v">l</i></sup>, the mixing term is proportional to <i class="v">T</i>, and the magnetic term is one branch of the Inden–Hillert–Jarl function on one side of <i class="v">T</i><sub>c</sub> (CAL-C11, B07).</td></tr>
+      <tr><td>TRANGE l h</td><td>In <code>--tdb</code> mode with a property certificate: at every rational temperature in (l, h) the TDB file defines the same parameters, so the derivatives of the model are those of the database; a temperature exactly on a breakpoint of the piecewise expressions used is rejected (CAL-I02).</td></tr>
       <tr><td>PROBLEM, UNSUPPORTED, MODEL_OK</td><td>In <code>--tdb</code> mode: <code>PROBLEM</code> echoes the TDB file, the components, <i class="v">T</i>, <i class="v">x</i>₀, <i class="v">R</i> and the phases; <code>UNSUPPORTED</code> lists the phases left out and why; after <code>MODEL_OK</code> every line is a statement about the model the TDB file defines (CAL-B02).</td></tr>
       <tr><td>CONVEX phase T</td><td>From a separate convexity certificate: the phase has no miscibility gap at <i class="v">T</i> (<a href="#convex">section 06</a>).</td></tr>
       <tr><td>TANGENT, EPS, KAPPA, FRAC</td><td>Diagnostics: whose tangent was used (in single-phase regions the checker computes its own), how far below the phases it lies, the tangent error bound used for the windows, and the certificate’s own configuration.</td></tr>
@@ -207,12 +209,12 @@ Lean  EXISTS</pre>
 <section id="claims">
   <p class="sec-no">08</p>
   <h2>Claims in the trust ledger</h2>
-  <div class="sbar big" role="img" aria-label="17 claims: 6 at T4, 10 at T3, 1 at T0">
-    <i class="sw-t4" style="flex:6"></i><i class="sw-t3" style="flex:10"></i><i class="sw-t0" style="flex:1"></i>
+  <div class="sbar big" role="img" aria-label="20 claims: 7 at T4, 12 at T3, 1 at T0">
+    <i class="sw-t4" style="flex:7"></i><i class="sw-t3" style="flex:12"></i><i class="sw-t0" style="flex:1"></i>
   </div>
   <div class="legend">
-    <span><i class="sw-t4"></i>T4 end to end · 6</span>
-    <span><i class="sw-t3"></i>T3 machine proof · 10</span>
+    <span><i class="sw-t4"></i>T4 end to end · 7</span>
+    <span><i class="sw-t3"></i>T3 machine proof · 12</span>
     <span><i class="sw-t0"></i>T0 cross-checked definition · 1</span>
   </div>
   <div class="tbl"><table>
@@ -228,13 +230,16 @@ Lean  EXISTS</pre>
       <tr><td class="l">CAL-C08</td><td>At a given chemical potential μ<sub>B</sub>: an equilibrium exists once a line through (1, μ<sub>B</sub>) lies below every phase and a point of some phase lies below a higher such line</td><td class="st"><span class="tag m">T3</span></td></tr>
       <tr><td class="l">CAL-C09</td><td>Isothermal sections: the slope of the equilibrium tangent is monotone in <i class="v">x</i>₀; every feasible configuration has a part on each side of <i class="v">x</i>₀; an affine function bounded at increasing points lies below one of their chords or the two end rays</td><td class="st"><span class="tag m">T3</span></td></tr>
       <tr><td class="l">CAL-C10</td><td>Monotonicity under chemical-potential and activity conditions (Gibbs–Duhem): raising μ<sub>B</sub> does not raise μ<sub>A</sub> and does not lower the overall composition; an activity condition is the chemical potential μ<sub>B</sub> = <i class="v">G</i><sub>ref</sub>(1) + <i class="v">RT</i> ln <i class="v">a</i></td><td class="st"><span class="tag m">T3</span></td></tr>
+      <tr><td class="l">CAL-C11</td><td>Thermodynamic properties in closed form: at fixed composition (or fixed internal state) every phase’s Gibbs energy is (<i class="v">P</i>(<i class="v">T</i>) + <i class="v">K</i><i class="v">T</i> + Λ<i class="v">T</i> <i class="v">h</i>(<i class="v">t</i><sub>c</sub>/<i class="v">T</i>))/<i class="v">m</i> near <i class="v">T</i>, with <i class="v">P</i> a sum of parameter terms and <i class="v">h</i> one branch of the magnetic function; it is twice differentiable there, and <i class="v">S</i>, <i class="v">H</i>, <i class="v">C<sub>p</sub></i> have explicit formulas in <i class="v">P</i>′, <i class="v">P</i>″, <i class="v">h</i>′, <i class="v">h</i>″</td><td class="st"><span class="tag m">T3</span></td></tr>
       <tr><td class="l">CAL-B01</td><td>Checker soundness: the interval for <i class="v">G</i>*, and for every equilibrium the chemical potentials, composition windows, absent phases and driving forces; existence</td><td class="st"><span class="tag s">T4</span></td></tr>
       <tr><td class="l">CAL-I01</td><td>Reading TDB files: <code>modelOfTdb</code>, the binary model a TDB text defines at <i class="v">T</i> for two components and a list of phases. A definition, not a theorem: whether it is faithful to the database can only be cross-checked, against the driver and pycalphad</td><td class="st"><span class="tag n">T0</span></td></tr>
+      <tr><td class="l">CAL-I02</td><td>The model a TDB file defines is constant on an open temperature interval: if no breakpoint of a parameter in use, or of a function it references, equals <i class="v">T</i>, the TDB file defines the same parameters at every rational temperature between the nearest breakpoints, so the model’s derivatives in <i class="v">T</i> are the database’s</td><td class="st"><span class="tag m">T3</span></td></tr>
       <tr><td class="l">CAL-B02</td><td>Problem binding: when the checker accepts in <code>--tdb</code> mode, the model built from the TDB file equals the certificate’s model, and every conclusion of CAL-B01 holds for it</td><td class="st"><span class="tag s">T4</span></td></tr>
       <tr><td class="l">CAL-B03</td><td>Convexity checker soundness: <code>CONVEX</code> implies strict convexity and no miscibility gap (CAL-C05), also for the model built from the TDB file</td><td class="st"><span class="tag s">T4</span></td></tr>
       <tr><td class="l">CAL-B04</td><td>Chemical-potential checker soundness (pycalphad’s <code>v.MU('B')</code>): intervals for the other chemical potential μ<sub>A</sub>, the overall composition and the Gibbs energy of every equilibrium at the given μ<sub>B</sub>, composition windows and driving forces; existence</td><td class="st"><span class="tag s">T4</span></td></tr>
       <tr><td class="l">CAL-B05</td><td>Partition checker soundness: the regions cover [0, 1], and every equilibrium at every <i class="v">x</i>₀ in a region has the stated phases, at compositions in the stated windows</td><td class="st"><span class="tag s">T4</span></td></tr>
       <tr><td class="l">CAL-B06</td><td>Activity checker soundness: for a prescribed activity <i class="v">a</i> of B with pure B in a reference phase as reference state, the interval for <i class="v">G</i><sub>ref</sub>(1) and μ<sub>B</sub>, and for every equilibrium at that μ<sub>B</sub> the conclusions of CAL-B04; existence</td><td class="st"><span class="tag s">T4</span></td></tr>
+      <tr><td class="l">CAL-B07</td><td>Property checker soundness (pycalphad’s <code>calculate</code> with GM, SM, HM, CPM): each row’s phase, at its composition or internal state, has a Gibbs energy twice differentiable in <i class="v">T</i> with <i class="v">G</i>, <i class="v">S</i>, <i class="v">H</i>, <i class="v">C<sub>p</sub></i> in the stated intervals; in <code>--tdb</code> mode, for the model the TDB file defines throughout <code>TRANGE</code></td><td class="st"><span class="tag s">T4</span></td></tr>
     </tbody>
   </table></div>
 </section>
@@ -249,7 +254,7 @@ Lean  EXISTS</pre>
   </div>
   <div class="ms">
     <div class="row"><span class="code">C0</span><div>Binary point equilibrium</div><div class="barcell"><div class="sbar"><i class="sw-done" style="flex:8"></i></div></div><span class="n">8 / 8</span></div>
-    <div class="row"><span class="code">C1</span><div>Binary extensions: phase diagrams, magnetism, invariants</div><div class="barcell"><div class="sbar"><i class="sw-done" style="flex:5"></i><i class="sw-todo" style="flex:3"></i></div></div><span class="n">5 / 8</span></div>
+    <div class="row"><span class="code">C1</span><div>Binary extensions: phase diagrams, magnetism, invariants</div><div class="barcell"><div class="sbar"><i class="sw-done" style="flex:6"></i><i class="sw-todo" style="flex:2"></i></div></div><span class="n">6 / 8</span></div>
     <div class="row"><span class="code">C2</span><div>Multicomponent and sublattice models</div><div class="barcell"><div class="sbar"><i class="sw-done" style="flex:4"></i><i class="sw-todo" style="flex:2"></i></div></div><span class="n">4 / 6</span></div>
     <div class="row"><span class="code">C3</span><div>Scheil, fitting, other models</div><div class="barcell"><div class="sbar"><i class="sw-todo" style="flex:3"></i></div></div><span class="n">0 / 3</span></div>
   </div>
@@ -269,7 +274,7 @@ Lean  EXISTS</pre>
     </tbody>
   </table></div>
 
-  <h3 style="margin-top:28px">C1 · binary extensions — 5 of 8 done</h3>
+  <h3 style="margin-top:28px">C1 · binary extensions — 6 of 8 done</h3>
   <div class="tbl"><table class="feat">
     <thead><tr><th>Feature</th><th>pycalphad</th><th>Status</th><th>What is certified</th></tr></thead>
     <tbody>
@@ -279,7 +284,7 @@ Lean  EXISTS</pre>
       <tr><td>Sharp chemical potentials in single-phase regions</td><td><code>equilibrium</code> (MU)</td><td class="st"><span class="tag st-done">Done</span></td><td>The checker’s own rational tangent: widths from about 10⁻⁴ down to 10⁻⁸–10⁻⁷ J/mol</td></tr>
       <tr><td>Completeness of an isothermal section</td><td>—</td><td class="st"><span class="tag st-done">Done</span></td><td>CAL-C09, B05: the phases of every equilibrium at every <i class="v">x</i>₀ in [0, 1], from monotone tangent slopes between anchors</td></tr>
       <tr><td>Invariant reaction temperatures (eutectic, peritectic)</td><td><code>map</code></td><td class="st"><span class="tag st-todo">Not started</span></td><td></td></tr>
-      <tr><td>Thermodynamic properties <i class="v">H</i>, <i class="v">S</i>, <i class="v">C<sub>p</sub></i></td><td><code>calculate</code></td><td class="st"><span class="tag st-todo">Not started</span></td><td></td></tr>
+      <tr><td>Thermodynamic properties <i class="v">H</i>, <i class="v">S</i>, <i class="v">C<sub>p</sub></i></td><td><code>calculate</code> (HM, SM, CPM)</td><td class="st"><span class="tag st-done">Done</span></td><td>CAL-C11, I02, B07: <code>--calc n</code>; <i class="v">G</i>, <i class="v">S</i>, <i class="v">H</i>, <i class="v">C<sub>p</sub></i> of each phase at fixed composition (fixed internal state for two mixing sublattices, as in <code>calculate</code>) from exact symbolic derivatives; 713 points in 21 systems agree with pycalphad. Equilibrium-level values (<code>equilibrium</code> HM, SM, CPM) not yet</td></tr>
       <tr><td>Interstitial solutions</td><td><code>Model</code></td><td class="st"><span class="tag st-todo">Not started</span></td><td></td></tr>
     </tbody>
   </table></div>
@@ -304,6 +309,8 @@ Lean  EXISTS</pre>
     <li><span>Partition certificates: 7 systems at 67 temperatures; pycalphad’s <code>equilibrium</code> at 3346 points of a composition grid</span><b>all in a certified region with the same phases</b></li>
     <li><span>Conditions on μ<sub>B</sub>: 16 points in Al–Zn, Cu–Mg, Cr–Fe and COST 507 Al–Cu and Cu–Mg at pycalphad’s <code>MU(B)</code>; pycalphad’s <code>MU(A)</code>, phase compositions, overall composition and <code>GM</code> under the same condition</span><b>inside the Lean intervals and windows</b></li>
     <li><span>Conditions on an activity: 17 points in Al–Zn, Cu–Mg, Cr–Fe and COST 507 Al–Cu and Cu–Mg, the activity converted from pycalphad’s <code>MU(B)</code>; pycalphad’s reference <code>MU</code>, <code>MU(A)</code>, phase compositions, overall composition and <code>GM</code>; a closed-form known answer with a pure-Ni reference compound</span><b>inside the Lean intervals; widths ≈ 10⁻⁹ J/mol</b></li>
+    <li><span>Thermodynamic properties: 713 points of <code>--calc</code> in 21 systems (Al–Zn, Pb–Sn, Cu–Mg, Cr–Fe on both sides of <i class="v">T</i><sub>c</sub>, Al–Fe, COST 507 Al–Cu and Cu–Mg with the Laves phase at fixed internal states, Al–Mg, and 12 binaries drawn from COST 507), every phase type; pycalphad’s <code>calculate</code> <code>GM</code>, <code>SM</code>, <code>HM</code>, <code>CPM</code>: largest relative distance to the Lean interval, non-magnetic / magnetic (in <code>CPM</code>, from pycalphad’s regularisation <i class="v">T</i>/(<i class="v">T</i><sub>c</sub> + 10⁻⁹))</span><b>&lt; 3×10⁻¹⁴ / 3.3×10⁻¹²</b></li>
+    <li><span>Properties: known answers from <code>regular_ref.tdb</code> (liquid <i class="v">H</i> = <i class="v">L</i>₀<i class="v">x</i>(1 − <i class="v">x</i>), <i class="v">C<sub>p</sub></i> = 0; a compound with <i class="v">C<sub>p</sub></i> = 0.01); COST 507 Al at the breakpoint 933.47 K and just below it; tampered coefficients, missing internal states, site fractions above 1</span><b>inside the Lean intervals; breakpoint rejected; tampering caught</b></li>
     <li><span>Lean’s TDB reading against the driver’s: every database, phase set and equilibrium of the benchmark, and all binary systems of COST 507 at 800 K and 1300 K (595 certificates, 6518 phases)</span><b>identical models; same phases left out, for the same reasons</b></li>
     <li><span>A model coefficient in a certificate changed by 0.01%</span><b>accepted without <code>--tdb</code>, rejected with it</b></li>
     <li><span>Convexity certificates for six gaps (liquid Al–Ce, Fe–Si, Mg–Si, Cu–Si, Al–Ni; fcc Al–Zn): temperature bisected to 1 K; pycalphad’s <i class="v">G</i>″ and its single-phase <code>equilibrium</code> on either side</span><b>agree in every case</b></li>
@@ -354,6 +361,7 @@ Lean  EXISTS</pre>
     <li><strong>No miscibility gap: magnetic phases and between temperatures</strong>Convexity certificates cover non-magnetic substitutional solutions at a single temperature. Magnetic phases need second-derivative bounds on the magnetic term; nothing is certified between two temperatures; <code>CAL_FAIL</code> is not a proof of a gap.</li>
     <li><strong>Phase diagrams between grid temperatures</strong>Since 5 October the partition certificate covers every composition at each grid temperature; temperatures between grid points are not certified, and a miscibility gap inside a single-phase window needs a separate convexity certificate.</li>
     <li><strong>Order–disorder, interstitial, further sublattice and multicomponent models</strong>Not yet defined in Lean (phases with one or two mixing sublattices are supported). The driver skips such phases and lists them; the conclusions hold only for the phases included. Magnetic phases whose <code>TC</code> or <code>BMAGN</code> depends on log <i class="v">T</i> are also skipped.</li>
+    <li><strong>Thermodynamic properties at equilibrium</strong>Since 6 October <i class="v">G</i>, <i class="v">S</i>, <i class="v">H</i> and <i class="v">C<sub>p</sub></i> are certified for a phase at fixed composition, as pycalphad’s <code>calculate</code>. Not yet: the equilibrium values (pycalphad’s <code>equilibrium</code> with HM, SM, CPM, the phases weighted by their amounts); the derivatives of a two-mixing-sublattice phase under internal equilibrium (the certificate gives the fixed-internal-state values); magnetic phases at <i class="v">T</i> = <i class="v">T</i><sub>c</sub>, where <i class="v">C<sub>p</sub></i> jumps; and, in <code>--tdb</code> mode, a temperature on a breakpoint of the piecewise expressions.</li>
     <li><strong>The driver itself</strong>Its grid search and Newton iterations are untrusted (T0) and marked so in the report; every result passes through the checker.</li>
   </ul>
 </section>
@@ -362,7 +370,7 @@ Lean  EXISTS</pre>
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · status snapshot 6 October 2026<span class="updated"> · updated <time datetime="2026-10-06T12:01+08:00">2026-10-06 12:01 UTC+8</time></span></span>
+  <span>Formal in Silico · status snapshot 6 October 2026<span class="updated"> · updated <time datetime="2026-10-06T20:17+08:00">2026-10-06 20:17 UTC+8</time></span></span>
   <span><a href="./">Programme</a> · <a href="progress.html">Progress</a> · <a href="showcases.html">Showcases</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="zh/calphad.html" hreflang="zh-CN">中文版</a></span>
 </div></footer>
 </body>
