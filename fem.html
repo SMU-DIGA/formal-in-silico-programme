@@ -33,12 +33,12 @@
 
 <div class="hero small"><div class="hero-in">
   <nav class="domnav" aria-label="Domains"><a href="progress.html">← Progress</a><a href="dft.html">mini-DFT</a><a href="fem.html" aria-current="page">mini-FEM</a><a href="md.html">mini-MD</a><a href="calphad.html">mini-CALPHAD</a></nav>
-  <p class="eyebrow">Domain · goal G2 · status snapshot 5 October 2026</p>
+  <p class="eyebrow">Domain · goal G2 · status snapshot 6 October 2026</p>
   <h1>mini-FEM</h1>
   <p class="lead">One-dimensional finite elements — Poisson with P1 elements and beams with cubic Hermite elements — whose certificates speak about the <b>true solution of the continuous problem</b>, not just the discrete one. Goal G2 is feature parity with scikit-fem 12.0.2.</p>
   <div class="stats">
-    <div class="stat"><b>14</b><span>claims in the trust ledger, all at T3 or T4</span></div>
-    <div class="stat"><b>12 / 27</b><span>scikit-fem parity items done, all 1D</span></div>
+    <div class="stat"><b>17</b><span>claims in the trust ledger, all at T3 or T4</span></div>
+    <div class="stat"><b>12 / 27</b><span>scikit-fem parity items done, all 1D; the eigenvalue problem agrees</span></div>
     <div class="stat"><b>≤ 3×10⁻¹⁵</b><span>width of the Lean intervals for the true nodal values</span></div>
     <div class="stat"><b>0.85 – 1.00</b><span>sampled true error ÷ proved max-error bound</span></div>
   </div>
@@ -72,12 +72,12 @@
 <section id="claims">
   <p class="sec-no">02</p>
   <h2>Claims in the trust ledger</h2>
-  <div class="sbar big" role="img" aria-label="14 claims: 4 at T4, 10 at T3">
-    <i class="sw-t4" style="flex:4"></i><i class="sw-t3" style="flex:10"></i>
+  <div class="sbar big" role="img" aria-label="17 claims: 5 at T4, 12 at T3">
+    <i class="sw-t4" style="flex:5"></i><i class="sw-t3" style="flex:12"></i>
   </div>
   <div class="legend">
-    <span><i class="sw-t4"></i>T4 end to end · 4</span>
-    <span><i class="sw-t3"></i>T3 machine proof · 10</span>
+    <span><i class="sw-t4"></i>T4 end to end · 5</span>
+    <span><i class="sw-t3"></i>T3 machine proof · 12</span>
   </div>
   <div class="tbl"><table>
     <thead><tr><th>Claim</th><th>Statement</th><th>Tier</th></tr></thead>
@@ -95,6 +95,9 @@
       <tr><td class="l">FEM-C03</td><td>Neumann at both ends: the projected problem −<i class="v">u</i>″ = <i class="v">f</i> − <i class="v">c̄</i> has exactly one classical solution with ∫<i class="v">u</i> = 0; <i class="v">c̄</i> = 0 when the data are compatible</td><td class="st"><span class="tag m">T3</span></td></tr>
       <tr><td class="l">FEM-D07</td><td>Neumann at both ends: the true nodal values solve the discrete equations up to one constant <i class="v">s</i>, given by the element integrals</td><td class="st"><span class="tag m">T3</span></td></tr>
       <tr><td class="l">FEM-B04</td><td>Two-sided Neumann checker soundness: intervals for the compatibility defect <i class="v">c̄</i>, the constant <i class="v">s</i>, the true nodal values, and the max-error bound</td><td class="st"><span class="tag s">T4</span></td></tr>
+      <tr><td class="l">FEM-D08</td><td>Eigenvalues: Sylvester’s law of inertia for the pencil <i class="v">K</i>x = λ<i class="v">M</i>x (<i class="v">M</i> positive definite): the number of eigenvalues below σ equals the number of negative pivots of <i class="v">K</i> − σ<i class="v">M</i></td><td class="st"><span class="tag m">T3</span></td></tr>
+      <tr><td class="l">FEM-D09</td><td>Spectral gap of sine series: a function vanishing at the ends and orthogonal to the first <i class="v">k</i> sines satisfies ((<i class="v">k</i> + 1)π/<i class="v">L</i>)² ∫<i class="v">v</i>² ≤ ∫<i class="v">v</i>′², proved via Parseval — the analytic half of λ<sub><i class="v">k</i></sub> ≤ λ<sub><i class="v">k</i>,<i class="v">h</i></sub></td><td class="st"><span class="tag m">T3</span></td></tr>
+      <tr><td class="l">FEM-B05</td><td>Eigenvalue checker soundness: the <i class="v">k</i>-th discrete eigenvalue lies in the certified interval, and the eigenvalue counts below the certified shifts are exact</td><td class="st"><span class="tag s">T4</span></td></tr>
       <tr><td class="l">FEM-B03</td><td>Beam checker soundness: intervals for values and slopes, and the max-error bound</td><td class="st"><span class="tag s">T4</span></td></tr>
     </tbody>
   </table></div>
@@ -136,7 +139,7 @@
       <tr><td>Adaptive refinement (1D)</td><td class="st"><span class="tag st-done">Done</span></td><td>Elements are marked by their proved error bounds, not by an estimator; the final mesh is certified</td></tr>
       <tr><td>Variable coefficients</td><td class="st"><span class="tag st-todo">Not started</span></td><td></td></tr>
       <tr><td>P2 and higher-order Lagrange elements</td><td class="st"><span class="tag st-todo">Not started</span></td><td></td></tr>
-      <tr><td>Eigenvalue problem</td><td class="st"><span class="tag st-todo">Not started</span></td><td>Can reuse the DFT inertia argument</td></tr>
+      <tr><td>Eigenvalue problem</td><td class="st"><span class="tag st-align">Agrees</span></td><td>Since 6 October, <code>--eigs n</code> with Dirichlet, Neumann or Robin ends: the checker evaluates an exact LDLᵀ of <i class="v">K</i> − σ<i class="v">M</i> at rational shifts and counts eigenvalues by inertia, as in DFT; every discrete eigenvalue gets an interval of relative width ≤ 2.1×10⁻¹⁵ (FEM-D08, B05). Agrees with scikit-fem to 3×10⁻¹⁵. Not done: the link to the continuous eigenvalues (λ<sub><i class="v">k</i></sub> ≤ λ<sub><i class="v">k</i>,<i class="v">h</i></sub>) and eigenvector bounds.</td></tr>
       <tr><td>Energy-norm error</td><td class="st"><span class="tag st-todo">Not started</span></td><td></td></tr>
       <tr><td>Example-by-example comparison with scikit-fem’s 1D gallery</td><td class="st"><span class="tag st-todo">Not started</span></td><td></td></tr>
     </tbody>
@@ -160,6 +163,7 @@
         <li>the exact error of the solver’s own nodal values</li>
         <li>a bound on max |<i class="v">u</i> − <i class="v">u<sub>h</sub></i>| over the whole interval, and per element</li>
         <li>an adaptively refined mesh that meets a requested tolerance, with the tolerance certified on the final mesh</li>
+        <li>for the eigenvalue problem, an interval for each discrete P1 eigenvalue (a statement about the discrete problem only, since 6 October)</li>
     </ul></div>
 </section>
 
@@ -171,6 +175,9 @@
     <li><span>scikit-fem nodal values against mini-FEM (Poisson / beam)</span><b>≤ 3×10⁻¹³ / 4×10⁻¹²</b></li>
     <li><span>proved max-error bound relative to the sampled actual error</span><b>0.85 – 1.00</b></li>
     <li><span>tampered nodal values</span><b>only widen the error bound</b></li>
+    <li><span>Eigenvalues, 6 cases: Lean intervals against a 50-digit mpmath reference / scikit-fem 12.0.2 (Neumann at both ends with shift-invert)</span><b>contain it, relative width ≤ 2.1×10⁻¹⁵ / ≤ 3×10⁻¹⁵ (2.3×10⁻¹³)</b></li>
+    <li><span>Dirichlet eigenvalues: the continuous (<i class="v">k</i>π/<i class="v">L</i>)² below every Lean lower bound; convergence order</span><b>always (known answer, not proved); 2.000</b></li>
+    <li><span>Eigenvalue checking time: <i class="v">N</i> = 1024 with 4 eigenvalues / <i class="v">N</i> = 2000 with 10</span><b>0.45 s / 2.6 s</b></li>
     <li><span>Report validation: every <code>Lean</code> line in a report is the checker’s own output; a rejecting, crashing or missing checker makes the driver exit with an error</span><b>pass</b></li>
     <li><span>Fuzzing of the driver under AddressSanitizer and UBSan (about 14 000 mutated inputs), after hardening its input parsing</span><b>no memory errors, undefined behaviour or crashes</b></li>
   </ul>
@@ -180,6 +187,7 @@
   <p class="sec-no">06</p>
   <h2>Open gaps</h2>
   <ul class="gaps">
+    <li><strong>Eigenvalues of the continuous problem</strong>Only the discrete P1 eigenvalues are certified. The inequality λ<sub><i class="v">k</i></sub> ≤ λ<sub><i class="v">k</i>,<i class="v">h</i></sub> for Dirichlet ends lacks the P1 substitution step (the counting lemma is proved); there are no eigenvector bounds and no continuous results for Neumann or Robin ends.</li>
     <li><strong>Other load functions</strong>Logarithms, rational and piecewise functions need their own Taylor models; today only polynomials, exponentials, sines and cosines.</li>
     <li><strong>Checking time for transcendental loads</strong>About 13 ms per element, mostly in exact rational series at element midpoints; an interval series with term-wise rounding would be faster.</li>
     <li><strong>Variable beam stiffness and elastic supports</strong>Only <i class="v">EI</i> = 1; the checker accepts any 4×4 boundary matrix, but the driver writes only the four standard end conditions.</li>
@@ -191,7 +199,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · status snapshot 5 October 2026<span class="updated"> · updated <time datetime="2026-10-05T23:25+08:00">2026-10-05 23:25 UTC+8</time></span></span>
+  <span>Formal in Silico · status snapshot 6 October 2026<span class="updated"> · updated <time datetime="2026-10-06T12:01+08:00">2026-10-06 12:01 UTC+8</time></span></span>
   <span><a href="./">Programme</a> · <a href="progress.html">Progress</a> · <a href="showcases.html">Showcases</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="zh/fem.html" hreflang="zh-CN">中文版</a></span>
 </div></footer>
 </body>

@@ -34,12 +34,12 @@
 
 <div class="hero small"><div class="hero-in">
   <nav class="domnav" aria-label="领域"><a href="progress.html">← 进度</a><a href="dft.html">mini-DFT</a><a href="fem.html">mini-FEM</a><a href="md.html">mini-MD</a><a href="calphad.html" aria-current="page">mini-CALPHAD</a></nav>
-  <p class="eyebrow">领域 · 目标 G3 · 现状快照 2026-10-05</p>
+  <p class="eyebrow">领域 · 目标 G3 · 现状快照 2026-10-06</p>
   <h1>mini-CALPHAD</h1>
   <p class="lead">二元合金的相平衡，读取与 pycalphad 相同的 TDB 热力学数据库。Lean 检查器认证的是数据库模型<b>真正的全局平衡</b>——在所有可能的相组合中 Gibbs 能最低者——而不只是驱动碰巧找到的解。10 月 4 日起检查器自己读 TDB 文件，结论直接关于数据库定义的模型；另一种证书可以证明某个相<i>没有</i>混溶隙。目标 G3 设定于 2026-10-01：与 pycalphad 0.11.1 功能对齐。</p>
   <div class="stats">
-    <div class="stat"><b>15</b><span>条命题登记在可信账本中：T4 5 条，T3 9 条，另有 TDB 读法的 Lean 定义（T0）</span></div>
-    <div class="stat"><b>16 / 25</b><span>项 pycalphad 对齐功能完成：C0 全部；C1 中带区域划分证书的相图、磁性、驱动力与单相区化学势；C2 中至多两个混合亚点阵的亚点阵相与以化学势为条件</span></div>
+    <div class="stat"><b>17</b><span>条命题登记在可信账本中：T4 6 条，T3 10 条，另有 TDB 读法的 Lean 定义（T0）</span></div>
+    <div class="stat"><b>17 / 25</b><span>项 pycalphad 对齐功能完成：C0 全部；C1 中带区域划分证书的相图、磁性、驱动力与单相区化学势；C2 中至多两个混合亚点阵的亚点阵相与以化学势或活度为条件</span></div>
     <div class="stat"><b>29 / 29</b><span>个 pycalphad 平衡落在 Lean 的区间与窗口内</span></div>
     <div class="stat"><b>246 650</b><span>个网格点，17 个数据库的 316 个二元体系，<a href="#audit">数据库审计</a>中每点都有与 TDB 文件绑定的证书</span></div>
   </div>
@@ -97,6 +97,7 @@
       <tr><td>ABSENT 相</td><td>该相不出现在任何平衡中。</td></tr>
       <tr><td>DF_OK 相 lo hi</td><td>该相的驱动力 max<sub><i class="v">x</i></sub> (ℓ*(<i class="v">x</i>) − <i class="v">G</i>(<i class="v">x</i>))（pycalphad 的 <code>DF</code>，亚稳相为负，稳定相为 0），ℓ* 是任意平衡的切线。它是对所有成分的全局最大值。</td></tr>
       <tr><td>EXISTS</td><td>平衡存在，所以上面的结论不是空话。</td></tr>
+      <tr><td>REF_OK lo hi</td><td>给定 B 的活度 <i class="v">a</i> 时（<code>--acr B=a --ref 相</code>，10 月 6 日起）：检查器自己算出的参考能 <i class="v">G</i><sub>ref</sub>(1)（纯 B 在参考相中）；μ<sub>B</sub> = <i class="v">G</i><sub>ref</sub>(1) + <i class="v">RT</i> ln <i class="v">a</i> 一般是无理数，所以其余各行对由此得到的有理区间中的每个 μ<sub>B</sub> 成立，因而对真实的 μ<sub>B</sub> 也成立（CAL-B06）。</td></tr>
       <tr><td>PROBLEM、UNSUPPORTED、MODEL_OK</td><td><code>--tdb</code> 模式：<code>PROBLEM</code> 回显 TDB 文件、组元、<i class="v">T</i>、<i class="v">x</i>₀、<i class="v">R</i> 与相表；<code>UNSUPPORTED</code> 列出没有参与计算的相及原因；<code>MODEL_OK</code> 之后的每一行都是关于 TDB 文件定义的模型的结论（CAL-B02）。</td></tr>
       <tr><td>CONVEX 相 T</td><td>来自单独的凸性证书：该相在 <i class="v">T</i> 处没有混溶隙（<a href="#convex">第 06 节</a>）。</td></tr>
       <tr><td>TANGENT、EPS、KAPPA、FRAC</td><td>诊断信息：用的是谁的切线（单相区由检查器自己计算）、它在各相下方多远、窗口用到的切线误差界，以及证书自己的配置。</td></tr>
@@ -206,12 +207,12 @@ Lean  EXISTS</pre>
 <section id="claims">
   <p class="sec-no">08</p>
   <h2>可信账本中的命题</h2>
-  <div class="sbar big" role="img" aria-label="15 条命题：T4 5 条，T3 9 条，T0 1 条">
-    <i class="sw-t4" style="flex:5"></i><i class="sw-t3" style="flex:9"></i><i class="sw-t0" style="flex:1"></i>
+  <div class="sbar big" role="img" aria-label="17 条命题：T4 6 条，T3 10 条，T0 1 条">
+    <i class="sw-t4" style="flex:6"></i><i class="sw-t3" style="flex:10"></i><i class="sw-t0" style="flex:1"></i>
   </div>
   <div class="legend">
-    <span><i class="sw-t4"></i>T4 端到端 · 5</span>
-    <span><i class="sw-t3"></i>T3 机器证明 · 9</span>
+    <span><i class="sw-t4"></i>T4 端到端 · 6</span>
+    <span><i class="sw-t3"></i>T3 机器证明 · 10</span>
     <span><i class="sw-t0"></i>T0 经对照的定义 · 1</span>
   </div>
   <div class="tbl"><table>
@@ -226,12 +227,14 @@ Lean  EXISTS</pre>
       <tr><td class="l">CAL-C07</td><td>两个混合亚点阵的相：<i class="v">G</i>(<i class="v">x</i>) 是约束线段上内部状态的 <i class="v">H</i>/<i class="v">m</i> 的最小值，可以取到且连续；内部状态正方形的盒子上的下界，椭圆投影给出的成分窗口</td><td class="st"><span class="tag m">T3</span></td></tr>
       <tr><td class="l">CAL-C08</td><td>给定化学势 μ<sub>B</sub>：过 (1, μ<sub>B</sub>) 的一条直线在所有相下方、某个相的一点不高于另一条这样的直线时，平衡存在</td><td class="st"><span class="tag m">T3</span></td></tr>
       <tr><td class="l">CAL-C09</td><td>等温截面：平衡切线的斜率随 <i class="v">x</i>₀ 单调；任意可行配置在 <i class="v">x</i>₀ 两侧各有一份；在递增的点上有上界的仿射函数不高于相邻两点的弦或两端的射线之一</td><td class="st"><span class="tag m">T3</span></td></tr>
+      <tr><td class="l">CAL-C10</td><td>化学势与活度条件下的单调性（Gibbs–Duhem）：μ<sub>B</sub> 增大时 μ<sub>A</sub> 不增、总成分不减；活度条件就是化学势 μ<sub>B</sub> = <i class="v">G</i><sub>ref</sub>(1) + <i class="v">RT</i> ln <i class="v">a</i></td><td class="st"><span class="tag m">T3</span></td></tr>
       <tr><td class="l">CAL-B01</td><td>检查器可靠：<i class="v">G</i>* 的区间，以及任意平衡的化学势、成分窗口、不出现的相与驱动力；平衡存在</td><td class="st"><span class="tag s">T4</span></td></tr>
       <tr><td class="l">CAL-I01</td><td>TDB 的读法：<code>modelOfTdb</code>，TDB 文本在 <i class="v">T</i> 处为两个组元与一组相定义的二元模型。这是定义而不是定理：它是否忠实于数据库只能对照驱动与 pycalphad</td><td class="st"><span class="tag n">T0</span></td></tr>
       <tr><td class="l">CAL-B02</td><td>问题绑定：检查器在 <code>--tdb</code> 模式下接受时，由 TDB 文件构造的模型等于证书的模型，CAL-B01 的全部结论对它成立</td><td class="st"><span class="tag s">T4</span></td></tr>
       <tr><td class="l">CAL-B03</td><td>凸性检查器可靠：<code>CONVEX</code> 蕴含严格凸与没有混溶隙（CAL-C05），对由 TDB 文件构造的模型同样成立</td><td class="st"><span class="tag s">T4</span></td></tr>
       <tr><td class="l">CAL-B04</td><td>化学势条件的检查器可靠（pycalphad 的 <code>v.MU('B')</code>）：给定 μ<sub>B</sub> 时任意平衡的另一个化学势 μ<sub>A</sub>、总成分与 Gibbs 能的区间，成分窗口与驱动力；平衡存在</td><td class="st"><span class="tag s">T4</span></td></tr>
       <tr><td class="l">CAL-B05</td><td>区域划分的检查器可靠：各区域覆盖 [0, 1]，区域内每个 <i class="v">x</i>₀ 处的任意平衡都是声称的相组成，成分在声称的窗口内</td><td class="st"><span class="tag s">T4</span></td></tr>
+      <tr><td class="l">CAL-B06</td><td>活度条件的检查器可靠：B 的活度 <i class="v">a</i> 给定、参考态是纯 B 在参考相中时，<i class="v">G</i><sub>ref</sub>(1) 与 μ<sub>B</sub> 的区间，以及该 μ<sub>B</sub> 下任意平衡满足 CAL-B04 的结论；平衡存在</td><td class="st"><span class="tag s">T4</span></td></tr>
     </tbody>
   </table></div>
 </section>
@@ -247,7 +250,7 @@ Lean  EXISTS</pre>
   <div class="ms">
     <div class="row"><span class="code">C0</span><div>二元点平衡</div><div class="barcell"><div class="sbar"><i class="sw-done" style="flex:8"></i></div></div><span class="n">8 / 8</span></div>
     <div class="row"><span class="code">C1</span><div>二元扩展：相图、磁性、不变反应</div><div class="barcell"><div class="sbar"><i class="sw-done" style="flex:5"></i><i class="sw-todo" style="flex:3"></i></div></div><span class="n">5 / 8</span></div>
-    <div class="row"><span class="code">C2</span><div>多元与亚点阵模型</div><div class="barcell"><div class="sbar"><i class="sw-done" style="flex:3"></i><i class="sw-todo" style="flex:3"></i></div></div><span class="n">3 / 6</span></div>
+    <div class="row"><span class="code">C2</span><div>多元与亚点阵模型</div><div class="barcell"><div class="sbar"><i class="sw-done" style="flex:4"></i><i class="sw-todo" style="flex:2"></i></div></div><span class="n">4 / 6</span></div>
     <div class="row"><span class="code">C3</span><div>Scheil、拟合与其他模型</div><div class="barcell"><div class="sbar"><i class="sw-todo" style="flex:3"></i></div></div><span class="n">0 / 3</span></div>
   </div>
 
@@ -281,9 +284,9 @@ Lean  EXISTS</pre>
     </tbody>
   </table></div>
 
-  <details class="more"><summary>计划：C2–C3（9 项，3 项完成）</summary>
+  <details class="more"><summary>计划：C2–C3（9 项，4 项完成）</summary>
     <h4 style="margin-top:14px">C2 · 多元与亚点阵模型</h4>
-    <ul class="planned"><li>三元及多元溶体（Muggianu 外推、三元参数）</li><li>多个亚点阵（化合物能量形式）：一个或两个混合亚点阵已完成（CAL-C06、C07，2026-10-04、05）；更多混合亚点阵、互易参数未开始</li><li>有序–无序</li><li>以化学势为条件：已完成（CAL-C08、B04，2026-10-05），<code>--mu B=</code> 认证任意平衡的 μ<sub>A</sub>、总成分与相组成；以活度为条件未开始</li></ul>
+    <ul class="planned"><li>三元及多元溶体（Muggianu 外推、三元参数）</li><li>多个亚点阵（化合物能量形式）：一个或两个混合亚点阵已完成（CAL-C06、C07，2026-10-04、05）；更多混合亚点阵、互易参数未开始</li><li>有序–无序</li><li>以化学势为条件：已完成（CAL-C08、B04，2026-10-05），<code>--mu B=</code> 认证任意平衡的 μ<sub>A</sub>、总成分与相组成</li><li>以活度为条件：已完成（CAL-C10、B06，2026-10-06），<code>--acr B=a --ref 相</code>，参考态是纯 B 在参考相中、同一温度，与 pycalphad 的约定相同；参考相必须参与计算并且能是纯 B</li></ul>
     <h4>C3 · 更多计算</h4>
     <ul class="planned"><li>Scheil 凝固</li><li>参数拟合（ESPEI）：拟合本身不受信任，结论只依赖最终的数据库</li><li>离子液体与准化学模型</li></ul>
   </details>
@@ -300,12 +303,14 @@ Lean  EXISTS</pre>
     <li><span>相图：五个体系 203 份证书；每个证书点 pycalphad 的平衡相与成分</span><b>全部通过，窗口 ≤ 2×10⁻⁶</b></li>
     <li><span>区域划分证书：7 个体系、67 个温度；成分网格上 3346 个点的 pycalphad <code>equilibrium</code></span><b>全部落在相组成相同的认证区域内</b></li>
     <li><span>以 μ<sub>B</sub> 为条件：Al–Zn、Cu–Mg、Cr–Fe 与 COST 507 Al–Cu、Cu–Mg 中 16 个点，μ<sub>B</sub> 取 pycalphad 的 <code>MU(B)</code>；同一条件下 pycalphad 的 <code>MU(A)</code>、平衡相成分、总成分与 <code>GM</code></span><b>都在 Lean 的区间与窗口内</b></li>
+    <li><span>以活度为条件：Al–Zn、Cu–Mg、Cr–Fe 与 COST 507 Al–Cu、Cu–Mg 的 17 个点，活度由 pycalphad 的 <code>MU(B)</code> 换算；pycalphad 的参考 <code>MU</code>、<code>MU(A)</code>、平衡相成分、总成分与 <code>GM</code>；以纯 Ni 化合物为参考相的闭式已知答案</span><b>都在 Lean 区间内；宽度约 10⁻⁹ J/mol</b></li>
     <li><span>Lean 的 TDB 读法对照驱动的翻译：基准的每个数据库、相表与平衡点，以及 COST 507 的全部二元体系在 800 K 与 1300 K（595 份证书、6518 个相）</span><b>模型完全相同；跳过的相与原因相同</b></li>
     <li><span>证书中的一个模型系数改动 0.01%</span><b>不加 <code>--tdb</code> 时被接受，加 <code>--tdb</code> 时被拒绝</b></li>
     <li><span>六个混溶隙的凸性证书（液相 Al–Ce、Fe–Si、Mg–Si、Cu–Si、Al–Ni；fcc Al–Zn）：温度二分到 1 K；两侧 pycalphad 的 <i class="v">G</i>″ 与只含该相的 <code>equilibrium</code></span><b>全部一致</b></li>
     <li><span>已知答案：只有一个液相的规则溶液（<i class="v">L</i>₀ = 4000 J/mol），<i class="v">G</i> 与两个化学势有闭式；正对照：驱动把温度写错 1 K</span><b>落在 Lean 区间内；能发现</b></li>
     <li><span>COST 507 Al–Y：300 K 时端际固溶度 1 − <i class="v">x</i> ≈ 3×10⁻³⁷（写成精确十进制），以及 <i class="v">x</i>₀ 恰为化合物 AlY 的成分</span><b>有证书</b></li>
     <li><span>篡改的证书</span><b>失败，或仍然正确的结论</b></li>
+    <li><span>伪造的证书（10 月 6 日的对抗式复审）：相名与组元名含 Unicode 换行、制表符或不换行空格，读取输出的脚本会切出伪造的 <code>MODEL_OK</code> 或 <code>WINDOW</code> 行；3E−999999999 之类让检查器卡死的指数</span><b>10 月 6 日起被拒绝</b></li>
     <li><span>每个平衡的检查时间；整个基准</span><b>0.1 – 2.4 秒；218 秒</b></li>
     <li><span>驱动在 AddressSanitizer 与 UBSan 下运行点平衡与相图</span><b>无报告</b></li>
     <li><span>报告校验：报告中每一行 <code>Lean</code> 都是检查器自己的输出；检查器拒绝、崩溃或不存在时驱动以错误退出</span><b>通过</b></li>
@@ -357,7 +362,7 @@ Lean  EXISTS</pre>
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · 现状快照 2026-10-05<span class="updated"> · 更新于 <time datetime="2026-10-05T23:25+08:00">2026-10-05 23:25 UTC+8</time></span></span>
+  <span>Formal in Silico · 现状快照 2026-10-06<span class="updated"> · 更新于 <time datetime="2026-10-06T12:01+08:00">2026-10-06 12:01 UTC+8</time></span></span>
   <span><a href="./">纲领</a> · <a href="progress.html">进度</a> · <a href="showcases.html">成果展示</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="../calphad.html" hreflang="en">English</a></span>
 </div></footer>
 </body>
