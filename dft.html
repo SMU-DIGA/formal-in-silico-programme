@@ -37,8 +37,8 @@
   <h1>mini-DFT</h1>
   <p class="lead">A one-dimensional periodic reduced Hartree–Fock model with plane waves — the project’s first domain, where the trust ledger, the certificate checkers and trace validation were built. Goal G1 is feature parity with DFTK.jl 0.8.0 on the same discrete problem, with every output covered by a Lean theorem.</p>
   <div class="stats">
-    <div class="stat"><b>129</b><span>claims in the trust ledger</span></div>
-    <div class="stat"><b>94%</b><span>machine-proved: 88 at T3, 33 at T4</span></div>
+    <div class="stat"><b>128</b><span>claims in the trust ledger</span></div>
+    <div class="stat"><b>95%</b><span>machine-proved: 86 at T3, 35 at T4</span></div>
     <div class="stat"><b>8 / 46</b><span>DFTK parity items done, LDA among them; 2 more agree but lack full certificates</span></div>
     <div class="stat"><b>≤ 5×10⁻¹⁵</b><span>energy difference from DFTK on the same discrete problem</span></div>
   </div>
@@ -62,20 +62,19 @@
 <section id="ledger">
   <p class="sec-no">01</p>
   <h2>Claims in the trust ledger</h2>
-  <div class="prose"><p>Of the ledger’s 179 claims, 129 concern mini-DFT; they are grouped below by topic. The tiers are defined on the <a href="./#s5">programme page</a>.</p></div>
-  <div class="sbar big" role="img" aria-label="129 claims: 33 at T4, 88 at T3, 2 at T2, 4 at T1, 1 at T0, 1 with no tier yet">
-    <i class="sw-t4" style="flex:33"></i><i class="sw-t3" style="flex:88"></i><i class="sw-t2" style="flex:2"></i><i class="sw-t1" style="flex:4"></i><i class="sw-t0" style="flex:1"></i><i class="sw-no" style="flex:1"></i>
+  <div class="prose"><p>Of the ledger’s 178 claims, 128 concern mini-DFT; they are grouped below by topic. The tiers are defined on the <a href="./#s5">programme page</a>.</p></div>
+  <div class="sbar big" role="img" aria-label="128 claims: 35 at T4, 86 at T3, 2 at T2, 4 at T1, 1 at T0">
+    <i class="sw-t4" style="flex:35"></i><i class="sw-t3" style="flex:86"></i><i class="sw-t2" style="flex:2"></i><i class="sw-t1" style="flex:4"></i><i class="sw-t0" style="flex:1"></i>
   </div>
   <div class="legend">
-    <span><i class="sw-t4"></i>T4 end to end · 33</span>
-    <span><i class="sw-t3"></i>T3 machine proof · 88</span>
+    <span><i class="sw-t4"></i>T4 end to end · 35</span>
+    <span><i class="sw-t3"></i>T3 machine proof · 86</span>
     <span><i class="sw-t2"></i>T2 model-checked · 2</span>
     <span><i class="sw-t1"></i>T1 paper proof · 4</span>
     <span><i class="sw-t0"></i>T0 tested · 1</span>
-    <span><i class="sw-no"></i>no tier yet · 1</span>
   </div>
   <div class="rows">
-    <div class="row"><div>DFT foundations<div class="cap">discrete model · algorithm · parallelism · floating point</div></div><span class="n">19</span><div class="barcell"><div class="sbar"><i class="sw-t4" style="flex:1"></i><i class="sw-t3" style="flex:11"></i><i class="sw-t2" style="flex:2"></i><i class="sw-t1" style="flex:3"></i><i class="sw-t0" style="flex:1"></i><i class="sw-no" style="flex:1"></i></div></div></div>
+    <div class="row"><div>DFT foundations<div class="cap">discrete model · algorithm · parallelism · floating point</div></div><span class="n">18</span><div class="barcell"><div class="sbar"><i class="sw-t4" style="flex:3"></i><i class="sw-t3" style="flex:9"></i><i class="sw-t2" style="flex:2"></i><i class="sw-t1" style="flex:3"></i><i class="sw-t0" style="flex:1"></i></div></div></div>
     <div class="row"><div>Ground-state energy certificate</div><span class="n">8</span><div class="barcell"><div class="sbar"><i class="sw-t4" style="flex:1"></i><i class="sw-t3" style="flex:7"></i></div></div></div>
     <div class="row"><div>Finite-temperature free energy</div><span class="n">14</span><div class="barcell"><div class="sbar"><i class="sw-t4" style="flex:3"></i><i class="sw-t3" style="flex:11"></i></div></div></div>
     <div class="row"><div>Gaussian and cold smearing</div><span class="n">5</span><div class="barcell"><div class="sbar"><i class="sw-t3" style="flex:5"></i></div></div></div>
@@ -87,7 +86,7 @@
     <div class="row"><div>Band structure and density of states<div class="cap">zero temperature · finite-temperature SCF solutions, rHF and LDA</div></div><span class="n">5</span><div class="barcell"><div class="sbar"><i class="sw-t4" style="flex:4"></i><i class="sw-t3" style="flex:1"></i></div></div></div>
     <div class="row"><div>LDA exchange-correlation (Slater, PW92)<div class="cap">exchange-correlation on a real-space grid · nonlinear SCF-solution certificates · energy · PW92 interval bounds · Fermi–Dirac and Gaussian occupations · k-point supercell · zero temperature under a gap</div></div><span class="n">25</span><div class="barcell"><div class="sbar"><i class="sw-t4" style="flex:5"></i><i class="sw-t3" style="flex:20"></i></div></div></div>
   </div>
-  <p class="note">The T4 claims are the soundness theorems of the certificate checkers (which run in exact rational arithmetic, so no floating point is involved) and the proof that the trusted C kernel has no run-time errors. Four claims rest on paper proofs (T1, in <code>domains/dft/notes/</code>; no published result covers the 1D periodic Hartree kernel directly): continuum well-posedness of 1D rHF, the a priori plane-wave estimate and the local convergence of linear mixing for α &lt; 2/λ<sub>max</sub> of the dielectric operator are at their target; the equality of the truncation limit with the continuum energy targets a Lean proof (T3). The Lean–Rocq interface claim has no tier yet.</p>
+  <p class="note">The T4 claims are the soundness theorems of the certificate checkers (which run in exact rational arithmetic, so no floating point is involved) and the Frama-C/WP proofs about the trusted C kernel: no run-time errors (DFT-F03) and, since 6 October, the floating-point correctness of its interval arithmetic on the C code under an IEEE 754 model — the charge interval, the residual bound and the inertia count (DFT-F01, F02; the step from the exact elimination to the eigenvalue count is the Lean theorem <code>exactElim_inertia</code>). Four claims rest on paper proofs (T1, in <code>domains/dft/notes/</code>; no published result covers the 1D periodic Hartree kernel directly): continuum well-posedness of 1D rHF, the a priori plane-wave estimate and the local convergence of linear mixing for α &lt; 2/λ<sub>max</sub> of the dielectric operator are at their target; the equality of the truncation limit with the continuum energy targets a Lean proof (T3). The Lean–Rocq interface claim DFT-I01 was withdrawn on 6 October, when decision D1 chose Frama-C rather than Rocq.</p>
 </section>
 
 <section id="g1">
@@ -266,7 +265,7 @@
     <li><strong>Truncation limit equals the continuum energy</strong>Paper proof only (T1); not yet proved in Lean.</li>
     <li><strong>Density, eigenvalues, bands and DOS beyond zero temperature</strong>All certified for zero-temperature Γ-point runs; bands and DOS also for finite-temperature Γ-point SCF-solution certificates. Missing: bands and DOS of k-point runs (the supercell’s bands must be folded back to the cell’s Bloch sectors) and of finite-temperature variational certificates (Fermi–Dirac or Gaussian without <code>--scf-cert</code>), and the density, eigenvalues and energy components at finite temperature.</li>
     <li><strong>The rest of the problem written in the certificate</strong>Since 4 October the external potential is checked against its Lean definition (A-DFT-05, <a href="#binding">above</a>). The other problem data — cell length, cutoff, electron count, temperature, smearing, exchange-correlation, grid size, number of k-points — are the problem itself: the checker echoes their exact values but cannot recompute them, and only <code>make verify-all</code> compares them with the command line (T0); the k-point weights of bands and the DOS width are not echoed. Certificates without a <code>pot</code> line still certify only the potential written in them, and for a Gaussian potential zero-temperature LDA and the energy components are about the certificate’s coefficients (within about 10⁻¹⁵ of the named potential). Since 6 October <code>make verify-all</code> compares every echo, smearing, functional and grid size included, and the checker parses names and numbers defensively (adversarial review, <a href="progress.html#how">progress page</a>); its density of states is printed only for a complete k-point set whose weights sum to one.</li>
-    <li><strong>Code-level proof of the interval arithmetic</strong>The Lean model and the C code agree by review and differential tests, not by proof.</li>
+    <li><strong>ACSL versus Lean statements</strong>Since 6 October the interval arithmetic is proved on the C code; that its ACSL contracts state the same as the Lean theorems is checked by hand (A-DFT-07), and the proof assumes a contract for <code>nextafter</code> and the value of <code>INFINITY</code> (A-DFT-06).</li>
   </ul>
 </section>
 
@@ -274,7 +273,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · status snapshot 6 October 2026<span class="updated"> · updated <time datetime="2026-10-06T12:01+08:00">2026-10-06 12:01 UTC+8</time></span></span>
+  <span>Formal in Silico · status snapshot 6 October 2026<span class="updated"> · updated <time datetime="2026-10-06T12:05+08:00">2026-10-06 12:05 UTC+8</time></span></span>
   <span><a href="./">Programme</a> · <a href="progress.html">Progress</a> · <a href="showcases.html">Showcases</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="zh/dft.html" hreflang="zh-CN">中文版</a></span>
 </div></footer>
 </body>

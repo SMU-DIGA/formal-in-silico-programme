@@ -36,8 +36,8 @@
   <h1>Progress</h1>
   <p class="lead">Where the programme stands across its four domains: how many claims have reached which trust tier, how far each domain is towards its reference code, and which roadmap phases are done. Each domain has its own page with the item-by-item status, cross-checks and open gaps. A feature counts as <b>done</b> only when it is implemented, agrees with the reference code, <i>and</i> every number it outputs is covered by a Lean theorem.</p>
   <div class="stats">
-    <div class="stat"><b>179</b><span>claims in the trust ledger across four domains</span></div>
-    <div class="stat"><b>95%</b><span>machine-proved: 121 at T3, 49 at T4</span></div>
+    <div class="stat"><b>178</b><span>claims in the trust ledger across four domains</span></div>
+    <div class="stat"><b>96%</b><span>machine-proved: 119 at T3, 51 at T4</span></div>
     <div class="stat"><b>4</b><span>reference codes cross-checked: DFTK.jl, scikit-fem, ASE, pycalphad</span></div>
     <div class="stat"><b>3</b><span>parallel parity goals: G1 DFTK, G2 scikit-fem, G3 pycalphad</span></div>
   </div>
@@ -66,7 +66,7 @@
       <span class="ref">Goal G1 · reference DFTK.jl 0.8.0</span>
       <h3>mini-DFT</h3>
       <p>1D periodic reduced Hartree–Fock with plane waves: ground state, finite temperature, smearing, k-points, bands and DOS, LDA exchange-correlation — and certificates bound to the named external potential.</p>
-      <div class="kv"><b>129</b><span>claims, 33 at T4 and 88 at T3</span><b>8 / 46</b><span>DFTK parity items done, 2 more agree</span><b>≤ 5×10⁻¹⁵</b><span>energy difference from DFTK</span></div>
+      <div class="kv"><b>128</b><span>claims, 35 at T4 and 86 at T3</span><b>8 / 46</b><span>DFTK parity items done, 2 more agree</span><b>≤ 5×10⁻¹⁵</b><span>energy difference from DFTK</span></div>
       <span class="go">Status of mini-DFT →</span>
     </a>
     <a class="domain s" href="fem.html">
@@ -97,24 +97,23 @@
   <p class="sec-no">02</p>
   <h2>The trust ledger</h2>
   <div class="prose"><p>Every claim the project makes is registered with its tier, its evidence and the assumptions it depends on. Every line of a run report cites one of these claims. The tiers are defined on the <a href="./#s5">programme page</a>; a claim is only ever marked at the tier it has actually reached.</p></div>
-  <div class="sbar big" role="img" aria-label="179 claims: 49 at T4, 121 at T3, 2 at T2, 4 at T1, 2 at T0, 1 with no tier yet">
-    <i class="sw-t4" style="flex:49"></i><i class="sw-t3" style="flex:121"></i><i class="sw-t2" style="flex:2"></i><i class="sw-t1" style="flex:4"></i><i class="sw-t0" style="flex:2"></i><i class="sw-no" style="flex:1"></i>
+  <div class="sbar big" role="img" aria-label="178 claims: 51 at T4, 119 at T3, 2 at T2, 4 at T1, 2 at T0">
+    <i class="sw-t4" style="flex:51"></i><i class="sw-t3" style="flex:119"></i><i class="sw-t2" style="flex:2"></i><i class="sw-t1" style="flex:4"></i><i class="sw-t0" style="flex:2"></i>
   </div>
   <div class="legend">
-    <span><i class="sw-t4"></i>T4 end to end · 49</span>
-    <span><i class="sw-t3"></i>T3 machine proof · 121</span>
+    <span><i class="sw-t4"></i>T4 end to end · 51</span>
+    <span><i class="sw-t3"></i>T3 machine proof · 119</span>
     <span><i class="sw-t2"></i>T2 model-checked · 2</span>
     <span><i class="sw-t1"></i>T1 paper proof · 4</span>
     <span><i class="sw-t0"></i>T0 tested · 2</span>
-    <span><i class="sw-no"></i>no tier yet · 1</span>
   </div>
   <div class="rows">
-    <div class="row"><div><a href="dft.html#ledger">mini-DFT</a><div class="cap">foundations · energy · free energy · smearing · k-points · truncation · problem binding · density · bands · LDA</div></div><span class="n">129</span><div class="barcell"><div class="sbar"><i class="sw-t4" style="flex:33"></i><i class="sw-t3" style="flex:88"></i><i class="sw-t2" style="flex:2"></i><i class="sw-t1" style="flex:4"></i><i class="sw-t0" style="flex:1"></i><i class="sw-no" style="flex:1"></i></div></div></div>
+    <div class="row"><div><a href="dft.html#ledger">mini-DFT</a><div class="cap">foundations · energy · free energy · smearing · k-points · truncation · problem binding · density · bands · LDA</div></div><span class="n">128</span><div class="barcell"><div class="sbar"><i class="sw-t4" style="flex:35"></i><i class="sw-t3" style="flex:86"></i><i class="sw-t2" style="flex:2"></i><i class="sw-t1" style="flex:4"></i><i class="sw-t0" style="flex:1"></i></div></div></div>
     <div class="row"><div><a href="fem.html#claims">mini-FEM</a><div class="cap">Poisson · Neumann at both ends · beams · load Taylor models · eigenvalues</div></div><span class="n">17</span><div class="barcell"><div class="sbar"><i class="sw-t4" style="flex:5"></i><i class="sw-t3" style="flex:12"></i></div></div></div>
     <div class="row"><div><a href="md.html#claims">mini-MD</a><div class="cap">conservation · existence and uniqueness · Verlet structure · tube theorem · checker</div></div><span class="n">16</span><div class="barcell"><div class="sbar"><i class="sw-t4" style="flex:5"></i><i class="sw-t3" style="flex:11"></i></div></div></div>
     <div class="row"><div><a href="calphad.html#claims">mini-CALPHAD</a><div class="cap">mixing bound · equilibrium · existence · magnetism · convexity · sublattice phases · chemical-potential and activity conditions · phase-diagram partitions · TDB reading · checkers</div></div><span class="n">17</span><div class="barcell"><div class="sbar"><i class="sw-t4" style="flex:6"></i><i class="sw-t3" style="flex:10"></i><i class="sw-t0" style="flex:1"></i></div></div></div>
   </div>
-  <p class="note">The T4 claims are the soundness theorems of the certificate checkers (which run in exact rational arithmetic, so no floating point is involved) and the proof that the trusted C kernel has no run-time errors. Four mini-DFT claims rest on paper proofs (T1, listed on the <a href="dft.html#ledger">DFT page</a>); three of them are at their target, the fourth (the cutoff limit equals the continuum energy) targets T3. One claim has no tier yet: the Lean–Rocq interface claim in mini-DFT. Of the two T0 claims, one is the DFT thread implementation (target T2); the other is CAL-I01, Lean’s definition of how a TDB file is read, which is a specification rather than a theorem and can only be cross-checked.</p>
+  <p class="note">The T4 claims are the soundness theorems of the certificate checkers (which run in exact rational arithmetic, so no floating point is involved) and the Frama-C/WP proofs about the trusted C kernel: no run-time errors, and, since 6 October, the floating-point correctness of its interval arithmetic under an IEEE 754 model (DFT-F01, F02). Four mini-DFT claims rest on paper proofs (T1, listed on the <a href="dft.html#ledger">DFT page</a>); three of them are at their target, the fourth (the cutoff limit equals the continuum energy) targets T3. The Lean–Rocq interface claim DFT-I01 was withdrawn on 6 October together with the Rocq plan (decision D1). Of the two T0 claims, one is the DFT thread implementation (target T2); the other is CAL-I01, Lean’s definition of how a TDB file is read, which is a specification rather than a theorem and can only be cross-checked.</p>
 </section>
 
 <section id="how">
@@ -147,10 +146,10 @@
     <p>17 of 25 items done; C0 (binary point equilibrium) complete, and in C1 certified phase diagrams with a partition certificate per temperature (the completeness of each isothermal section), the Inden–Hillert–Jarl magnetic model, driving forces and sharp chemical potentials. Since 4 October the checker reads the TDB file itself, and convexity certificates prove that a phase has no miscibility gap; since 5 October sublattice phases with one or two mixing sublattices (compound energy formalism, including Laves phases) are certified, and so are equilibria at a given chemical potential (pycalphad’s <code>v.MU</code>); since 6 October also at a given activity. Next: invariant reactions, <i class="v">H</i>, <i class="v">S</i>, <i class="v">C<sub>p</sub></i> and interstitial solutions, then ternaries, further sublattice models and order–disorder. <a href="calphad.html#g3">Item-by-item status →</a></p>
   </div>
   <ol class="phases">
-    <li class="phase"><div class="hd"><b>PHASE 0</b><strong>Minimal DFT</strong><span class="tag f">In progress</span></div><div class="bd">
+    <li class="phase"><div class="hd"><b>PHASE 0</b><strong>Minimal DFT</strong><span class="tag s">Exit criteria met</span></div><div class="bd">
       <p>Trust ledger, Lean certificate checkers, trust reports and trace validation are in place; all four benchmark groups pass, including the DFTK cross-check.</p>
       <p><span class="k">Done 5 Oct</span>continuum well-posedness, the a priori plane-wave estimate and linear-mixing convergence reached their target T1 as paper proofs; no published result covers the 1D periodic Hartree kernel directly, and the mixing condition was corrected to α &lt; 2/λ<sub>max</sub> of the dielectric operator.</p>
-      <p><span class="k">Remaining</span>both depend on the choice of code-level verification tool (decision D1): the Lean–Rocq interface claim (needed only if Rocq is chosen) and a code-level proof of the interval arithmetic (now T3, target T4).</p></div></li>
+      <p><span class="k">Done 6 Oct</span>decision D1 chose Frama-C’s floating-point model: the interval arithmetic is proved correct on the C code (DFT-F01, F02 at T4) and the Lean–Rocq interface claim is withdrawn, so every obligation is at its target. The cutoff-limit claim DFT-C02 (T1, target T3) and the thread-implementation claim DFT-P02 (T0, target T2) are annotations, carried into later phases.</p></div></li>
     <li class="phase"><div class="hd"><b>PHASE 1</b><strong>DFT extensions</strong><span class="tag f">Partly ahead</span></div><div class="bd">
       <p>k-point sampling is implemented and certified; the thread-parallel k-point protocol is model-checked and runs are bitwise identical across thread counts. Beyond the original plan: finite-temperature occupations with free-energy, entropy and energy certificates, Anderson mixing, non-self-consistent bands and DOS, and the truncation-error certificate.</p>
       <p><span class="k">LDA</span>Slater exchange and PW92 correlation certified at the Γ point and with k-points (equivalent supercell) with Fermi–Dirac, Gaussian, MV or MP smearing, and since 6 October at zero temperature under a spectral gap.</p>
@@ -159,7 +158,7 @@
       <p>Both minimal versions print trust reports. mini-FEM: 1D Poisson (P1) and beams (cubic Hermite), certified against the true solution. mini-MD v0 (1 Oct 2026): a 1D Lennard-Jones chain with velocity Verlet, certified against the true trajectory. Céa’s lemma (FEM-D03) and Verlet symplecticity (MD-D03) are both at T3.</p>
       <p><span class="k">Not started</span>the TLA+ modules for halo exchange, atom migration, parallel assembly and checkpointing; periodic boxes and thermostats for MD.</p></div></li>
     <li class="phase"><div class="hd"><b>PHASE 3</b><strong>Trusted kernels</strong><span class="tag n">Not started</span></div><div class="bd">
-      <p>Starting point: the interval-arithmetic kernel, whose correctness is proved against a line-by-line model (T3) and whose absence of run-time errors is proved on the C code (T4).</p></div></li>
+      <p>Starting point: the interval-arithmetic kernel, whose floating-point correctness and absence of run-time errors are both proved on the C code with Frama-C/WP (T4, since 6 October); the same method is to be applied to the kernels of this phase.</p></div></li>
     <li class="phase"><div class="hd"><b>PHASE 4</b><strong>Benchmarking</strong><span class="tag n">Not started</span></div><div class="bd">
       <p>Δ-gauge, NVE drift and manufactured-solution studies with published trust ledgers.</p></div></li>
   </ol>
@@ -175,7 +174,7 @@
       <tr><td class="l">Lean 4</td><td>The kernel that checks every proof; Mathlib, with only the three standard axioms</td></tr>
       <tr><td class="l">Lean compiler</td><td>Compiles the checkers into executables, together with their input parsing (including reading a TDB file byte by byte) and decimal output (lower bounds rounded down, upper bounds up)</td></tr>
       <tr><td class="l">TLC</td><td>The TLA+ model checker</td></tr>
-      <tr><td class="l">Frama-C / WP</td><td>With Why3, Alt-Ergo and Z3, for the run-time safety of the C kernel</td></tr>
+      <tr><td class="l">Frama-C / WP</td><td>With Why3, Alt-Ergo, CVC5 and Z3, for the run-time safety of the C kernel and, under WP’s IEEE 754 model, the floating-point correctness of its interval arithmetic; a contract for <code>nextafter</code>, libc contracts for <code>sqrt</code>, <code>fabs</code>, <code>isfinite</code>, and one <code>admit</code> for the value of <code>INFINITY</code></td></tr>
       <tr><td class="l">C compiler</td><td>Unverified for now; CompCert is an option for the trusted kernel</td></tr>
       <tr><td class="l">IEEE 754</td><td>Only that round-to-nearest returns the nearest double; no error-size property is relied on</td></tr>
     </tbody>
@@ -198,7 +197,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · status snapshot 6 October 2026<span class="updated"> · updated <time datetime="2026-10-06T12:01+08:00">2026-10-06 12:01 UTC+8</time></span></span>
+  <span>Formal in Silico · status snapshot 6 October 2026<span class="updated"> · updated <time datetime="2026-10-06T12:05+08:00">2026-10-06 12:05 UTC+8</time></span></span>
   <span><a href="./">Programme</a> · <a href="showcases.html">Showcases</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="zh/progress.html" hreflang="zh-CN">中文版</a></span>
 </div></footer>
 </body>

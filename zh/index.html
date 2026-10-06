@@ -42,9 +42,9 @@
     <div class="j f"><span class="k">IEEE 754</span><span class="e">|fl(<i class="v">E<sub>h</sub></i>) − <i class="v">E<sub>h</sub></i>| ≤ <i class="v">ε</i><sub>round</sub></span></div>
   </div>
   <div class="stats">
-    <div class="stat"><b>179</b><span>条命题登记在可信账本中</span></div>
+    <div class="stat"><b>178</b><span>条命题登记在可信账本中</span></div>
     <div class="stat"><b>170</b><span>条已有机器证明（T3 或 T4）</span></div>
-    <div class="stat"><b>49</b><span>条达到端到端等级 T4：检查器可靠性与内核安全</span></div>
+    <div class="stat"><b>51</b><span>条达到端到端等级 T4：检查器可靠性、内核安全与内核浮点</span></div>
     <div class="stat"><b>4</b><span>个参照程序交叉校验：DFTK.jl、scikit-fem、ASE 与 pycalphad</span></div>
   </div>
   <div class="cta">
@@ -61,12 +61,13 @@
   <div class="prose"><p>四个领域新增的功能、研究结果，以及论文与本网站的变化，新的在前。逐项状态见<a href="progress.html">实现进度</a>；这里引用的命题都登记在可信账本中。</p></div>
   <ol class="news">
     <li><time datetime="2026-10-06">2026-10-06</time><ul>
+      <li><span class="tag n">DFT</span>决定 D1 定案：代码层用 Frama-C 的浮点模型。区间算术内核的电荷区间、残差上界与惯性计数在 WP 的 IEEE 754 模型下直接对 C 代码证明（DFT-F01、F02 升到 T4；由精确消去得到本征值个数是 Lean 定理）。Lean 与 Rocq 的接口命题 DFT-I01 撤销；阶段 0 达到退出标准。<a href="#s10">详情 →</a></li>
       <li><span class="tag n">DFT</span>零温 LDA 有了证书：在能隙条件下，检查器证明证书附近存在精确的零温 LDA SCF 解、在那里唯一，并给出它的能量区间，Γ 点与 Monkhorst–Pack k 点都支持（DFT-X21–X25）。DFTK 对齐计划中的 LDA 一项完成。<a href="dft.html#outputs">详情 →</a></li>
       <li><span class="tag n">DFT</span>高斯外势：SCF 解（rHF 与 LDA）、零温的谱、能带与态密度、熵与能量的结论，经由一条已证明的扰动估计，现在对<i>命名</i>外势成立，而不只是对证书中舍入后的系数（DFT-V10–V14）。<a href="dft.html#binding">详情 →</a></li>
       <li><span class="tag n">CALPHAD</span>活度给定的平衡，<code>--acr B=a --ref 相</code>：检查器自己把 μ<sub>B</sub> = G<sub>ref</sub>(1) + RT ln a 算成有理区间，一份证书覆盖整个区间（CAL-C10、B06）。pycalphad 对齐计划中的活度一项完成。<a href="calphad.html#certified">详情 →</a></li>
       <li><span class="tag n">FEM</span>一维 Laplace 算子的 P1 本征值（<code>--eigs n</code>，两端 Dirichlet、Neumann 或 Robin）：检查器在有理移位处用精确的 LDLᵀ 与矩阵束 <i class="v">K</i>x = λ<i class="v">M</i>x 的 Sylvester 惯性定理计数，给出每个离散本征值的区间，相对宽度约 2×10⁻¹⁵（FEM-D08、D09、B05）。<a href="fem.html#g2">详情 →</a></li>
       <li><span class="tag n">检查</span>对检查器做了一次对抗式复审（攻击者控制证书）：修复七处缺陷（伪造的名字注入输出行、巨大指数让检查器卡死、k 点不全时仍输出态密度、回显未全部核对），另记录六处较弱的地方。<code>verify_all</code> 新增一步，每次重放这些伪造证书。<a href="progress.html#how">详情 →</a></li>
-      <li><span class="tag n">论文</span>论文稿补上了 10 月 5 日与 6 日的工作；账本现有 179 条命题，其中 170 条有机器证明。</li>
+      <li><span class="tag n">论文</span>论文稿补上了 10 月 5 日与 6 日的工作；账本现有 178 条命题，其中 170 条有机器证明。</li>
     </ul></li>
     <li><time datetime="2026-10-05">2026-10-05</time><ul>
       <li><span class="tag n">CALPHAD</span>相图在每个网格温度上有完整性证书：区域划分证书对 [0, 1] 中的每个总成分给出任意平衡含有哪些相（CAL-C09、B05）。<a href="calphad.html#diagrams">详情 →</a></li>
@@ -111,7 +112,7 @@
       <li><span class="tag n">DFT</span>密度、本征值、各能量分项、能带与态密度有证书；与 DFTK 交叉校验。</li>
     </ul></li>
     <li><time datetime="2026-09-28">2026-09-28</time><ul>
-      <li><span class="tag n">DFT</span>mini-DFT 的 C 实现；Lean 检查器认证能量、自由能、k 点运行与截断误差；区间算术内核对 C 代码的 Lean 模型证明，并经 Frama-C 检查。</li>
+      <li><span class="tag n">DFT</span>mini-DFT 的 C 实现；Lean 检查器认证能量、自由能、k 点运行与截断误差；区间算术内核的浮点正确性与运行时安全由 Frama-C/WP 直接对 C 代码证明。</li>
     </ul></li>
     <li><time datetime="2026-09-27">2026-09-27</time><ul>
       <li><span class="tag n">纲领</span>纲领与 mini-DFT 的骨架：可信账本、Lean 与 TLA+ 规范；SCF 控制器经 TLC 模型检验。</li>
@@ -311,7 +312,7 @@
     <p>用自己的 C 实现读 TDB 热力学数据库、求相平衡，pycalphad 在同一数据库、同一组相上作独立参照。完成标准与 G1、G2 相同；证书的结论针对数据库模型<b>真正的全局平衡</b>，而不只是驱动找到的局部解。先把二元体系做全（点平衡、相图、不变反应、磁性），再做多元与亚点阵模型。<a href="calphad.html#g3">逐项状态 →</a></p>
   </div>
   <ol class="phases">
-    <li class="phase"><div class="hd"><b>阶段 0</b><strong>最小 DFT</strong><span class="tag f">进行中</span></div><div class="bd">
+    <li class="phase"><div class="hd"><b>阶段 0</b><strong>最小 DFT</strong><span class="tag s">已达退出标准</span></div><div class="bd">
       <p>一维周期约化 Hartree 模型，平面波离散，串行执行。用它把 L1 到 L6 完整走通一遍，同时建立整个项目会复用的基础设施：可信账本、证书检查器、运行报告格式、trace validation。</p>
       <p><span class="k">退出标准</span>义务清单中的命题全部达到目标等级；四组基准通过；每次运行都输出可信报告。</p></div></li>
     <li class="phase"><div class="hd"><b>阶段 1</b><strong>DFT 扩展</strong><span class="tag f">部分提前完成</span></div><div class="bd">
@@ -359,15 +360,15 @@
   <p class="sec-no">§10</p>
   <h2>决定与待决问题</h2>
   <div class="decision">
-    <p class="meta">D1 · 已决定 · 2026-09-27 · 修订 · 2026-09-29</p>
-    <h3>证明器分层：数学层与浮点模型用 Lean 4，代码层连接待选工具</h3>
+    <p class="meta">D1 · 已决定 · 2026-09-27 · 修订 · 2026-09-29 · 代码层工具决定 · 2026-10-06</p>
+    <h3>证明器分层：数学层与浮点模型用 Lean 4，代码层用 Frama-C 的浮点模型</h3>
     <dl>
       <dt>分工</dt><dd><ul>
         <li>Lean 4 + Mathlib 负责 L1–L4（适定性、离散误差估计、结构保持、迭代收敛），以及 L6 的两部分：证书检查器（精确有理数，编译成可执行程序）与区间算术内核的逐行 binary64 模型。</li>
         <li>Frama-C/WP 负责 C 可信内核的运行时安全。</li>
-        <li>把 Lean 中的浮点结论落到实际的 C 代码上，候选工具是 Rocq 的 Flocq、VST、CompCert，或 Frama-C 的浮点模型。尚未开始。</li></ul></dd>
-      <dt>理由</dt><dd>数学层是项目的主体；Mathlib 的泛函分析与测度论是一个统一的库，AI 辅助证明工具也大多优先支持 Lean。“验证检查器，不验证求解器”把浮点义务缩小了，Lean 中一个很小的 binary64 模型就够用。代码级验证方面 Rocq 的工具链和 T4 先例仍然更成熟，所以这一步的工具尚未选定。</dd>
-      <dt>代价</dt><dd>Lean 模型与 C 代码的对应目前只有逐行对照与逐位差分测试，没有机器证明，区间算术的正确性停在 T3。</dd>
+        <li>代码层连接（2026-10-06 决定）：Frama-C/WP 的浮点模型。区间算术内核的 ACSL 契约用实数写出与 Lean 定理相同的陈述，WP 把每一次 <code>double</code> 运算翻译成 Why3 的 IEEE 754 binary64 理论，Alt-Ergo、CVC5、Z3 对实际的 C 代码证明全部目标（DFT-F01、F02 达到 T4）。惯性计数中，Frama-C 证明区间包含精确的对称选主元消去，Lean 证明这一消去给出本征值个数。</li></ul></dd>
+      <dt>理由</dt><dd>数学层是项目的主体；Mathlib 的泛函分析与测度论是一个统一的库，AI 辅助证明工具也大多优先支持 Lean。“验证检查器，不验证求解器”把浮点义务缩小了，Lean 中一个很小的 binary64 模型就够用。代码层选 Frama-C，是因为它已经证明了内核的运行时安全，同一份注释、同一次证明运行就能扩展到浮点，不再引入第三个证明器和第二套 C 语义；WP 的 IEEE 754 模型加 Alt-Ergo 的浮点理论能自动证明舍入目标；不选 Rocq，Lean 与 Rocq 的接口规则和命题 DFT-I01 随之撤销。</dd>
+      <dt>代价</dt><dd>ACSL 陈述与 Lean 陈述说的是同一件事，只能人工对照（账本中登记为假设）。可信基增加了 WP 的浮点模型、<code>nextafter</code> 的契约、Frama-C libc 中 <code>sqrt</code>、<code>fabs</code>、<code>isfinite</code> 的契约、三个 SMT 求解器，以及 WP 不能翻译 <code>INFINITY</code> 而用的一条 <code>admit</code>。SMT 证明依赖手写的不变式与提示，在 384 核的机器上全部目标约 5 分钟。</dd>
     </dl>
   </div>
   <div class="decision">
@@ -375,7 +376,7 @@
     <h3>实现语言：C11，分成经过证明的内核和不受信任的驱动</h3>
     <dl>
       <dt>分工</dt><dd><ul>
-        <li><b>可信内核</b>：单位根、网格密度与电荷区间、区间算术的本征对残差上界与惯性计数。只用受限的 C 子集并带形式化注释，Frama-C/WP 证明没有运行时错误（T4）。</li>
+        <li><b>可信内核</b>：单位根、网格密度与电荷区间、区间算术的本征对残差上界与惯性计数。只用受限的 C 子集并带形式化注释，Frama-C/WP 证明没有运行时错误与区间算术的浮点正确性（T4）。</li>
         <li><b>证书检查器</b>用 Lean 写，全程精确有理数，可靠性是 Lean 定理。</li>
         <li><b>驱动</b>：SCF 循环、调用 LAPACK、线程并行、输入输出、可信报告、事件日志、写证书。停在 T0，它算出的任何数都要先通过内核或检查器，才会作为有保证的结果写进报告。</li>
         <li>Python 与 Julia 只用在基准和 trace validation 工具里，不进入可信链。</li></ul></dd>
@@ -416,7 +417,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · 项目纲领 v0.3 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-10-06T12:01+08:00">2026-10-06 12:01 UTC+8</time></span></span>
+  <span>Formal in Silico · 项目纲领 v0.3 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-10-06T12:05+08:00">2026-10-06 12:05 UTC+8</time></span></span>
   <span><a href="progress.html">实现进度</a> · <a href="showcases.html">成果展示</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="../" hreflang="en">English</a></span>
 </div></footer>
 </body>
