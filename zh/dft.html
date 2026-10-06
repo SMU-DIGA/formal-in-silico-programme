@@ -62,13 +62,13 @@
 <section id="ledger">
   <p class="sec-no">01</p>
   <h2>可信账本中的命题</h2>
-  <div class="prose"><p>账本的 187 条命题中有 134 条属于 mini-DFT，下面按主题分组。等级的定义见<a href="./#s5">纲领页</a>。</p></div>
-  <div class="sbar big" role="img" aria-label="134 条命题：T4 39 条，T3 88 条，T2 2 条，T1 4 条，T0 1 条">
-    <i class="sw-t4" style="flex:39"></i><i class="sw-t3" style="flex:88"></i><i class="sw-t2" style="flex:2"></i><i class="sw-t1" style="flex:4"></i><i class="sw-t0" style="flex:1"></i>
+  <div class="prose"><p>账本的 195 条命题中有 142 条属于 mini-DFT，下面按主题分组。等级的定义见<a href="./#s5">纲领页</a>。</p></div>
+  <div class="sbar big" role="img" aria-label="142 条命题：T4 41 条，T3 94 条，T2 2 条，T1 4 条，T0 1 条">
+    <i class="sw-t4" style="flex:41"></i><i class="sw-t3" style="flex:94"></i><i class="sw-t2" style="flex:2"></i><i class="sw-t1" style="flex:4"></i><i class="sw-t0" style="flex:1"></i>
   </div>
   <div class="legend">
-    <span><i class="sw-t4"></i>T4 端到端 · 39</span>
-    <span><i class="sw-t3"></i>T3 机器证明 · 88</span>
+    <span><i class="sw-t4"></i>T4 端到端 · 41</span>
+    <span><i class="sw-t3"></i>T3 机器证明 · 94</span>
     <span><i class="sw-t2"></i>T2 模型检验 · 2</span>
     <span><i class="sw-t1"></i>T1 纸面证明 · 4</span>
     <span><i class="sw-t0"></i>T0 测试 · 1</span>
@@ -85,7 +85,7 @@
     <div class="row"><div>基态密度与本征值证书</div><span class="n">10</span><div class="barcell"><div class="sbar"><i class="sw-t4" style="flex:3"></i><i class="sw-t3" style="flex:7"></i></div></div></div>
     <div class="row"><div>能带结构与态密度证书<div class="cap">零温 · 有限温度的 SCF 解（rHF 与 LDA） · k 点：由超胞解得到的原胞能带</div></div><span class="n">8</span><div class="barcell"><div class="sbar"><i class="sw-t4" style="flex:7"></i><i class="sw-t3" style="flex:1"></i></div></div></div>
     <div class="row"><div>LDA 交换关联（Slater、PW92）<div class="cap">实空间网格上的交换关联项 · 非线性 SCF 解证书 · 能量 · PW92 的区间界 · Fermi–Dirac 与 Gaussian 占据 · k 点超胞 · 能隙条件下的零温</div></div><span class="n">25</span><div class="barcell"><div class="sbar"><i class="sw-t4" style="flex:5"></i><i class="sw-t3" style="flex:20"></i></div></div></div>
-    <div class="row"><div>共线自旋（LSDA）<div class="cap">两个自旋通道的界 · 块对角的 SCF 解与磁化 · 检查器</div></div><span class="n">3</span><div class="barcell"><div class="sbar"><i class="sw-t4" style="flex:1"></i><i class="sw-t3" style="flex:2"></i></div></div></div>
+    <div class="row"><div>共线自旋（LSDA）<div class="cap">两个自旋通道的界 · 块对角的 SCF 解与磁化 · k 点 · 零温 · 能量界 · 检查器</div></div><span class="n">11</span><div class="barcell"><div class="sbar"><i class="sw-t4" style="flex:3"></i><i class="sw-t3" style="flex:8"></i></div></div></div>
   </div>
   <p class="note">T4 命题是各个证书检查器的可靠性定理（检查器全程用精确有理数，不涉及浮点）与 Frama-C/WP 对 C 可信内核的证明：无运行时错误（DFT-F03），以及 10 月 6 日起在 IEEE 754 模型下对 C 代码证明的区间算术浮点正确性——电荷区间、残差上界与惯性计数（DFT-F01、F02；由精确消去得到本征值个数是 Lean 定理 <code>exactElim_inertia</code>）。纸面证明（T1，<code>domains/dft/notes/</code>；文献中没有直接覆盖一维周期 Hartree 核的结果）的 4 条：一维 rHF 的连续适定性、平面波先验误差估计、线性混合在 α &lt; 2/λ<sub>max</sub>（介电算子的最大本征值）时的局部收敛已达目标；截断极限等于连续模型的能量目标是 Lean 证明（T3）。Lean 与 Rocq 的接口命题 DFT-I01 于 10 月 6 日撤销（决定 D1 选定 Frama-C，不用 Rocq）。</p>
 </section>
@@ -145,7 +145,7 @@
     <thead><tr><th>功能</th><th>状态</th><th>认证的内容</th></tr></thead>
     <tbody>
       <tr><td>LDA 交换关联（Slater 交换、PW92 关联）</td><td class="st"><span class="tag st-done">完成</span></td><td>在与 DFTK 相同的实空间网格（<i class="v">M</i> = 4<i class="v">K</i> + 1 点）上求值；零温、Fermi–Dirac、Marzari–Vanderbilt、Gaussian 加 Monkhorst–Pack k 点、能带与态密度等六个体系的能量、各分项与全部本征值都与 DFTK 一致。能量不再凸，没有变分证书；对 Γ 点的 Slater 交换（无论是否加 PW92 关联）加任一有限温度展宽（Fermi–Dirac、Gaussian、MV 或任意阶 MP），检查器证明非线性 SCF 方程在计算解约 10⁻¹² 的邻域内恰有一个解，并给出它的化学势、能量（含交换关联能）与自由能的区间（DFT-X01–X15）。PW92 关联以 <i class="v">s</i> = √<i class="v">r</i><sub>s</sub> 为变量，对数项的各阶导数都化为在 <i class="v">s</i> = 0 处正则的有理式；检查器用区间算术包住它，并对网格最小密度以上的全部密度给出 |<i class="v">v</i>′|、|<i class="v">v</i>″| 的上界。Fermi–Dirac 占据 1/(1 + <i class="v">e</i><sup><i class="v">x</i></sup>) 的导数界另行证明，其熵证明等于变分证书所用的二元熵（DFT-X16、X17）。DFTK 的费米能级、能量与自由能都落在 Lean 区间内。Monkhorst–Pack k 点的证书描述等价超胞，网格为 <i class="v">n</i><sub>k</sub>·<i class="v">M</i> 点：这时平移一个原胞就是网格平移，交换关联势等变，唯一的解以原胞为周期，每个原胞的能量与自由能（交换关联能在原胞网格上求积，与 DFTK 相同）有严格区间（DFT-X18–X20）；超胞网格要满足 <i class="v">M</i><sub>s</sub> ≥ 4<i class="v">K</i><sub>s</sub> + 1，所以这些运行取 <i class="v">M</i> = 4<i class="v">K</i> + 3，同一网格上的 DFTK 结果落在区间内。10 月 6 日起零温也有证书（<code>fis-lda0</code>）：aufbau 占据是台阶，检查器换成在 (−1, 1) 之外与它相等的光滑台阶，并检查整个球内 Hartree–交换关联 Hamiltonian 在 μ₀ 两侧能隙半宽 <i class="v">T</i> 之内没有本征值；此时光滑问题与零温问题相同，球内唯一的解就是能隙以下的谱投影，电子数为 <i class="v">N</i>，其能量有严格区间（DFT-X21–X25），Γ 点与 Monkhorst–Pack k 点都支持。</td></tr>
-      <tr id="lsda"><td>共线自旋（LSDA）、磁场项</td><td class="st"><span class="tag st-align">部分</span></td><td>10 月 6 日起有第一版：<code>--spin collinear --xc lda_x --nelec N --bfield B</code>，Γ 点、有限温度，交换取自旋极化的 Slater 交换，两个自旋共用化学势，磁化自由，可加均匀 Zeeman 场 <i class="v">B</i>。每个自旋有自己的密度矩阵 γ<sub>s</sub> = <i class="v">f</i>((<i class="v">H</i>[ρ<sub>↑</sub> + ρ<sub>↓</sub>] + <i class="v">V</i><sub>xc,s</sub> − μ ∓ <i class="v">B</i>)/<i class="v">T</i>)，tr γ<sub>↑</sub> + tr γ<sub>↓</sub> = <i class="v">N</i>。两个自旋构成块对角的问题，LDA 证书的 Newton–Kantorovich 论证逐块照搬：检查器证明 LSDA 的 SCF 方程在计算结果的 3×10⁻¹⁴–1×10⁻¹² 邻域内恰有一个解，并给出它的磁化 ν = tr γ<sub>↑</sub> − tr γ<sub>↓</sub> 与化学势的区间（DFT-X26–X28）。DFTK 的磁化与费米能级（共线自旋，<code>Xc([:lda_x])</code>，Zeeman 场写成与自旋有关的外势）在四个体系上都落在 Lean 区间内。DFTK 的 <code>Magnetic</code> 是矢势项，不是 Zeeman 场，没有做。尚缺：PW92 关联的自旋形式、k 点、零温、能带与态密度、能量与自由能区间、命名高斯外势</td></tr>
+      <tr id="lsda"><td>共线自旋（LSDA）、磁场项</td><td class="st"><span class="tag st-align">部分</span></td><td>10 月 6 日起有第一版：<code>--spin collinear --xc lda_x --nelec N --bfield B</code>，Γ 点、有限温度，交换取自旋极化的 Slater 交换，两个自旋共用化学势，磁化自由，可加均匀 Zeeman 场 <i class="v">B</i>。每个自旋有自己的密度矩阵 γ<sub>s</sub> = <i class="v">f</i>((<i class="v">H</i>[ρ<sub>↑</sub> + ρ<sub>↓</sub>] + <i class="v">V</i><sub>xc,s</sub> − μ ∓ <i class="v">B</i>)/<i class="v">T</i>)，tr γ<sub>↑</sub> + tr γ<sub>↓</sub> = <i class="v">N</i>。两个自旋构成块对角的问题，LDA 证书的 Newton–Kantorovich 论证逐块照搬：检查器证明 LSDA 的 SCF 方程在计算结果的 3×10⁻¹⁴–1×10⁻¹² 邻域内恰有一个解，并给出它的磁化 ν = tr γ<sub>↑</sub> − tr γ<sub>↓</sub> 与化学势的区间（DFT-X26–X28）。DFTK 的磁化与费米能级（共线自旋，<code>Xc([:lda_x])</code>，Zeeman 场写成与自旋有关的外势）在四个体系上都落在 Lean 区间内。DFTK 的 <code>Magnetic</code> 是矢势项，不是 Zeeman 场，没有做。尚10 月 7 日起：Monkhorst–Pack k 点（<code>--nk</code>，等价超胞证书，每个原胞的磁化区间宽 2×10⁻¹³–5×10⁻¹³，DFT-X35–X37）；Γ 点零温（<code>fis-lsda0</code>：磁化为精确整数，两个自旋的公共能隙有证书，DFT-X40–X42；DFTK 的 <code>Smearing.None</code> 给出相同的 ν）；SCF 解处 LSDA 能量与自由能的界有机器证明（DFT-X45、X46；驱动的浮点 <i class="v">E</i>、<i class="v">F</i> 与 DFTK 相差 7×10⁻¹⁵）。缺：PW92 关联的自旋形式（只有前期定义）、零温的 k 点、能带与态密度、能量与自由能区间的检查器、命名高斯外势</td></tr>
     </tbody>
   </table></div>
 
@@ -279,7 +279,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · 现状快照 2026-10-06<span class="updated"> · 更新于 <time datetime="2026-10-06T23:51+08:00">2026-10-06 23:51 UTC+8</time></span></span>
+  <span>Formal in Silico · 现状快照 2026-10-06<span class="updated"> · 更新于 <time datetime="2026-10-07T02:57+08:00">2026-10-07 02:57 UTC+8</time></span></span>
   <span><a href="./">纲领</a> · <a href="progress.html">进度</a> · <a href="showcases.html">成果展示</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="../dft.html" hreflang="en">English</a></span>
 </div></footer>
 </body>
