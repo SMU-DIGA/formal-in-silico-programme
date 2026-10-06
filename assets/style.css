@@ -134,9 +134,10 @@ h4{font:600 15.5px/1.5 var(--sans);margin:0 0 4px}
 
 /* ---------- news ---------- */
 .news-band{border-bottom:1px solid var(--rule)}
-.news-in{max-width:1180px;margin:0 auto;padding:0 24px 48px}
-.news-in .prose{max-width:52em}
-.news-in .news,.news-in .news-more{max-width:980px}
+/* same grid as .wrap, so the band lines up with the main column below */
+.news-in{max-width:1180px;margin:0 auto;padding:0 24px 48px;display:grid;grid-template-columns:190px minmax(0,1fr);gap:64px}
+.news-in>section{grid-column:2;min-width:0}
+@media (max-width:920px){.news-in{grid-template-columns:minmax(0,1fr);gap:0}.news-in>section{grid-column:1}}
 @media (max-width:480px){.news-in{padding-inline:16px}}
 .news{list-style:none;margin:24px 0 0;padding:0;border-top:1px solid var(--rule)}
 .news>li{display:grid;grid-template-columns:104px minmax(0,1fr);gap:20px;padding:16px 0;border-bottom:1px solid var(--rule-2)}
