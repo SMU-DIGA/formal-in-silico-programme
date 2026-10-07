@@ -131,6 +131,7 @@ CSP_OK 4</pre>
     <li><strong>粒子群稳定区域（CSP-A01）</strong>吸引子固定、随机数理想均匀时，粒子的均值收敛当且仅当 |<i class="v">ω</i>| &lt; 1 且 0 &lt; <i class="v">c</i>₁ + <i class="v">c</i>₂ &lt; 4(1 + <i class="v">ω</i>)；均方收敛当且仅当落在一个更小的区域内，<i class="v">c</i>₁ = <i class="v">c</i>₂ 时即 Poli 的 0 &lt; <i class="v">c</i> &lt; 24(1 − <i class="v">ω</i>²)/(7 − 5<i class="v">ω</i>)。两者都是充要条件，经二次、三次多项式的 Schur–Cohn/Jury 判据证明。Clerc–Kennedy 缺省参数 <i class="v">ω</i> = 0.7298、<i class="v">c</i>₁ = <i class="v">c</i>₂ = 1.49618（以及它们的精确 double 值）在两个区域内。</li>
     <li><strong>随机补充找到全局最优的吸引盆（CSP-A02）</strong>若每一代至少有一个独立的、在包含全局极小的盒子中均匀抽取的结构，<i class="v">t</i> 代后仍没有一个落在其 <i class="v">δ</i> 邻域内的概率不超过 (1 − <i class="v">p<sub>δ</sub></i>)<sup><i class="v">t</i></sup> → 0，<i class="v">p<sub>δ</sub></i> &gt; 0。只是渐近结论，不给有限次运行的保证。</li>
   </ul>
+  <p class="note"><b>致谢。</b>搜索算法来自 CALYPSO，作者是王彦超、吕健、朱力、马琰铭（吉林大学）。正是他们对粒子群结构预测清晰的公开描述，才使独立、可验证的实现成为可能；mini-CSP 是向这项工作的致敬，不是它的替代。</p>
 </section>
 
 <section id="claims">
@@ -209,7 +210,7 @@ CSP_OK 4</pre>
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · 现状快照 2026-10-07<span class="updated"> · 更新于 <time datetime="2026-10-07T22:13+08:00">2026-10-07 22:13 UTC+8</time></span></span>
+  <span>Formal in Silico · 现状快照 2026-10-07<span class="updated"> · 更新于 <time datetime="2026-10-07T22:18+08:00">2026-10-07 22:18 UTC+8</time></span></span>
   <span><a href="./">纲领</a> · <a href="progress.html">进度</a> · <a href="showcases.html">成果展示</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="../csp.html" hreflang="en">English</a></span>
 </div></footer>
 </body>
