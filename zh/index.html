@@ -26,6 +26,7 @@
     <a class="dom" href="fem.html">FEM</a>
     <a class="dom" href="md.html">MD</a>
     <a class="dom" href="calphad.html">CALPHAD</a>
+    <a class="dom" href="csp.html">CSP</a>
     <a class="lang" href="../" hreflang="en" lang="en">EN</a>
   </nav>
   <button class="theme" type="button" aria-label="切换浅色或深色主题"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zm0 1.5v11a5.5 5.5 0 0 1 0-11z"/></svg></button>
@@ -61,6 +62,7 @@
   <div class="prose"><p>五个领域新增的功能、研究结果，以及论文与本网站的变化，新的在前。逐项状态见<a href="progress.html">实现进度</a>；这里引用的命题都登记在可信账本中。</p></div>
   <ol class="news">
     <li><time datetime="2026-10-07">2026-10-07</time><ul>
+      <li><span class="tag n">网站</span>mini-CSP 有了自己的领域页面，导航栏加上 <b>CSP</b> 标签：LJ₁₃ 上检查器的完整输出、局部极小与去重证书如何工作、粒子群与随机补充的定理、全部十条命题，以及 LJ₃…LJ₁₃ 认证最低能量与剑桥团簇数据库的对照（<a href="csp.html">mini-CSP</a>）。</li>
       <li><span class="tag n">检查</span>对四个检查器的可靠性复审查出的漏洞已全部修复：MD 检查器曾接受原子重合、没有步数或 σ = 0 的证书（Lean 的 0⁻¹ = 0 使它们看起来无害），从 TDB 文件读入的 CALPHAD 相名可以注入伪造的输出行，若干问题数据没有回显。现在 MD 的这些条件属于已验证的检查；每个检查器都以精确的 <code>PROBLEM</code> 行回显完整的问题、严格解析并转义名字；可信 C 内核的 ACSL 契约登记了指纹；<code>verify_all</code> 留下运行记录并报告跳过的用例（MD-B06–B09，CAL-B08、B12、I03–I05，FEM-B06、B07、B10，DFT-I05–I08）。<a href="progress.html#ledger">详情 →</a></li>
       <li><span class="tag n">DFT</span><code>SCF_OK</code>、<code>LDA_OK</code>、<code>LSDA_OK</code> 现在证明的是 SCF 解本身在证书的球内唯一（Γ 点与 k 点），而不只是辅助映射的零点唯一：每个 SCF 解都是这个映射的零点（DFT-T32–T38）。<a href="dft.html#outputs">详情 →</a></li>
       <li><span class="tag n">DFT</span>共线自旋扩展：Monkhorst–Pack k 点上的 LSDA（<code>--nk</code>，DFT-X35–X37）与 Γ 点的零温 LSDA（磁化为精确整数，公共能隙有证书，<code>fis-lsda0</code>，DFT-X40–X42）已端到端检查；SCF 解处 LSDA 能量与自由能的界有了机器证明（DFT-X45、X46）；DFTK 的值都在区间内。<a href="dft.html#lsda">详情 →</a></li>
@@ -342,7 +344,7 @@
       <p>在标准基准上与既有代码比较：DFT 用 Δ 量规，MD 用 NVE 能量漂移和径向分布函数，FEM 用制造解方法检验收敛阶。</p>
       <p><span class="k">退出标准</span>公开基准结果，以及每个结果对应的可信账本。</p></div></li>
   </ol>
-  <p class="note">逐项现状见<a href="progress.html">进度页</a>，以及每个领域各自的页面：<a href="dft.html">DFT</a>、<a href="fem.html">FEM</a>、<a href="md.html">MD</a>、<a href="calphad.html">CALPHAD</a>。</p>
+  <p class="note">逐项现状见<a href="progress.html">进度页</a>，以及每个领域各自的页面：<a href="dft.html">DFT</a>、<a href="fem.html">FEM</a>、<a href="md.html">MD</a>、<a href="calphad.html">CALPHAD</a>、<a href="csp.html">CSP</a>。</p>
 </section>
 
 <section id="s9">
@@ -432,8 +434,8 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · 项目纲领 v0.3 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-10-07T16:02+08:00">2026-10-07 16:02 UTC+8</time></span></span>
-  <span><a href="progress.html">实现进度</a> · <a href="showcases.html">成果展示</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="../" hreflang="en">English</a></span>
+  <span>Formal in Silico · 项目纲领 v0.3 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-10-07T22:13+08:00">2026-10-07 22:13 UTC+8</time></span></span>
+  <span><a href="progress.html">实现进度</a> · <a href="showcases.html">成果展示</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="../" hreflang="en">English</a></span>
 </div></footer>
 </body>
 </html>

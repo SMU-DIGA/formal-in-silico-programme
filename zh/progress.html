@@ -26,6 +26,7 @@
     <a class="dom" href="fem.html">FEM</a>
     <a class="dom" href="md.html">MD</a>
     <a class="dom" href="calphad.html">CALPHAD</a>
+    <a class="dom" href="csp.html">CSP</a>
     <a class="lang" href="../progress.html" hreflang="en" lang="en">EN</a>
   </nav>
   <button class="theme" type="button" aria-label="切换浅色或深色主题"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zm0 1.5v11a5.5 5.5 0 0 1 0-11z"/></svg></button>
@@ -90,12 +91,13 @@
       <div class="kv"><b>25</b><span>条命题，T4 9 条，T3 12 条</span><b>18 / 25</b><span>项 pycalphad 对齐功能完成（C0 全部，C1 8 项中 6 项，C2 6 项中 4 项）</span><b>29 / 29</b><span>个 pycalphad 平衡落在 Lean 区间内</span></div>
       <span class="go">查看 mini-CALPHAD →</span>
     </a>
-    <div class="domain m">
+    <a class="domain m" href="csp.html">
       <span class="ref">版本 v0 · 2026-10-07 起 · 参照剑桥团簇数据库、ASE</span>
       <h3>mini-CSP <span class="tag n">新</span></h3>
       <p>Lennard-Jones 团簇的结构搜索。搜索器不可信；每个候选被证明是精确的局部极小（模转动、反射与平移唯一），候选之间的同一与不同也有证书。<code>BEST</code> 只是这次搜索中最低的已认证极小，不是全局最优的结论。</p>
       <div class="kv"><b>10</b><span>条命题，T4 3 条，T3 5 条</span><b>11 / 11</b><span>LJ₃…LJ₁₃ 的最低能量与剑桥团簇数据库一致</span><b>≤ 7×10⁻¹⁵</b><span>与 ASE 的能量差</span></div>
-    </div>
+      <span class="go">查看 mini-CSP →</span>
+    </a>
   </div>
 </section>
 
@@ -118,7 +120,7 @@
     <div class="row"><div><a href="fem.html#claims">mini-FEM</a><div class="cap">Poisson · 两端 Neumann · 梁 · 右端项 Taylor 模型 · 本征值</div></div><span class="n">20</span><div class="barcell"><div class="sbar"><i class="sw-t4" style="flex:6"></i><i class="sw-t3" style="flex:12"></i><i class="sw-t0" style="flex:2"></i></div></div></div>
     <div class="row"><div><a href="md.html#claims">mini-MD</a><div class="cap">守恒律 · 解的存在唯一 · Verlet 结构 · 管道定理 · 检查器</div></div><span class="n">21</span><div class="barcell"><div class="sbar"><i class="sw-t4" style="flex:8"></i><i class="sw-t3" style="flex:12"></i><i class="sw-t0" style="flex:1"></i></div></div></div>
     <div class="row"><div><a href="calphad.html#claims">mini-CALPHAD</a><div class="cap">混合项下界 · 平衡 · 存在性 · 磁性 · 凸性 · 亚点阵相 · 化学势与活度条件 · 相图的区域划分 · 热力学性质 · TDB 读法 · 检查器</div></div><span class="n">25</span><div class="barcell"><div class="sbar"><i class="sw-t4" style="flex:9"></i><i class="sw-t3" style="flex:12"></i><i class="sw-t0" style="flex:4"></i></div></div></div>
-    <div class="row"><div>mini-CSP<div class="cap">LJ 团簇能量 · 强凸球定理 · Eckart 规范 · 检查器 · PSO 稳定区域与随机补充（理想化）</div></div><span class="n">10</span><div class="barcell"><div class="sbar"><i class="sw-t4" style="flex:3"></i><i class="sw-t3" style="flex:5"></i><i class="sw-t0" style="flex:2"></i></div></div></div>
+    <div class="row"><div><a href="csp.html#claims">mini-CSP</a><div class="cap">LJ 团簇能量 · 强凸球定理 · Eckart 规范 · 检查器 · PSO 稳定区域与随机补充（理想化）</div></div><span class="n">10</span><div class="barcell"><div class="sbar"><i class="sw-t4" style="flex:3"></i><i class="sw-t3" style="flex:5"></i><i class="sw-t0" style="flex:2"></i></div></div></div>
   </div>
   <p class="note">T4 命题是各个证书检查器的可靠性定理（检查器全程用精确有理数，不涉及浮点）与 Frama-C/WP 对 C 可信内核的证明：无运行时错误，以及 10 月 6 日起在 IEEE 754 模型下区间算术的浮点正确性（DFT-F01、F02）。mini-DFT 有 4 条命题是纸面证明（T1，见 <a href="dft.html#ledger">DFT 页</a>），其中 3 条已达目标，第 4 条（截断极限等于连续模型的能量）目标 T3。Lean 与 Rocq 的接口命题 DFT-I01 于 10 月 6 日随 Rocq 计划一并撤销（决定 D1）。十六条 T0 命题中，一条是 DFT 线程实现（目标 T2）；两条是用户外势的读入与验证（DFT-V23、V24：检查器自己重读文件，与 TDB 读入一样是未经验证的 I/O）；十条是 10 月 7 日可靠性复审查出并修复的检查器输入输出代码——问题回显、输入门、输出转义与 TDB 的 SHA-256（DFT-I05–I08、FEM-B06、B07、MD-B09、CAL-I03–I05）；一条是 CAL-I01，即 Lean 对 TDB 文件读法的定义，它是规格而不是定理，只能对照；两条属于 mini-CSP：搜索器的已知答案（CSP-T01）与尚未写成的带证明的粒子群内核（CSP-P01，目标 T4）。</p>
 </section>
@@ -204,8 +206,8 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · 现状快照 2026-10-06<span class="updated"> · 更新于 <time datetime="2026-10-07T20:03+08:00">2026-10-07 20:03 UTC+8</time></span></span>
-  <span><a href="./">纲领</a> · <a href="showcases.html">成果展示</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="../progress.html" hreflang="en">English</a></span>
+  <span>Formal in Silico · 现状快照 2026-10-06<span class="updated"> · 更新于 <time datetime="2026-10-07T22:13+08:00">2026-10-07 22:13 UTC+8</time></span></span>
+  <span><a href="./">纲领</a> · <a href="showcases.html">成果展示</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="../progress.html" hreflang="en">English</a></span>
 </div></footer>
 </body>
 </html>

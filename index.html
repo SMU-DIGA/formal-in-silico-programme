@@ -26,6 +26,7 @@
     <a class="dom" href="fem.html">FEM</a>
     <a class="dom" href="md.html">MD</a>
     <a class="dom" href="calphad.html">CALPHAD</a>
+    <a class="dom" href="csp.html">CSP</a>
     <a class="lang" href="zh/" hreflang="zh-CN" lang="zh-CN">中文</a>
   </nav>
   <button class="theme" type="button" aria-label="Toggle light or dark theme"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zm0 1.5v11a5.5 5.5 0 0 1 0-11z"/></svg></button>
@@ -61,6 +62,7 @@
   <div class="prose"><p>Features added to the five domains, research results, and changes to the paper and this site, newest first. Item-by-item status is on the <a href="progress.html">progress page</a>; every claim cited here is in the trust ledger.</p></div>
   <ol class="news">
     <li><time datetime="2026-10-07">7 Oct 2026</time><ul>
+      <li><span class="tag n">Site</span>mini-CSP has its own domain page and a <b>CSP</b> tab in the navigation: the checker’s full output on LJ₁₃, how the local-minimum and deduplication certificates work, the particle-swarm and restart theorems, all ten claims, and the certified best energies of LJ₃…LJ₁₃ beside the Cambridge Cluster Database (<a href="csp.html">mini-CSP</a>).</li>
       <li><span class="tag n">Checks</span>A reliability audit of the four checkers found holes that are now fixed: the MD checker accepted certificates with coincident atoms, no steps or σ = 0 (Lean’s 0⁻¹ = 0 made them look harmless), CALPHAD phase names read from a TDB file could inject forged output lines, and several problem data were not echoed. The MD conditions are now part of the verified check; every checker echoes its whole problem as exact <code>PROBLEM</code> lines, parses strictly and escapes names; the trusted C kernel’s ACSL contracts are pinned; and <code>verify_all</code> keeps a run record and reports skipped cases (MD-B06–B09, CAL-B08, B12, I03–I05, FEM-B06, B07, B10, DFT-I05–I08). <a href="progress.html#ledger">Details →</a></li>
       <li><span class="tag n">DFT</span><code>SCF_OK</code>, <code>LDA_OK</code> and <code>LSDA_OK</code> now prove that the SCF solution itself is unique in the certified ball, at the Γ point and with k-points, not only the zero of the auxiliary map: every SCF solution is shown to be such a zero (DFT-T32–T38). <a href="dft.html#outputs">Details →</a></li>
       <li><span class="tag n">DFT</span>Collinear spin extended: LSDA on Monkhorst–Pack k-points (<code>--nk</code>, DFT-X35–X37) and at zero temperature at the Γ point with an exact integer magnetisation and a certified common gap (<code>fis-lsda0</code>, DFT-X40–X42) are now checked end to end, and bounds on the LSDA energy and free energy at the SCF solution are machine-proved (DFT-X45, X46), with DFTK inside every interval. <a href="dft.html#lsda">Details →</a></li>
@@ -342,7 +344,7 @@
       <p>Standard benchmarks against established codes: the Δ-gauge for DFT, NVE energy drift and radial distribution functions for MD, the method of manufactured solutions for FEM convergence rates.</p>
       <p><span class="k">Exit</span>published benchmark results, each with its trust ledger.</p></div></li>
   </ol>
-  <p class="note">Detailed, item-by-item status is on the <a href="progress.html">progress page</a> and on one page per domain: <a href="dft.html">DFT</a>, <a href="fem.html">FEM</a>, <a href="md.html">MD</a>, <a href="calphad.html">CALPHAD</a>.</p>
+  <p class="note">Detailed, item-by-item status is on the <a href="progress.html">progress page</a> and on one page per domain: <a href="dft.html">DFT</a>, <a href="fem.html">FEM</a>, <a href="md.html">MD</a>, <a href="calphad.html">CALPHAD</a>, <a href="csp.html">CSP</a>.</p>
 </section>
 
 <section id="s9">
@@ -366,7 +368,7 @@
   </div>
   <div class="prose">
     <p><b>mini-FEM</b> follows the same pattern for goal G2: 1D Poisson with P1 elements (Dirichlet, Neumann and Robin boundaries) and the beam equation with cubic Hermite elements (clamped, pinned, free and sliding ends), with right-hand sides built from polynomials, exponentials, sines and cosines. The Lean checker returns intervals for the <b>true solution of the continuous problem</b> at every node, and a rigorous bound on the maximum error over the whole interval. Adaptive refinement uses these proved element-wise bounds as its marking criterion.</p>
-    <p><b>mini-MD</b> (1 October 2026) does the same for a 1D Lennard-Jones chain with velocity Verlet: the checker bounds the distance from the <b>true solution of Newton’s equations</b> at every step, and from the initial state over about one vibration period. <b>mini-CALPHAD</b> (goal G3) certifies binary phase equilibria from TDB databases — magnetic phases and whole phase diagrams included — with the chemical potentials, driving forces and which phases can appear in <i>any</i> equilibrium. See the <a href="md.html">MD</a> and <a href="calphad.html">CALPHAD</a> pages.</p>
+    <p><b>mini-MD</b> (1 October 2026) does the same for a 1D Lennard-Jones chain with velocity Verlet: the checker bounds the distance from the <b>true solution of Newton’s equations</b> at every step, and from the initial state over about one vibration period. <b>mini-CALPHAD</b> (goal G3) certifies binary phase equilibria from TDB databases — magnetic phases and whole phase diagrams included — with the chemical potentials, driving forces and which phases can appear in <i>any</i> equilibrium. See the <a href="md.html">MD</a>, <a href="calphad.html">CALPHAD</a> and <a href="csp.html">CSP</a> pages.</p>
     <p><b>mini-CSP</b> (7 October 2026) starts the structure-search track with Lennard-Jones clusters: an untrusted searcher proposes candidates, and the checker certifies each as an exact local minimum, unique up to rotation, reflection and translation, and certifies pairs of candidates as equal or distinct. The run’s <code>BEST</code> is the lowest certified minimum it found; global optimality is not claimed.</p>
   </div>
 </section>
@@ -432,8 +434,8 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · Programme v0.3 · revised as the project evolves<span class="updated"> · updated <time datetime="2026-10-07T16:02+08:00">2026-10-07 16:02 UTC+8</time></span></span>
-  <span><a href="progress.html">Progress</a> · <a href="showcases.html">Showcases</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="zh/" hreflang="zh-CN">中文版</a></span>
+  <span>Formal in Silico · Programme v0.3 · revised as the project evolves<span class="updated"> · updated <time datetime="2026-10-07T22:13+08:00">2026-10-07 22:13 UTC+8</time></span></span>
+  <span><a href="progress.html">Progress</a> · <a href="showcases.html">Showcases</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="zh/" hreflang="zh-CN">中文版</a></span>
 </div></footer>
 </body>
 </html>

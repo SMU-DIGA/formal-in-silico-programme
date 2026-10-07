@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Formal in Silico — mini-CSP</title>
+<meta name="description" content="mini-CSP v0: certified structure search for Lennard-Jones clusters. An untrusted particle-swarm searcher proposes candidates; the Lean checker proves each one an exact local minimum, unique up to rotation, reflection and translation, and proves candidates equal or distinct. Cross-checked against the Cambridge Cluster Database and ASE.">
+<link rel="alternate" hreflang="en" href="csp.html">
+<link rel="alternate" hreflang="zh-CN" href="zh/csp.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700;8..60,800&display=swap">
+<link rel="stylesheet" href="assets/style.css">
+<script src="assets/site.js"></script>
+</head>
+<body>
+
+<header class="bar"><div class="bar-in">
+  <a class="brand" href="./">Formal in Silico</a>
+  <nav class="nav" aria-label="Site">
+    <a href="./">Programme</a>
+    <a href="progress.html">Progress</a>
+    <a href="showcases.html">Showcases</a>
+    <span class="sep" aria-hidden="true"></span>
+    <a class="dom" href="dft.html">DFT</a>
+    <a class="dom" href="fem.html">FEM</a>
+    <a class="dom" href="md.html">MD</a>
+    <a class="dom" href="calphad.html">CALPHAD</a>
+    <a class="dom" href="csp.html" aria-current="page">CSP</a>
+    <a class="lang" href="zh/csp.html" hreflang="zh-CN" lang="zh-CN">中文</a>
+  </nav>
+  <button class="theme" type="button" aria-label="Toggle light or dark theme"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zm0 1.5v11a5.5 5.5 0 0 1 0-11z"/></svg></button>
+</div></header>
+
+<div class="hero small"><div class="hero-in">
+  <nav class="domnav" aria-label="Domains"><a href="progress.html">← Progress</a><a href="dft.html">mini-DFT</a><a href="fem.html">mini-FEM</a><a href="md.html">mini-MD</a><a href="calphad.html">mini-CALPHAD</a><a href="csp.html" aria-current="page">mini-CSP</a></nav>
+  <p class="eyebrow">Domain · mini-CSP v0 · status snapshot 7 October 2026</p>
+  <h1>mini-CSP</h1>
+  <p class="lead">Crystal structure prediction, starting with Lennard-Jones clusters. The searcher — random generation, relaxation, particle-swarm updates, deduplication, the same ingredients as CALYPSO, written from the published papers — is <b>untrusted</b>. Every candidate it proposes goes to the Lean checker <code>certify-csp</code>, which proves it an <b>exact local minimum</b>, unique up to rotation, reflection and translation, with a rigorous energy interval, and proves pairs of candidates equal or distinct. Started on 7 October 2026.</p>
+  <div class="stats">
+    <div class="stat"><b>10</b><span>claims in the trust ledger: 3 at T4, 5 at T3, 2 at T0</span></div>
+    <div class="stat"><b>11 / 11</b><span>LJ₃…LJ₁₃: the best certified energy matches the Cambridge Cluster Database</span></div>
+    <div class="stat"><b>≤ 7×10⁻¹⁵</b><span>energy difference from ASE on the same structures</span></div>
+    <div class="stat"><b>≤ 2×10⁻¹⁵</b><span>width of each printed energy interval: about 16 significant digits</span></div>
+  </div>
+</div></div>
+
+<div class="wrap">
+<nav class="toc" aria-label="Contents">
+  <p>Contents</p>
+  <ol>
+    <li><a href="#problem"><span>01</span>The problem</a></li>
+    <li><a href="#report"><span>02</span>What is certified</a></li>
+    <li><a href="#method"><span>03</span>How it works</a></li>
+    <li><a href="#search"><span>04</span>The search</a></li>
+    <li><a href="#claims"><span>05</span>Claims</a></li>
+    <li><a href="#evidence"><span>06</span>Cross-checks</a></li>
+    <li><a href="#gaps"><span>07</span>Open gaps</a></li>
+  </ol>
+</nav>
+<main>
+
+<section id="problem">
+  <p class="sec-no">01</p>
+  <h2>The problem</h2>
+  <div class="tbl"><table><tbody>
+    <tr><td class="l">System</td><td><i class="v">N</i> identical atoms in three dimensions (2 ≤ <i class="v">N</i> ≤ 200), a free cluster at zero pressure. Every pair interacts through the Lennard-Jones potential, written in the squared distance <i class="v">s</i> = <i class="v">r</i>²: <i class="v">φ</i>(<i class="v">s</i>) = 4<i class="v">ε</i>(<i class="v">σ</i>¹²/<i class="v">s</i>⁶ − <i class="v">σ</i>⁶/<i class="v">s</i>³), not truncated.</td></tr>
+    <tr><td class="l">Energy</td><td><i class="v">E</i>(<i class="v">x</i>) = ½ Σ<sub><i class="v">i</i>≠<i class="v">j</i></sub> <i class="v">φ</i>(<i class="v">s<sub>ij</sub></i>). Energy, gradient and Hessian are rational functions of the coordinates, so the checker evaluates exactly the formula Lean reasons about (CSP-C01).</td></tr>
+    <tr><td class="l">Symmetry</td><td><i class="v">E</i> is invariant under rotations and reflections, translations and relabelling of the atoms. A minimum is therefore never isolated in ℝ<sup>3<i class="v">N</i></sup>; it is a minimum modulo these motions, and the six orbit directions are fixed by the Eckart gauge.</td></tr>
+    <tr><td class="l">Input</td><td><i class="v">ε</i>, <i class="v">σ</i> and every coordinate are exact dyadic rationals <i class="v">m</i>·2<sup><i class="v">e</i></sup> in the certificate — the doubles the searcher actually produced. The checker echoes the problem as a <code>PROBLEM</code> line for the caller to compare.</td></tr>
+  </tbody></table></div>
+</section>
+
+<section id="report">
+  <p class="sec-no">02</p>
+  <h2>What a certified run reports</h2>
+  <div class="prose"><p>LJ₁₃, seed 1, twelve generations of twelve particles. The searcher keeps its three best distinct minima and, as a demonstration of the deduplication certificate, adds the best one again rotated and with its atoms numbered backwards. The checker reads the certificate and re-checks everything in exact rational arithmetic; this is its full output.</p></div>
+  <div class="report">
+    <div class="cmd">build/mini-csp --N 13 --seed 1 --gens 12 --pop 12 --keep 3 --same-demo --certify lj13.cert<br>certify-csp lj13.cert</div>
+<pre>PROBLEM N 13 eps 1.00000000000000000000 sigma 1.00000000000000000000 pressure 0
+MIN_OK 0 -44.326801419534023 -44.326801419534022 0.000056994475 0.00000000000611516998
+MIN_OK 1 -41.471979847810849 -41.471979847810848 0.000027927293 0.00000000001481269784
+MIN_OK 2 -41.444597002447481 -41.444597002447480 0.000019549105 0.00000000002081694528
+MIN_OK 3 -44.326801419534023 -44.326801419534022 0.000056994475 0.00000000000610162457
+<b>SAME_OK 0 3</b>
+DISTINCT 0 1
+DISTINCT 0 2
+DISTINCT 1 2
+DISTINCT 1 3
+DISTINCT 2 3
+BEST 3 <b>-44.326801419534023 -44.326801419534022</b>
+TIE 3 0
+CSP_OK 4</pre>
+  </div>
+  <div class="tbl"><table class="outs">
+    <thead><tr><th>Line</th><th>What the Lean theorem guarantees</th><th>Claim</th></tr></thead>
+    <tbody>
+      <tr><td>PROBLEM</td><td>The problem the certificate is about (<i class="v">N</i>, <i class="v">ε</i>, <i class="v">σ</i>, pressure), exactly, for the caller to compare with what it asked for.</td><td>CSP-B02</td></tr>
+      <tr><td>MIN_OK k lo hi R d</td><td>In the ball of radius R around candidate k (in the Eckart section) the energy has exactly one minimiser <i class="v">x</i>*, with quadratic growth; it is the only stationary point there, ∇<i class="v">E</i>(<i class="v">x</i>*) = 0 in all of ℝ<sup>3<i class="v">N</i></sup>, ‖<i class="v">x</i>* − <i class="v">x</i>₀‖ ≤ d and <i class="v">E</i>(<i class="v">x</i>*) ∈ [lo, hi]. Any configuration within R of <i class="v">x</i>₀ has energy ≥ <i class="v">E</i>(<i class="v">x</i>*), with equality only for a rotated, reflected or translated copy of <i class="v">x</i>*.</td><td>CSP-B01, D01, D02</td></tr>
+      <tr><td>SAME_OK a b</td><td>The exact minima of candidates a and b are the same structure: they differ by a permutation of the atoms, an orthogonal map and a translation, and have equal energy.</td><td>CSP-B04</td></tr>
+      <tr><td>DISTINCT a b</td><td>The two energy intervals are disjoint, so the exact minima are different structures: no permutation, rotation, reflection or translation maps one onto the other.</td><td>CSP-B04</td></tr>
+      <tr><td>UNDECIDED a b</td><td>Neither proved; the intervals overlap and the certificate holds no <code>same</code> record for the pair.</td><td>—</td></tr>
+      <tr><td>BEST k lo hi</td><td>Candidate k has the lowest certified upper bound among the candidates of <i>this run</i>. Not a claim that it is the global minimum.</td><td>CSP-B02</td></tr>
+      <tr><td>TIE k j</td><td>Candidate j’s interval overlaps the best one’s, so the run cannot say which is lower. Here j is the rotated, renumbered copy, already proved the same structure by <code>SAME_OK</code>.</td><td>CSP-B02</td></tr>
+      <tr><td>CSP_OK K / CSP_FAIL</td><td>All K candidates passed; otherwise the checker names the first check that failed and certifies nothing.</td><td>CSP-B02</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="method">
+  <p class="sec-no">03</p>
+  <h2>How the certificate works</h2>
+  <div class="prose"><p>The searcher stops at a point <i class="v">x</i>₀ with a tiny but non-zero gradient. The certificate proves that a true minimum <i class="v">x</i>* lies within a radius it states, by showing that the energy is strongly convex on a small ball in the right slice of configuration space. All checks are exact rational arithmetic; the searcher’s floating-point numbers are only data.</p></div>
+  <ol class="chain">
+    <li><div class="layer"><span class="no">1</span><h4>Eckart gauge</h4><p>Rotations and translations make the Hessian singular in six directions. The checker works in the Eckart section through <i class="v">x</i>₀: displacements with no net translation and no net rotation relative to <i class="v">x</i>₀. Lean proves every configuration can be rotated and translated into this section without moving further from <i class="v">x</i>₀, so a strict minimum in the section is a strict minimum modulo Euclidean motions (CSP-D01).</p></div></li>
+    <li><div class="layer"><span class="no">2</span><h4>Atoms stay apart</h4><p>On the ball of radius <i class="v">R</i> no pair moves by more than √2·<i class="v">R</i>, so every squared distance stays above an explicit <i class="v">s</i><sub>lo</sub> &gt; 0. From it the checker computes, for every pair, how much the Hessian can drop across the ball, using explicit bounds on <i class="v">φ</i>″ and <i class="v">φ</i>‴ and the mean-value theorem.</p></div></li>
+    <li><div class="layer"><span class="no">3</span><h4>Small gradient</h4><p>‖∇<i class="v">E</i>(<i class="v">x</i>₀)‖ ≤ <i class="v">g</i>, with every term rounded down to a 2⁻¹⁰⁰ grid and the rounding error added to the bound.</p></div></li>
+    <li><div class="layer"><span class="no">4</span><h4>Positive definite, exactly</h4><p>The Hessian at <i class="v">x</i>₀ minus the pair losses, plus a penalty <i class="v">κ</i> on the six orbit directions, minus <i class="v">μ</i>·<i class="v">I</i>, is shown positive semi-definite by a Schur-complement elimination that rounds to a 2⁻¹⁰⁰ grid at every step and subtracts the rounding error from the diagonal (proved sound in Lean). Then <i class="v">E</i> is <i class="v">μ</i>-strongly convex on the whole ball within the section.</p></div></li>
+    <li><div class="layer"><span class="no">5</span><h4>Strong-convexity ball theorem</h4><p>If <i class="v">g</i> &lt; <i class="v">μR</i>, the ball contains exactly one stationary point, the unique minimiser, within <i class="v">g</i>/<i class="v">μ</i> of <i class="v">x</i>₀, with energy in [<i class="v">E</i>(<i class="v">x</i>₀) − <i class="v">g</i>²/(2<i class="v">μ</i>), <i class="v">E</i>(<i class="v">x</i>₀)] (CSP-D02). The checker encloses <i class="v">E</i>(<i class="v">x</i>₀) itself, so this is the printed interval.</p></div></li>
+    <li><div class="layer"><span class="no">6</span><h4>Same or distinct</h4><p>For a <code>same</code> record the certificate gives a permutation, an exactly orthogonal rational matrix (a signed Cayley transform, checked as <i class="v">Q</i>ᵀ<i class="v">Q</i> = <i class="v">I</i> exactly) and a translation that map one candidate into the other’s uniqueness ball, and vice versa. Two minima whose energy intervals are disjoint are distinct structures without any further data.</p></div></li>
+  </ol>
+  <p class="note">Why the intervals are so tight: the searcher finishes each relaxation with Newton steps until the gradient is about 10⁻¹³, so <i class="v">g</i>²/(2<i class="v">μ</i>) is about 10⁻²⁴; the width of the interval is set by the rounding of the 2⁻¹⁰⁰ grid and the outward rounding of the printed decimals. The uniqueness radius is 2×10⁻⁵ to 1.7×10⁻⁴ <i class="v">σ</i>, limited by how fast the Lennard-Jones Hessian changes.</p>
+</section>
+
+<section id="search">
+  <p class="sec-no">04</p>
+  <h2>The search, and what is proved about it</h2>
+  <div class="prose"><p>The searcher <code>build/mini-csp</code> (C11, double precision) follows the algorithm published by Wang, Lv, Zhu and Ma (PRB 82, 094116, 2010; CPC 183, 2063, 2012), written from the papers alone, without reference to any existing program. Each generation relaxes every particle (BFGS, then Newton with a gauge penalty), sorts by energy, replaces the worst fraction with fresh random structures and moves the rest by the particle-swarm update <i class="v">v</i> ← <i class="v">ωv</i> + <i class="v">c</i>₁<i class="v">r</i>₁(<i class="v">p</i> − <i class="v">x</i>) + <i class="v">c</i>₂<i class="v">r</i>₂(<i class="v">g</i> − <i class="v">x</i>), <i class="v">x</i> ← <i class="v">x</i> + <i class="v">v</i>. Sorted interatomic distances serve as a fingerprint, but only to <i>propose</i> merges; only the checker decides.</p>
+  <p>Nothing the searcher does enters the trust chain: a bug in it can only make it miss structures, never produce a wrong certified statement. Separately, Lean proves two properties of the search algorithm itself, under idealised assumptions stated in the ledger:</p></div>
+  <ul class="gaps">
+    <li><strong>Particle-swarm stability regions (CSP-A01)</strong>With the attractors fixed and ideal uniform random numbers, the mean of a particle converges exactly when |<i class="v">ω</i>| &lt; 1 and 0 &lt; <i class="v">c</i>₁ + <i class="v">c</i>₂ &lt; 4(1 + <i class="v">ω</i>), and its mean square exactly in a smaller region that for <i class="v">c</i>₁ = <i class="v">c</i>₂ is Poli’s 0 &lt; <i class="v">c</i> &lt; 24(1 − <i class="v">ω</i>²)/(7 − 5<i class="v">ω</i>). Both are “if and only if”, proved through the Schur–Cohn/Jury criteria for quadratic and cubic polynomials. The Clerc–Kennedy defaults <i class="v">ω</i> = 0.7298, <i class="v">c</i>₁ = <i class="v">c</i>₂ = 1.49618 — and their exact double values — lie in both regions.</li>
+    <li><strong>Random restarts find the global basin (CSP-A02)</strong>If every generation contains at least one independent structure drawn uniformly from a box containing the global minimum, the probability that none has landed within <i class="v">δ</i> of it after <i class="v">t</i> generations is at most (1 − <i class="v">p<sub>δ</sub></i>)<sup><i class="v">t</i></sup> → 0, with <i class="v">p<sub>δ</sub></i> &gt; 0. Asymptotic only: it gives no guarantee for a finite run.</li>
+  </ul>
+</section>
+
+<section id="claims">
+  <p class="sec-no">05</p>
+  <h2>Claims in the trust ledger</h2>
+  <div class="sbar big" role="img" aria-label="10 claims: 3 at T4, 5 at T3, 2 at T0">
+    <i class="sw-t4" style="flex:3"></i><i class="sw-t3" style="flex:5"></i><i class="sw-t0" style="flex:2"></i>
+  </div>
+  <div class="legend">
+    <span><i class="sw-t4"></i>T4 end to end · 3</span>
+    <span><i class="sw-t3"></i>T3 machine proof · 5</span>
+    <span><i class="sw-t0"></i>T0 tested · 2</span>
+  </div>
+  <div class="tbl"><table>
+    <thead><tr><th>Claim</th><th>Statement</th><th>Tier</th></tr></thead>
+    <tbody>
+      <tr><td class="l">CSP-C01</td><td>The cluster energy and its first and second directional derivatives are rational functions of the coordinates and are the true derivatives while all distances are positive; the energy is invariant under orthogonal maps, translations and permutations of the atoms; explicit lower bound on the pair Hessian</td><td class="st"><span class="tag m">T3</span></td></tr>
+      <tr><td class="l">CSP-D02</td><td>Strong-convexity ball theorem: <i class="v">μ</i>-convex on a ball with gradient ≤ <i class="v">g</i> &lt; <i class="v">μR</i> at the centre gives a unique stationary point, the unique minimiser with quadratic growth, within <i class="v">g</i>/<i class="v">μ</i>, with energy in [<i class="v">f</i>(<i class="v">x</i>₀) − <i class="v">g</i>²/(2<i class="v">μ</i>), <i class="v">f</i>(<i class="v">x</i>₀)]</td><td class="st"><span class="tag m">T3</span></td></tr>
+      <tr><td class="l">CSP-D01</td><td>Gauge: every configuration can be moved into the Eckart section by a rotation, reflection and translation without moving further from <i class="v">x</i>₀; a strict minimum in the section is a strict local minimum modulo Euclidean motions and a stationary point in all of ℝ<sup>3<i class="v">N</i></sup></td><td class="st"><span class="tag m">T3</span></td></tr>
+      <tr><td class="l">CSP-B01</td><td>Checker soundness, local minimum: what <code>MIN_OK</code> states</td><td class="st"><span class="tag s">T4</span></td></tr>
+      <tr><td class="l">CSP-B04</td><td>Checker soundness, deduplication: <code>SAME_OK</code> and <code>DISTINCT</code></td><td class="st"><span class="tag s">T4</span></td></tr>
+      <tr><td class="l">CSP-B02</td><td>Checker output: every line is read off B01 and B04; <code>BEST</code> is a comparison of intervals, not a global-optimum claim; <code>PROBLEM</code> echo</td><td class="st"><span class="tag s">T4</span></td></tr>
+      <tr><td class="l">CSP-A01</td><td>Particle-swarm first-order and mean-square stability regions, “if and only if”; the default parameters lie in both (idealised model A-CSP-01, 02)</td><td class="st"><span class="tag m">T3</span></td></tr>
+      <tr><td class="l">CSP-A02</td><td>Random restarts reach any neighbourhood of the global minimum with probability tending to 1 (idealised model A-CSP-03)</td><td class="st"><span class="tag m">T3</span></td></tr>
+      <tr><td class="l">CSP-T01</td><td>The searcher finds the Cambridge Cluster Database minima of LJ₃…LJ₁₃ and every output is accepted by the checker; tampered certificates are rejected (known answers in <code>verify_all</code>)</td><td class="st"><span class="tag n">T0</span></td></tr>
+      <tr><td class="l">CSP-P01</td><td>Frama-C/WP proof of the C particle-swarm step (velocity clamp, box handling, fractional wrap-around) under the IEEE 754 model — not yet written, target T4</td><td class="st"><span class="tag n">T0</span></td></tr>
+    </tbody>
+  </table></div>
+  <p class="note"><code>#print axioms</code> for <code>checkMin_sound</code>, <code>checkSame_sound</code>, <code>distinct_sound</code>, <code>ball_min</code> and <code>align</code> shows only Lean’s standard <code>propext</code>, <code>Classical.choice</code> and <code>Quot.sound</code>.</p>
+</section>
+
+<section id="evidence">
+  <p class="sec-no">06</p>
+  <h2>Cross-checks and supporting evidence</h2>
+  <div class="tbl"><table>
+    <thead><tr><th>Cluster</th><th>Certified best energy (Lean interval)</th><th>Cambridge Cluster Database</th></tr></thead>
+    <tbody>
+      <tr><td class="l">LJ<sub>3</sub></td><td><code>[-3.000000000000001, -2.999999999999999]</code></td><td>-3.000000</td></tr>
+      <tr><td class="l">LJ<sub>4</sub></td><td><code>[-6.000000000000001, -5.999999999999999]</code></td><td>-6.000000</td></tr>
+      <tr><td class="l">LJ<sub>5</sub></td><td><code>[-9.103852415707557, -9.103852415707556]</code></td><td>-9.103852</td></tr>
+      <tr><td class="l">LJ<sub>6</sub></td><td><code>[-12.712062256809339, -12.712062256809338]</code></td><td>-12.712062</td></tr>
+      <tr><td class="l">LJ<sub>7</sub></td><td><code>[-16.505384168012216, -16.505384168012215]</code></td><td>-16.505384</td></tr>
+      <tr><td class="l">LJ<sub>8</sub></td><td><code>[-19.821489192154761, -19.821489192154760]</code></td><td>-19.821489</td></tr>
+      <tr><td class="l">LJ<sub>9</sub></td><td><code>[-24.113360433647182, -24.113360433647181]</code></td><td>-24.113360</td></tr>
+      <tr><td class="l">LJ<sub>10</sub></td><td><code>[-28.422531893437559, -28.422531893437558]</code></td><td>-28.422532</td></tr>
+      <tr><td class="l">LJ<sub>11</sub></td><td><code>[-32.765970089979004, -32.765970089979003]</code></td><td>-32.765970</td></tr>
+      <tr><td class="l">LJ<sub>12</sub></td><td><code>[-37.967599562363927, -37.967599562363926]</code></td><td>-37.967600</td></tr>
+      <tr><td class="l">LJ<sub>13</sub></td><td><code>[-44.326801419534023, -44.326801419534022]</code></td><td>-44.326801</td></tr>
+    </tbody>
+  </table></div>
+  <ul class="checks">
+    <li><span>ASE 3.29 (<code>LennardJones</code>, cut-off 1000 <i class="v">σ</i>) on the 11 certified centres, against a 40-digit mpmath sum</span><b>≤ 7.1×10⁻¹⁵</b></li>
+    <li><span>Uniqueness radius <i class="v">R</i> / distance bound ‖<i class="v">x</i>* − <i class="v">x</i>₀‖, LJ₃…LJ₁₃</span><b>2×10⁻⁵…1.7×10⁻⁴ <i class="v">σ</i> / ≤ 2.1×10⁻¹¹ <i class="v">σ</i></b></li>
+    <li><span>A coordinate’s mantissa changed by 2³⁰</span><b>CSP_FAIL (local-minimum check)</b></li>
+    <li><span>Two entries of a <code>same</code> permutation swapped</span><b>CSP_FAIL (same check)</b></li>
+    <li><span><i class="v">ε</i> changed to 2 in the certificate</span><b>accepted, caught by the known answer and the <code>PROBLEM</code> echo</b></li>
+    <li><span>Searcher time per cluster / checker time for 4 candidates at <i class="v">N</i> = 3, 7, 13</span><b>0.01–9 s / 0.1, 1.3, 17 s</b></li>
+    <li><span>Searcher under AddressSanitizer, UBSan and LeakSanitizer</span><b>clean</b></li>
+  </ul>
+</section>
+
+<section id="gaps">
+  <p class="sec-no">07</p>
+  <h2>Open gaps</h2>
+  <ul class="gaps">
+    <li><strong>Global optimality</strong><code>BEST</code> is the lowest certified minimum the run found. Proving it global needs a branch-and-bound certificate over configuration space (planned phase 5, CSP-B05).</li>
+    <li><strong>Crystals, symmetry and pressure</strong>Only free clusters at zero pressure so far. Symmetry-constrained generation with symmetry certificates, periodic cells, pressure and multi-component systems are phases 2 and 3 (CSP-B03, C02, D03, D04).</li>
+    <li><strong>Deduplication in the search</strong><code>same</code> records are only produced by <code>--same-demo</code>; merges the fingerprint proposes during a search do not yet come with permutation and rotation certificates, so only one representative is kept (permutation matching plus Kabsch alignment is planned).</li>
+    <li><strong>The searcher’s code</strong>Untrusted (T0). The particle-swarm step is to get a Frama-C/WP proof under the IEEE 754 model (CSP-P01); the search loop, its distribution and restart logic a TLA+ specification with trace validation (CSP-L01); and a <code>fis csp</code> command with JSON output (CSP-L02).</li>
+    <li><strong>Beyond the idealised model</strong>CSP-A01 and A02 assume fixed attractors, ideal random numbers and real coordinates; the mean-square result covers <i class="v">p</i> = <i class="v">g</i> only. The phase-1 searcher uses <i class="v">ω</i> = 0.7, <i class="v">c</i>₁ = <i class="v">c</i>₂ = 1.5, inside both regions by the proved formula but not the constants of <code>defaults_stable</code>, and clamps velocities, which the model does not include.</li>
+  </ul>
+  <p class="note">Plan: <code>docs/plan-mini-csp.md</code>; specification: <code>domains/csp/README.md</code>; ledger: <code>domains/csp/LEDGER.md</code>. A comparison with CALYPSO itself on the same systems is optional and not a dependency.</p>
+</section>
+
+</main>
+</div>
+
+<footer><div class="in">
+  <span>Formal in Silico · status snapshot 7 October 2026<span class="updated"> · updated <time datetime="2026-10-07T22:13+08:00">2026-10-07 22:13 UTC+8</time></span></span>
+  <span><a href="./">Programme</a> · <a href="progress.html">Progress</a> · <a href="showcases.html">Showcases</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="zh/csp.html" hreflang="zh-CN">中文版</a></span>
+</div></footer>
+</body>
+</html>

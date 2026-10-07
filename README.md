@@ -13,7 +13,8 @@ dft.html            mini-DFT, goal G1 against DFTK.jl
 fem.html            mini-FEM, goal G2 against scikit-fem
 md.html             mini-MD v0 against ASE
 calphad.html        mini-CALPHAD, goal G3 against pycalphad
-zh/…                The same seven pages in Chinese
+csp.html            mini-CSP v0, certified structure search (LJ clusters)
+zh/…                The same eight pages in Chinese
 assets/style.css    Shared styles (light and dark)
 assets/site.js      Theme toggle and table-of-contents highlight
 assets/chart.js     Line charts on the MD and CALPHAD pages (data inline in each page)
