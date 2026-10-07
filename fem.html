@@ -34,11 +34,11 @@
 
 <div class="hero small"><div class="hero-in">
   <nav class="domnav" aria-label="Domains"><a href="progress.html">← Progress</a><a href="dft.html">mini-DFT</a><a href="fem.html" aria-current="page">mini-FEM</a><a href="md.html">mini-MD</a><a href="calphad.html">mini-CALPHAD</a><a href="csp.html">mini-CSP</a></nav>
-  <p class="eyebrow">Domain · goal G2 · status snapshot 6 October 2026</p>
+  <p class="eyebrow">Domain · goal G2 · status snapshot 8 October 2026</p>
   <h1>mini-FEM</h1>
   <p class="lead">One-dimensional finite elements — Poisson with P1 elements and beams with cubic Hermite elements — whose certificates speak about the <b>true solution of the continuous problem</b>, not just the discrete one. Goal G2 is feature parity with scikit-fem 12.0.2.</p>
   <div class="stats">
-    <div class="stat"><b>20</b><span>claims in the trust ledger: 6 at T4, 12 at T3, 2 at T0 (problem echo and parsing)</span></div>
+    <div class="stat"><b>21</b><span>claims in the trust ledger: 6 at T4, 12 at T3, 3 at T0 (problem echo, parsing and exit code)</span></div>
     <div class="stat"><b>12 / 27</b><span>scikit-fem parity items done, all 1D; the eigenvalue problem agrees</span></div>
     <div class="stat"><b>≤ 3×10⁻¹⁵</b><span>width of the Lean intervals for the true nodal values</span></div>
     <div class="stat"><b>0.85 – 1.00</b><span>sampled true error ÷ proved max-error bound</span></div>
@@ -73,13 +73,13 @@
 <section id="claims">
   <p class="sec-no">02</p>
   <h2>Claims in the trust ledger</h2>
-  <div class="sbar big" role="img" aria-label="20 claims: 6 at T4, 12 at T3, 2 at T0">
-    <i class="sw-t4" style="flex:6"></i><i class="sw-t3" style="flex:12"></i><i class="sw-t0" style="flex:2"></i>
+  <div class="sbar big" role="img" aria-label="21 claims: 6 at T4, 12 at T3, 3 at T0">
+    <i class="sw-t4" style="flex:6"></i><i class="sw-t3" style="flex:12"></i><i class="sw-t0" style="flex:3"></i>
   </div>
   <div class="legend">
     <span><i class="sw-t4"></i>T4 end to end · 6</span>
     <span><i class="sw-t3"></i>T3 machine proof · 12</span>
-    <span><i class="sw-t0"></i>T0 tested · 2</span>
+    <span><i class="sw-t0"></i>T0 tested · 3</span>
   </div>
   <div class="tbl"><table>
     <thead><tr><th>Claim</th><th>Statement</th><th>Tier</th></tr></thead>
@@ -103,6 +103,7 @@
       <tr><td class="l">FEM-B06</td><td>Problem echo: equation, L, both boundary conditions with their kind and exact coefficients, and a canonical right-hand side</td><td class="st"><span class="tag n">T0</span></td></tr>
       <tr><td class="l">FEM-B07</td><td>Strict parsing: unknown, repeated, out-of-range or malformed lines are errors; the right-hand-side parser is total with a node limit</td><td class="st"><span class="tag n">T0</span></td></tr>
       <tr><td class="l">FEM-B10</td><td>Pinned statements: the P1 <code>solution</code> is the unique classical solution; the beam’s classical solution exists and is unique</td><td class="st"><span class="tag s">T4</span></td></tr>
+      <tr><td class="l">FEM-B11</td><td>One exit-code rule (second adversarial review, 7 October): 0 only if no line starts with a tag ending in <code>_FAIL</code> or <code>_PARTIAL</code>; 3 when the main check passed and a secondary one failed; 1 rejected, 2 unreadable</td><td class="st"><span class="tag n">T0</span></td></tr>
       <tr><td class="l">FEM-B03</td><td>Beam checker soundness: intervals for values and slopes, and the max-error bound</td><td class="st"><span class="tag s">T4</span></td></tr>
     </tbody>
   </table></div>
@@ -204,7 +205,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · status snapshot 6 October 2026<span class="updated"> · updated <time datetime="2026-10-07T22:14+08:00">2026-10-07 22:14 UTC+8</time></span></span>
+  <span>Formal in Silico · status snapshot 8 October 2026<span class="updated"> · updated <time datetime="2026-10-08T05:37+08:00">2026-10-08 05:37 UTC+8</time></span></span>
   <span><a href="./">Programme</a> · <a href="progress.html">Progress</a> · <a href="showcases.html">Showcases</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="zh/fem.html" hreflang="zh-CN">中文版</a></span>
 </div></footer>
 </body>

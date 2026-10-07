@@ -35,11 +35,11 @@
 
 <div class="hero small"><div class="hero-in">
   <nav class="domnav" aria-label="Domains"><a href="progress.html">← Progress</a><a href="dft.html">mini-DFT</a><a href="fem.html">mini-FEM</a><a href="md.html">mini-MD</a><a href="calphad.html" aria-current="page">mini-CALPHAD</a><a href="csp.html">mini-CSP</a></nav>
-  <p class="eyebrow">Domain · goal G3 · status snapshot 6 October 2026</p>
+  <p class="eyebrow">Domain · goal G3 · status snapshot 8 October 2026</p>
   <h1>mini-CALPHAD</h1>
   <p class="lead">Phase equilibria of binary alloys, read from the same TDB thermodynamic databases that pycalphad uses. The Lean checker certifies the <b>true global equilibrium</b> of the database model — the lowest Gibbs energy over every possible combination of phases — not only the solution the driver happened to find. Since 4 October the checker reads the TDB file itself, so its conclusions are about the model the database defines, and a second kind of certificate proves that a phase has <i>no</i> miscibility gap. Goal G3, set on 1 October 2026, is feature parity with pycalphad 0.11.1.</p>
   <div class="stats">
-    <div class="stat"><b>25</b><span>claims in the trust ledger: 9 at T4, 12 at T3, and 4 at T0: the Lean reading of TDB files, a definition, and the checker’s echo, hash and output escaping</span></div>
+    <div class="stat"><b>28</b><span>claims in the trust ledger: 9 at T4, 12 at T3, and 7 at T0: the Lean reading of TDB files, a definition, and the checker’s echo, hash, output escaping, phase-table completeness, header and exit code</span></div>
     <div class="stat"><b>18 / 25</b><span>pycalphad parity items done: all of C0; in C1 phase diagrams with certified region partitions, magnetism, driving forces, sharp chemical potentials and thermodynamic properties; in C2 sublattice phases with up to two mixing sublattices and conditions on a chemical potential or an activity</span></div>
     <div class="stat"><b>29 / 29</b><span>pycalphad equilibria inside the Lean intervals and windows</span></div>
     <div class="stat"><b>246 650</b><span>grid points in 316 binary systems from 17 databases, each certified against its TDB file in the <a href="#audit">database audit</a></span></div>
@@ -210,13 +210,13 @@ Lean  EXISTS</pre>
 <section id="claims">
   <p class="sec-no">08</p>
   <h2>Claims in the trust ledger</h2>
-  <div class="sbar big" role="img" aria-label="25 claims: 9 at T4, 12 at T3, 4 at T0">
-    <i class="sw-t4" style="flex:9"></i><i class="sw-t3" style="flex:12"></i><i class="sw-t0" style="flex:4"></i>
+  <div class="sbar big" role="img" aria-label="28 claims: 9 at T4, 12 at T3, 7 at T0">
+    <i class="sw-t4" style="flex:9"></i><i class="sw-t3" style="flex:12"></i><i class="sw-t0" style="flex:7"></i>
   </div>
   <div class="legend">
     <span><i class="sw-t4"></i>T4 end to end · 9</span>
     <span><i class="sw-t3"></i>T3 machine proof · 12</span>
-    <span><i class="sw-t0"></i>T0 tested · 4</span>
+    <span><i class="sw-t0"></i>T0 tested · 7</span>
   </div>
   <div class="tbl"><table>
     <thead><tr><th>Claim</th><th>Statement</th><th>Tier</th></tr></thead>
@@ -246,6 +246,9 @@ Lean  EXISTS</pre>
       <tr><td class="l">CAL-I03</td><td>The certified problem is echoed in every mode; repeated certificate lines are rejected</td><td class="st"><span class="tag n">T0</span></td></tr>
       <tr><td class="l">CAL-I04</td><td>SHA-256 of the TDB file, computed in Lean by the checker (unproved; matches <code>sha256sum</code> and <code>hashlib</code>)</td><td class="st"><span class="tag n">T0</span></td></tr>
       <tr><td class="l">CAL-I05</td><td>Output escaping: names escaped to printable ASCII, only newlines and spaces as separators; convex mode prints <code>CONVEX</code> only with exit code 0</td><td class="st"><span class="tag n">T0</span></td></tr>
+      <tr><td class="l">CAL-I06</td><td>Complete phase table in <code>--tdb</code> mode (round-1 record R3): an equilibrium, chemical-potential, activity or map certificate must list every computable TDB phase of the system, or the user names the subset with <code>--phases</code> on the checker’s command line</td><td class="st"><span class="tag n">T0</span></td></tr>
+      <tr><td class="l">CAL-I07</td><td>The first line is exactly a known kind and version (<code>fis-calphad 1</code>, <code>-convex 1</code>, <code>-mu 1</code>, <code>-acr 1</code>, <code>-map 1</code>, <code>-prop 1</code>)</td><td class="st"><span class="tag n">T0</span></td></tr>
+      <tr><td class="l">CAL-I08</td><td>One exit-code rule (second adversarial review, 7 October): 0 only if no line starts with a tag ending in <code>_FAIL</code> or <code>_PARTIAL</code>; 3 when the main check passed and a secondary one failed; 1 rejected, 2 unreadable</td><td class="st"><span class="tag n">T0</span></td></tr>
     </tbody>
   </table></div>
 </section>
@@ -376,7 +379,7 @@ Lean  EXISTS</pre>
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · status snapshot 6 October 2026<span class="updated"> · updated <time datetime="2026-10-07T22:14+08:00">2026-10-07 22:14 UTC+8</time></span></span>
+  <span>Formal in Silico · status snapshot 8 October 2026<span class="updated"> · updated <time datetime="2026-10-08T05:37+08:00">2026-10-08 05:37 UTC+8</time></span></span>
   <span><a href="./">Programme</a> · <a href="progress.html">Progress</a> · <a href="showcases.html">Showcases</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="zh/calphad.html" hreflang="zh-CN">中文版</a></span>
 </div></footer>
 </body>

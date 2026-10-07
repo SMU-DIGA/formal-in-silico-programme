@@ -43,9 +43,9 @@
     <div class="j f"><span class="k">IEEE 754</span><span class="e">|fl(<i class="v">E<sub>h</sub></i>) − <i class="v">E<sub>h</sub></i>| ≤ <i class="v">ε</i><sub>round</sub></span></div>
   </div>
   <div class="stats">
-    <div class="stat"><b>256</b><span>条命题登记在可信账本中</span></div>
-    <div class="stat"><b>234</b><span>条已有机器证明（T3 或 T4）</span></div>
-    <div class="stat"><b>83</b><span>条达到端到端等级 T4：检查器可靠性、内核安全与内核浮点</span></div>
+    <div class="stat"><b>298</b><span>条命题登记在可信账本中</span></div>
+    <div class="stat"><b>265</b><span>条已有机器证明（T3 或 T4）</span></div>
+    <div class="stat"><b>96</b><span>条达到端到端等级 T4：检查器可靠性、内核安全与内核浮点</span></div>
     <div class="stat"><b>4</b><span>个参照程序交叉校验：DFTK.jl、scikit-fem、ASE 与 pycalphad</span></div>
   </div>
   <div class="cta">
@@ -61,6 +61,15 @@
   <h2>动态</h2>
   <div class="prose"><p>五个领域新增的功能、研究结果，以及论文与本网站的变化，新的在前。逐项状态见<a href="progress.html">实现进度</a>；这里引用的命题都登记在可信账本中。</p></div>
   <ol class="news">
+    <li><time datetime="2026-10-08">2026-10-08</time><ul>
+      <li><span class="tag n">DFT</span>力的第二阶段：<code>--pot sites --forces</code> 现在对 rHF Γ 点（零温，或 Fermi–Dirac、Gaussian 展宽）给出每个高斯格点上的力及其合力的严格区间；有证书能量的有限差分与 DFTK 的 <code>compute_forces</code> 都在区间内（DFT-N04–N08）。<a href="dft.html#forces">详情 →</a></li>
+      <li><span class="tag n">DFT</span>共线自旋完成：加自旋插值 PW92 关联时，检查器现在也认证 Γ 点与 k 点的零温、能量与自由能、每个自旋的能带与态密度以及命名高斯外势，DFTK 处处在区间内，DFTK 对标表的共线自旋一项完成（DFT-X48–X58）。<a href="dft.html#lsda">详情 →</a></li>
+      <li><span class="tag n">DFT</span>精确交换：<code>--xc hf</code> 求解有限温度 Γ 点的闭壳层 Hartree–Fock，检查器证明 HF SCF 方程在证书附近恰有一个解并界住其化学势（DFT-H01–H08）；DFTK 自己的 HF SCF 在这些一维体系上不收敛，所以与 DFTK 的比较是 Fock 矩阵与能量分项的不动点检查（DFT-H11），HF 的能量区间尚无证书。<a href="dft.html#hf">详情 →</a></li>
+      <li><span class="tag n">DFT</span>截断极限 <i class="v">E</i><sub>∞</sub> 在 Lean 中被证明等于写在 Fourier 空间的连续模型的基态能量，<code>LIMIT_OK</code> 因此也界住连续能量（DFT-C02 升为 T3，C03–C09）；它与 <i class="v">H</i>¹ 上算子模型的等价记为假设 A-DFT-08。<a href="dft.html#gaps">详情 →</a></li>
+      <li><span class="tag n">检查</span>对 10 月 6 日以来新增入口的第二轮对抗式复审没有发现错误的可靠性定理，修复了八处较弱的地方，其中有五个检查器统一的退出码（次要检查未通过时为 3）、<code>--tdb</code> 证书的完整相表与自旋向下 k 点行的输入门（DFT-I09–I11、FEM-B11、MD-B14、CAL-I06–I08、CSP-B06）；现在每次运行重放 307 份伪造证书。<a href="progress.html#how">详情 →</a></li>
+      <li><span class="tag n">检查</span>模糊测试在 CALPHAD 驱动的相图模式中发现一处越界写（<code>map_chord</code>，不在可信链内），已修复，出错的输入成为每次模糊测试都跑的固定回归用例。</li>
+      <li><span class="tag n">论文</span>论文稿补上了 10 月 7 日与 8 日的工作；账本现有 298 条命题，其中 265 条有机器证明。</li>
+    </ul></li>
     <li><time datetime="2026-10-07">2026-10-07</time><ul>
       <li><span class="tag n">网站</span>mini-CSP 有了自己的领域页面，导航栏加上 <b>CSP</b> 标签：LJ₁₃ 上检查器的完整输出、局部极小与去重证书如何工作、粒子群与随机补充的定理、全部十条命题，以及 LJ₃…LJ₁₃ 认证最低能量与剑桥团簇数据库的对照（<a href="csp.html">mini-CSP</a>）。</li>
       <li><span class="tag n">检查</span>对四个检查器的可靠性复审查出的漏洞已全部修复：MD 检查器曾接受原子重合、没有步数或 σ = 0 的证书（Lean 的 0⁻¹ = 0 使它们看起来无害），从 TDB 文件读入的 CALPHAD 相名可以注入伪造的输出行，若干问题数据没有回显。现在 MD 的这些条件属于已验证的检查；每个检查器都以精确的 <code>PROBLEM</code> 行回显完整的问题、严格解析并转义名字；可信 C 内核的 ACSL 契约登记了指纹；<code>verify_all</code> 留下运行记录并报告跳过的用例（MD-B06–B09，CAL-B08、B12、I03–I05，FEM-B06、B07、B10，DFT-I05–I08）。<a href="progress.html#ledger">详情 →</a></li>
@@ -85,6 +94,9 @@
       <li><span class="tag n">检查</span>对检查器做了一次对抗式复审（攻击者控制证书）：修复七处缺陷（伪造的名字注入输出行、巨大指数让检查器卡死、k 点不全时仍输出态密度、回显未全部核对），另记录六处较弱的地方。<code>verify_all</code> 新增一步，每次重放这些伪造证书。<a href="progress.html#how">详情 →</a></li>
       <li><span class="tag n">论文</span>论文稿补上了 10 月 5 日与 6 日的工作；账本现有 187 条命题，其中 179 条有机器证明。</li>
     </ul></li>
+  </ol>
+  <details class="news-more"><summary>更早：2026-09-27 至 10-05</summary>
+  <ol class="news">
     <li><time datetime="2026-10-05">2026-10-05</time><ul>
       <li><span class="tag n">CALPHAD</span>相图在每个网格温度上有完整性证书：区域划分证书对 [0, 1] 中的每个总成分给出任意平衡含有哪些相（CAL-C09、B05）。<a href="calphad.html#diagrams">详情 →</a></li>
       <li><span class="tag n">CALPHAD</span>给定化学势的平衡（pycalphad 的 <code>v.MU</code>）：任意平衡的另一个化学势、总成分与相组成（CAL-C08、B04）。</li>
@@ -95,9 +107,6 @@
       <li><span class="tag n">DFT</span>阶段 0：连续适定性、平面波先验误差估计与线性混合收敛以纸面证明达到目标 T1，线性混合的条件得到订正（DFT-C01、D06、A01）。</li>
       <li><span class="tag n">工具</span>Python 包 <code>fis</code>：运行并检查各领域，审计 TDB 文件，输出 JSON；四份已执行的教程 notebook。</li>
     </ul></li>
-  </ol>
-  <details class="news-more"><summary>更早：2026-09-27 至 10-04</summary>
-  <ol class="news">
     <li><time datetime="2026-10-04">2026-10-04</time><ul>
       <li><span class="tag n">研究</span>对 pycalphad 自带的 17 个数据库做严格审计：316 个二元体系的 246 650 个平衡，五个反常液相混溶隙被夹在 1 K 内，以及 pycalphad 漏掉的平衡。<a href="calphad.html#audit">详情 →</a></li>
       <li><span class="tag n">研究</span>证明一个离散 LDA Kohn–Sham 问题至少有五个两两不同的精确解。<a href="dft.html#multiple">详情 →</a></li>
@@ -403,7 +412,7 @@
   </div>
   <h3 style="margin-top:28px">待决问题</h3>
   <ul class="prose">
-    <li><b>一维 rHF 的连续理论。</b>2026-10-05 已解决到 T1：文献中没有直接覆盖一维周期 Hartree 核的结果，项目自己补了纸面证明（零温与有限温度的基态存在、密度唯一，截断极限等于连续能量，解析外势下平面波的指数收敛）。剩下的是机器化，与下一条有关。</li>
+    <li><b>一维 rHF 的连续理论。</b>2026-10-05 已解决到 T1：文献中没有直接覆盖一维周期 Hartree 核的结果，项目自己补了纸面证明（零温与有限温度的基态存在、密度唯一，截断极限等于连续能量，解析外势下平面波的指数收敛）。剩下的是机器化，与下一条有关。截断极限一条已于 2026-10-08 机器化（DFT-C02，T3）：连续模型写在 Fourier 空间，绕开周期 Sobolev 空间；它与 H¹ 上算子模型的等价是假设 A-DFT-08。</li>
     <li><b>Sobolev 空间的机器化深度。</b>先公理化到什么程度，哪些定理值得优先证明？</li>
     <li><b>随机性。</b>Langevin 动力学和随机初猜涉及概率性质，TLA+ 只描述不确定性。</li>
     <li><b>GPU。</b>异步流和弱内存模型如何进入 TLA+ 规范。</li>
@@ -434,7 +443,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · 项目纲领 v0.3 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-10-07T22:14+08:00">2026-10-07 22:14 UTC+8</time></span></span>
+  <span>Formal in Silico · 项目纲领 v0.3 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-10-08T05:37+08:00">2026-10-08 05:37 UTC+8</time></span></span>
   <span><a href="progress.html">实现进度</a> · <a href="showcases.html">成果展示</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="../" hreflang="en">English</a></span>
 </div></footer>
 </body>

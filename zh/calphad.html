@@ -35,11 +35,11 @@
 
 <div class="hero small"><div class="hero-in">
   <nav class="domnav" aria-label="领域"><a href="progress.html">← 进度</a><a href="dft.html">mini-DFT</a><a href="fem.html">mini-FEM</a><a href="md.html">mini-MD</a><a href="calphad.html" aria-current="page">mini-CALPHAD</a><a href="csp.html">mini-CSP</a></nav>
-  <p class="eyebrow">领域 · 目标 G3 · 现状快照 2026-10-06</p>
+  <p class="eyebrow">领域 · 目标 G3 · 现状快照 2026-10-08</p>
   <h1>mini-CALPHAD</h1>
   <p class="lead">二元合金的相平衡，读取与 pycalphad 相同的 TDB 热力学数据库。Lean 检查器认证的是数据库模型<b>真正的全局平衡</b>——在所有可能的相组合中 Gibbs 能最低者——而不只是驱动碰巧找到的解。10 月 4 日起检查器自己读 TDB 文件，结论直接关于数据库定义的模型；另一种证书可以证明某个相<i>没有</i>混溶隙。目标 G3 设定于 2026-10-01：与 pycalphad 0.11.1 功能对齐。</p>
   <div class="stats">
-    <div class="stat"><b>25</b><span>条命题登记在可信账本中：T4 9 条，T3 12 条，T0 4 条（TDB 读法的 Lean 定义，检查器的回显、哈希与输出转义）</span></div>
+    <div class="stat"><b>28</b><span>条命题登记在可信账本中：T4 9 条，T3 12 条，T0 7 条（TDB 读法的 Lean 定义，检查器的回显、哈希、输出转义、相表完整性、首行与退出码）</span></div>
     <div class="stat"><b>18 / 25</b><span>项 pycalphad 对齐功能完成：C0 全部；C1 中带区域划分证书的相图、磁性、驱动力、单相区化学势与热力学性质；C2 中至多两个混合亚点阵的亚点阵相与以化学势或活度为条件</span></div>
     <div class="stat"><b>29 / 29</b><span>个 pycalphad 平衡落在 Lean 的区间与窗口内</span></div>
     <div class="stat"><b>246 650</b><span>个网格点，17 个数据库的 316 个二元体系，<a href="#audit">数据库审计</a>中每点都有与 TDB 文件绑定的证书</span></div>
@@ -210,13 +210,13 @@ Lean  EXISTS</pre>
 <section id="claims">
   <p class="sec-no">08</p>
   <h2>可信账本中的命题</h2>
-  <div class="sbar big" role="img" aria-label="25 条命题：T4 9 条，T3 12 条，T0 4 条">
-    <i class="sw-t4" style="flex:9"></i><i class="sw-t3" style="flex:12"></i><i class="sw-t0" style="flex:4"></i>
+  <div class="sbar big" role="img" aria-label="28 条命题：T4 9 条，T3 12 条，T0 7 条">
+    <i class="sw-t4" style="flex:9"></i><i class="sw-t3" style="flex:12"></i><i class="sw-t0" style="flex:7"></i>
   </div>
   <div class="legend">
     <span><i class="sw-t4"></i>T4 端到端 · 9</span>
     <span><i class="sw-t3"></i>T3 机器证明 · 12</span>
-    <span><i class="sw-t0"></i>T0 测试 · 4</span>
+    <span><i class="sw-t0"></i>T0 测试 · 7</span>
   </div>
   <div class="tbl"><table>
     <thead><tr><th>命题</th><th>内容</th><th>等级</th></tr></thead>
@@ -246,6 +246,9 @@ Lean  EXISTS</pre>
       <tr><td class="l">CAL-I03</td><td>每种模式都回显被认证的问题；重复的证书行被拒绝</td><td class="st"><span class="tag n">T0</span></td></tr>
       <tr><td class="l">CAL-I04</td><td>TDB 文件的 SHA-256，由检查器在 Lean 中计算（未证明；与 <code>sha256sum</code>、<code>hashlib</code> 对照）</td><td class="st"><span class="tag n">T0</span></td></tr>
       <tr><td class="l">CAL-I05</td><td>输出转义：名字转成可打印 ASCII，只用换行与空格分隔；凸性模式只在退出码为 0 时输出 <code>CONVEX</code></td><td class="st"><span class="tag n">T0</span></td></tr>
+      <tr><td class="l">CAL-I06</td><td><code>--tdb</code> 模式的相表完整（第一轮的记录 R3）：平衡、化学势、活度与相图证书必须列出体系中 TDB 里可以计算的每个相，或由用户在检查器命令行用 <code>--phases</code> 指定子集</td><td class="st"><span class="tag n">T0</span></td></tr>
+      <tr><td class="l">CAL-I07</td><td>首行恰是已知的种类与版本号（<code>fis-calphad 1</code>、<code>-convex 1</code>、<code>-mu 1</code>、<code>-acr 1</code>、<code>-map 1</code>、<code>-prop 1</code>）</td><td class="st"><span class="tag n">T0</span></td></tr>
+      <tr><td class="l">CAL-I08</td><td>统一的退出码（10 月 7 日第二轮对抗式复审）：没有行首记号以 <code>_FAIL</code> 或 <code>_PARTIAL</code> 结尾的行时才为 0；主检查通过、次要检查未通过时为 3；拒绝为 1，无法解析为 2</td><td class="st"><span class="tag n">T0</span></td></tr>
     </tbody>
   </table></div>
 </section>
@@ -376,7 +379,7 @@ Lean  EXISTS</pre>
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · 现状快照 2026-10-06<span class="updated"> · 更新于 <time datetime="2026-10-07T22:14+08:00">2026-10-07 22:14 UTC+8</time></span></span>
+  <span>Formal in Silico · 现状快照 2026-10-08<span class="updated"> · 更新于 <time datetime="2026-10-08T05:37+08:00">2026-10-08 05:37 UTC+8</time></span></span>
   <span><a href="./">纲领</a> · <a href="progress.html">进度</a> · <a href="showcases.html">成果展示</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="../calphad.html" hreflang="en">English</a></span>
 </div></footer>
 </body>

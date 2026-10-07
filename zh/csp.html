@@ -34,11 +34,11 @@
 
 <div class="hero small"><div class="hero-in">
   <nav class="domnav" aria-label="领域"><a href="progress.html">← 进度</a><a href="dft.html">mini-DFT</a><a href="fem.html">mini-FEM</a><a href="md.html">mini-MD</a><a href="calphad.html">mini-CALPHAD</a><a href="csp.html" aria-current="page">mini-CSP</a></nav>
-  <p class="eyebrow">领域 · mini-CSP v0 · 现状快照 2026-10-07</p>
+  <p class="eyebrow">领域 · mini-CSP v0 · 现状快照 2026-10-08</p>
   <h1>mini-CSP</h1>
   <p class="lead">晶体结构预测，从 Lennard-Jones 团簇开始。搜索器（随机生成、弛豫、粒子群更新、去重，与 CALYPSO 的组成相同，只依据公开论文从零实现）<b>不受信任</b>；它提出的每个候选都交给 Lean 检查器 <code>certify-csp</code>，证明它是<b>精确的局部极小</b>（模转动、反射与平移唯一），给出严格的能量区间，并证明候选之间相同或不同。2026-10-07 开始。</p>
   <div class="stats">
-    <div class="stat"><b>10</b><span>条命题登记在可信账本中：T4 3 条，T3 5 条，T0 2 条</span></div>
+    <div class="stat"><b>11</b><span>条命题登记在可信账本中：T4 3 条，T3 5 条，T0 3 条</span></div>
     <div class="stat"><b>11 / 11</b><span>LJ₃…LJ₁₃：认证的最低能量与剑桥团簇数据库一致</span></div>
     <div class="stat"><b>≤ 7×10⁻¹⁵</b><span>同一结构上与 ASE 的能量差</span></div>
     <div class="stat"><b>≤ 2×10⁻¹⁵</b><span>输出的能量区间宽度：约 16 位有效数字</span></div>
@@ -137,13 +137,13 @@ CSP_OK 4</pre>
 <section id="claims">
   <p class="sec-no">05</p>
   <h2>可信账本中的命题</h2>
-  <div class="sbar big" role="img" aria-label="10 条命题：T4 3 条，T3 5 条，T0 2 条">
-    <i class="sw-t4" style="flex:3"></i><i class="sw-t3" style="flex:5"></i><i class="sw-t0" style="flex:2"></i>
+  <div class="sbar big" role="img" aria-label="11 条命题：T4 3 条，T3 5 条，T0 3 条">
+    <i class="sw-t4" style="flex:3"></i><i class="sw-t3" style="flex:5"></i><i class="sw-t0" style="flex:3"></i>
   </div>
   <div class="legend">
     <span><i class="sw-t4"></i>T4 端到端 · 3</span>
     <span><i class="sw-t3"></i>T3 机器证明 · 5</span>
-    <span><i class="sw-t0"></i>T0 测试 · 2</span>
+    <span><i class="sw-t0"></i>T0 测试 · 3</span>
   </div>
   <div class="tbl"><table>
     <thead><tr><th>命题</th><th>内容</th><th>等级</th></tr></thead>
@@ -157,6 +157,7 @@ CSP_OK 4</pre>
       <tr><td class="l">CSP-A01</td><td>粒子群的一阶与均方稳定区域（充要条件）；缺省参数在两个区域内（理想化模型 A-CSP-01、02）</td><td class="st"><span class="tag m">T3</span></td></tr>
       <tr><td class="l">CSP-A02</td><td>随机补充以趋于 1 的概率到达全局极小的任意邻域（理想化模型 A-CSP-03）</td><td class="st"><span class="tag m">T3</span></td></tr>
       <tr><td class="l">CSP-T01</td><td>搜索器找到 LJ₃…LJ₁₃ 的剑桥团簇数据库极小，每个输出被检查器接受；篡改的证书被拒绝（<code>verify_all</code> 的已知答案）</td><td class="st"><span class="tag n">T0</span></td></tr>
+      <tr><td class="l">CSP-B06</td><td>统一的退出码（10 月 7 日第二轮对抗式复审）：没有行首记号以 <code>_FAIL</code> 或 <code>_PARTIAL</code> 结尾的行时才为 0；主检查通过、次要检查未通过时为 3；拒绝为 1，无法解析为 2</td><td class="st"><span class="tag n">T0</span></td></tr>
       <tr><td class="l">CSP-P01</td><td>C 粒子群单步（速度截断、盒子处理、分数坐标折回）在 IEEE 754 模型下的 Frama-C/WP 证明：尚未编写，目标 T4</td><td class="st"><span class="tag n">T0</span></td></tr>
     </tbody>
   </table></div>
@@ -210,7 +211,7 @@ CSP_OK 4</pre>
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · 现状快照 2026-10-07<span class="updated"> · 更新于 <time datetime="2026-10-07T22:18+08:00">2026-10-07 22:18 UTC+8</time></span></span>
+  <span>Formal in Silico · 现状快照 2026-10-08<span class="updated"> · 更新于 <time datetime="2026-10-08T05:37+08:00">2026-10-08 05:37 UTC+8</time></span></span>
   <span><a href="./">纲领</a> · <a href="progress.html">进度</a> · <a href="showcases.html">成果展示</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="../csp.html" hreflang="en">English</a></span>
 </div></footer>
 </body>

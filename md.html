@@ -35,11 +35,11 @@
 
 <div class="hero small"><div class="hero-in">
   <nav class="domnav" aria-label="Domains"><a href="progress.html">← Progress</a><a href="dft.html">mini-DFT</a><a href="fem.html">mini-FEM</a><a href="md.html" aria-current="page">mini-MD</a><a href="calphad.html">mini-CALPHAD</a><a href="csp.html">mini-CSP</a></nav>
-  <p class="eyebrow">Domain · mini-MD v0 · status snapshot 5 October 2026</p>
+  <p class="eyebrow">Domain · mini-MD v0 · status snapshot 8 October 2026</p>
   <h1>mini-MD</h1>
   <p class="lead">A one-dimensional Lennard-Jones chain integrated with velocity Verlet. The Lean checker bounds how far the computed trajectory is from the <b>true solution of Newton’s equations</b> — for every step, and from the initial state over about one vibration period — and computes the conserved quantities exactly. Built on 1 October 2026 as the charter’s phase-2 MD version and cross-checked against ASE 3.29.</p>
   <div class="stats">
-    <div class="stat"><b>21</b><span>claims in the trust ledger: 8 at T4, 12 at T3, 1 at T0 (the problem echo)</span></div>
+    <div class="stat"><b>22</b><span>claims in the trust ledger: 8 at T4, 12 at T3, 2 at T0 (the problem echo and the exit code)</span></div>
     <div class="stat"><b>0.99</b><span>true local error ÷ certified local bound: the bound is almost exact</span></div>
     <div class="stat"><b>≤ 5×10⁻¹⁴</b><span>difference from ASE in positions, momenta and energy</span></div>
     <div class="stat"><b>≈ 1 period</b><span>covered by the global bound from the initial state (t = 0.5 for 8 atoms)</span></div>
@@ -137,13 +137,13 @@ Lean  EPSMAX 0.00000004460799189706</pre>
 <section id="claims">
   <p class="sec-no">05</p>
   <h2>Claims in the trust ledger</h2>
-  <div class="sbar big" role="img" aria-label="21 claims: 8 at T4, 12 at T3, 1 at T0">
-    <i class="sw-t4" style="flex:8"></i><i class="sw-t3" style="flex:12"></i><i class="sw-t0" style="flex:1"></i>
+  <div class="sbar big" role="img" aria-label="22 claims: 8 at T4, 12 at T3, 2 at T0">
+    <i class="sw-t4" style="flex:8"></i><i class="sw-t3" style="flex:12"></i><i class="sw-t0" style="flex:2"></i>
   </div>
   <div class="legend">
     <span><i class="sw-t4"></i>T4 end to end · 8</span>
     <span><i class="sw-t3"></i>T3 machine proof · 12</span>
-    <span><i class="sw-t0"></i>T0 tested · 1</span>
+    <span><i class="sw-t0"></i>T0 tested · 2</span>
   </div>
   <div class="tbl"><table>
     <thead><tr><th>Claim</th><th>Statement</th><th>Tier</th></tr></thead>
@@ -169,6 +169,7 @@ Lean  EPSMAX 0.00000004460799189706</pre>
       <tr><td class="l">MD-B07</td><td>Checker soundness: at least one step, and every state Q₀ … Qₙ, the final one included, strictly ordered, so all distances are positive</td><td class="st"><span class="tag s">T4</span></td></tr>
       <tr><td class="l">MD-B08</td><td>Checker soundness: <code>E0</code> and the drifts are the genuine LJ energy at ordered states, and <code>VERLET_RES</code> evaluates forces only at ordered states; pinned restatements of B01, B02, B04</td><td class="st"><span class="tag s">T4</span></td></tr>
       <tr><td class="l">MD-B09</td><td>Problem echo (N, steps, ε, σ, h, masses, initial positions and momenta, exact) and strict parsing; <code>make verify-all</code> compares it with the driver’s command line</td><td class="st"><span class="tag n">T0</span></td></tr>
+      <tr><td class="l">MD-B14</td><td>One exit-code rule (second adversarial review, 7 October): 0 only if no line starts with a tag ending in <code>_FAIL</code> or <code>_PARTIAL</code>; 3 when the main check passed and a secondary one failed; 1 rejected, 2 unreadable</td><td class="st"><span class="tag n">T0</span></td></tr>
     </tbody>
   </table></div>
   <p class="note">Verlet symplecticity at T3 (MD-D03) is half of the charter’s phase-2 exit criterion; the other half, Céa’s lemma, is on the <a href="fem.html#claims">FEM page</a>.</p>
@@ -209,7 +210,7 @@ Lean  EPSMAX 0.00000004460799189706</pre>
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · status snapshot 5 October 2026<span class="updated"> · updated <time datetime="2026-10-07T22:14+08:00">2026-10-07 22:14 UTC+8</time></span></span>
+  <span>Formal in Silico · status snapshot 8 October 2026<span class="updated"> · updated <time datetime="2026-10-08T05:37+08:00">2026-10-08 05:37 UTC+8</time></span></span>
   <span><a href="./">Programme</a> · <a href="progress.html">Progress</a> · <a href="showcases.html">Showcases</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="zh/md.html" hreflang="zh-CN">中文版</a></span>
 </div></footer>
 </body>

@@ -35,11 +35,11 @@
 
 <div class="hero small"><div class="hero-in">
   <nav class="domnav" aria-label="领域"><a href="progress.html">← 进度</a><a href="dft.html">mini-DFT</a><a href="fem.html">mini-FEM</a><a href="md.html" aria-current="page">mini-MD</a><a href="calphad.html">mini-CALPHAD</a><a href="csp.html">mini-CSP</a></nav>
-  <p class="eyebrow">领域 · mini-MD v0 · 现状快照 2026-10-05</p>
+  <p class="eyebrow">领域 · mini-MD v0 · 现状快照 2026-10-08</p>
   <h1>mini-MD</h1>
   <p class="lead">一维 Lennard-Jones 原子链，Velocity Verlet 积分。Lean 检查器给出计算轨道与 <b>Newton 方程真解</b>之间距离的严格界：每一步都有，从初值出发的整体界覆盖约一个振动周期；守恒量则精确计算。2026-10-01 作为纲领阶段 2 的 MD 基础版本完成，与 ASE 3.29 交叉校验。</p>
   <div class="stats">
-    <div class="stat"><b>21</b><span>条命题登记在可信账本中：T4 8 条，T3 12 条，T0 1 条（问题回显）</span></div>
+    <div class="stat"><b>22</b><span>条命题登记在可信账本中：T4 8 条，T3 12 条，T0 2 条（问题回显与退出码）</span></div>
     <div class="stat"><b>0.99</b><span>真实局部误差 ÷ 证书的局部界：界几乎是精确的</span></div>
     <div class="stat"><b>≤ 5×10⁻¹⁴</b><span>与 ASE 在位置、动量、能量上的差</span></div>
     <div class="stat"><b>约 1 个周期</b><span>由从初值出发的整体界覆盖（8 个原子时 t = 0.5）</span></div>
@@ -137,13 +137,13 @@ Lean  EPSMAX 0.00000004460799189706</pre>
 <section id="claims">
   <p class="sec-no">05</p>
   <h2>可信账本中的命题</h2>
-  <div class="sbar big" role="img" aria-label="21 条命题：T4 8 条，T3 12 条，T0 1 条">
-    <i class="sw-t4" style="flex:8"></i><i class="sw-t3" style="flex:12"></i><i class="sw-t0" style="flex:1"></i>
+  <div class="sbar big" role="img" aria-label="22 条命题：T4 8 条，T3 12 条，T0 2 条">
+    <i class="sw-t4" style="flex:8"></i><i class="sw-t3" style="flex:12"></i><i class="sw-t0" style="flex:2"></i>
   </div>
   <div class="legend">
     <span><i class="sw-t4"></i>T4 端到端 · 8</span>
     <span><i class="sw-t3"></i>T3 机器证明 · 12</span>
-    <span><i class="sw-t0"></i>T0 测试 · 1</span>
+    <span><i class="sw-t0"></i>T0 测试 · 2</span>
   </div>
   <div class="tbl"><table>
     <thead><tr><th>编号</th><th>命题</th><th>等级</th></tr></thead>
@@ -169,6 +169,7 @@ Lean  EPSMAX 0.00000004460799189706</pre>
       <tr><td class="l">MD-B07</td><td>检查器可靠：至少一步，全部状态 Q₀ … Qₙ（包括末态）按编号严格递增，所有原子间距为正</td><td class="st"><span class="tag s">T4</span></td></tr>
       <tr><td class="l">MD-B08</td><td>检查器可靠：<code>E0</code> 与漂移就是有序状态处真正的 LJ 能量，<code>VERLET_RES</code> 只在有序状态处求力；B01、B02、B04 的陈述指纹</td><td class="st"><span class="tag s">T4</span></td></tr>
       <tr><td class="l">MD-B09</td><td>问题回显（N、步数、ε、σ、h、质量、初始位置与动量，精确值）与严格解析，<code>make verify-all</code> 与驱动的命令行对照</td><td class="st"><span class="tag n">T0</span></td></tr>
+      <tr><td class="l">MD-B14</td><td>统一的退出码（10 月 7 日第二轮对抗式复审）：没有行首记号以 <code>_FAIL</code> 或 <code>_PARTIAL</code> 结尾的行时才为 0；主检查通过、次要检查未通过时为 3；拒绝为 1，无法解析为 2</td><td class="st"><span class="tag n">T0</span></td></tr>
     </tbody>
   </table></div>
   <p class="note">Verlet 辛性达到 T3（MD-D03）是纲领阶段 2 退出标准的一半；另一半 Céa 引理见 <a href="fem.html#claims">FEM 页</a>。</p>
@@ -209,7 +210,7 @@ Lean  EPSMAX 0.00000004460799189706</pre>
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · 现状快照 2026-10-05<span class="updated"> · 更新于 <time datetime="2026-10-07T22:14+08:00">2026-10-07 22:14 UTC+8</time></span></span>
+  <span>Formal in Silico · 现状快照 2026-10-08<span class="updated"> · 更新于 <time datetime="2026-10-08T05:37+08:00">2026-10-08 05:37 UTC+8</time></span></span>
   <span><a href="./">纲领</a> · <a href="progress.html">进度</a> · <a href="showcases.html">成果展示</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="../md.html" hreflang="en">English</a></span>
 </div></footer>
 </body>

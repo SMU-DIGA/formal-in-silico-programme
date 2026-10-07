@@ -34,11 +34,11 @@
 
 <div class="hero small"><div class="hero-in">
   <nav class="domnav" aria-label="领域"><a href="progress.html">← 进度</a><a href="dft.html">mini-DFT</a><a href="fem.html" aria-current="page">mini-FEM</a><a href="md.html">mini-MD</a><a href="calphad.html">mini-CALPHAD</a><a href="csp.html">mini-CSP</a></nav>
-  <p class="eyebrow">领域 · 目标 G2 · 现状快照 2026-10-06</p>
+  <p class="eyebrow">领域 · 目标 G2 · 现状快照 2026-10-08</p>
   <h1>mini-FEM</h1>
   <p class="lead">一维有限元：Poisson 方程的 P1 线性元与梁方程的三次 Hermite 元。证书的结论针对<b>连续问题的真解</b>，而不只是离散解。目标 G2：与 scikit-fem 12.0.2 功能对齐。</p>
   <div class="stats">
-    <div class="stat"><b>20</b><span>条命题登记在可信账本中：T4 6 条，T3 12 条，T0 2 条（问题回显与解析）</span></div>
+    <div class="stat"><b>21</b><span>条命题登记在可信账本中：T4 6 条，T3 12 条，T0 3 条（问题回显、解析与退出码）</span></div>
     <div class="stat"><b>12 / 27</b><span>项 scikit-fem 对齐功能完成，均为一维；本征值问题已一致</span></div>
     <div class="stat"><b>≤ 3×10⁻¹⁵</b><span>真解节点值的 Lean 区间宽度</span></div>
     <div class="stat"><b>0.85 – 1.00</b><span>采样得到的真实误差 ÷ 证明的最大误差界</span></div>
@@ -73,13 +73,13 @@
 <section id="claims">
   <p class="sec-no">02</p>
   <h2>可信账本中的命题</h2>
-  <div class="sbar big" role="img" aria-label="20 条命题：T4 6 条，T3 12 条，T0 2 条">
-    <i class="sw-t4" style="flex:6"></i><i class="sw-t3" style="flex:12"></i><i class="sw-t0" style="flex:2"></i>
+  <div class="sbar big" role="img" aria-label="21 条命题：T4 6 条，T3 12 条，T0 3 条">
+    <i class="sw-t4" style="flex:6"></i><i class="sw-t3" style="flex:12"></i><i class="sw-t0" style="flex:3"></i>
   </div>
   <div class="legend">
     <span><i class="sw-t4"></i>T4 端到端 · 6</span>
     <span><i class="sw-t3"></i>T3 机器证明 · 12</span>
-    <span><i class="sw-t0"></i>T0 测试 · 2</span>
+    <span><i class="sw-t0"></i>T0 测试 · 3</span>
   </div>
   <div class="tbl"><table>
     <thead><tr><th>编号</th><th>命题</th><th>等级</th></tr></thead>
@@ -103,6 +103,7 @@
       <tr><td class="l">FEM-B06</td><td>问题回显：方程、L、两端边界条件的类型与精确系数、规范化的右端项</td><td class="st"><span class="tag n">T0</span></td></tr>
       <tr><td class="l">FEM-B07</td><td>严格解析：未知、重复、越界或格式错误的行都是错误；右端项的解析是全函数，有节点上限</td><td class="st"><span class="tag n">T0</span></td></tr>
       <tr><td class="l">FEM-B10</td><td>陈述指纹：P1 的 <code>solution</code> 就是唯一的经典解，梁的经典解存在且唯一</td><td class="st"><span class="tag s">T4</span></td></tr>
+      <tr><td class="l">FEM-B11</td><td>统一的退出码（10 月 7 日第二轮对抗式复审）：没有行首记号以 <code>_FAIL</code> 或 <code>_PARTIAL</code> 结尾的行时才为 0；主检查通过、次要检查未通过时为 3；拒绝为 1，无法解析为 2</td><td class="st"><span class="tag n">T0</span></td></tr>
       <tr><td class="l">FEM-B03</td><td>梁检查器可靠：节点值与斜率的区间，以及最大误差界</td><td class="st"><span class="tag s">T4</span></td></tr>
     </tbody>
   </table></div>
@@ -204,7 +205,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · 现状快照 2026-10-06<span class="updated"> · 更新于 <time datetime="2026-10-07T22:14+08:00">2026-10-07 22:14 UTC+8</time></span></span>
+  <span>Formal in Silico · 现状快照 2026-10-08<span class="updated"> · 更新于 <time datetime="2026-10-08T05:37+08:00">2026-10-08 05:37 UTC+8</time></span></span>
   <span><a href="./">纲领</a> · <a href="progress.html">进度</a> · <a href="showcases.html">成果展示</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="../fem.html" hreflang="en">English</a></span>
 </div></footer>
 </body>

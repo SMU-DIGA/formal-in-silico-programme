@@ -34,11 +34,11 @@
 
 <div class="hero small"><div class="hero-in">
   <nav class="domnav" aria-label="Domains"><a href="progress.html">← Progress</a><a href="dft.html">mini-DFT</a><a href="fem.html">mini-FEM</a><a href="md.html">mini-MD</a><a href="calphad.html">mini-CALPHAD</a><a href="csp.html" aria-current="page">mini-CSP</a></nav>
-  <p class="eyebrow">Domain · mini-CSP v0 · status snapshot 7 October 2026</p>
+  <p class="eyebrow">Domain · mini-CSP v0 · status snapshot 8 October 2026</p>
   <h1>mini-CSP</h1>
   <p class="lead">Crystal structure prediction, starting with Lennard-Jones clusters. The searcher — random generation, relaxation, particle-swarm updates, deduplication, the same ingredients as CALYPSO, written from the published papers — is <b>untrusted</b>. Every candidate it proposes goes to the Lean checker <code>certify-csp</code>, which proves it an <b>exact local minimum</b>, unique up to rotation, reflection and translation, with a rigorous energy interval, and proves pairs of candidates equal or distinct. Started on 7 October 2026.</p>
   <div class="stats">
-    <div class="stat"><b>10</b><span>claims in the trust ledger: 3 at T4, 5 at T3, 2 at T0</span></div>
+    <div class="stat"><b>11</b><span>claims in the trust ledger: 3 at T4, 5 at T3, 3 at T0</span></div>
     <div class="stat"><b>11 / 11</b><span>LJ₃…LJ₁₃: the best certified energy matches the Cambridge Cluster Database</span></div>
     <div class="stat"><b>≤ 7×10⁻¹⁵</b><span>energy difference from ASE on the same structures</span></div>
     <div class="stat"><b>≤ 2×10⁻¹⁵</b><span>width of each printed energy interval: about 16 significant digits</span></div>
@@ -137,13 +137,13 @@ CSP_OK 4</pre>
 <section id="claims">
   <p class="sec-no">05</p>
   <h2>Claims in the trust ledger</h2>
-  <div class="sbar big" role="img" aria-label="10 claims: 3 at T4, 5 at T3, 2 at T0">
-    <i class="sw-t4" style="flex:3"></i><i class="sw-t3" style="flex:5"></i><i class="sw-t0" style="flex:2"></i>
+  <div class="sbar big" role="img" aria-label="11 claims: 3 at T4, 5 at T3, 3 at T0">
+    <i class="sw-t4" style="flex:3"></i><i class="sw-t3" style="flex:5"></i><i class="sw-t0" style="flex:3"></i>
   </div>
   <div class="legend">
     <span><i class="sw-t4"></i>T4 end to end · 3</span>
     <span><i class="sw-t3"></i>T3 machine proof · 5</span>
-    <span><i class="sw-t0"></i>T0 tested · 2</span>
+    <span><i class="sw-t0"></i>T0 tested · 3</span>
   </div>
   <div class="tbl"><table>
     <thead><tr><th>Claim</th><th>Statement</th><th>Tier</th></tr></thead>
@@ -157,6 +157,7 @@ CSP_OK 4</pre>
       <tr><td class="l">CSP-A01</td><td>Particle-swarm first-order and mean-square stability regions, “if and only if”; the default parameters lie in both (idealised model A-CSP-01, 02)</td><td class="st"><span class="tag m">T3</span></td></tr>
       <tr><td class="l">CSP-A02</td><td>Random restarts reach any neighbourhood of the global minimum with probability tending to 1 (idealised model A-CSP-03)</td><td class="st"><span class="tag m">T3</span></td></tr>
       <tr><td class="l">CSP-T01</td><td>The searcher finds the Cambridge Cluster Database minima of LJ₃…LJ₁₃ and every output is accepted by the checker; tampered certificates are rejected (known answers in <code>verify_all</code>)</td><td class="st"><span class="tag n">T0</span></td></tr>
+      <tr><td class="l">CSP-B06</td><td>One exit-code rule (second adversarial review, 7 October): 0 only if no line starts with a tag ending in <code>_FAIL</code> or <code>_PARTIAL</code>; 3 when the main check passed and a secondary one failed; 1 rejected, 2 unreadable</td><td class="st"><span class="tag n">T0</span></td></tr>
       <tr><td class="l">CSP-P01</td><td>Frama-C/WP proof of the C particle-swarm step (velocity clamp, box handling, fractional wrap-around) under the IEEE 754 model — not yet written, target T4</td><td class="st"><span class="tag n">T0</span></td></tr>
     </tbody>
   </table></div>
@@ -210,7 +211,7 @@ CSP_OK 4</pre>
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · status snapshot 7 October 2026<span class="updated"> · updated <time datetime="2026-10-07T22:18+08:00">2026-10-07 22:18 UTC+8</time></span></span>
+  <span>Formal in Silico · status snapshot 8 October 2026<span class="updated"> · updated <time datetime="2026-10-08T05:37+08:00">2026-10-08 05:37 UTC+8</time></span></span>
   <span><a href="./">Programme</a> · <a href="progress.html">Progress</a> · <a href="showcases.html">Showcases</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="zh/csp.html" hreflang="zh-CN">中文版</a></span>
 </div></footer>
 </body>

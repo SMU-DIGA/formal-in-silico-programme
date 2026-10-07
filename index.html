@@ -43,9 +43,9 @@
     <div class="j f"><span class="k">IEEE 754</span><span class="e">|fl(<i class="v">E<sub>h</sub></i>) − <i class="v">E<sub>h</sub></i>| ≤ <i class="v">ε</i><sub>round</sub></span></div>
   </div>
   <div class="stats">
-    <div class="stat"><b>256</b><span>claims registered in the trust ledger</span></div>
-    <div class="stat"><b>234</b><span>of them machine-proved (tier T3 or T4)</span></div>
-    <div class="stat"><b>83</b><span>at the end-to-end tier T4: checker soundness, kernel safety and kernel floating point</span></div>
+    <div class="stat"><b>298</b><span>claims registered in the trust ledger</span></div>
+    <div class="stat"><b>265</b><span>of them machine-proved (tier T3 or T4)</span></div>
+    <div class="stat"><b>96</b><span>at the end-to-end tier T4: checker soundness, kernel safety and kernel floating point</span></div>
     <div class="stat"><b>4</b><span>reference codes cross-checked: DFTK.jl, scikit-fem, ASE and pycalphad</span></div>
   </div>
   <div class="cta">
@@ -61,6 +61,15 @@
   <h2>News</h2>
   <div class="prose"><p>Features added to the five domains, research results, and changes to the paper and this site, newest first. Item-by-item status is on the <a href="progress.html">progress page</a>; every claim cited here is in the trust ledger.</p></div>
   <ol class="news">
+    <li><time datetime="2026-10-08">8 Oct 2026</time><ul>
+      <li><span class="tag n">DFT</span>Forces, phase 2: <code>--pot sites --forces</code> now gives certified intervals for the force on every Gaussian site and for their sum, for rHF at the Γ point at zero temperature and with Fermi–Dirac or Gaussian smearing; finite differences of certified energies and DFTK’s <code>compute_forces</code> lie inside (DFT-N04–N08). <a href="dft.html#forces">Details →</a></li>
+      <li><span class="tag n">DFT</span>Collinear spin is complete: with spin-interpolated PW92 correlation the checker now also certifies zero temperature at Γ and with k-points, the energy and free energy, per-spin bands and DOS, and the named Gaussian potential, with DFTK inside every interval, so the collinear-spin item of the DFTK plan is done (DFT-X48–X58). <a href="dft.html#lsda">Details →</a></li>
+      <li><span class="tag n">DFT</span>Exact exchange: <code>--xc hf</code> solves closed-shell Hartree–Fock at finite temperature at the Γ point, and the checker proves that the HF SCF equations have exactly one solution near the certificate and bounds its chemical potential (DFT-H01–H08); DFTK’s own HF SCF does not converge on these 1D systems, so the DFTK comparison is a fixed-point check of the Fock matrix and energy terms (DFT-H11), and the HF energy interval is not yet certified. <a href="dft.html#hf">Details →</a></li>
+      <li><span class="tag n">DFT</span>The truncation limit <i class="v">E</i><sub>∞</sub> is proved in Lean to equal the ground energy of the continuum model written in Fourier space, so <code>LIMIT_OK</code> also bounds the continuum energy (DFT-C02 now T3, C03–C09); the equivalence with the operator model on <i class="v">H</i>¹ is recorded as assumption A-DFT-08. <a href="dft.html#gaps">Details →</a></li>
+      <li><span class="tag n">Checks</span>A second adversarial review of the entry points added since 6 October found no wrong soundness theorem and fixed eight weaker points, among them one exit-code rule for all five checkers (3 when a secondary check fails), complete phase tables for <code>--tdb</code> certificates and the input gate for spin-down k-point lines (DFT-I09–I11, FEM-B11, MD-B14, CAL-I06–I08, CSP-B06); 307 forged certificates are now replayed on every run. <a href="progress.html#how">Details →</a></li>
+      <li><span class="tag n">Checks</span>Fuzzing found an out-of-bounds write in the phase-diagram mode of the CALPHAD driver (<code>map_chord</code>, outside the trust chain), which is fixed, and the failing input is now a fixed regression case of every fuzz run.</li>
+      <li><span class="tag n">Paper</span>The paper draft now covers the work of 7 and 8 October; the ledger stands at 298 claims, 265 of them machine-proved.</li>
+    </ul></li>
     <li><time datetime="2026-10-07">7 Oct 2026</time><ul>
       <li><span class="tag n">Site</span>mini-CSP has its own domain page and a <b>CSP</b> tab in the navigation: the checker’s full output on LJ₁₃, how the local-minimum and deduplication certificates work, the particle-swarm and restart theorems, all ten claims, and the certified best energies of LJ₃…LJ₁₃ beside the Cambridge Cluster Database (<a href="csp.html">mini-CSP</a>).</li>
       <li><span class="tag n">Checks</span>A reliability audit of the four checkers found holes that are now fixed: the MD checker accepted certificates with coincident atoms, no steps or σ = 0 (Lean’s 0⁻¹ = 0 made them look harmless), CALPHAD phase names read from a TDB file could inject forged output lines, and several problem data were not echoed. The MD conditions are now part of the verified check; every checker echoes its whole problem as exact <code>PROBLEM</code> lines, parses strictly and escapes names; the trusted C kernel’s ACSL contracts are pinned; and <code>verify_all</code> keeps a run record and reports skipped cases (MD-B06–B09, CAL-B08, B12, I03–I05, FEM-B06, B07, B10, DFT-I05–I08). <a href="progress.html#ledger">Details →</a></li>
@@ -85,6 +94,9 @@
       <li><span class="tag n">Checks</span>An adversarial review of the checkers, with the attacker in control of the certificate: seven flaws fixed (forged names that injected output lines, huge exponents that hung the checkers, a DOS printed for an incomplete k-point set, unchecked echoes) and six weaker points recorded. A new <code>verify_all</code> step replays the forged certificates on every run. <a href="progress.html#how">Details →</a></li>
       <li><span class="tag n">Paper</span>The paper draft now covers the work of 5 and 6 October; the ledger stands at 187 claims, 179 of them machine-proved.</li>
     </ul></li>
+  </ol>
+  <details class="news-more"><summary>Earlier: 27 September – 5 October 2026</summary>
+  <ol class="news">
     <li><time datetime="2026-10-05">5 Oct 2026</time><ul>
       <li><span class="tag n">CALPHAD</span>Phase diagrams are certified complete at every grid temperature: a partition certificate states, for every overall composition in [0, 1], which phases any equilibrium contains (CAL-C09, B05). <a href="calphad.html#diagrams">Details →</a></li>
       <li><span class="tag n">CALPHAD</span>Equilibria at a prescribed chemical potential, pycalphad’s <code>v.MU</code>: the other chemical potential, the overall composition and the phases of every equilibrium (CAL-C08, B04).</li>
@@ -95,9 +107,6 @@
       <li><span class="tag n">DFT</span>Phase 0: continuum well-posedness, the a priori plane-wave estimate and linear-mixing convergence reach their target T1 as paper proofs, and the mixing condition is corrected (DFT-C01, D06, A01).</li>
       <li><span class="tag n">Tools</span>The <code>fis</code> Python package runs and checks every domain and audits a TDB file, with JSON output; four executed tutorial notebooks.</li>
     </ul></li>
-  </ol>
-  <details class="news-more"><summary>Earlier: 27 September – 4 October 2026</summary>
-  <ol class="news">
     <li><time datetime="2026-10-04">4 Oct 2026</time><ul>
       <li><span class="tag n">Research</span>A certified audit of the 17 databases shipped with pycalphad: 246 650 equilibria in 316 binary systems, five anomalous liquid miscibility gaps bracketed to 1 K, and equilibria that pycalphad misses. <a href="calphad.html#audit">Details →</a></li>
       <li><span class="tag n">Research</span>A discrete LDA Kohn–Sham problem is proved to have at least five distinct exact solutions. <a href="dft.html#multiple">Details →</a></li>
@@ -403,7 +412,7 @@
   </div>
   <h3 style="margin-top:28px">Open questions</h3>
   <ul class="prose">
-    <li><b>Continuum theory of 1D rHF.</b> Resolved at T1 on 5 October 2026: no published result covers the 1D periodic Hartree kernel directly, so the project supplies paper proofs (existence and unique density at zero and finite temperature, the cutoff limit equals the continuum energy, exponential plane-wave convergence for analytic potentials). What remains is to machine-check them, which ties in with the next question.</li>
+    <li><b>Continuum theory of 1D rHF.</b> Resolved at T1 on 5 October 2026: no published result covers the 1D periodic Hartree kernel directly, so the project supplies paper proofs (existence and unique density at zero and finite temperature, the cutoff limit equals the continuum energy, exponential plane-wave convergence for analytic potentials). What remains is to machine-check them, which ties in with the next question. The cutoff limit was machine-checked on 8 October 2026 (DFT-C02, T3) with the continuum model written in Fourier space, which avoids periodic Sobolev spaces; its equivalence with the operator model on H¹ is assumption A-DFT-08.</li>
     <li><b>How deep to formalise Sobolev spaces</b> — what to axiomatise first, and which theorems to prove first.</li>
     <li><b>Randomness.</b> Langevin dynamics and random initial guesses involve probabilistic properties; TLA+ only describes nondeterminism.</li>
     <li><b>GPUs.</b> How asynchronous streams and weak memory models enter a TLA+ specification.</li>
@@ -434,7 +443,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · Programme v0.3 · revised as the project evolves<span class="updated"> · updated <time datetime="2026-10-07T22:14+08:00">2026-10-07 22:14 UTC+8</time></span></span>
+  <span>Formal in Silico · Programme v0.3 · revised as the project evolves<span class="updated"> · updated <time datetime="2026-10-08T05:37+08:00">2026-10-08 05:37 UTC+8</time></span></span>
   <span><a href="progress.html">Progress</a> · <a href="showcases.html">Showcases</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="zh/" hreflang="zh-CN">中文版</a></span>
 </div></footer>
 </body>
