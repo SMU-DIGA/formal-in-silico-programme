@@ -36,8 +36,8 @@
   <h1>Progress</h1>
   <p class="lead">Where the programme stands across its four domains: how many claims have reached which trust tier, how far each domain is towards its reference code, and which roadmap phases are done. Each domain has its own page with the item-by-item status, cross-checks and open gaps. A feature counts as <b>done</b> only when it is implemented, agrees with the reference code, <i>and</i> every number it outputs is covered by a Lean theorem.</p>
   <div class="stats">
-    <div class="stat"><b>187</b><span>claims in the trust ledger across four domains</span></div>
-    <div class="stat"><b>96%</b><span>machine-proved: 123 at T3, 56 at T4</span></div>
+    <div class="stat"><b>211</b><span>claims in the trust ledger across four domains</span></div>
+    <div class="stat"><b>96%</b><span>machine-proved: 135 at T3, 68 at T4</span></div>
     <div class="stat"><b>4</b><span>reference codes cross-checked: DFTK.jl, scikit-fem, ASE, pycalphad</span></div>
     <div class="stat"><b>3</b><span>parallel parity goals: G1 DFTK, G2 scikit-fem, G3 pycalphad</span></div>
   </div>
@@ -65,8 +65,8 @@
     <a class="domain m" href="dft.html">
       <span class="ref">Goal G1 · reference DFTK.jl 0.8.0</span>
       <h3>mini-DFT</h3>
-      <p>1D periodic reduced Hartree–Fock with plane waves: ground state, finite temperature, smearing, k-points, bands and DOS, LDA exchange-correlation, a first collinear-spin LSDA — and certificates bound to the named external potential.</p>
-      <div class="kv"><b>142</b><span>claims, 41 at T4 and 94 at T3</span><b>8 / 46</b><span>DFTK parity items done, 2 more agree</span><b>≤ 5×10⁻¹⁵</b><span>energy difference from DFTK</span></div>
+      <p>1D periodic reduced Hartree–Fock with plane waves: ground state, finite temperature, smearing, k-points, bands and DOS, LDA exchange-correlation, collinear-spin LSDA — and certificates bound to the named external potential.</p>
+      <div class="kv"><b>158</b><span>claims, 51 at T4 and 100 at T3</span><b>8 / 46</b><span>DFTK parity items done, 2 more agree</span><b>≤ 5×10⁻¹⁵</b><span>energy difference from DFTK</span></div>
       <span class="go">Status of mini-DFT →</span>
     </a>
     <a class="domain s" href="fem.html">
@@ -97,18 +97,18 @@
   <p class="sec-no">02</p>
   <h2>The trust ledger</h2>
   <div class="prose"><p>Every claim the project makes is registered with its tier, its evidence and the assumptions it depends on. Every line of a run report cites one of these claims. The tiers are defined on the <a href="./#s5">programme page</a>; a claim is only ever marked at the tier it has actually reached.</p></div>
-  <div class="sbar big" role="img" aria-label="195 claims: 58 at T4, 129 at T3, 2 at T2, 4 at T1, 2 at T0">
-    <i class="sw-t4" style="flex:58"></i><i class="sw-t3" style="flex:129"></i><i class="sw-t2" style="flex:2"></i><i class="sw-t1" style="flex:4"></i><i class="sw-t0" style="flex:2"></i>
+  <div class="sbar big" role="img" aria-label="211 claims: 68 at T4, 135 at T3, 2 at T2, 4 at T1, 2 at T0">
+    <i class="sw-t4" style="flex:68"></i><i class="sw-t3" style="flex:135"></i><i class="sw-t2" style="flex:2"></i><i class="sw-t1" style="flex:4"></i><i class="sw-t0" style="flex:2"></i>
   </div>
   <div class="legend">
-    <span><i class="sw-t4"></i>T4 end to end · 58</span>
-    <span><i class="sw-t3"></i>T3 machine proof · 129</span>
+    <span><i class="sw-t4"></i>T4 end to end · 68</span>
+    <span><i class="sw-t3"></i>T3 machine proof · 135</span>
     <span><i class="sw-t2"></i>T2 model-checked · 2</span>
     <span><i class="sw-t1"></i>T1 paper proof · 4</span>
     <span><i class="sw-t0"></i>T0 tested · 2</span>
   </div>
   <div class="rows">
-    <div class="row"><div><a href="dft.html#ledger">mini-DFT</a><div class="cap">foundations · energy · free energy · smearing · k-points · truncation · problem binding · density · bands · LDA · collinear spin</div></div><span class="n">142</span><div class="barcell"><div class="sbar"><i class="sw-t4" style="flex:41"></i><i class="sw-t3" style="flex:94"></i><i class="sw-t2" style="flex:2"></i><i class="sw-t1" style="flex:4"></i><i class="sw-t0" style="flex:1"></i></div></div></div>
+    <div class="row"><div><a href="dft.html#ledger">mini-DFT</a><div class="cap">foundations · energy · free energy · smearing · k-points · truncation · problem binding · density · bands · LDA · collinear spin</div></div><span class="n">158</span><div class="barcell"><div class="sbar"><i class="sw-t4" style="flex:51"></i><i class="sw-t3" style="flex:100"></i><i class="sw-t2" style="flex:2"></i><i class="sw-t1" style="flex:4"></i><i class="sw-t0" style="flex:1"></i></div></div></div>
     <div class="row"><div><a href="fem.html#claims">mini-FEM</a><div class="cap">Poisson · Neumann at both ends · beams · load Taylor models · eigenvalues</div></div><span class="n">17</span><div class="barcell"><div class="sbar"><i class="sw-t4" style="flex:5"></i><i class="sw-t3" style="flex:12"></i></div></div></div>
     <div class="row"><div><a href="md.html#claims">mini-MD</a><div class="cap">conservation · existence and uniqueness · Verlet structure · tube theorem · checker</div></div><span class="n">16</span><div class="barcell"><div class="sbar"><i class="sw-t4" style="flex:5"></i><i class="sw-t3" style="flex:11"></i></div></div></div>
     <div class="row"><div><a href="calphad.html#claims">mini-CALPHAD</a><div class="cap">mixing bound · equilibrium · existence · magnetism · convexity · sublattice phases · chemical-potential and activity conditions · phase-diagram partitions · thermodynamic properties · TDB reading · checkers</div></div><span class="n">20</span><div class="barcell"><div class="sbar"><i class="sw-t4" style="flex:7"></i><i class="sw-t3" style="flex:12"></i><i class="sw-t0" style="flex:1"></i></div></div></div>
@@ -127,7 +127,7 @@
     <div class="step o"><span class="who">Guaranteed</span><h4>Rigorous statement</h4><p>An interval that provably contains the true quantity: the continuous FEM solution, the true MD trajectory, the global CALPHAD equilibrium.</p></div>
   </div>
   <div class="prose"><p>Alongside, the DFT SCF controller is a TLA+ specification checked with TLC (it can report “converged” only if the residual is small, the gap is open and the certificate passes), and every run can emit a trace that is replayed against that specification.</p></div>
-  <div class="prose"><p>On 6 October the checkers were reviewed adversarially, with the attacker in control of the certificate (and of the driver) but not of the checker or the command line. Seven flaws were fixed: phase names with Unicode line breaks or tabs that a script reading the output would split into forged lines and fields; huge decimal and binary exponents that hung a checker; a DOS printed although a k-point had failed or the weights did not sum to one; band labels that shifted after a failed k-point; and problem echoes (smearing, functional, grid) that were not all compared with the command line. None of the soundness theorems changed. Six weaker points are recorded for later, among them that a <code>--tdb</code> certificate may omit phases (they are listed as unsupported) and that a failed secondary check does not change the exit code. 88 forged certificates are replayed by <code>make verify-all</code> on every run.</p></div>
+  <div class="prose"><p>On 6 October the checkers were reviewed adversarially, with the attacker in control of the certificate (and of the driver) but not of the checker or the command line. Seven flaws were fixed: phase names with Unicode line breaks or tabs that a script reading the output would split into forged lines and fields; huge decimal and binary exponents that hung a checker; a DOS printed although a k-point had failed or the weights did not sum to one; band labels that shifted after a failed k-point; and problem echoes (smearing, functional, grid) that were not all compared with the command line. None of the soundness theorems changed. Six weaker points are recorded for later, among them that a <code>--tdb</code> certificate may omit phases (they are listed as unsupported) and that a failed secondary check does not change the exit code. 145 forged certificates are replayed by <code>make verify-all</code> on every run.</p></div>
 </section>
 
 <section id="phases">
@@ -135,7 +135,7 @@
   <h2>Goals and roadmap phases</h2>
   <div class="goal">
     <h3>G1 — mini-DFT reaches DFTK parity <span class="tag n">set 29 Sep 2026</span></h3>
-    <p>8 of 46 items done and 2 more agree with DFTK; Gaussian, Marzari–Vanderbilt and Methfessel–Paxton smearing of any order are complete, and LDA is complete: SCF-solution certificates with every finite-temperature smearing and, since 6 October, at zero temperature under a gap, at the Γ point and with Monkhorst–Pack k-points. Since 4 October finite-temperature SCF solutions also have band and DOS certificates, since 6 October also with k-points (rHF with any smearing, LDA and zero-temperature rHF), and every certificate is checked against the named external potential; since 6 October the results for a Gaussian potential hold for the named potential itself. Collinear spin (LSDA) is partly done since 6 October: SCF-solution certificates with magnetisation and chemical-potential intervals at the Γ point and finite temperature, with spin-polarised Slater exchange and a Zeeman field; PW92 correlation for spin, k-points and zero temperature are still missing. 1D first, then <i class="v">d</i> dimensions. <a href="dft.html#g1">Item-by-item status →</a></p>
+    <p>8 of 46 items done and 2 more agree with DFTK; Gaussian, Marzari–Vanderbilt and Methfessel–Paxton smearing of any order are complete, and LDA is complete: SCF-solution certificates with every finite-temperature smearing and, since 6 October, at zero temperature under a gap, at the Γ point and with Monkhorst–Pack k-points. Since 4 October finite-temperature SCF solutions also have band and DOS certificates, since 6 October also with k-points (rHF with any smearing, LDA and zero-temperature rHF), and every certificate is checked against the named external potential; since 6 October the results for a Gaussian potential hold for the named potential itself. Collinear spin (LSDA) is partly done: with spin-polarised Slater exchange and a Zeeman field, SCF-solution certificates with magnetisation, chemical-potential, energy and free-energy intervals and per-spin bands and DOS at finite temperature, zero-temperature certificates under a common gap, both at the Γ point and with k-points, and the named Gaussian potential at Γ; since 7 October also spin-interpolated PW92 correlation at finite temperature, so the finite-temperature part is essentially complete. PW92 at zero temperature, its energies and bands are still missing. 1D first, then <i class="v">d</i> dimensions. <a href="dft.html#g1">Item-by-item status →</a></p>
   </div>
   <div class="goal">
     <h3>G2 — certified finite elements against scikit-fem <span class="tag n">set 30 Sep 2026</span></h3>
@@ -197,7 +197,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · status snapshot 6 October 2026<span class="updated"> · updated <time datetime="2026-10-07T02:57+08:00">2026-10-07 02:57 UTC+8</time></span></span>
+  <span>Formal in Silico · status snapshot 6 October 2026<span class="updated"> · updated <time datetime="2026-10-07T14:52+08:00">2026-10-07 14:52 UTC+8</time></span></span>
   <span><a href="./">Programme</a> · <a href="showcases.html">Showcases</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="zh/progress.html" hreflang="zh-CN">中文版</a></span>
 </div></footer>
 </body>

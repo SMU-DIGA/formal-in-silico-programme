@@ -42,9 +42,9 @@
     <div class="j f"><span class="k">IEEE 754</span><span class="e">|fl(<i class="v">E<sub>h</sub></i>) − <i class="v">E<sub>h</sub></i>| ≤ <i class="v">ε</i><sub>round</sub></span></div>
   </div>
   <div class="stats">
-    <div class="stat"><b>195</b><span>claims registered in the trust ledger</span></div>
-    <div class="stat"><b>187</b><span>of them machine-proved (tier T3 or T4)</span></div>
-    <div class="stat"><b>56</b><span>at the end-to-end tier T4: checker soundness, kernel safety and kernel floating point</span></div>
+    <div class="stat"><b>211</b><span>claims registered in the trust ledger</span></div>
+    <div class="stat"><b>203</b><span>of them machine-proved (tier T3 or T4)</span></div>
+    <div class="stat"><b>68</b><span>at the end-to-end tier T4: checker soundness, kernel safety and kernel floating point</span></div>
     <div class="stat"><b>4</b><span>reference codes cross-checked: DFTK.jl, scikit-fem, ASE and pycalphad</span></div>
   </div>
   <div class="cta">
@@ -61,6 +61,9 @@
   <div class="prose"><p>Features added to the four domains, research results, and changes to the paper and this site, newest first. Item-by-item status is on the <a href="progress.html">progress page</a>; every claim cited here is in the trust ledger.</p></div>
   <ol class="news">
     <li><time datetime="2026-10-07">7 Oct 2026</time><ul>
+      <li><span class="tag n">DFT</span>Collinear spin, second round: zero-temperature LSDA with Monkhorst–Pack k-points, with the per-cell magnetisation as an exact rational (4/3 for free electrons with three k-points) and one certified gap for all k-points and both spins (DFT-X43, X44); per-spin band structures, densities of states and the total DOS of finite-temperature LSDA solutions at Γ and with k-points (DFT-S09–S11, X38); and certified intervals for the LSDA energy and free energy, per cell with k-points (DFT-X47), also for the named Gaussian potential at the Γ point (DFT-V15–V17). DFTK’s magnetisation, bands, DOS, energy and free energy lie inside the intervals. <a href="dft.html#lsda">Details →</a></li>
+      <li><span class="tag n">DFT</span>Full LSDA at finite temperature: spin-interpolated PW92 correlation (<code>--spin collinear --xc lda</code>, DFTK’s <code>Xc([:lda_x, :lda_c_pw])</code>) is certified at the Γ point and with k-points. Its Jacobian couples the two spins, and uniform bounds are about 100× too loose, so a generic LSDA checker bounds it on a small box around each grid point (DFT-X29–X34); DFTK’s magnetisation and Fermi level lie inside. The collinear-spin row of the DFTK plan is now essentially complete at finite temperature. <a href="dft.html#lsda">Details →</a></li>
+      <li><span class="tag n">Paper</span>The paper draft now covers the LSDA work of 7 October; the ledger stands at 211 claims, 203 of them machine-proved (68 end to end).</li>
       <li><span class="tag n">DFT</span>Collinear spin extended: LSDA on Monkhorst–Pack k-points (<code>--nk</code>, DFT-X35–X37) and at zero temperature at the Γ point with an exact integer magnetisation and a certified common gap (<code>fis-lsda0</code>, DFT-X40–X42) are now checked end to end, and bounds on the LSDA energy and free energy at the SCF solution are machine-proved (DFT-X45, X46), with DFTK inside every interval. <a href="dft.html#lsda">Details →</a></li>
       <li><span class="tag n">Programme</span>A plan draft for a new direction, mini-CSP: crystal-structure search (symmetry-constrained random generation, local relaxation, particle-swarm updates, deduplication) with pair potentials, written from the published algorithm, with certificates for the structures it finds and proofs of the search code itself. Not started; the plan is in <code>docs/plan-mini-csp.md</code>.</li>
     </ul></li>
@@ -424,7 +427,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · Programme v0.3 · revised as the project evolves<span class="updated"> · updated <time datetime="2026-10-07T02:57+08:00">2026-10-07 02:57 UTC+8</time></span></span>
+  <span>Formal in Silico · Programme v0.3 · revised as the project evolves<span class="updated"> · updated <time datetime="2026-10-07T14:52+08:00">2026-10-07 14:52 UTC+8</time></span></span>
   <span><a href="progress.html">Progress</a> · <a href="showcases.html">Showcases</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="zh/" hreflang="zh-CN">中文版</a></span>
 </div></footer>
 </body>

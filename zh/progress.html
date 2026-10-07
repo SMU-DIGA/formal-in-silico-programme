@@ -36,8 +36,8 @@
   <h1>实现进度</h1>
   <p class="lead">项目在四个领域上分别走到了哪里：多少命题达到了哪一级可信等级，每个领域离它的参照程序还有多远，路线图的哪些阶段已经完成。每个领域有自己的页面，列出逐项状态、交叉校验与缺口。一项功能只有在实现、与参照程序一致、<b>并且</b>输出的每个数都有 Lean 定理保证时，才算<b>完成</b>。</p>
   <div class="stats">
-    <div class="stat"><b>187</b><span>条命题登记在可信账本中，分属四个领域</span></div>
-    <div class="stat"><b>96%</b><span>已有机器证明：T3 123 条，T4 56 条</span></div>
+    <div class="stat"><b>211</b><span>条命题登记在可信账本中，分属四个领域</span></div>
+    <div class="stat"><b>96%</b><span>已有机器证明：T3 135 条，T4 68 条</span></div>
     <div class="stat"><b>4</b><span>个参照程序交叉校验：DFTK.jl、scikit-fem、ASE、pycalphad</span></div>
     <div class="stat"><b>3</b><span>个并行的对齐目标：G1 DFTK、G2 scikit-fem、G3 pycalphad</span></div>
   </div>
@@ -65,8 +65,8 @@
     <a class="domain m" href="dft.html">
       <span class="ref">目标 G1 · 参照 DFTK.jl 0.8.0</span>
       <h3>mini-DFT</h3>
-      <p>一维周期约化 Hartree–Fock，平面波离散：基态、有限温度、展宽、k 点、能带与态密度、LDA 交换关联、第一版共线自旋 LSDA——证书现在与命名的外势绑定。</p>
-      <div class="kv"><b>142</b><span>条命题，T4 41 条，T3 94 条</span><b>8 / 46</b><span>项 DFTK 对齐功能完成，另有 2 项已一致</span><b>≤ 5×10⁻¹⁵</b><span>与 DFTK 的能量差</span></div>
+      <p>一维周期约化 Hartree–Fock，平面波离散：基态、有限温度、展宽、k 点、能带与态密度、LDA 交换关联、共线自旋 LSDA——证书现在与命名的外势绑定。</p>
+      <div class="kv"><b>158</b><span>条命题，T4 51 条，T3 100 条</span><b>8 / 46</b><span>项 DFTK 对齐功能完成，另有 2 项已一致</span><b>≤ 5×10⁻¹⁵</b><span>与 DFTK 的能量差</span></div>
       <span class="go">查看 mini-DFT →</span>
     </a>
     <a class="domain s" href="fem.html">
@@ -97,18 +97,18 @@
   <p class="sec-no">02</p>
   <h2>可信账本</h2>
   <div class="prose"><p>项目的每一条命题都登记了等级、证据和所依赖的假设；运行报告的每一行都引用其中一条。等级的定义见<a href="./#s5">纲领页</a>，每条命题只标它实际达到的等级。</p></div>
-  <div class="sbar big" role="img" aria-label="195 条命题：T4 58 条，T3 129 条，T2 2 条，T1 4 条，T0 2 条">
-    <i class="sw-t4" style="flex:58"></i><i class="sw-t3" style="flex:129"></i><i class="sw-t2" style="flex:2"></i><i class="sw-t1" style="flex:4"></i><i class="sw-t0" style="flex:2"></i>
+  <div class="sbar big" role="img" aria-label="211 条命题：T4 68 条，T3 135 条，T2 2 条，T1 4 条，T0 2 条">
+    <i class="sw-t4" style="flex:68"></i><i class="sw-t3" style="flex:135"></i><i class="sw-t2" style="flex:2"></i><i class="sw-t1" style="flex:4"></i><i class="sw-t0" style="flex:2"></i>
   </div>
   <div class="legend">
-    <span><i class="sw-t4"></i>T4 端到端 · 58</span>
-    <span><i class="sw-t3"></i>T3 机器证明 · 129</span>
+    <span><i class="sw-t4"></i>T4 端到端 · 68</span>
+    <span><i class="sw-t3"></i>T3 机器证明 · 135</span>
     <span><i class="sw-t2"></i>T2 模型检验 · 2</span>
     <span><i class="sw-t1"></i>T1 纸面证明 · 4</span>
     <span><i class="sw-t0"></i>T0 测试 · 2</span>
   </div>
   <div class="rows">
-    <div class="row"><div><a href="dft.html#ledger">mini-DFT</a><div class="cap">基础 · 能量 · 自由能 · 展宽 · k 点 · 截断 · 问题绑定 · 密度 · 能带 · LDA · 共线自旋</div></div><span class="n">142</span><div class="barcell"><div class="sbar"><i class="sw-t4" style="flex:41"></i><i class="sw-t3" style="flex:94"></i><i class="sw-t2" style="flex:2"></i><i class="sw-t1" style="flex:4"></i><i class="sw-t0" style="flex:1"></i></div></div></div>
+    <div class="row"><div><a href="dft.html#ledger">mini-DFT</a><div class="cap">基础 · 能量 · 自由能 · 展宽 · k 点 · 截断 · 问题绑定 · 密度 · 能带 · LDA · 共线自旋</div></div><span class="n">158</span><div class="barcell"><div class="sbar"><i class="sw-t4" style="flex:51"></i><i class="sw-t3" style="flex:100"></i><i class="sw-t2" style="flex:2"></i><i class="sw-t1" style="flex:4"></i><i class="sw-t0" style="flex:1"></i></div></div></div>
     <div class="row"><div><a href="fem.html#claims">mini-FEM</a><div class="cap">Poisson · 两端 Neumann · 梁 · 右端项 Taylor 模型 · 本征值</div></div><span class="n">17</span><div class="barcell"><div class="sbar"><i class="sw-t4" style="flex:5"></i><i class="sw-t3" style="flex:12"></i></div></div></div>
     <div class="row"><div><a href="md.html#claims">mini-MD</a><div class="cap">守恒律 · 解的存在唯一 · Verlet 结构 · 管道定理 · 检查器</div></div><span class="n">16</span><div class="barcell"><div class="sbar"><i class="sw-t4" style="flex:5"></i><i class="sw-t3" style="flex:11"></i></div></div></div>
     <div class="row"><div><a href="calphad.html#claims">mini-CALPHAD</a><div class="cap">混合项下界 · 平衡 · 存在性 · 磁性 · 凸性 · 亚点阵相 · 化学势与活度条件 · 相图的区域划分 · 热力学性质 · TDB 读法 · 检查器</div></div><span class="n">20</span><div class="barcell"><div class="sbar"><i class="sw-t4" style="flex:7"></i><i class="sw-t3" style="flex:12"></i><i class="sw-t0" style="flex:1"></i></div></div></div>
@@ -127,7 +127,7 @@
     <div class="step o"><span class="who">有保证</span><h4>严格结论</h4><p>可证明包含真实量的区间：FEM 连续问题的真解、MD 的真轨道、CALPHAD 的全局平衡。</p></div>
   </div>
   <div class="prose"><p>与此同时，DFT 的 SCF 控制器写成 TLA+ 规范并经 TLC 检验（只有残差足够小、能隙打开、证书通过时才能报告“收敛”），每次运行都可以输出轨迹，按这份规范逐步重放检查。</p></div>
-  <div class="prose"><p>10 月 6 日对检查器做了一次对抗式复审：攻击者控制证书（与驱动），不控制检查器与命令行。修复了七处缺陷：含 Unicode 换行或制表符的相名，会让读取输出的脚本切出伪造的行与字段；巨大的十进制与二进指数让检查器卡死；有 k 点没通过或权重之和不是 1 时仍输出态密度；k 点没通过后能带编号错位；问题回显（展宽、泛函、网格）没有全部与命令行对照。可靠性定理的陈述都没有改变。另记录了六处较弱的地方留待以后处理，例如 <code>--tdb</code> 证书可以省略相（它们列为不支持），次要检查失败时退出码不变。<code>make verify-all</code> 每次重放 88 份伪造证书。</p></div>
+  <div class="prose"><p>10 月 6 日对检查器做了一次对抗式复审：攻击者控制证书（与驱动），不控制检查器与命令行。修复了七处缺陷：含 Unicode 换行或制表符的相名，会让读取输出的脚本切出伪造的行与字段；巨大的十进制与二进指数让检查器卡死；有 k 点没通过或权重之和不是 1 时仍输出态密度；k 点没通过后能带编号错位；问题回显（展宽、泛函、网格）没有全部与命令行对照。可靠性定理的陈述都没有改变。另记录了六处较弱的地方留待以后处理，例如 <code>--tdb</code> 证书可以省略相（它们列为不支持），次要检查失败时退出码不变。<code>make verify-all</code> 每次重放 145 份伪造证书。</p></div>
 </section>
 
 <section id="phases">
@@ -135,7 +135,7 @@
   <h2>目标与路线图各阶段</h2>
   <div class="goal">
     <h3>G1：mini-DFT 与 DFTK 功能对齐 <span class="tag n">2026-09-29 设定</span></h3>
-    <p>46 项中完成 8 项，另有 2 项与 DFTK 一致；Gaussian、Marzari–Vanderbilt 与任意阶 Methfessel–Paxton 展宽已完成，LDA 已完成：在 Γ 点与 Monkhorst–Pack k 点加任一有限温度展宽都有 SCF 解证书，10 月 6 日起零温（能隙条件下）也有。10 月 4 日起有限温度的 SCF 解也有能带与态密度证书，10 月 6 日起 k 点也有（rHF 任意展宽、LDA 与零温 rHF），每张证书都按命名的外势核对；10 月 6 日起高斯外势的结论对命名外势本身成立。共线自旋（LSDA）10 月 6 日起部分完成：Γ 点、有限温度、自旋极化的 Slater 交换加 Zeeman 场有 SCF 解证书与磁化、化学势的区间；PW92 关联的自旋形式、k 点与零温尚缺。先一维，再 <i class="v">d</i> 维。<a href="dft.html#g1">逐项状态 →</a></p>
+    <p>46 项中完成 8 项，另有 2 项与 DFTK 一致；Gaussian、Marzari–Vanderbilt 与任意阶 Methfessel–Paxton 展宽已完成，LDA 已完成：在 Γ 点与 Monkhorst–Pack k 点加任一有限温度展宽都有 SCF 解证书，10 月 6 日起零温（能隙条件下）也有。10 月 4 日起有限温度的 SCF 解也有能带与态密度证书，10 月 6 日起 k 点也有（rHF 任意展宽、LDA 与零温 rHF），每张证书都按命名的外势核对；10 月 6 日起高斯外势的结论对命名外势本身成立。共线自旋（LSDA）部分完成：自旋极化的 Slater 交换加 Zeeman 场，Γ 点与 k 点的有限温度 SCF 解证书（磁化、化学势、能量、自由能的区间，每个自旋的能带与态密度）与公共能隙下的零温证书，Γ 点的命名高斯外势；10 月 7 日起有限温度也有自旋插值的 PW92 关联，有限温度部分基本完成。PW92 的零温、能量与能带尚缺。先一维，再 <i class="v">d</i> 维。<a href="dft.html#g1">逐项状态 →</a></p>
   </div>
   <div class="goal">
     <h3>G2：带形式化证明的有限元，对照 scikit-fem <span class="tag n">2026-09-30 设定</span></h3>
@@ -197,7 +197,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · 现状快照 2026-10-06<span class="updated"> · 更新于 <time datetime="2026-10-07T02:57+08:00">2026-10-07 02:57 UTC+8</time></span></span>
+  <span>Formal in Silico · 现状快照 2026-10-06<span class="updated"> · 更新于 <time datetime="2026-10-07T14:52+08:00">2026-10-07 14:52 UTC+8</time></span></span>
   <span><a href="./">纲领</a> · <a href="showcases.html">成果展示</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="../progress.html" hreflang="en">English</a></span>
 </div></footer>
 </body>
