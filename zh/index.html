@@ -42,9 +42,9 @@
     <div class="j f"><span class="k">IEEE 754</span><span class="e">|fl(<i class="v">E<sub>h</sub></i>) − <i class="v">E<sub>h</sub></i>| ≤ <i class="v">ε</i><sub>round</sub></span></div>
   </div>
   <div class="stats">
-    <div class="stat"><b>211</b><span>条命题登记在可信账本中</span></div>
-    <div class="stat"><b>203</b><span>条已有机器证明（T3 或 T4）</span></div>
-    <div class="stat"><b>68</b><span>条达到端到端等级 T4：检查器可靠性、内核安全与内核浮点</span></div>
+    <div class="stat"><b>256</b><span>条命题登记在可信账本中</span></div>
+    <div class="stat"><b>234</b><span>条已有机器证明（T3 或 T4）</span></div>
+    <div class="stat"><b>83</b><span>条达到端到端等级 T4：检查器可靠性、内核安全与内核浮点</span></div>
     <div class="stat"><b>4</b><span>个参照程序交叉校验：DFTK.jl、scikit-fem、ASE 与 pycalphad</span></div>
   </div>
   <div class="cta">
@@ -58,15 +58,19 @@
 <section id="news">
   <p class="sec-no">最新</p>
   <h2>动态</h2>
-  <div class="prose"><p>四个领域新增的功能、研究结果，以及论文与本网站的变化，新的在前。逐项状态见<a href="progress.html">实现进度</a>；这里引用的命题都登记在可信账本中。</p></div>
+  <div class="prose"><p>五个领域新增的功能、研究结果，以及论文与本网站的变化，新的在前。逐项状态见<a href="progress.html">实现进度</a>；这里引用的命题都登记在可信账本中。</p></div>
   <ol class="news">
     <li><time datetime="2026-10-07">2026-10-07</time><ul>
-      <li><span class="tag n">DFT</span>共线自旋第二轮：Monkhorst–Pack k 点上的零温 LSDA，每个原胞的磁化是精确有理数（自由电子三个 k 点时为 4/3），全部 k 点、两个自旋共用一个有证书的能隙（DFT-X43、X44）；有限温度 LSDA 解在 Γ 点与 k 点的每个自旋的能带、态密度与总态密度（DFT-S09–S11、X38）；LSDA 能量与自由能的区间有证书，k 点为每个原胞（DFT-X47），Γ 点的命名高斯外势也有（DFT-V15–V17）。DFTK 的磁化、能带、态密度、能量与自由能都落在区间内。<a href="dft.html#lsda">详情 →</a></li>
-      <li><span class="tag n">DFT</span>有限温度的完整 LSDA：自旋插值的 PW92 关联（<code>--spin collinear --xc lda</code>，DFTK 的 <code>Xc([:lda_x, :lda_c_pw])</code>）在 Γ 点与 k 点有证书。它的 Jacobian 把两个自旋耦合在一起，一致常数松约 100 倍，所以通用的 LSDA 检查器在每个格点的小方块上界住它（DFT-X29–X34）；DFTK 的磁化与费米能级在区间内。DFTK 对标表的共线自旋一项在有限温度已基本完成。<a href="dft.html#lsda">详情 →</a></li>
-      <li><span class="tag n">论文</span>论文稿补上了 10 月 7 日的 LSDA 工作；账本现有 211 条命题，其中 203 条有机器证明（端到端 68 条）。</li>
+      <li><span class="tag n">检查</span>对四个检查器的可靠性复审查出的漏洞已全部修复：MD 检查器曾接受原子重合、没有步数或 σ = 0 的证书（Lean 的 0⁻¹ = 0 使它们看起来无害），从 TDB 文件读入的 CALPHAD 相名可以注入伪造的输出行，若干问题数据没有回显。现在 MD 的这些条件属于已验证的检查；每个检查器都以精确的 <code>PROBLEM</code> 行回显完整的问题、严格解析并转义名字；可信 C 内核的 ACSL 契约登记了指纹；<code>verify_all</code> 留下运行记录并报告跳过的用例（MD-B06–B09，CAL-B08、B12、I03–I05，FEM-B06、B07、B10，DFT-I05–I08）。<a href="progress.html#ledger">详情 →</a></li>
+      <li><span class="tag n">DFT</span><code>SCF_OK</code>、<code>LDA_OK</code>、<code>LSDA_OK</code> 现在证明的是 SCF 解本身在证书的球内唯一（Γ 点与 k 点），而不只是辅助映射的零点唯一：每个 SCF 解都是这个映射的零点（DFT-T32–T38）。<a href="dft.html#outputs">详情 →</a></li>
       <li><span class="tag n">DFT</span>共线自旋扩展：Monkhorst–Pack k 点上的 LSDA（<code>--nk</code>，DFT-X35–X37）与 Γ 点的零温 LSDA（磁化为精确整数，公共能隙有证书，<code>fis-lsda0</code>，DFT-X40–X42）已端到端检查；SCF 解处 LSDA 能量与自由能的界有了机器证明（DFT-X45、X46）；DFTK 的值都在区间内。<a href="dft.html#lsda">详情 →</a></li>
-      <li><span class="tag n">纲领</span>新方向的计划草案 mini-CSP：晶体结构搜索（对称约束的随机生成、局部弛豫、粒子群更新、结构去重），能量模型用对势，依据公开发表的算法从零实现；找到的结构由证书检查，搜索代码本身也要证明。尚未开工，计划见 <code>docs/plan-mini-csp.md</code>。</li>
-    </ul></li>
+      <li><span class="tag n">DFT</span>共线自旋第二轮：Monkhorst–Pack k 点上的零温 LSDA，每个原胞的磁化是精确有理数（自由电子三个 k 点时为 4/3），全部 k 点、两个自旋共用一个有证书的能隙（DFT-X43、X44）；有限温度 LSDA 解在 Γ 点与 k 点的每个自旋的能带、态密度与总态密度（DFT-S09–S11、X38）；LSDA 能量与自由能的区间有证书，k 点为每个原胞（DFT-X47），Γ 点的命名高斯外势也有（DFT-V15–V17）。DFTK 的磁化、能带、态密度、能量与自由能都落在区间内。<a href="dft.html#lsda">详情 →</a></li>
+      <li><span class="tag n">DFT</span>有限温度的完整 LSDA：自旋插值的 PW92 关联（<code>--spin collinear --xc lda</code>，DFTK 的 <code>Xc([:lda_x, :lda_c_pw])</code>）在 Γ 点与 k 点有证书。它的 Jacobian 把两个自旋耦合在一起，一致常数松约 100 倍，所以通用的 LSDA 检查器在每个格点的小方块上界住它（DFT-X29–X34）；DFTK 的磁化与费米能级在区间内。PW92 时检查器只证明 SCF 解、磁化与费米能级：它明确写出能量没有证书，并拒绝要求能带的证书。DFTK 对标表的共线自旋一项在有限温度已基本完成。<a href="dft.html#lsda">详情 →</a></li>
+      <li><span class="tag n">DFT</span>用户自己的外势：<code>--pot file</code> 读精确有理的 Fourier 系数，<code>--pot sites</code> 读周期化的高斯格点；检查器自己重读输入，二进系数精确绑定，其余给出精确算出的偏差，命名外势下的结论对用户的外势成立，DFTK 的值都在区间内（DFT-V18–V24）。<a href="dft.html#binding">详情 →</a></li>
+      <li><span class="tag n">DFT</span>力，第一阶段：rHF 在任意温度下的 Hellmann–Feynman 定理（带显式二阶余项）与平移下总力为零有了机器证明；力区间的检查器已证明，但还没有接入 <code>certify</code>；<code>--forces</code> 输出高斯势阱上的浮点力，与有限差分相差 7×10⁻¹⁰（DFT-N01–N04）。<a href="dft.html#forces">详情 →</a></li>
+      <li><span class="tag n">工具</span>易用性：驱动输出机器可读的 <code>STATUS</code>、<code>FLOAT</code>、<code>HINT</code> 行，<code>fis</code> 只读这些行，不再解析中文报告；SCF 不收敛时报告给出要追加的选项；<code>fis multiplicity</code> 证明一个 SCF 问题有多个精确解；支撑输出行的另外 10 个检查器定理登记了陈述指纹。<a href="progress.html#how">详情 →</a></li>
+      <li><span class="tag n">CSP</span>第五个领域 mini-CSP 从 Lennard-Jones 团簇开始：不可信的搜索器（随机生成、BFGS 与 Newton 弛豫、粒子群更新、指纹去重）提出候选，新的检查器 <code>certify-csp</code> 证明每个候选是精确的局部极小（模转动、反射与平移唯一）并给出能量区间，还证明候选之间相同或不同（CSP-B01、B02、B04）。LJ₃…LJ₁₃ 最低的已认证能量区间都含剑桥团簇数据库的值；<code>BEST</code> 只是这次搜索中最低的已认证极小，不是全局最优的结论。在理想化假设下，Lean 还证明了粒子群的稳定区域，以及随机补充以趋于 1 的概率到达全局极小的邻域（CSP-A01、A02）。搜索代码本身还没有证明；计划见 <code>docs/plan-mini-csp.md</code>。</li>
+</ul></li>
     <li><time datetime="2026-10-06">2026-10-06</time><ul>
       <li><span class="tag n">DFT</span>共线自旋的第一版：<code>--spin collinear</code> 在 Γ 点、有限温度下求解 LSDA，交换取自旋极化的 Slater 交换，可加均匀 Zeeman 场。检查器证明证书附近存在精确的 LSDA SCF 解、在那里唯一，并给出它的磁化与化学势的区间；DFTK 的值都在区间内（DFT-X26–X28）。<a href="dft.html#lsda">详情 →</a></li>
       <li><span class="tag n">DFT</span>k 点运行的能带与态密度有了证书：rHF（任意展宽）、LDA 与零温 rHF，检查器给出由超胞解的块平均构造的原胞 Bloch Hamiltonian 的能带区间。DFTK 的 <code>compute_bands</code> 与 <code>compute_dos</code> 的值都在区间内（DFT-S06–S08）。<a href="dft.html#outputs">详情 →</a></li>
@@ -363,6 +367,7 @@
   <div class="prose">
     <p><b>mini-FEM</b> 在目标 G2 下沿用同一模式：一维 Poisson 方程的 P1 线性元（Dirichlet、Neumann、Robin 边界），梁方程的三次 Hermite 元（固支、简支、自由、滑动），右端项由多项式、指数、正弦、余弦组合而成。Lean 检查器给出<b>连续问题真解</b>在每个节点上的严格区间，以及整个区间上最大误差的严格上界。自适应加密以这些经过证明的单元误差界作为标记量。</p>
     <p><b>mini-MD</b>（2026-10-01）对一维 Lennard-Jones 原子链加 Velocity Verlet 做了同样的事：检查器给出每一步与 <b>Newton 方程真解</b>的距离，以及从初值出发约一个振动周期内的整体误差界。<b>mini-CALPHAD</b>（目标 G3）为读自 TDB 数据库的二元相平衡出具证书（包括磁性相与整张相图），给出化学势、驱动力，以及<i>任意</i>平衡中可能出现哪些相。详见 <a href="md.html">MD</a> 与 <a href="calphad.html">CALPHAD</a> 页。</p>
+    <p><b>mini-CSP</b>（2026-10-07）以 Lennard-Jones 团簇开始结构搜索：不可信的搜索器提出候选，检查器证明每个候选是精确的局部极小（模转动、反射与平移唯一），并证明候选之间相同或不同。<code>BEST</code> 是这次搜索找到的最低的已认证极小，不作全局最优的结论。</p>
   </div>
 </section>
 
@@ -427,7 +432,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · 项目纲领 v0.3 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-10-07T14:52+08:00">2026-10-07 14:52 UTC+8</time></span></span>
+  <span>Formal in Silico · 项目纲领 v0.3 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-10-07T16:02+08:00">2026-10-07 16:02 UTC+8</time></span></span>
   <span><a href="progress.html">实现进度</a> · <a href="showcases.html">成果展示</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="../" hreflang="en">English</a></span>
 </div></footer>
 </body>

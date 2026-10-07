@@ -38,7 +38,7 @@
   <h1>mini-CALPHAD</h1>
   <p class="lead">Phase equilibria of binary alloys, read from the same TDB thermodynamic databases that pycalphad uses. The Lean checker certifies the <b>true global equilibrium</b> of the database model — the lowest Gibbs energy over every possible combination of phases — not only the solution the driver happened to find. Since 4 October the checker reads the TDB file itself, so its conclusions are about the model the database defines, and a second kind of certificate proves that a phase has <i>no</i> miscibility gap. Goal G3, set on 1 October 2026, is feature parity with pycalphad 0.11.1.</p>
   <div class="stats">
-    <div class="stat"><b>20</b><span>claims in the trust ledger: 7 at T4, 12 at T3, and the Lean reading of TDB files, a definition at T0</span></div>
+    <div class="stat"><b>25</b><span>claims in the trust ledger: 9 at T4, 12 at T3, and 4 at T0: the Lean reading of TDB files, a definition, and the checker’s echo, hash and output escaping</span></div>
     <div class="stat"><b>18 / 25</b><span>pycalphad parity items done: all of C0; in C1 phase diagrams with certified region partitions, magnetism, driving forces, sharp chemical potentials and thermodynamic properties; in C2 sublattice phases with up to two mixing sublattices and conditions on a chemical potential or an activity</span></div>
     <div class="stat"><b>29 / 29</b><span>pycalphad equilibria inside the Lean intervals and windows</span></div>
     <div class="stat"><b>246 650</b><span>grid points in 316 binary systems from 17 databases, each certified against its TDB file in the <a href="#audit">database audit</a></span></div>
@@ -209,13 +209,13 @@ Lean  EXISTS</pre>
 <section id="claims">
   <p class="sec-no">08</p>
   <h2>Claims in the trust ledger</h2>
-  <div class="sbar big" role="img" aria-label="20 claims: 7 at T4, 12 at T3, 1 at T0">
-    <i class="sw-t4" style="flex:7"></i><i class="sw-t3" style="flex:12"></i><i class="sw-t0" style="flex:1"></i>
+  <div class="sbar big" role="img" aria-label="25 claims: 9 at T4, 12 at T3, 4 at T0">
+    <i class="sw-t4" style="flex:9"></i><i class="sw-t3" style="flex:12"></i><i class="sw-t0" style="flex:4"></i>
   </div>
   <div class="legend">
-    <span><i class="sw-t4"></i>T4 end to end · 7</span>
+    <span><i class="sw-t4"></i>T4 end to end · 9</span>
     <span><i class="sw-t3"></i>T3 machine proof · 12</span>
-    <span><i class="sw-t0"></i>T0 cross-checked definition · 1</span>
+    <span><i class="sw-t0"></i>T0 tested · 4</span>
   </div>
   <div class="tbl"><table>
     <thead><tr><th>Claim</th><th>Statement</th><th>Tier</th></tr></thead>
@@ -240,6 +240,11 @@ Lean  EXISTS</pre>
       <tr><td class="l">CAL-B05</td><td>Partition checker soundness: the regions cover [0, 1], and every equilibrium at every <i class="v">x</i>₀ in a region has the stated phases, at compositions in the stated windows</td><td class="st"><span class="tag s">T4</span></td></tr>
       <tr><td class="l">CAL-B06</td><td>Activity checker soundness: for a prescribed activity <i class="v">a</i> of B with pure B in a reference phase as reference state, the interval for <i class="v">G</i><sub>ref</sub>(1) and μ<sub>B</sub>, and for every equilibrium at that μ<sub>B</sub> the conclusions of CAL-B04; existence</td><td class="st"><span class="tag s">T4</span></td></tr>
       <tr><td class="l">CAL-B07</td><td>Property checker soundness (pycalphad’s <code>calculate</code> with GM, SM, HM, CPM): each row’s phase, at its composition or internal state, has a Gibbs energy twice differentiable in <i class="v">T</i> with <i class="v">G</i>, <i class="v">S</i>, <i class="v">H</i>, <i class="v">C<sub>p</sub></i> in the stated intervals; in <code>--tdb</code> mode, for the model the TDB file defines throughout <code>TRANGE</code></td><td class="st"><span class="tag s">T4</span></td></tr>
+      <tr><td class="l">CAL-B08</td><td>Checker soundness: phase names in the output are pairwise distinct, so each name denotes one phase</td><td class="st"><span class="tag s">T4</span></td></tr>
+      <tr><td class="l">CAL-B12</td><td>Pinned statements of the existence theorems behind <code>EXISTS</code>, with and without <code>--tdb</code></td><td class="st"><span class="tag s">T4</span></td></tr>
+      <tr><td class="l">CAL-I03</td><td>The certified problem is echoed in every mode; repeated certificate lines are rejected</td><td class="st"><span class="tag n">T0</span></td></tr>
+      <tr><td class="l">CAL-I04</td><td>SHA-256 of the TDB file, computed in Lean by the checker (unproved; matches <code>sha256sum</code> and <code>hashlib</code>)</td><td class="st"><span class="tag n">T0</span></td></tr>
+      <tr><td class="l">CAL-I05</td><td>Output escaping: names escaped to printable ASCII, only newlines and spaces as separators; convex mode prints <code>CONVEX</code> only with exit code 0</td><td class="st"><span class="tag n">T0</span></td></tr>
     </tbody>
   </table></div>
 </section>
@@ -357,7 +362,7 @@ Lean  EXISTS</pre>
   <p class="sec-no">12</p>
   <h2>Open gaps</h2>
   <ul class="gaps">
-    <li><strong>From TDB file to certified model</strong>Since 4 October the checker builds the model from the TDB file in Lean (CAL-I01, B02), so the driver’s translation is out of the trust chain. What remains is whether Lean’s definition reads a TDB file as intended (A-CAL-01): it is cross-checked against the driver and pycalphad (T0), with no stronger evidence. A certificate checked without <code>--tdb</code> — for instance when the TDB is piped in — still certifies only the model written in it. Earlier, fuzzing had found inputs the driver translated into a different model that the checker then accepted (<code>3*T**1.5</code> read as 3<i class="v">T</i> + 0.5, truncated coefficients, a dropped phase), and the database audit found dropped molecular species; these were fixed, and the Lean reader follows the same rules for what to reject or skip.</li>
+    <li><strong>From TDB file to certified model</strong>Since 4 October the checker builds the model from the TDB file in Lean (CAL-I01, B02), so the driver’s translation is out of the trust chain. What remains is whether Lean’s definition reads a TDB file as intended (A-CAL-01): it is cross-checked against the driver and pycalphad (T0), with no stronger evidence. A certificate checked without <code>--tdb</code> — for instance when the TDB is piped in — still certifies only the model written in it. Since 7 October the <code>--tdb</code> mode also prints the TDB file’s SHA-256 (CAL-I04), and all names are escaped, so forged phase names can no longer inject output lines (CAL-I05). Earlier, fuzzing had found inputs the driver translated into a different model that the checker then accepted (<code>3*T**1.5</code> read as 3<i class="v">T</i> + 0.5, truncated coefficients, a dropped phase), and the database audit found dropped molecular species; these were fixed, and the Lean reader follows the same rules for what to reject or skip.</li>
     <li><strong>No miscibility gap: magnetic phases and between temperatures</strong>Convexity certificates cover non-magnetic substitutional solutions at a single temperature. Magnetic phases need second-derivative bounds on the magnetic term; nothing is certified between two temperatures; <code>CAL_FAIL</code> is not a proof of a gap.</li>
     <li><strong>Phase diagrams between grid temperatures</strong>Since 5 October the partition certificate covers every composition at each grid temperature; temperatures between grid points are not certified, and a miscibility gap inside a single-phase window needs a separate convexity certificate.</li>
     <li><strong>Order–disorder, interstitial, further sublattice and multicomponent models</strong>Not yet defined in Lean (phases with one or two mixing sublattices are supported). The driver skips such phases and lists them; the conclusions hold only for the phases included. Magnetic phases whose <code>TC</code> or <code>BMAGN</code> depends on log <i class="v">T</i> are also skipped.</li>
@@ -370,7 +375,7 @@ Lean  EXISTS</pre>
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · status snapshot 6 October 2026<span class="updated"> · updated <time datetime="2026-10-06T20:17+08:00">2026-10-06 20:17 UTC+8</time></span></span>
+  <span>Formal in Silico · status snapshot 6 October 2026<span class="updated"> · updated <time datetime="2026-10-07T13:49+08:00">2026-10-07 13:49 UTC+8</time></span></span>
   <span><a href="./">Programme</a> · <a href="progress.html">Progress</a> · <a href="showcases.html">Showcases</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="zh/calphad.html" hreflang="zh-CN">中文版</a></span>
 </div></footer>
 </body>

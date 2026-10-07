@@ -38,7 +38,7 @@
   <h1>mini-MD</h1>
   <p class="lead">A one-dimensional Lennard-Jones chain integrated with velocity Verlet. The Lean checker bounds how far the computed trajectory is from the <b>true solution of Newton’s equations</b> — for every step, and from the initial state over about one vibration period — and computes the conserved quantities exactly. Built on 1 October 2026 as the charter’s phase-2 MD version and cross-checked against ASE 3.29.</p>
   <div class="stats">
-    <div class="stat"><b>16</b><span>claims in the trust ledger: 5 at T4, 11 at T3</span></div>
+    <div class="stat"><b>21</b><span>claims in the trust ledger: 8 at T4, 12 at T3, 1 at T0 (the problem echo)</span></div>
     <div class="stat"><b>0.99</b><span>true local error ÷ certified local bound: the bound is almost exact</span></div>
     <div class="stat"><b>≤ 5×10⁻¹⁴</b><span>difference from ASE in positions, momenta and energy</span></div>
     <div class="stat"><b>≈ 1 period</b><span>covered by the global bound from the initial state (t = 0.5 for 8 atoms)</span></div>
@@ -136,12 +136,13 @@ Lean  EPSMAX 0.00000004460799189706</pre>
 <section id="claims">
   <p class="sec-no">05</p>
   <h2>Claims in the trust ledger</h2>
-  <div class="sbar big" role="img" aria-label="16 claims: 5 at T4, 11 at T3">
-    <i class="sw-t4" style="flex:5"></i><i class="sw-t3" style="flex:11"></i>
+  <div class="sbar big" role="img" aria-label="21 claims: 8 at T4, 12 at T3, 1 at T0">
+    <i class="sw-t4" style="flex:8"></i><i class="sw-t3" style="flex:12"></i><i class="sw-t0" style="flex:1"></i>
   </div>
   <div class="legend">
-    <span><i class="sw-t4"></i>T4 end to end · 5</span>
-    <span><i class="sw-t3"></i>T3 machine proof · 11</span>
+    <span><i class="sw-t4"></i>T4 end to end · 8</span>
+    <span><i class="sw-t3"></i>T3 machine proof · 12</span>
+    <span><i class="sw-t0"></i>T0 tested · 1</span>
   </div>
   <div class="tbl"><table>
     <thead><tr><th>Claim</th><th>Statement</th><th>Tier</th></tr></thead>
@@ -150,6 +151,7 @@ Lean  EPSMAX 0.00000004460799189706</pre>
       <tr><td class="l">MD-C02</td><td>Momentum conservation: forces sum to zero, so total momentum is constant</td><td class="st"><span class="tag m">T3</span></td></tr>
       <tr><td class="l">MD-C03</td><td>Existence and uniqueness: from initial positions in increasing order, Newton’s equations have a unique solution for all time</td><td class="st"><span class="tag m">T3</span></td></tr>
       <tr><td class="l">MD-C04</td><td>A priori bounds: every solution stays ordered and conserves energy, with interatomic distances above an <i class="v">r</i>₀ &gt; 0 fixed by the initial energy</td><td class="st"><span class="tag m">T3</span></td></tr>
+      <tr><td class="l">MD-C05</td><td><code>phi0</code> is the usual Lennard-Jones potential 4ε((σ/r)¹² − (σ/r)⁶), and the Hamiltonian is the usual LJ sum</td><td class="st"><span class="tag m">T3</span></td></tr>
       <tr><td class="l">MD-D01</td><td>Velocity Verlet is time-reversible</td><td class="st"><span class="tag m">T3</span></td></tr>
       <tr><td class="l">MD-D02</td><td>Velocity Verlet preserves total momentum</td><td class="st"><span class="tag m">T3</span></td></tr>
       <tr><td class="l">MD-D03</td><td>Velocity Verlet is symplectic, in particular for the Lennard-Jones chain</td><td class="st"><span class="tag m">T3</span></td></tr>
@@ -162,6 +164,10 @@ Lean  EPSMAX 0.00000004460799189706</pre>
       <tr><td class="l">MD-B03</td><td>Checker soundness: initial energy, energy drift and momentum drift, computed exactly</td><td class="st"><span class="tag s">T4</span></td></tr>
       <tr><td class="l">MD-B04</td><td>Checker soundness: the data satisfy the Verlet equations up to the reported residual</td><td class="st"><span class="tag s">T4</span></td></tr>
       <tr><td class="l">MD-B05</td><td>Checker soundness: the true solution behind the local and global bounds exists and is unique</td><td class="st"><span class="tag s">T4</span></td></tr>
+      <tr><td class="l">MD-B06</td><td>Checker soundness: σ &gt; 0 (σ was never checked before 7 October)</td><td class="st"><span class="tag s">T4</span></td></tr>
+      <tr><td class="l">MD-B07</td><td>Checker soundness: at least one step, and every state Q₀ … Qₙ, the final one included, strictly ordered, so all distances are positive</td><td class="st"><span class="tag s">T4</span></td></tr>
+      <tr><td class="l">MD-B08</td><td>Checker soundness: <code>E0</code> and the drifts are the genuine LJ energy at ordered states, and <code>VERLET_RES</code> evaluates forces only at ordered states; pinned restatements of B01, B02, B04</td><td class="st"><span class="tag s">T4</span></td></tr>
+      <tr><td class="l">MD-B09</td><td>Problem echo (N, steps, ε, σ, h, masses, initial positions and momenta, exact) and strict parsing; <code>make verify-all</code> compares it with the driver’s command line</td><td class="st"><span class="tag n">T0</span></td></tr>
     </tbody>
   </table></div>
   <p class="note">Verlet symplecticity at T3 (MD-D03) is half of the charter’s phase-2 exit criterion; the other half, Céa’s lemma, is on the <a href="fem.html#claims">FEM page</a>.</p>
@@ -194,7 +200,7 @@ Lean  EPSMAX 0.00000004460799189706</pre>
     <li><strong>Statistics</strong>Temperature, radial distribution functions and autocorrelations are exact functions of the computed states, like the energy, but are not implemented yet.</li>
     <li><strong>Periodic boxes, cutoffs, thermostats, constraints, 2D and 3D, parallelism</strong>Not started. A cutoff makes the force discontinuous, so the tube theorem needs a piecewise-smooth version; the parallel protocols (atom migration, halo exchange) are to be specified in TLA+.</li>
     <li><strong>Checking time</strong>About 50 ms per step for 8 atoms, mostly exact rational evaluation of <i class="v">φ</i> and its derivatives; interval arithmetic would be much faster.</li>
-    <li><strong>The driver itself</strong>Untrusted (T0); every result passes through the checker. Since 1 October it rejects non-finite or malformed parameters and stops if the integration produces a non-finite state; the initial state and the Lennard-Jones parameters in the certificate are still not echoed by the checker beyond <code>E0</code>. Phase 3 plans to bring one Verlet step to T4.</li>
+    <li><strong>The driver itself</strong>Untrusted (T0); every result passes through the checker. Since 1 October it rejects non-finite or malformed parameters and stops if the integration produces a non-finite state; since 7 October the checker echoes the whole problem (N, steps, ε, σ, h, masses, initial positions and momenta) as exact <code>PROBLEM</code> lines and accepts only certificates with σ &gt; 0, at least one step and every state ordered (MD-B06–B09). Phase 3 plans to bring one Verlet step to T4.</li>
   </ul>
 </section>
 
@@ -202,7 +208,7 @@ Lean  EPSMAX 0.00000004460799189706</pre>
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · status snapshot 5 October 2026<span class="updated"> · updated <time datetime="2026-10-05T23:25+08:00">2026-10-05 23:25 UTC+8</time></span></span>
+  <span>Formal in Silico · status snapshot 5 October 2026<span class="updated"> · updated <time datetime="2026-10-07T13:49+08:00">2026-10-07 13:49 UTC+8</time></span></span>
   <span><a href="./">Programme</a> · <a href="progress.html">Progress</a> · <a href="showcases.html">Showcases</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="zh/md.html" hreflang="zh-CN">中文版</a></span>
 </div></footer>
 </body>

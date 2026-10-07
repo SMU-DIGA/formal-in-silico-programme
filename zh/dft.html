@@ -37,8 +37,8 @@
   <h1>mini-DFT</h1>
   <p class="lead">一维周期约化 Hartree–Fock 模型，平面波离散。这是项目的第一个领域，可信账本、证书检查器与 trace validation 都在这里建立。目标 G1：在同一离散问题上与 DFTK.jl 0.8.0 功能对齐，每个输出都有 Lean 定理保证。</p>
   <div class="stats">
-    <div class="stat"><b>158</b><span>条命题登记在可信账本中</span></div>
-    <div class="stat"><b>96%</b><span>已有机器证明：T3 100 条，T4 51 条</span></div>
+    <div class="stat"><b>180</b><span>条命题登记在可信账本中</span></div>
+    <div class="stat"><b>93%</b><span>已有机器证明：T3 110 条，T4 57 条</span></div>
     <div class="stat"><b>8 / 46</b><span>项 DFTK 对齐功能完成，其中包括 LDA；另有 2 项已一致、证书不全</span></div>
     <div class="stat"><b>≤ 5×10⁻¹⁵</b><span>与 DFTK 在同一离散问题上的能量差</span></div>
   </div>
@@ -62,16 +62,16 @@
 <section id="ledger">
   <p class="sec-no">01</p>
   <h2>可信账本中的命题</h2>
-  <div class="prose"><p>账本的 211 条命题中有 158 条属于 mini-DFT，下面按主题分组。等级的定义见<a href="./#s5">纲领页</a>。</p></div>
-  <div class="sbar big" role="img" aria-label="158 条命题：T4 51 条，T3 100 条，T2 2 条，T1 4 条，T0 1 条">
-    <i class="sw-t4" style="flex:51"></i><i class="sw-t3" style="flex:100"></i><i class="sw-t2" style="flex:2"></i><i class="sw-t1" style="flex:4"></i><i class="sw-t0" style="flex:1"></i>
+  <div class="prose"><p>账本的 256 条命题中有 180 条属于 mini-DFT，下面按主题分组。等级的定义见<a href="./#s5">纲领页</a>。</p></div>
+  <div class="sbar big" role="img" aria-label="180 条命题：T4 57 条，T3 110 条，T2 2 条，T1 4 条，T0 7 条">
+    <i class="sw-t4" style="flex:57"></i><i class="sw-t3" style="flex:110"></i><i class="sw-t2" style="flex:2"></i><i class="sw-t1" style="flex:4"></i><i class="sw-t0" style="flex:7"></i>
   </div>
   <div class="legend">
-    <span><i class="sw-t4"></i>T4 端到端 · 51</span>
-    <span><i class="sw-t3"></i>T3 机器证明 · 100</span>
+    <span><i class="sw-t4"></i>T4 端到端 · 57</span>
+    <span><i class="sw-t3"></i>T3 机器证明 · 110</span>
     <span><i class="sw-t2"></i>T2 模型检验 · 2</span>
     <span><i class="sw-t1"></i>T1 纸面证明 · 4</span>
-    <span><i class="sw-t0"></i>T0 测试 · 1</span>
+    <span><i class="sw-t0"></i>T0 测试 · 7</span>
   </div>
   <div class="rows">
     <div class="row"><div>DFT 基础命题<div class="cap">离散模型 · 算法 · 并行 · 浮点</div></div><span class="n">18</span><div class="barcell"><div class="sbar"><i class="sw-t4" style="flex:3"></i><i class="sw-t3" style="flex:9"></i><i class="sw-t2" style="flex:2"></i><i class="sw-t1" style="flex:3"></i><i class="sw-t0" style="flex:1"></i></div></div></div>
@@ -81,11 +81,13 @@
     <div class="row"><div>SCF 解证书<div class="cap">任意阶 Methfessel–Paxton · Marzari–Vanderbilt</div></div><span class="n">12</span><div class="barcell"><div class="sbar"><i class="sw-t4" style="flex:3"></i><i class="sw-t3" style="flex:9"></i></div></div></div>
     <div class="row"><div>k 点采样与超胞等价</div><span class="n">7</span><div class="barcell"><div class="sbar"><i class="sw-t4" style="flex:2"></i><i class="sw-t3" style="flex:5"></i></div></div></div>
     <div class="row"><div>离散误差<div class="cap">截断 K → ∞ · 真实高斯外势</div></div><span class="n">13</span><div class="barcell"><div class="sbar"><i class="sw-t4" style="flex:3"></i><i class="sw-t3" style="flex:9"></i><i class="sw-t1" style="flex:1"></i></div></div></div>
-    <div class="row"><div>问题绑定：证书的外势<div class="cap">Lean 中的命名外势及其 Fourier 级数 · Γ 点与 k 点的证书问题等于命名问题 · 高斯外势的偏差界 · 每种证书都必须绑定 · 扰动估计：高斯外势的 SCF 解、谱、能带与熵对命名外势成立 · 高斯外势的 LSDA</div></div><span class="n">14</span><div class="barcell"><div class="sbar"><i class="sw-t4" style="flex:10"></i><i class="sw-t3" style="flex:4"></i></div></div></div>
+    <div class="row"><div>问题绑定：证书的外势<div class="cap">Lean 中的命名外势及其 Fourier 级数 · Γ 点与 k 点的证书问题等于命名问题 · 高斯外势的偏差界 · 每种证书都必须绑定 · 扰动估计：高斯外势的 SCF 解、谱、能带与熵对命名外势成立 · 用户的系数文件与高斯格点 · 高斯外势的 LSDA</div></div><span class="n">21</span><div class="barcell"><div class="sbar"><i class="sw-t4" style="flex:12"></i><i class="sw-t3" style="flex:7"></i><i class="sw-t0" style="flex:2"></i></div></div></div>
     <div class="row"><div>基态密度与本征值证书</div><span class="n">10</span><div class="barcell"><div class="sbar"><i class="sw-t4" style="flex:3"></i><i class="sw-t3" style="flex:7"></i></div></div></div>
     <div class="row"><div>能带结构与态密度证书<div class="cap">零温 · 有限温度的 SCF 解（rHF 与 LDA） · k 点：由超胞解得到的原胞能带 · LSDA 每个自旋的能带与态密度</div></div><span class="n">11</span><div class="barcell"><div class="sbar"><i class="sw-t4" style="flex:10"></i><i class="sw-t3" style="flex:1"></i></div></div></div>
     <div class="row"><div>LDA 交换关联（Slater、PW92）<div class="cap">实空间网格上的交换关联项 · 非线性 SCF 解证书 · 能量 · PW92 的区间界 · Fermi–Dirac 与 Gaussian 占据 · k 点超胞 · 能隙条件下的零温</div></div><span class="n">25</span><div class="barcell"><div class="sbar"><i class="sw-t4" style="flex:5"></i><i class="sw-t3" style="flex:20"></i></div></div></div>
     <div class="row"><div>共线自旋（LSDA）<div class="cap">两个自旋通道的界 · 块对角的 SCF 解与磁化 · k 点 · 零温（含 k 点） · 能带的误差分解 · 能量与自由能检查器 · 自旋插值 PW92 与局部方块界 · 检查器</div></div><span class="n">21</span><div class="barcell"><div class="sbar"><i class="sw-t4" style="flex:8"></i><i class="sw-t3" style="flex:13"></i></div></div></div>
+    <div class="row"><div>SCF 解本身的唯一性、输入检查与回显<div class="cap">每个 SCF 解都是辅助映射的零点 · 表头与输入格式在检查前核对 · 能带与态密度的 k 点、权重、展宽回显 · 零温能隙的输出规则（2026-10-07 复审）</div></div><span class="n">11</span><div class="barcell"><div class="sbar"><i class="sw-t4" style="flex:4"></i><i class="sw-t3" style="flex:3"></i><i class="sw-t0" style="flex:4"></i></div></div></div>
+    <div class="row"><div>力（Hellmann–Feynman）<div class="cap">带二阶余项的一阶展开 · 基态（自由）能量的导数 · 总力为零 · 力区间检查器</div></div><span class="n">4</span><div class="barcell"><div class="sbar"><i class="sw-t3" style="flex:4"></i></div></div></div>
   </div>
   <p class="note">T4 命题是各个证书检查器的可靠性定理（检查器全程用精确有理数，不涉及浮点）与 Frama-C/WP 对 C 可信内核的证明：无运行时错误（DFT-F03），以及 10 月 6 日起在 IEEE 754 模型下对 C 代码证明的区间算术浮点正确性——电荷区间、残差上界与惯性计数（DFT-F01、F02；由精确消去得到本征值个数是 Lean 定理 <code>exactElim_inertia</code>）。纸面证明（T1，<code>domains/dft/notes/</code>；文献中没有直接覆盖一维周期 Hartree 核的结果）的 4 条：一维 rHF 的连续适定性、平面波先验误差估计、线性混合在 α &lt; 2/λ<sub>max</sub>（介电算子的最大本征值）时的局部收敛已达目标；截断极限等于连续模型的能量目标是 Lean 证明（T3）。Lean 与 Rocq 的接口命题 DFT-I01 于 10 月 6 日撤销（决定 D1 选定 Frama-C，不用 Rocq）。</p>
 </section>
@@ -181,7 +183,7 @@
         <li>共线自旋 LSDA（自旋极化的 Slater 交换，10 月 7 日起有限温度也可加 PW92 关联；可加均匀 Zeeman 场），Γ 点、有限温度：局部唯一的 LSDA SCF 解、其磁化与化学势（<code>LSDA_MAG</code>、<code>LSDA_MU</code>；10 月 6 日起），k 点与零温（精确整数磁化与公共能隙，<code>LSDA0_*</code>）也有；10 月 7 日起另有该解的能量与自由能（<code>LSDA_E</code>、<code>LSDA_F</code>）、每个自旋的能带与态密度（<code>LSDA_BAND</code>、<code>LSDA_DOS</code>、<code>LSDA_DOS_TOT</code>），高斯外势在 Γ 点另有命名外势下的结论（<code>GAUSS_LSDA*</code>）</li>
         <li>k 点运行：经等价超胞给出每个原胞的值</li>
     </ul></div>
-  <p class="note">10 月 4 日以后写出的每张证书还写明它的外势，检查器在给出任何结论之前先输出它认证的问题（见下一节）。</p>
+  <p class="note">10 月 4 日以后写出的每张证书还写明它的外势，检查器在给出任何结论之前先输出它认证的问题（见下一节）。10 月 7 日起“局部唯一”指 SCF 解本身：每个 SCF 解都是证书所核对的辅助映射的零点，所以球内恰有一个 SCF 解（DFT-T32–T37）。</p>
 </section>
 
 <section id="binding">
@@ -196,6 +198,7 @@
       <tr><td>PROBLEM …</td><td>被认证的问题，精确十进制：外势及其参数、<i class="v">L</i>、<i class="v">K</i>、电子对数、k 点个数，以及按证书种类的温度、展宽、交换关联与网格点数，LSDA 另有电子数、自旋与 Zeeman 场。只回显、不重算；<code>make verify-all</code> 把它与命令行对照。</td></tr>
       <tr><td>POT_OK exact</td><td>自由电子与余弦：每个系数都等于 Lean 的系数，所以被认证的问题<i>就是</i>命名的问题——Γ 点（DFT-I02），以及 k 点超胞的原胞问题（DFT-I03）。证书的每一条结论于是都是关于命名外势的。</td></tr>
       <tr><td>POT_OK gauss d</td><td>高斯双势阱：系数含 √(2π) 与 exp，检查器用有理区间包住 Lean 的精确系数，证明 ℓ¹ 偏差不超过 <i class="v">d</i>（约 10⁻¹⁵）。变分证书——零温或有限温度、Γ 点或 k 点——另外输出关于命名外势的 <code>GAUSS_OK</code> 区间，放宽 2<i class="v">N</i>·<i class="v">d</i>（DFT-V09）。</td></tr>
+      <tr><td>POT_OK file d · POT_OK sites d</td><td>10 月 7 日起可用自己的外势：<code>--pot file --potfile F</code>（精确有理的 Fourier 系数）或 <code>--pot sites --sites F|t:V0:σ,…</code>（周期化的高斯格点）。证书以精确分数携带这些数据，检查器逐个回显（<code>PROBLEM POTC</code>、<code>PROBLEM SITE</code>）；给出同样的 <code>--potfile</code> 或 <code>--sites</code> 时检查器自己重读输入，不符即拒绝。二进系数精确绑定（<code>POT_OK exact</code>）；非二进系数与格点给出精确算出的偏差 <i class="v">d</i>，然后得到与高斯双势阱相同的 <code>GAUSS_…</code> 行（DFT-V18–V24）。尚未覆盖：格点的截断极限、LSDA 与零温 LDA。</td></tr>
       <tr><td>POT_FAIL</td><td>系数不是命名外势的系数，或者证书根本没有 <code>pot</code> 行（10 月 5 日起绑定是必需的，DFT-I04）；不输出任何其他结论。</td></tr>
     </tbody>
   </table></div>
@@ -223,7 +226,7 @@
     <li><span>LSDA 的能带与态密度（Γ 点与 <i class="v">n</i><sub>k</sub> = 2、3）：能带区间半宽 / 态密度区间半宽；DFTK 的 <code>compute_bands</code> 与每个自旋的 <code>compute_dos</code></span><b>1.6×10⁻¹¹–3.0×10⁻¹⁰ / 1×10⁻⁹–4×10⁻⁸；192 + 252 个值在区间内</b></li>
     <li><span>自旋插值 PW92 关联的 LSDA（余弦外势与自由电子，Fermi–Dirac）：唯一性半径 / 检查时间；四个体系上 DFTK 的磁化与费米能级</span><b>3.5×10⁻¹⁴–4.3×10⁻¹³ / 10–22 秒（<i class="v">n</i><sub>k</sub> = 3 为 61 秒）；在区间内，与驱动差 ≤ 4.5×10⁻¹⁴</b></li>
     <li><span>LSDA 的能量与自由能（余弦外势、自由电子、<i class="v">n</i><sub>k</sub> = 3）：<i class="v">E</i> 宽 / <i class="v">F</i> 宽 / 检查时间；高斯双势阱（<i class="v">V</i>₀ = 2，<i class="v">T</i> = 0.1）命名外势</span><b>1.5×10⁻¹⁰–1×10⁻⁸ / 4×10⁻¹⁵–7×10⁻¹⁴ / 8–55 秒；高斯 <i class="v">E</i> 宽 7.4×10⁻⁹；DFTK 在区间内</b></li>
-    <li><span>伪造的证书（10 月 6 日的对抗式复审）：伪造的名字、巨大的指数、不完整的 k 点、放大的权重、调换的文件与首行，覆盖各领域</span><b>145 / 145 被拒绝或输出不变</b></li>
+    <li><span>伪造的证书（10 月 6 日的对抗式复审）：伪造的名字、巨大的指数、不完整的 k 点、放大的权重、调换的文件与首行，覆盖各领域</span><b>241 / 241 被拒绝或输出不变</b></li>
     <li><span>2、3、4 阶 Methfessel–Paxton 的 SCF 解证书，<i class="v">K</i> = 8：唯一性半径 / 自由能区间</span><b>1–6×10⁻¹² / 4×10⁻¹⁴–5×10⁻¹³</b></li>
     <li><span>问题绑定：驱动求解另一个外势、<code>pot</code> 行仍写所要求的外势（自由电子的 Γ 点与 k 点、LDA 的 Γ 点与 k 点、高斯的零温与 MV）；高斯的 <i class="v">V</i>₀ 用 2.001 而写成 2</span><b>POT_FAIL</b></li>
     <li><span>问题绑定：一个系数改动最后一位</span><b>POT_FAIL</b></li>
@@ -266,15 +269,16 @@
   <h2>缺口</h2>
   <div class="prose"><p>没有 Lean 定理的输出算未完成。下面是已知的缺口，如实列出。</p></div>
   <ul class="gaps">
+    <li id="forces"><strong>力</strong>10 月 7 日起，rHF 在任意温度下的 Hellmann–Feynman 定理有了机器证明（带显式二阶余项；平面波基不随原子移动，没有 Pulay 项），平移下总力为零也已证明（DFT-N01–N03）。力区间的检查器及其零温证书衔接已证明（DFT-N04，T3），但还没有接入 <code>certify</code>；<code>--forces</code> 输出高斯势阱上的浮点力，与中心有限差分相差 7×10⁻¹⁰。缺：经用户外势的格点导数接口输出 <code>FORCE_OK</code> 行、有限温度、LDA 的力。</li>
     <li><strong>k 点求和相对无限晶体的误差</strong>每次 k 点运行对它自己的离散问题有证书，但 k 点求和相对无限晶体的误差还没有界；k 点能量不是变分的。</li>
     <li><strong>含布里渊区边界的 k 网格</strong>没有证书；DFTK 在区界上的处理也不是同一个离散问题，两边都不比较。</li>
     <li><strong>SCF 解证书的规模</strong>检查时间约按超胞阶数的四次方增长；高阶 Methfessel–Paxton 所用的导数界是真实最大值的数倍，阶数越高越松；有能隙体系在化学势取能隙中间时 SCF 方程病态，证书如实不通过；唯一性只是局部的，而 LDA 确实可以有多个解（见<a href="#multiple">上文</a>）。</li>
     <li><strong>LDA 的限制</strong>零温只在能隙保持打开时有证书（零温的金属没有）；k 点 LDA 的证书要 <i class="v">M</i> ≥ 4<i class="v">K</i> + 3（缺省的 4<i class="v">K</i> + 1 只与 DFTK 对齐）；接近绝缘体（∂<i class="v">N</i>/∂μ ≈ 0）的体系 SCF 解证书不通过；LDA 的能量区间是一阶估计。</li>
-    <li><strong>共线自旋（LSDA）</strong>自旋极化的 Slater 交换（可加均匀 Zeeman 场）已有证书：Γ 点与 k 点的有限温度（SCF 解、磁化、μ、能量、自由能、每个自旋的能带与态密度），Γ 点与 k 点的零温（公共能隙条件下），Γ 点的命名高斯外势；自旋插值 PW92 关联在 Γ 点与 k 点的有限温度（SCF 解、磁化、μ）。尚缺：PW92 的零温、能量、能带与高斯外势（PW92 的一致常数比真实上确界松约 100 倍，检查器改用每个格点的局部界）、零温的能带与态密度、零温无能隙或完全极化的情形、高斯外势的 k 点 LSDA（被拒绝）与高斯外势的 LSDA 能带（高斯证书的能带行关于证书中的系数）。高斯外势下命名外势的 Newton–Kantorovich 条件可能不成立，即使证书问题通过（双势阱 <i class="v">V</i>₀ = 2、<i class="v">T</i> = 0.05：<code>GAUSS_FAIL</code>）。DFTK 的 <code>Magnetic</code> 是矢势项，没有实现。</li>
+    <li><strong>共线自旋（LSDA）</strong>自旋极化的 Slater 交换（可加均匀 Zeeman 场）已有证书：Γ 点与 k 点的有限温度（SCF 解、磁化、μ、能量、自由能、每个自旋的能带与态密度），Γ 点与 k 点的零温（公共能隙条件下），Γ 点的命名高斯外势；自旋插值 PW92 关联在 Γ 点与 k 点的有限温度（SCF 解、磁化、μ）。尚缺：PW92 的零温、能量、能带与高斯外势（PW92 的一致常数比真实上确界松约 100 倍，检查器改用每个格点的局部界；<code>xc lda</code> 时检查器输出 <code>UNSUPPORTED LSDA_E LSDA_F</code>，带能带行的证书被拒绝）、用户的格点外势与非二进系数文件（被拒绝）、零温的能带与态密度、零温无能隙或完全极化的情形、高斯外势的 k 点 LSDA（被拒绝）与高斯外势的 LSDA 能带（高斯证书的能带行关于证书中的系数）。高斯外势下命名外势的 Newton–Kantorovich 条件可能不成立，即使证书问题通过（双势阱 <i class="v">V</i>₀ = 2、<i class="v">T</i> = 0.05：<code>GAUSS_FAIL</code>）。DFTK 的 <code>Magnetic</code> 是矢势项，没有实现。</li>
     <li><strong>有限温度的离散误差</strong>目前只有零温的证书。</li>
     <li><strong>截断极限等于连续模型的能量</strong>只有纸面证明（T1），尚未在 Lean 中证明。</li>
     <li><strong>零温以外的密度、本征值、能带与态密度</strong>零温 Γ 点的运行全部有证书；能带与态密度另外覆盖有限温度的 SCF 解证书，10 月 6 日起也覆盖 k 点运行（rHF 任意展宽、LDA、零温 rHF；DFT-S06–S08）。尚缺：零温 LDA 的 k 点、命名高斯外势的 k 点与有限温度变分证书（Fermi–Dirac 或 Gaussian 不加 <code>--scf-cert</code>）的能带与态密度；区界 X 点与 DFTK 的比较（需要在那里取相同的离散）；以及有限温度下的密度、本征值与能量分项。</li>
-    <li><strong>证书中写的其余问题数据</strong>10 月 4 日起外势由检查器按 Lean 中的定义核对（A-DFT-05，见<a href="#binding">上文</a>）。其余问题数据——周期长度、截断、电子数、温度、展宽、交换关联、网格点数、k 点个数——本身就是问题：检查器回显它们的精确值但无法重算，只有 <code>make verify-all</code> 把它们与命令行对照（T0）；能带的 k 点权重与态密度的展宽不回显。没有 <code>pot</code> 行的证书仍只认证证书里写的外势；高斯外势的零温 LDA 与能量分项仍关于证书中的系数（与命名外势相差约 10⁻¹⁵ 以内）。10 月 6 日起 <code>make verify-all</code> 对照全部回显（含展宽、泛函与网格点数），检查器对名字与数的解析也做了防御（对抗式复审，见<a href="progress.html#how">实现进度</a>）；态密度只在 k 点完整、权重之和为 1 时输出。</li>
+    <li><strong>证书中写的其余问题数据</strong>10 月 4 日起外势由检查器按 Lean 中的定义核对（A-DFT-05，见<a href="#binding">上文</a>）。其余问题数据——周期长度、截断、电子数、温度、展宽、交换关联、网格点数、k 点个数——本身就是问题：检查器回显它们的精确值但无法重算，只有 <code>make verify-all</code> 把它们与命令行对照（T0）；10 月 7 日起能带与态密度的 k 点、权重与展宽也回显（DFT-I05），表头、未知键、重复的标量键与非 ASCII 字符在检查前拒绝（DFT-I06、I07）。10 月 5 日起没有 <code>pot</code> 行的证书被拒绝；高斯外势的零温 LDA 与能量分项仍关于证书中的系数（与命名外势相差约 10⁻¹⁵ 以内）。10 月 6 日起 <code>make verify-all</code> 对照全部回显（含展宽、泛函与网格点数），检查器对名字与数的解析也做了防御（对抗式复审，见<a href="progress.html#how">实现进度</a>）；态密度只在 k 点完整、权重之和为 1 时输出。</li>
     <li><strong>ACSL 与 Lean 陈述的对应</strong>10 月 6 日起区间算术对 C 代码证明；它的 ACSL 契约与 Lean 定理说的是同一件事，靠人工对照（A-DFT-07），证明还假设 <code>nextafter</code> 的契约与 <code>INFINITY</code> 的取值（A-DFT-06）。</li>
   </ul>
 </section>
@@ -283,7 +287,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · 现状快照 2026-10-06<span class="updated"> · 更新于 <time datetime="2026-10-07T14:52+08:00">2026-10-07 14:52 UTC+8</time></span></span>
+  <span>Formal in Silico · 现状快照 2026-10-06<span class="updated"> · 更新于 <time datetime="2026-10-07T20:03+08:00">2026-10-07 20:03 UTC+8</time></span></span>
   <span><a href="./">纲领</a> · <a href="progress.html">进度</a> · <a href="showcases.html">成果展示</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="../dft.html" hreflang="en">English</a></span>
 </div></footer>
 </body>
