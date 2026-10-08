@@ -44,9 +44,9 @@
     <div class="j ph"><span class="k">实验</span><span class="e"><i class="v">y</i><sub>obs</sub> − <i class="v">y</i><sub>model</sub> ∈ [<i class="v">y</i><sub>obs</sub> − hi, <i class="v">y</i><sub>obs</sub> − lo] ± <i class="v">σ</i><sub>exp</sub></span></div>
   </div>
   <div class="stats">
-    <div class="stat"><b data-n="all">324</b><span>条命题登记在可信账本中</span></div>
-    <div class="stat"><b data-n="all.proved">282</b><span>条已有机器证明（T3 或 T4）</span></div>
-    <div class="stat"><b data-n="all.T4">101</b><span>条达到端到端等级 T4：检查器可靠性、内核安全与内核浮点</span></div>
+    <div class="stat"><b data-n="all">340</b><span>条命题登记在可信账本中</span></div>
+    <div class="stat"><b data-n="all.proved">298</b><span>条已有机器证明（T3 或 T4）</span></div>
+    <div class="stat"><b data-n="all.T4">103</b><span>条达到端到端等级 T4：检查器可靠性、内核安全与内核浮点</span></div>
     <div class="stat"><b>4</b><span>个参照程序交叉校验：DFTK.jl、scikit-fem、ASE 与 pycalphad</span></div>
   </div>
   <div class="cta">
@@ -62,6 +62,10 @@
   <h2>动态</h2>
   <div class="prose"><p>五个领域新增的功能、研究结果，以及论文与本网站的变化，新的在前。逐项状态见<a href="progress.html">实现进度</a>；这里引用的命题都登记在可信账本中。</p></div>
   <ol class="news">
+    <li><time datetime="2026-10-09">2026-10-09</time><ul>
+      <li><span class="tag n">DFT</span>三维的第二条算术路线：Lean 中证明过的二进区间库（尾数 × 2<sup><i class="v">e</i></sup>，向外舍入到 <i class="v">p</i> 位）让 <code>certify-pw --dyadic p</code> 用与精确有理数路线相同的可靠性定理检查同样的证书（DFT-J01–J09，J08、J09 为 T4）。在 Si、Ge、GaAs 的证书上，二进区间与精确区间逐行相交（83 行全部）；最低 5 条能带从 <i class="v">p</i> = 26 起通过，9 条能带需要 <i class="v">p</i> = 32–36。如实说明：约 200 个平面波时它还不比精确有理数快（每个 k 点 11–22 秒对 6–14 秒），下一步是预条件。</li>
+      <li><span class="tag n">DFT</span>三维 SCF 的模型：任意 Bravais 晶格（Si、Ge、GaAs 的面心立方都在内）上的约化 Hartree–Fock，Hartree 核 4π/|<i class="v">G</i>|²，外势为各原子局域赝势之和，现在写进了 Lean：零温与有限温度的极小存在、基态密度唯一、能量随截断单调，以及 SCF 证书要检查的 Euler–Lagrange 与 Aufbau 刻画；一维模型是 <i class="v">d</i> = 1 的特例，关掉 Hartree 时 Hamiltonian 就是 Cohen–Bergstresser 的（DFT-M01–M06，T3）。LDA 的极小也存在，但密度不一定唯一（DFT-M16）。下一步是三维 SCF 的检查器。</li>
+    </ul></li>
     <li><time datetime="2026-10-08">2026-10-08</time><ul>
       <li><span class="tag n">网站</span><a href="progress.html#glance">进度页</a>开头新增一张全局图：可信账本逐日的增长（9 月 27 日 16 条命题，现在 324 条，87% 有机器证明）、三重正确各自的进展，以及各领域与参照程序的对齐程度；网站上所有来自账本与对齐清单的数字今后都由脚本生成（<code>scripts/site_numbers.py</code>），每次验证都会检查，页面不会再落后于账本；DFT 页新增三维平面波与三维并行协议两行。</li>
       <li><span class="tag n">物理</span><b>第一个三重都齐的结果。</b>Cohen–Bergstresser 经验赝势下 Si、Ge、GaAs 的能带能量有严格区间（宽约 10<sup>−7</sup>&nbsp;eV），与模型没有拟合过的光电子能谱数据比较；比较协议在任何证书数字出现之前提交并推送。Si 在 0.3&nbsp;eV 的测量不确定度内一致；Ge 的价带宽度（窄 0.54&nbsp;eV）与 GaAs 的 <i>L</i><sub>3</sub> 能级（高 0.38&nbsp;eV）不一致，这是数值与软件误差解释不了的模型误差（DFT-O01、O02 为 V2，O03 为 V0）。拟合集恰为 CB 1966 年 Table I 的 86 个实验值，已对照原文核对。</li>
@@ -511,7 +515,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · 项目纲领 v0.4 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-10-08T22:56+08:00">2026-10-08 22:56 UTC+8</time></span></span>
+  <span>Formal in Silico · 项目纲领 v0.4 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-10-09T03:06+08:00">2026-10-09 03:06 UTC+8</time></span></span>
   <span><a href="progress.html">实现进度</a> · <a href="showcases.html">成果展示</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="../" hreflang="en">English</a></span>
 </div></footer>
 </body>
