@@ -36,7 +36,7 @@
   <p class="eyebrow">项目纲领 · v0.4 · 2026-10-08</p>
   <h1>Formal in Silico</h1>
   <p class="sub">计算机模拟的三重正确：物理、数学、软件</p>
-  <p class="lead">材料设计、药物筛选、结构安全评估越来越依赖计算机模拟给出的数字。这些数字从方程出发，经过离散化、迭代算法和并行程序，最后落在 IEEE 754 浮点数上。一个模拟结果要可信，必须同时满足三重正确：<b>物理上正确</b>（模型描述了真实世界），<b>数学上正确</b>（求解的确实是模型的方程，误差有界），<b>软件上正确</b>（程序忠实地执行了算法，浮点误差有界）。今天这三者分别靠实验对比、数值经验和软件测试来担保，而且彼此纠缠：结果与实验不符时，说不清错在模型、离散还是代码。本项目第一次把三者放在一起：数学正确由 Lean 证明，软件正确由 TLA+、Frama-C 与经过证明的检查器保证，物理正确由可追溯的实验观测确认。数学与软件的误差被严格界定之后，与实验的偏差就只剩模型本身与测量的不确定度，模型误差第一次可以被干净地测量。</p>
+  <p class="lead">材料设计、药物筛选、结构安全评估越来越依赖计算机模拟给出的数字。这些数字从方程出发，经过离散化、迭代算法和并行程序，最后落在 IEEE 754 浮点数上。一个模拟结果要可信，必须同时满足三重正确：<b>物理上正确</b>（模型描述了真实世界），<b>数学上正确</b>（求解的确实是模型的方程，误差有界），<b>软件上正确</b>（程序忠实地执行了算法，浮点误差有界）。今天这三者分别靠实验对比、数值经验和软件测试来担保，而且彼此纠缠：结果与实验不符时，说不清错在模型、离散还是代码。据我们所知，本项目第一个对同一个计算同时建立三者：数学正确与软件正确由机器检查的证明给出（Lean；TLA+、Frama-C 与经过证明的检查器），物理正确由预先登记、可追溯的实验观测确认，全部记在同一份账本里。数学与软件的误差被严格界定之后，与实验的偏差就只剩模型本身与测量的不确定度，模型误差得到严格的界，而不是在假定数值已经收敛之后估计。</p>
   <div class="judgments" aria-label="四类判断">
     <div class="j m"><span class="k">PDE</span><span class="e">‖<i class="v">u</i> − <i class="v">u<sub>h</sub></i>‖ ≤ (<i class="v">M</i>/<i class="v">α</i>) · inf ‖<i class="v">u</i> − <i class="v">v<sub>h</sub></i>‖</span></div>
     <div class="j s"><span class="k">TLA+</span><span class="e">Spec ⇒ □ AtomsConserved</span></div>
@@ -63,6 +63,9 @@
   <div class="prose"><p>五个领域新增的功能、研究结果，以及论文与本网站的变化，新的在前。逐项状态见<a href="progress.html">实现进度</a>；这里引用的命题都登记在可信账本中。</p></div>
   <ol class="news">
     <li><time datetime="2026-10-08">2026-10-08</time><ul>
+      <li><span class="tag n">物理</span>三重正确计划的第 1 轮：物理确认进入账本与每一次验证。确认命题（字母 O）带确认等级 V0–V3，写明冻结并登记哈希的实验数据集、计算一侧依赖的 T3/T4 命题，偏差分严格部分与统计部分；新的 <code>validation</code> 步骤按精确算术重算每条偏差，拒绝 41 种篡改；<code>fis</code> 的报告分数学、软件、物理三栏。第一条确认命题 CAL-O01（V1）：公开 Al–Zn 数据库中 fcc Al 的熵（证书区间）与 CODATA 的 28.30 ± 0.10 J/(mol·K) 一致；只给 V1，因为这类数据库本来就拟合这些数据。第一批实验数据集（Cohen–Bergstresser 的拟合集与确认集、含零点重整化的带隙、0 K 晶格常数、磁矩）在任何比较之前冻结。</li>
+      <li><span class="tag n">DFT</span>三维的第一步：Lean 中 <i class="v">d</i> 维格子上的平面波模型与 Cohen–Bergstresser Hamiltonian，定理给出每条能带、带边与直接、间接带隙的区间，以及对任意截断都成立的 Schur 补比较（DFT-W01–W07，T3；连续算子的形式 W08 为纸面证明）。检查器在第 2 轮。文献核对发现这个模型的连续算子严格界已有先例（Herbst、Levitt、Cancès 2020），计划因此把新意放在机器检查的证明、舍入控制与整个布里渊区的带隙上。</li>
+      <li><span class="tag n">检查</span><code>verify_all --jobs</code> 并行运行证书、展示与对抗用例，计数不变；完整验证从约 100 分钟缩短到约 30 分钟。三维证书的算术路线实测（精确有理数、Lean 二进区间、经过证明的 C 区间内核）见 DFT 笔记。</li>
       <li><span class="tag n">纲领</span>纲领 v0.4：三重正确（物理、数学、软件）；确认等级 V0–V3；三维 DFT 展示计划。一个结果要可信，模型必须描述真实世界（由观测确认），方程必须以严格的误差界求解（Lean），程序必须忠实执行算法（TLA+、Frama-C、经过证明的检查器）。层链新增 L0（被观测的真实世界）；物理结论在 T0–T4 之外另带确认等级 V0–V3；原来“不判断物理模型是否正确”的非目标撤回。物理正确目前最弱：迄今所有结果都是 V0，物理确认这条线（实验数据集、账本中的 V 等级、LDA 带隙的带证书模型误差）随三维 DFT 的展示例子 S1–S3 一起计划。论文按同样的叙事改写。<a href="#s2">详情 →</a></li>
       <li><span class="tag n">DFT</span>力的第二阶段：<code>--pot sites --forces</code> 现在对 rHF Γ 点（零温，或 Fermi–Dirac、Gaussian 展宽）给出每个高斯格点上的力及其合力的严格区间；有证书能量的有限差分与 DFTK 的 <code>compute_forces</code> 都在区间内（DFT-N04–N08）。<a href="dft.html#forces">详情 →</a></li>
       <li><span class="tag n">DFT</span>共线自旋完成：加自旋插值 PW92 关联时，检查器现在也认证 Γ 点与 k 点的零温、能量与自由能、每个自旋的能带与态密度以及命名高斯外势，DFTK 处处在区间内，DFTK 对标表的共线自旋一项完成（DFT-X48–X58）。<a href="dft.html#lsda">详情 →</a></li>
@@ -246,7 +249,7 @@
     </ul>
   </div>
   <div class="prose">
-    <p>今天的计算与实验对比时，三项混在一起：偏差可能来自模型，也可能来自截断、k 点、SCF 收敛、赝势或代码。当最后一项被证书严格界定时，偏差 <i class="v">y</i><sub>obs</sub> − <i class="v">ỹ</i> 减去一个已知的区间，剩下的就只有模型误差与测量误差：<b>模型误差第一次可以被干净地测量</b>。这是三重正确合在一起的意义，也是本项目与单纯的验证（verification）或单纯的确认（validation）的区别。确认的规则与等级见 §5。</p>
+    <p>今天的计算与实验对比时，三项混在一起：偏差可能来自模型，也可能来自截断、k 点、SCF 收敛、赝势或代码。当最后一项被证书严格界定时，偏差 <i class="v">y</i><sub>obs</sub> − <i class="v">ỹ</i> 减去一个已知的区间，剩下的就只有模型误差与测量误差：<b>模型误差得到严格的界，而不是估计</b>。这里的模型指 L1 固定的一切：方程、泛函或力场、赝势，以及把计算量当作测量量的约定（例如用 Kohn–Sham 带隙代表光学带隙）。这是三重正确合在一起的意义，也是本项目与单纯的验证（verification）或单纯的确认（validation）的区别。确认的规则与等级见 §5。</p>
   </div>
 </section>
 
@@ -375,7 +378,7 @@
     <h3>当前目标：三重正确的三维展示 <span class="tag n">2026-10-08 设定</span></h3>
     <p>把 DFT 推广到三维真实材料，并在同一批体系上同时给出三重正确的证据：数学正确（SCF 解的存在唯一、能量与带隙的严格区间，能做到时针对连续问题）、软件正确（并行协议的 TLA+ 规范与 trace validation，经过证明的检查器）、物理正确（与实验带隙、晶格常数、磁矩的系统确认，给出带证书的交换关联泛函误差）。计划中的展示例子，目前都还没有结果：</p>
     <ul>
-      <li><span class="tag ph">物理</span> <b>S1 带证书的模型误差。</b>一组半导体与绝缘体的 LDA（之后 PBE）带隙、晶格常数与实验系统比较；计算值是严格区间，偏差就是泛函的误差，带隙问题第一次有了不含数值误差的定量版本。</li>
+      <li><span class="tag ph">物理</span> <b>S1 带证书的模型误差。</b>一组半导体与绝缘体的 LDA（之后 PBE）带隙、晶格常数与实验系统比较；计算值是严格区间，偏差就是模型（泛函与赝势，以 Kohn–Sham 带隙代表测量的带隙）的误差：不含数值误差的带隙问题。</li>
       <li><span class="tag m">数学</span> <b>S2 不是基态。</b>在真实磁性或关联体系上证明另一个自洽解存在且自由能严格更低，于是常见报告的解不是基态。</li>
       <li><span class="tag s">软件</span> <b>S3 并行正确与逐位可复现。</b>三维的 k 点、能带、平面波并行与分布式 FFT 转置写成 TLA+ 规范，模型检验并做 trace validation；任意进程数下逐位一致；植入的并行错误被发现。</li>
     </ul>
@@ -504,7 +507,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · 项目纲领 v0.4 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-10-08T08:11+08:00">2026-10-08 08:11 UTC+8</time></span></span>
+  <span>Formal in Silico · 项目纲领 v0.4 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-10-08T13:58+08:00">2026-10-08 13:58 UTC+8</time></span></span>
   <span><a href="progress.html">实现进度</a> · <a href="showcases.html">成果展示</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="../" hreflang="en">English</a></span>
 </div></footer>
 </body>
