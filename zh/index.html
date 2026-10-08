@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Formal in Silico · 项目纲领</title>
-<meta name="description" content="Formal in Silico：用形式化方法重写 DFT、MD 与 FEM，让模拟输出的每一个数都带有机器检查过的保证。">
+<meta name="description" content="Formal in Silico：计算机模拟的三重正确。物理正确由实验观测确认，数学正确由 Lean 证明，软件正确由 TLA+、Frama-C 与经过证明的检查器保证，三者放在同一个框架、同一份账本里。">
 <link rel="alternate" hreflang="en" href="../">
 <link rel="alternate" hreflang="zh-CN" href="./">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -33,14 +33,15 @@
 </div></header>
 
 <div class="hero"><div class="hero-in">
-  <p class="eyebrow">项目纲领 · v0.3 · 2026-09-29</p>
+  <p class="eyebrow">项目纲领 · v0.4 · 2026-10-08</p>
   <h1>Formal in Silico</h1>
-  <p class="sub">用形式化方法重写 DFT、MD 与 FEM</p>
-  <p class="lead">材料设计、药物筛选、结构安全评估越来越依赖计算机模拟给出的数字。这些数字从方程出发，经过离散化、迭代算法和并行程序，最后落在 IEEE 754 浮点数上。今天，这条链上的每一环主要靠测试和经验来担保。本项目要让每一环都带上可以被检查的证明：数学层用 PDE 理论和定理证明器，软件层用 TLA+ 和模型检验，两层之间用精化关系连接。</p>
-  <div class="judgments" aria-label="三类判断">
+  <p class="sub">计算机模拟的三重正确：物理、数学、软件</p>
+  <p class="lead">材料设计、药物筛选、结构安全评估越来越依赖计算机模拟给出的数字。这些数字从方程出发，经过离散化、迭代算法和并行程序，最后落在 IEEE 754 浮点数上。一个模拟结果要可信，必须同时满足三重正确：<b>物理上正确</b>（模型描述了真实世界），<b>数学上正确</b>（求解的确实是模型的方程，误差有界），<b>软件上正确</b>（程序忠实地执行了算法，浮点误差有界）。今天这三者分别靠实验对比、数值经验和软件测试来担保，而且彼此纠缠：结果与实验不符时，说不清错在模型、离散还是代码。本项目第一次把三者放在一起：数学正确由 Lean 证明，软件正确由 TLA+、Frama-C 与经过证明的检查器保证，物理正确由可追溯的实验观测确认。数学与软件的误差被严格界定之后，与实验的偏差就只剩模型本身与测量的不确定度，模型误差第一次可以被干净地测量。</p>
+  <div class="judgments" aria-label="四类判断">
     <div class="j m"><span class="k">PDE</span><span class="e">‖<i class="v">u</i> − <i class="v">u<sub>h</sub></i>‖ ≤ (<i class="v">M</i>/<i class="v">α</i>) · inf ‖<i class="v">u</i> − <i class="v">v<sub>h</sub></i>‖</span></div>
     <div class="j s"><span class="k">TLA+</span><span class="e">Spec ⇒ □ AtomsConserved</span></div>
     <div class="j f"><span class="k">IEEE 754</span><span class="e">|fl(<i class="v">E<sub>h</sub></i>) − <i class="v">E<sub>h</sub></i>| ≤ <i class="v">ε</i><sub>round</sub></span></div>
+    <div class="j ph"><span class="k">实验</span><span class="e"><i class="v">y</i><sub>obs</sub> − <i class="v">y</i><sub>model</sub> ∈ [<i class="v">y</i><sub>obs</sub> − hi, <i class="v">y</i><sub>obs</sub> − lo] ± <i class="v">σ</i><sub>exp</sub></span></div>
   </div>
   <div class="stats">
     <div class="stat"><b>298</b><span>条命题登记在可信账本中</span></div>
@@ -62,6 +63,7 @@
   <div class="prose"><p>五个领域新增的功能、研究结果，以及论文与本网站的变化，新的在前。逐项状态见<a href="progress.html">实现进度</a>；这里引用的命题都登记在可信账本中。</p></div>
   <ol class="news">
     <li><time datetime="2026-10-08">2026-10-08</time><ul>
+      <li><span class="tag n">纲领</span>纲领 v0.4：三重正确（物理、数学、软件）；确认等级 V0–V3；三维 DFT 展示计划。一个结果要可信，模型必须描述真实世界（由观测确认），方程必须以严格的误差界求解（Lean），程序必须忠实执行算法（TLA+、Frama-C、经过证明的检查器）。层链新增 L0（被观测的真实世界）；物理结论在 T0–T4 之外另带确认等级 V0–V3；原来“不判断物理模型是否正确”的非目标撤回。物理正确目前最弱：迄今所有结果都是 V0，物理确认这条线（实验数据集、账本中的 V 等级、LDA 带隙的带证书模型误差）随三维 DFT 的展示例子 S1–S3 一起计划。论文按同样的叙事改写。<a href="#s2">详情 →</a></li>
       <li><span class="tag n">DFT</span>力的第二阶段：<code>--pot sites --forces</code> 现在对 rHF Γ 点（零温，或 Fermi–Dirac、Gaussian 展宽）给出每个高斯格点上的力及其合力的严格区间；有证书能量的有限差分与 DFTK 的 <code>compute_forces</code> 都在区间内（DFT-N04–N08）。<a href="dft.html#forces">详情 →</a></li>
       <li><span class="tag n">DFT</span>共线自旋完成：加自旋插值 PW92 关联时，检查器现在也认证 Γ 点与 k 点的零温、能量与自由能、每个自旋的能带与态密度以及命名高斯外势，DFTK 处处在区间内，DFTK 对标表的共线自旋一项完成（DFT-X48–X58）。<a href="dft.html#lsda">详情 →</a></li>
       <li><span class="tag n">DFT</span>精确交换：<code>--xc hf</code> 求解有限温度 Γ 点的闭壳层 Hartree–Fock，检查器证明 HF SCF 方程在证书附近恰有一个解并界住其化学势（DFT-H01–H08）；DFTK 自己的 HF SCF 在这些一维体系上不收敛，所以与 DFTK 的比较是 Fock 矩阵与能量分项的不动点检查（DFT-H11），HF 的能量区间尚无证书。<a href="dft.html#hf">详情 →</a></li>
@@ -152,10 +154,10 @@
   <p>目录</p>
   <ol>
     <li><a href="#s1"><span>§1</span>动机</a></li>
-    <li><a href="#s2"><span>§2</span>核心主张</a></li>
-    <li><a href="#s3"><span>§3</span>两层形式化</a></li>
+    <li><a href="#s2"><span>§2</span>三重正确</a></li>
+    <li><a href="#s3"><span>§3</span>三重保证的工具</a></li>
     <li><a href="#s4"><span>§4</span>证明义务</a></li>
-    <li><a href="#s5"><span>§5</span>可信等级</a></li>
+    <li><a href="#s5"><span>§5</span>可信与确认等级</a></li>
     <li><a href="#s6"><span>§6</span>原则</a></li>
     <li><a href="#s7"><span>§7</span>不做什么</a></li>
     <li><a href="#s8"><span>§8</span>路线图</a></li>
@@ -185,19 +187,34 @@
       <p>Lejaeghere 等人比较了 15 个固体计算代码、40 种赝势或基组方案对 71 种单质晶体的 PBE 状态方程。较新的方法之间吻合良好，较早的方案存在明显偏差，而差异的来源只能靠逐项对比去定位。</p>
       <p class="lesson">教训：结果依赖大量隐式的数值设置。这些设置应当写进规范，并与误差估计绑定。</p>
     </div>
+    <div class="card">
+      <span class="yr">1983 起 · DFT</span>
+      <h3>带隙问题</h3>
+      <p>LDA 与 GGA 的 Kohn–Sham 带隙系统性地低估实验带隙：硅约 0.5 eV，实验约 1.17 eV；锗在 LDA 中几乎没有带隙。Perdew 与 Levy、Sham 与 Schlüter 在 1983 年指出，原因在于交换关联势的导数不连续，与数值无关：把计算做到任意精确，偏差仍然在。</p>
+      <p class="lesson">教训：数值可以完全正确，而结论仍然是错的。物理上的正确只能由观测来检验；而只有当数学与软件的误差被严格界定时，与实验的偏差才能确定地归到模型本身。</p>
+    </div>
   </div>
   <div class="prose">
     <p>并行化让问题更难。MD 程序在数千个 MPI 进程上做区域分解，原子跨越子域边界时如果丢失或重复，能量曲线上可能只出现一个很难察觉的跳变。浮点归约的顺序随进程数改变，同一个输入在不同规模的机器上会给出逐位不同的轨迹。这些错误与物理无关，是并发协议的错误，而并发协议正是 TLA+ 擅长处理的对象。</p>
+    <p>这几个例子对应三种错误：Sleipner A 是数学上的错误（离散误差失控），并行协议的错误是软件上的错误，带隙问题是物理上的错误（模型本身）。今天的做法用同一种手段（与实验、与别的程序对比）去同时检查三者，所以出现偏差时无法定位。本项目把三者分开：每一种正确各有自己的保证方式和自己的账本。</p>
   </div>
 </section>
 
 <section id="s2">
   <p class="sec-no">§2</p>
-  <h2>核心主张：可信度取决于链条上最弱的一环</h2>
+  <h2>核心主张：三重正确，可信度取决于最弱的一环</h2>
   <div class="prose">
-    <p>我们把一次模拟从方程到浮点数的过程拆成六层，并为每两层之间写下明确的证明义务。前三段义务属于 PDE 与数值分析，第四段属于软件规范，第五段属于浮点分析。</p>
+    <p>一个模拟结论要可信，必须同时满足三重正确，缺一不可：</p>
+    <ul>
+      <li><b>物理上正确</b>：模型（方程、泛函、力场、本构关系、热力学数据库）在所声明的范围内描述了真实世界。它不能被证明，只能由实验观测确认或证伪，结论总带着测量的不确定度。</li>
+      <li><b>数学上正确</b>：求解的确实是模型的方程，解存在、唯一，离散与迭代的误差有严格的界。由 Lean 4 的机器证明保证。</li>
+      <li><b>软件上正确</b>：程序忠实地执行了算法，并行协议不丢不重，浮点舍入误差有界。由 TLA+ 的规范与模型检验、Frama-C 对 C 代码的证明、以及经过证明的证书检查器保证。</li>
+    </ul>
+    <p>可信度取决于链条上最弱的一环。我们把一次模拟从真实世界到浮点数的过程拆成七层，并为每两层之间写下明确的义务：第一段属于物理（确认），中间三段属于数学（PDE 与数值分析），后两段属于软件（规范与浮点分析）。据我们所知，这是第一次把三重正确放进同一个框架、同一份账本。</p>
   </div>
   <ol class="chain">
+    <li><div class="layer"><span class="no">L0</span><h4>真实世界</h4><p>实验观测：带隙、晶格常数、磁矩、相图、弹性模量、扩散系数，连同测量条件与不确定度。</p></div></li>
+    <li class="ob"><span class="tag ph">物理</span> 确认：模型的预测与观测在给定不确定度内一致，并且只在确认过的范围内声称一致</li>
     <li><div class="layer"><span class="no">L1</span><h4>物理模型</h4><p>方程本身：Kohn–Sham 方程、牛顿或 Langevin 运动方程、线弹性方程。</p></div></li>
     <li class="ob"><span class="tag m">数学</span> 适定性：解存在、唯一，并连续依赖于数据</li>
     <li><div class="layer"><span class="no">L2</span><h4>连续问题</h4><p>函数空间中的变分形式，例如在 H¹ 中求 <i class="v">u</i> 使 <i class="v">a</i>(<i class="v">u</i>, <i class="v">v</i>) = ℓ(<i class="v">v</i>) 对所有 <i class="v">v</i> 成立。</p></div></li>
@@ -219,13 +236,23 @@
     </ul>
   </div>
   <div class="prose">
-    <p>这个不等式是项目的骨架。它的每一项都要有定理支撑，而它能够成立的前提（并行程序忠实地执行了抽象算法）要由软件层的规范来保证。模型本身与真实物理之间的差距不在这个不等式里，那是确认（validation）问题，见 §7。</p>
+    <p>这个不等式是数学与软件两重正确的骨架。它的每一项都要有定理支撑，而它能够成立的前提（并行程序忠实地执行了抽象算法）要由软件层的规范来保证。物理正确在它的外面再加一层：</p>
+  </div>
+  <div class="ineq" role="figure" aria-label="与观测的误差分解">
+    <div class="formula"><i class="v">y</i><sub>obs</sub> − <i class="v">ỹ</i> = <span class="ph">(<i class="v">y</i><sub>obs</sub> − <i class="v">y</i><sub>true</sub>) + (<i class="v">y</i><sub>true</sub> − <i class="v">y</i>(<i class="v">u</i>))</span> + <span class="m">(<i class="v">y</i>(<i class="v">u</i>) − <i class="v">ỹ</i>)</span></div>
+    <ul>
+      <li><span class="tag ph">物理</span> 测量误差与模型误差：只能由实验确认，带统计意义上的不确定度</li>
+      <li><span class="tag m">数学</span> 数值与软件误差：上面不等式给出的严格区间 <i class="v">y</i>(<i class="v">u</i>) ∈ [lo, hi]</li>
+    </ul>
+  </div>
+  <div class="prose">
+    <p>今天的计算与实验对比时，三项混在一起：偏差可能来自模型，也可能来自截断、k 点、SCF 收敛、赝势或代码。当最后一项被证书严格界定时，偏差 <i class="v">y</i><sub>obs</sub> − <i class="v">ỹ</i> 减去一个已知的区间，剩下的就只有模型误差与测量误差：<b>模型误差第一次可以被干净地测量</b>。这是三重正确合在一起的意义，也是本项目与单纯的验证（verification）或单纯的确认（validation）的区别。确认的规则与等级见 §5。</p>
   </div>
 </section>
 
 <section id="s3">
   <p class="sec-no">§3</p>
-  <h2>两层形式化，一座桥，一个地基</h2>
+  <h2>三重保证的工具：数学层、软件层、物理层，一座桥，一个地基</h2>
   <div class="pillars">
     <div class="pillar m">
       <span class="tag m">数学层</span>
@@ -254,6 +281,16 @@
       <p>抽象算法写成 TLA+ 规范 <i class="v">A</i>：状态是全局密度或全局相空间坐标，每一步是一次数学上的迭代映射。并行实现写成规范 <i class="v">P</i>：状态分散在各个进程上。精化映射把 <i class="v">P</i> 的状态投影成 <i class="v">A</i> 的状态，例如把各进程上的局部密度拼成全局密度。证明 <i class="v">P</i> ⇒ <i class="v">A</i> 之后，数学层关于 <i class="v">A</i> 的收敛定理就对并行程序成立。</p>
       <p class="tool">性能优化也按同样的方式处理：每一次优化都是一次新的精化，必须证明它仍然实现上一层规范。</p>
     </div>
+    <div class="pillar ph">
+      <span class="tag ph">物理层</span>
+      <h3 style="margin-top:10px">实验确认：可追溯的观测数据与带证书的模型误差</h3>
+      <ul>
+        <li><b>确认什么：</b>模型对可观测量的预测（带隙、晶格常数、体模量、磁矩、相边界、弹性响应、输运系数）与实验在所声明的范围与不确定度内一致</li>
+        <li><b>不一致时：</b>给出带证书的模型误差，即观测值减去严格的计算区间，再计入测量不确定度</li>
+        <li><b>适用范围：</b>在哪些成分、温度、压力、结构上确认过，在哪些地方没有数据</li>
+      </ul>
+      <p class="tool"><b>数据：</b>每个实验数据点登记出处（DOI）、测量条件、不确定度，以及与模型比较前必须做的修正（例如带隙的零点振动与温度修正、晶格常数的零点膨胀），数据文件带哈希，随仓库版本化。<b>规则：</b>比较的量、容差与数据集在比较之前固定；用来拟合模型参数的数据不能再用来确认；确认结论只对确认过的范围成立。<b>局限：</b>物理正确不能被证明，只能被佐证或证伪；测量不确定度是统计意义上的，与数学层的严格区间性质不同，两者在报告中分开写。</p>
+    </div>
     <div class="pillar f">
       <span class="tag f">地基</span>
       <h3 style="margin-top:10px">浮点是一等公民</h3>
@@ -266,10 +303,11 @@
 <section id="s4">
   <p class="sec-no">§4</p>
   <h2>证明义务矩阵</h2>
-  <div class="prose"><p>三个领域在六层上各自需要证明的内容。这张表是项目的工作清单：每个单元格最终都要对应一份规范、一个定理或一条登记过的假设。</p></div>
+  <div class="prose"><p>三个领域在七层上各自需要证明或确认的内容。这张表是项目的工作清单：每个单元格最终都要对应一份规范、一个定理、一条登记过的假设，或者（第一行）一条登记过的实验确认。第一行是 v0.4 新增的，目前还没有一个单元格完成。</p></div>
   <div class="tbl"><table class="matrix">
     <thead><tr><th>层</th><th>DFT · 密度泛函理论 · 电子结构</th><th>MD · 分子动力学 · 原子轨迹</th><th>FEM · 有限元 · 连续介质</th></tr></thead>
     <tbody>
+      <tr><td class="l">观测 <span class="tag ph">物理</span></td><td>带隙、晶格常数、体模量、磁矩、形成能的实验值与不确定度（含零点振动、温度修正）；与严格的计算区间比较，得到带证书的交换关联泛函误差</td><td>状态方程、径向分布函数、扩散系数、比热的实验值；力场参数的拟合集与确认集分开</td><td>材料常数与载荷的测量值；结构试验中的位移、应变、破坏载荷与计算区间的比较</td></tr>
       <tr><td class="l">模型</td><td>Kohn–Sham 方程，一个非线性特征值问题：<i class="v">H</i>[<i class="v">ρ</i>]<i class="v">ψ<sub>i</sub></i> = <i class="v">ε<sub>i</sub>ψ<sub>i</sub></i>，<i class="v">ρ</i> = Σ<i class="v">f<sub>i</sub></i>|<i class="v">ψ<sub>i</sub></i>|²</td><td>哈密顿系统；恒温模拟为 Langevin 动力学及其 Fokker–Planck 方程</td><td>椭圆、抛物、双曲型 PDE，例如线弹性 −∇·<i class="v">σ</i>(<i class="v">u</i>) = <i class="v">f</i> 及其弱形式</td></tr>
       <tr><td class="l">连续理论</td><td>Lieb 变分原理；LDA 型 Kohn–Sham 模型能量极小元的存在性；Hamiltonian 的自伴性</td><td>力场 Lipschitz 时解存在唯一；能量、动量、角动量守恒；相空间体积守恒（Liouville）；Langevin 动力学的不变测度与遍历性</td><td>Lax–Milgram 给出适定性；混合问题（Stokes、近不可压弹性）需要 inf-sup 条件；解的正则性决定可达的收敛阶</td></tr>
       <tr><td class="l">离散化</td><td>平面波截断的先验误差估计；Brillouin 区 <i class="v">k</i> 点积分误差；赝势带来的模型误差单独登记</td><td>Velocity Verlet 的辛性与时间可逆性；向后误差分析：存在修正哈密顿量，能量误差 <i class="v">O</i>(Δ<i class="v">t</i>²) 在指数长的时间内有界</td><td>Céa 引理加插值估计：‖<i class="v">u</i> − <i class="v">u<sub>h</sub></i>‖<sub>H¹</sub> ≤ <i class="v">C h<sup>k</sup></i>|<i class="v">u</i>|<sub>H<sup>k+1</sup></sub>；网格形状正则性作为显式前提；后验估计量的可靠性与有效性</td></tr>
@@ -282,7 +320,7 @@
 
 <section id="s5">
   <p class="sec-no">§5</p>
-  <h2>可信等级</h2>
+  <h2>可信等级与确认等级</h2>
   <div class="prose"><p>不是所有东西都能马上被证明。每个组件都要如实标出自己所处的等级，并在可信账本中列出它依赖的假设。等级只升不虚标。</p></div>
   <div class="tiers">
     <div class="tier"><span class="t c-t0">T0</span><h4>测试</h4><p>回归测试、解析解对比、与既有代码对标。只对测过的输入成立。</p></div>
@@ -290,6 +328,13 @@
     <div class="tier"><span class="t c-t2">T2</span><h4>模型检验</h4><p>TLC 或 Apalache 在有限规模实例上穷举了全部行为。</p></div>
     <div class="tier"><span class="t c-t3">T3</span><h4>机器证明</h4><p>Lean、Rocq 或 TLAPS 证明，对任意规模成立，但停留在抽象模型、精确算术或代码的逐行模型层面。</p></div>
     <div class="tier"><span class="t c-t4">T4</span><h4>端到端</h4><p>机器证明一直覆盖到可执行代码和浮点舍入。先例：Boldo 等人对一维波动方程 C 程序的完整证明。</p></div>
+  </div>
+  <div class="prose"><p>T0–T4 衡量数学与软件两重正确。物理正确不能证明，另用一条独立的<b>确认等级</b>衡量，记作 V0–V3。一个结论同时带两个等级，例如“带隙区间 T4，与实验的比较 V2”。迄今所有结果都是 V0：账本中还没有确认命题，物理确认这条线在计划中（§8）。</p></div>
+  <div class="tiers four">
+    <div class="tier"><span class="t c-v">V0</span><h4>未确认</h4><p>没有与实验观测比较。只能说“模型给出了这个数”。</p></div>
+    <div class="tier"><span class="t c-v">V1</span><h4>单点比较</h4><p>与有出处、有不确定度的实验数据比较过，偏差连同计算区间与测量不确定度一起报告。</p></div>
+    <div class="tier"><span class="t c-v">V2</span><h4>系统确认</h4><p>在事先固定的数据集与协议上系统比较，数据集与拟合集分开，给出模型误差的分布与确认过的适用范围。</p></div>
+    <div class="tier"><span class="t c-v">V3</span><h4>盲预测</h4><p>计算区间在测量之前存档（带时间戳与证书），随后由独立的实验确认或证伪。</p></div>
   </div>
 </section>
 
@@ -307,7 +352,9 @@
     <div class="principle"><h4>验证检查器，不验证求解器</h4><p>LAPACK、FFT 库这类大型数值库不做证明，而是为它们的输出写经过证明的检查器。求解器可以替换，保证来自检查器。</p></div>
     <div class="principle"><h4>每次运行附带报告</h4><p>报告的每一行都标出可信账本中的命题编号，由编号查到它的等级与所依赖的假设；报告末尾列出本次运行用到的假设。</p></div>
     <div class="principle"><h4>每个输出都有定理</h4><p>程序输出的每个数都要对应一条机器证明的定理。结果是近似值时（迭代、离散化、<i class="v">k</i> 点采样、有限温度、浮点），要证明的是误差界，测试、模型检验与 sanitizer 只作辅助证据。还没有这样一条定理的输出算未完成，列为缺口。</p></div>
-    <div class="principle"><h4>开放</h4><p>规范、证明、基准和可信账本都将公开，任何人都可以重新检查。</p></div>
+    <div class="principle"><h4>三重分开记账</h4><p>数学与软件的结论记 T 等级，物理的结论记 V 等级，报告中分开写。严格区间与统计不确定度不混在一起。</p></div>
+    <div class="principle"><h4>实验数据可追溯</h4><p>每个用于确认的实验值都有出处、条件、不确定度与修正说明；拟合集与确认集分开，比较协议在比较之前固定。</p></div>
+    <div class="principle"><h4>开放</h4><p>规范、证明、基准、实验数据集和可信账本都将公开，任何人都可以重新检查。</p></div>
   </div>
 </section>
 
@@ -315,7 +362,7 @@
   <p class="sec-no">§7</p>
   <h2>不做什么</h2>
   <div class="cards three">
-    <div class="card"><h3>不判断物理模型是否正确</h3><p>交换关联泛函、力场参数、本构关系与真实世界的差距属于确认（validation）。本项目只做验证（verification）：正确地求解给定的方程。</p></div>
+    <div class="card"><h3>不声称证明了物理模型</h3><p>物理正确只能由观测确认，结论总带着测量不确定度，并且只在确认过的范围内成立（§5 的 V 等级）。本项目衡量模型误差，但不以发展新的泛函、力场或本构模型为目标。2026-10-08 之前的版本把确认整个排除在外（“不判断物理模型是否正确”），这一非目标现已撤回，确认成为三重正确之一。</p></div>
     <div class="card"><h3>不在一开始就替代现有软件</h3><p>Quantum ESPRESSO、VASP、LAMMPS、GROMACS、deal.II、FEniCS 是对标对象和参照。</p></div>
     <div class="card"><h3>不要求所有代码都被证明</h3><p>输入解析、I/O、可视化停留在 T0 即可，只要它们不进入误差预算。</p></div>
   </div>
@@ -325,7 +372,17 @@
   <p class="sec-no">§8</p>
   <h2>路线图</h2>
   <div class="goal">
-    <h3>当前目标 G1：DFTK 功能对齐 <span class="tag n">2026-09-29 设定</span></h3>
+    <h3>当前目标：三重正确的三维展示 <span class="tag n">2026-10-08 设定</span></h3>
+    <p>把 DFT 推广到三维真实材料，并在同一批体系上同时给出三重正确的证据：数学正确（SCF 解的存在唯一、能量与带隙的严格区间，能做到时针对连续问题）、软件正确（并行协议的 TLA+ 规范与 trace validation，经过证明的检查器）、物理正确（与实验带隙、晶格常数、磁矩的系统确认，给出带证书的交换关联泛函误差）。计划中的展示例子，目前都还没有结果：</p>
+    <ul>
+      <li><span class="tag ph">物理</span> <b>S1 带证书的模型误差。</b>一组半导体与绝缘体的 LDA（之后 PBE）带隙、晶格常数与实验系统比较；计算值是严格区间，偏差就是泛函的误差，带隙问题第一次有了不含数值误差的定量版本。</li>
+      <li><span class="tag m">数学</span> <b>S2 不是基态。</b>在真实磁性或关联体系上证明另一个自洽解存在且自由能严格更低，于是常见报告的解不是基态。</li>
+      <li><span class="tag s">软件</span> <b>S3 并行正确与逐位可复现。</b>三维的 k 点、能带、平面波并行与分布式 FFT 转置写成 TLA+ 规范，模型检验并做 trace validation；任意进程数下逐位一致；植入的并行错误被发现。</li>
+    </ul>
+    <p>与之并行的是物理确认线 P：V 等级写进账本规则，各领域账本新开“确认”一节，实验数据集逐项核对原始文献并随仓库版本化，比较协议在比较前固定，运行报告分数学、软件、物理三栏。计划、阶段与待定事项见 <code>docs/plan-dft3d.md</code>。DFTK 功能对齐（G1）继续作为一维与三维实现的参照。</p>
+  </div>
+  <div class="goal">
+    <h3>目标 G1：DFTK 功能对齐 <span class="tag n">2026-09-29 设定</span></h3>
     <p>让 mini-DFT 覆盖 DFTK.jl 的主要功能。只有实现、与 DFTK 在同一离散问题上一致、输出有 Lean 证书三条都满足，才算<b>完成</b>。顺序是先在 1D 做全，再把 Lean 模型推广到 <i class="v">d</i> 维做 3D，最后是基础设施与外部接口。FEM 改由并行目标 G2 推进；阶段 2 的 MD 在 2026-10-01 做出了基础版本 mini-MD v0。<a href="dft.html#g1">逐项状态 →</a></p>
   </div>
   <div class="goal">
@@ -413,6 +470,7 @@
   <h3 style="margin-top:28px">待决问题</h3>
   <ul class="prose">
     <li><b>一维 rHF 的连续理论。</b>2026-10-05 已解决到 T1：文献中没有直接覆盖一维周期 Hartree 核的结果，项目自己补了纸面证明（零温与有限温度的基态存在、密度唯一，截断极限等于连续能量，解析外势下平面波的指数收敛）。剩下的是机器化，与下一条有关。截断极限一条已于 2026-10-08 机器化（DFT-C02，T3）：连续模型写在 Fourier 空间，绕开周期 Sobolev 空间；它与 H¹ 上算子模型的等价是假设 A-DFT-08。</li>
+    <li><b>与实验比较。</b>测量量与模型量很少是同一个东西：带隙要做零点振动与温度修正，晶格常数要去掉零点膨胀，而这些修正本身来自别的模型或测量。它们怎样进入 V 等级而不污染严格的部分，以及在已发表的泛函与数据库没有写明拟合数据时怎样保证拟合集与确认集分开，都还没有答案。</li>
     <li><b>Sobolev 空间的机器化深度。</b>先公理化到什么程度，哪些定理值得优先证明？</li>
     <li><b>随机性。</b>Langevin 动力学和随机初猜涉及概率性质，TLA+ 只描述不确定性。</li>
     <li><b>GPU。</b>异步流和弱内存模型如何进入 TLA+ 规范。</li>
@@ -425,6 +483,9 @@
   <ol class="refs">
     <li>B. Jakobsen, F. Rosendahl. The Sleipner platform accident. <i>Structural Engineering International</i> 4(3), 1994.</li>
     <li>K. Lejaeghere et al. Reproducibility in density functional theory calculations of solids. <i>Science</i> 351, aad3000, 2016.</li>
+    <li>J. P. Perdew, M. Levy. Physical content of the exact Kohn–Sham orbital energies: band gaps and derivative discontinuities. <i>Physical Review Letters</i> 51, 1884, 1983.</li>
+    <li>L. J. Sham, M. Schlüter. Density-functional theory of the energy gap. <i>Physical Review Letters</i> 51, 1888, 1983.</li>
+    <li>W. L. Oberkampf, C. J. Roy. <i>Verification and Validation in Scientific Computing</i>. Cambridge University Press, 2010.</li>
     <li>S. Boldo, F. Clément, J.-C. Filliâtre, M. Mayero, G. Melquiond, P. Weis. Wave equation numerical resolution: a comprehensive mechanized proof of a C program. <i>Journal of Automated Reasoning</i> 50(4), 2013.</li>
     <li>S. Boldo, F. Clément, F. Faissole, V. Martin, M. Mayero. A Coq formal proof of the Lax–Milgram theorem. CPP 2017.</li>
     <li>J. P. Solovej. Proof of the ionization conjecture in a reduced Hartree–Fock model. <i>Inventiones Mathematicae</i> 104, 1991.</li>
@@ -443,7 +504,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · 项目纲领 v0.3 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-10-08T05:37+08:00">2026-10-08 05:37 UTC+8</time></span></span>
+  <span>Formal in Silico · 项目纲领 v0.4 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-10-08T08:11+08:00">2026-10-08 08:11 UTC+8</time></span></span>
   <span><a href="progress.html">实现进度</a> · <a href="showcases.html">成果展示</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="../" hreflang="en">English</a></span>
 </div></footer>
 </body>

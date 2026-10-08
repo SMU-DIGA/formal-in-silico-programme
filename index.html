@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Formal in Silico — Programme</title>
-<meta name="description" content="Formal in Silico: rewriting DFT, molecular dynamics and finite elements with formal methods, so that every number a simulation reports comes with a machine-checked guarantee.">
+<meta name="description" content="Formal in Silico: triple correctness for scientific simulation. Physical correctness confirmed by observation, mathematical correctness proved in Lean, software correctness established with TLA+, Frama-C and proved checkers, in one framework and one ledger.">
 <link rel="alternate" hreflang="en" href="./">
 <link rel="alternate" hreflang="zh-CN" href="zh/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -33,14 +33,15 @@
 </div></header>
 
 <div class="hero"><div class="hero-in">
-  <p class="eyebrow">Programme · v0.3 · 29 September 2026</p>
+  <p class="eyebrow">Programme · v0.4 · 8 October 2026</p>
   <h1>Formal in Silico</h1>
-  <p class="sub">Rewriting DFT, molecular dynamics and finite elements with formal methods</p>
-  <p class="lead">Materials design, drug screening and structural safety assessment rely more and more on numbers produced by simulation. Those numbers start from equations and pass through discretisation, iterative algorithms and parallel programs before they land as IEEE&nbsp;754 floating-point values. Today every link in that chain is vouched for mainly by testing and experience. We want every link to carry a proof that anyone can check: PDE theory and a theorem prover for the mathematics, TLA+ and model checking for the software, and a refinement relation between the two.</p>
-  <div class="judgments" aria-label="The three kinds of judgement">
+  <p class="sub">Triple correctness for computer simulation: physical, mathematical, software</p>
+  <p class="lead">Materials design, drug screening and structural safety assessment rely more and more on numbers produced by simulation. Those numbers start from equations and pass through discretisation, iterative algorithms and parallel programs before they land as IEEE&nbsp;754 floating-point values. A simulated result is trustworthy only if it is correct in three ways at once: <b>physically</b> (the model describes the real world), <b>mathematically</b> (the model’s equations are solved, with bounded error) and <b>in software</b> (the program faithfully executes the algorithm, with bounded floating-point error). Today the three are vouched for by experiment, numerical experience and testing, and they are entangled: when a result disagrees with experiment, nobody can say whether the model, the discretisation or the code is at fault. This programme puts the three together for the first time: mathematical correctness proved in Lean, software correctness established with TLA+, Frama-C and proved checkers, physical correctness confirmed by traceable observations. Once the mathematical and software errors are rigorously bounded, what is left of a disagreement with experiment is model error and measurement uncertainty only, so model error can be measured cleanly for the first time.</p>
+  <div class="judgments" aria-label="The four kinds of judgement">
     <div class="j m"><span class="k">PDE</span><span class="e">‖<i class="v">u</i> − <i class="v">u<sub>h</sub></i>‖ ≤ (<i class="v">M</i>/<i class="v">α</i>) · inf ‖<i class="v">u</i> − <i class="v">v<sub>h</sub></i>‖</span></div>
     <div class="j s"><span class="k">TLA+</span><span class="e">Spec ⇒ □ AtomsConserved</span></div>
     <div class="j f"><span class="k">IEEE 754</span><span class="e">|fl(<i class="v">E<sub>h</sub></i>) − <i class="v">E<sub>h</sub></i>| ≤ <i class="v">ε</i><sub>round</sub></span></div>
+    <div class="j ph"><span class="k">Experiment</span><span class="e"><i class="v">y</i><sub>obs</sub> − <i class="v">y</i><sub>model</sub> ∈ [<i class="v">y</i><sub>obs</sub> − hi, <i class="v">y</i><sub>obs</sub> − lo] ± <i class="v">σ</i><sub>exp</sub></span></div>
   </div>
   <div class="stats">
     <div class="stat"><b>298</b><span>claims registered in the trust ledger</span></div>
@@ -62,6 +63,7 @@
   <div class="prose"><p>Features added to the five domains, research results, and changes to the paper and this site, newest first. Item-by-item status is on the <a href="progress.html">progress page</a>; every claim cited here is in the trust ledger.</p></div>
   <ol class="news">
     <li><time datetime="2026-10-08">8 Oct 2026</time><ul>
+      <li><span class="tag n">Programme</span>Programme v0.4: triple correctness (physical, mathematical, software); validation grades V0–V3; 3D DFT showcase plan. A result is trustworthy only if the model describes the real world (confirmed by observation), its equations are solved with rigorous error bounds (Lean) and the program executes the algorithm faithfully (TLA+, Frama-C, proved checkers). A new layer L0, the observed real world, joins the chain; physical claims get validation grades V0–V3 beside the trust tiers T0–T4; the old non-goal “we do not judge the physics” is withdrawn. Physical correctness is the weakest part so far: every result to date is at V0, and the physical track (experimental data sets, V grades in the ledger, certified model error of LDA band gaps) is planned with the 3D DFT showcases S1–S3. The paper is rewritten to match. <a href="#s2">Details →</a></li>
       <li><span class="tag n">DFT</span>Forces, phase 2: <code>--pot sites --forces</code> now gives certified intervals for the force on every Gaussian site and for their sum, for rHF at the Γ point at zero temperature and with Fermi–Dirac or Gaussian smearing; finite differences of certified energies and DFTK’s <code>compute_forces</code> lie inside (DFT-N04–N08). <a href="dft.html#forces">Details →</a></li>
       <li><span class="tag n">DFT</span>Collinear spin is complete: with spin-interpolated PW92 correlation the checker now also certifies zero temperature at Γ and with k-points, the energy and free energy, per-spin bands and DOS, and the named Gaussian potential, with DFTK inside every interval, so the collinear-spin item of the DFTK plan is done (DFT-X48–X58). <a href="dft.html#lsda">Details →</a></li>
       <li><span class="tag n">DFT</span>Exact exchange: <code>--xc hf</code> solves closed-shell Hartree–Fock at finite temperature at the Γ point, and the checker proves that the HF SCF equations have exactly one solution near the certificate and bounds its chemical potential (DFT-H01–H08); DFTK’s own HF SCF does not converge on these 1D systems, so the DFTK comparison is a fixed-point check of the Fock matrix and energy terms (DFT-H11), and the HF energy interval is not yet certified. <a href="dft.html#hf">Details →</a></li>
@@ -152,10 +154,10 @@
   <p>Contents</p>
   <ol>
     <li><a href="#s1"><span>01</span>Motivation</a></li>
-    <li><a href="#s2"><span>02</span>Core claim</a></li>
-    <li><a href="#s3"><span>03</span>Two layers</a></li>
+    <li><a href="#s2"><span>02</span>Triple correctness</a></li>
+    <li><a href="#s3"><span>03</span>Three kinds of evidence</a></li>
     <li><a href="#s4"><span>04</span>Obligations</a></li>
-    <li><a href="#s5"><span>05</span>Trust tiers</a></li>
+    <li><a href="#s5"><span>05</span>Tiers and grades</a></li>
     <li><a href="#s6"><span>06</span>Principles</a></li>
     <li><a href="#s7"><span>07</span>Non-goals</a></li>
     <li><a href="#s8"><span>08</span>Roadmap</a></li>
@@ -185,19 +187,34 @@
       <p>Lejaeghere et al. compared the PBE equations of state of 71 elemental crystals across 15 solid-state codes and 40 pseudopotential or basis-set schemes. Recent methods agree well; older schemes deviate noticeably, and the source of each difference could only be located by item-by-item comparison.</p>
       <p class="lesson">Lesson: results depend on many implicit numerical settings. Those settings belong in the specification, tied to an error estimate.</p>
     </div>
+    <div class="card">
+      <span class="yr">Since 1983 · DFT</span>
+      <h3>The band-gap problem</h3>
+      <p>Kohn–Sham band gaps from LDA and GGA systematically underestimate measured gaps: about 0.5 eV for silicon against an experimental 1.17 eV, and germanium comes out almost gapless in LDA. Perdew and Levy, and Sham and Schlüter, showed in 1983 that the cause is the derivative discontinuity of the exchange–correlation potential, not the numerics: carry the computation to any precision and the discrepancy stays.</p>
+      <p class="lesson">Lesson: the numerics can be entirely correct and the conclusion still wrong. Physical correctness can only be tested by observation, and only when the mathematical and software errors are rigorously bounded can a discrepancy with experiment be pinned on the model itself.</p>
+    </div>
   </div>
   <div class="prose">
     <p>Parallelism makes things harder. An MD code decomposes space over thousands of MPI ranks; if an atom is lost or duplicated as it crosses a subdomain boundary, the energy curve may show only a barely visible jump. The order of floating-point reductions changes with the number of ranks, so the same input gives bitwise-different trajectories on machines of different size. These errors have nothing to do with physics. They are errors in concurrent protocols, and concurrent protocols are exactly what TLA+ is good at.</p>
+    <p>The examples are three different kinds of error: Sleipner was a mathematical error (uncontrolled discretisation), a lost atom is a software error, and the band gap is a physical error in the model itself. Common practice checks all three the same way, by comparing with experiment or with other programs, so a deviation cannot be located. This programme separates them: each correctness gets its own kind of evidence and its own entries in the ledger.</p>
   </div>
 </section>
 
 <section id="s2">
   <p class="sec-no">§2</p>
-  <h2>Core claim: a result is only as trustworthy as the weakest link</h2>
+  <h2>Core claim: triple correctness, and a result is only as trustworthy as the weakest link</h2>
   <div class="prose">
-    <p>We split the path from equation to floating-point number into six layers and write an explicit proof obligation between each pair. The first three obligations belong to PDE theory and numerical analysis, the fourth to software specification, the fifth to floating-point analysis.</p>
+    <p>A simulated conclusion is trustworthy only if it is correct in three ways at once; none can be left out:</p>
+    <ul>
+      <li><b>Physically correct.</b> The model (equations, functional, force field, constitutive law, thermodynamic database) describes the real world in the range it claims. This cannot be proved; only experimental observation can confirm or refute it, always with a measurement uncertainty.</li>
+      <li><b>Mathematically correct.</b> What is solved really is the model’s equations: the solution exists and is unique, and the discretisation and iteration errors have rigorous bounds. Machine proofs in Lean 4 guarantee this.</li>
+      <li><b>Software correct.</b> The program faithfully executes the algorithm, parallel protocols lose and duplicate nothing, and floating-point rounding error is bounded. TLA+ specifications and model checking, Frama-C proofs of the C code and proved certificate checkers guarantee this.</li>
+    </ul>
+    <p>Trust depends on the weakest link. We split the path from the real world to a floating-point number into seven layers and write an explicit obligation between each pair: the first is physical (validation), the middle three are mathematical (PDE theory and numerical analysis), the last two belong to software (specification and floating-point analysis). To our knowledge this is the first time the three correctnesses have been put into one framework and one ledger.</p>
   </div>
   <ol class="chain">
+    <li><div class="layer"><span class="no">L0</span><h4>Real world</h4><p>Experimental observations: band gaps, lattice constants, magnetic moments, phase diagrams, elastic moduli, diffusion coefficients, with their measurement conditions and uncertainties.</p></div></li>
+    <li class="ob"><span class="tag ph">Physics</span> Validation: the model’s predictions agree with the observations within the stated uncertainty, and agreement is claimed only in the range where it was checked</li>
     <li><div class="layer"><span class="no">L1</span><h4>Physical model</h4><p>The equations themselves: Kohn–Sham, Newton or Langevin equations of motion, linear elasticity.</p></div></li>
     <li class="ob"><span class="tag m">Maths</span> Well-posedness: a solution exists, is unique and depends continuously on the data</li>
     <li><div class="layer"><span class="no">L2</span><h4>Continuous problem</h4><p>A variational form in a function space, e.g. find <i class="v">u</i> ∈ H¹ with <i class="v">a</i>(<i class="v">u</i>, <i class="v">v</i>) = ℓ(<i class="v">v</i>) for all <i class="v">v</i>.</p></div></li>
@@ -219,13 +236,23 @@
     </ul>
   </div>
   <div class="prose">
-    <p>This inequality is the backbone of the project. Each term must be backed by a theorem, and the premise that makes it hold — that the parallel program faithfully executes the abstract algorithm — must be guaranteed by the software-layer specification. The gap between the model and real physics is not in this inequality: that is validation, not verification (§7).</p>
+    <p>This inequality is the backbone of mathematical and software correctness. Each term must be backed by a theorem, and the premise that makes it hold — that the parallel program faithfully executes the abstract algorithm — must be guaranteed by the software-layer specification. Physical correctness adds one more layer outside it:</p>
+  </div>
+  <div class="ineq" role="figure" aria-label="Error decomposition against observation">
+    <div class="formula"><i class="v">y</i><sub>obs</sub> − <i class="v">ỹ</i> = <span class="ph">(<i class="v">y</i><sub>obs</sub> − <i class="v">y</i><sub>true</sub>) + (<i class="v">y</i><sub>true</sub> − <i class="v">y</i>(<i class="v">u</i>))</span> + <span class="m">(<i class="v">y</i>(<i class="v">u</i>) − <i class="v">ỹ</i>)</span></div>
+    <ul>
+      <li><span class="tag ph">Physics</span> Measurement error and model error: only experiment can confirm them, with a statistical uncertainty</li>
+      <li><span class="tag m">Maths</span> Numerical and software error: enclosed rigorously by the inequality above, <i class="v">y</i>(<i class="v">u</i>) ∈ [lo, hi]</li>
+    </ul>
+  </div>
+  <div class="prose">
+    <p>When computation is compared with experiment today, the three terms are mixed: a deviation may come from the model, or from the cutoff, the k-points, SCF convergence, the pseudopotential or the code. Once the last term is enclosed by a certificate, subtracting a known interval from the deviation <i class="v">y</i><sub>obs</sub> − <i class="v">ỹ</i> leaves only model error and measurement error: <b>model error can be measured cleanly for the first time</b>. That is what the three correctnesses gain from being together, and what distinguishes this programme from pure verification or pure validation. The rules and grades for validation are in §5.</p>
   </div>
 </section>
 
 <section id="s3">
   <p class="sec-no">§3</p>
-  <h2>Two layers, one bridge, one foundation</h2>
+  <h2>Three kinds of evidence: mathematics, software and physics layers, one bridge, one foundation</h2>
   <div class="pillars">
     <div class="pillar m">
       <span class="tag m">Mathematics layer</span>
@@ -254,6 +281,16 @@
       <p>The abstract algorithm is a TLA+ specification <i class="v">A</i> whose state is the global density or phase-space point, and whose steps are one mathematical iteration each. The parallel implementation is a specification <i class="v">P</i> whose state is spread over processes. A refinement mapping projects the state of <i class="v">P</i> onto that of <i class="v">A</i> — for example by stitching local densities into the global one. Once <i class="v">P</i> ⇒ <i class="v">A</i> is proved, the convergence theorems about <i class="v">A</i> hold for the parallel program.</p>
       <p class="tool">Performance work is handled the same way: every optimisation is a new refinement, and must be proved to still implement the level above.</p>
     </div>
+    <div class="pillar ph">
+      <span class="tag ph">Physics layer</span>
+      <h3 style="margin-top:10px">Validation: traceable observations and certified model error</h3>
+      <ul>
+        <li><b>What is validated:</b> the model’s predictions of observables (band gaps, lattice constants, bulk moduli, magnetic moments, phase boundaries, elastic response, transport coefficients) agree with experiment in the stated range and uncertainty</li>
+        <li><b>Where they disagree:</b> a certified model error, the observed value minus the rigorous computed interval, with the measurement uncertainty on top</li>
+        <li><b>Range of validity:</b> which compositions, temperatures, pressures and structures were checked, and where there are no data</li>
+      </ul>
+      <p class="tool"><b>Data:</b> every experimental value is registered with its source (DOI), conditions, uncertainty and the corrections needed before comparison (zero-point and temperature corrections for band gaps, zero-point expansion for lattice constants); data files are hashed and versioned with the repository. <b>Rules:</b> the quantities, tolerances and data sets are fixed before the comparison; data used to fit a model are not reused to validate it; a conclusion holds only in the validated range. <b>Limits:</b> physical correctness can be corroborated or refuted, never proved; measurement uncertainty is statistical, unlike the rigorous intervals of the other layers, and the two are reported separately.</p>
+    </div>
     <div class="pillar f">
       <span class="tag f">Foundation</span>
       <h3 style="margin-top:10px">Floating point is a first-class citizen</h3>
@@ -266,10 +303,11 @@
 <section id="s4">
   <p class="sec-no">§4</p>
   <h2>The proof-obligation matrix</h2>
-  <div class="prose"><p>What each of the three domains must prove at each layer. This table is the project’s work list: every cell must eventually correspond to a specification, a theorem or a registered assumption.</p></div>
+  <div class="prose"><p>What each of the three domains must validate or prove at each of the seven layers. This table is the project’s work list: every cell must eventually correspond to a specification, a theorem, a registered assumption or, in the first row, a registered validation against experimental data. The first row is new in v0.4 and none of its cells is filled yet.</p></div>
   <div class="tbl"><table class="matrix">
     <thead><tr><th>Layer</th><th>DFT · electronic structure</th><th>MD · atomic trajectories</th><th>FEM · continuum mechanics</th></tr></thead>
     <tbody>
+      <tr><td class="l">Observation <span class="tag ph">Physics</span></td><td>Measured band gaps, lattice constants, bulk moduli, magnetic moments and formation energies with uncertainties (including zero-point and temperature corrections); compared with rigorous computed intervals, giving a certified exchange–correlation model error</td><td>Measured equations of state, radial distribution functions, diffusion coefficients and heat capacities; force-field fitting sets kept apart from validation sets</td><td>Measured material constants and loads; displacements, strains and failure loads in structural tests compared with computed intervals</td></tr>
       <tr><td class="l">Model</td><td>Kohn–Sham equations, a nonlinear eigenvalue problem <i class="v">H</i>[<i class="v">ρ</i>]<i class="v">ψ<sub>i</sub></i> = <i class="v">ε<sub>i</sub>ψ<sub>i</sub></i>, <i class="v">ρ</i> = Σ<i class="v">f<sub>i</sub></i>|<i class="v">ψ<sub>i</sub></i>|²</td><td>Hamiltonian dynamics; for thermostatted runs, Langevin dynamics and its Fokker–Planck equation</td><td>Elliptic, parabolic and hyperbolic PDEs, e.g. linear elasticity −∇·<i class="v">σ</i>(<i class="v">u</i>) = <i class="v">f</i> and its weak form</td></tr>
       <tr><td class="l">Continuum</td><td>Lieb variational principle; existence of minimisers for LDA-type Kohn–Sham models; self-adjointness of the Hamiltonian</td><td>Existence and uniqueness for Lipschitz forces; conservation of energy, momentum and angular momentum; Liouville; invariant measure and ergodicity of Langevin dynamics</td><td>Well-posedness via Lax–Milgram; inf-sup conditions for mixed problems (Stokes, nearly incompressible elasticity); regularity sets the attainable rate</td></tr>
       <tr><td class="l">Discrete</td><td>A priori error of the plane-wave cutoff; Brillouin-zone <i class="v">k</i>-point integration error; pseudopotential model error registered separately</td><td>Symplecticity and time reversibility of velocity Verlet; backward error analysis: a modified Hamiltonian keeps the energy error <i class="v">O</i>(Δ<i class="v">t</i>²) for exponentially long times</td><td>Céa’s lemma plus interpolation: ‖<i class="v">u</i> − <i class="v">u<sub>h</sub></i>‖<sub>H¹</sub> ≤ <i class="v">C h<sup>k</sup></i>|<i class="v">u</i>|<sub>H<sup>k+1</sup></sub>; mesh shape regularity as an explicit premise; reliability and efficiency of a posteriori estimators</td></tr>
@@ -282,7 +320,7 @@
 
 <section id="s5">
   <p class="sec-no">§5</p>
-  <h2>Trust tiers</h2>
+  <h2>Trust tiers and validation grades</h2>
   <div class="prose"><p>Not everything can be proved at once. Every component states honestly which tier it has reached and lists the assumptions it depends on in the trust ledger. Tiers only go up, and are never overstated.</p></div>
   <div class="tiers">
     <div class="tier"><span class="t c-t0">T0</span><h4>Tested</h4><p>Regression tests, analytic solutions, comparison with established codes. Holds only for the inputs tested.</p></div>
@@ -290,6 +328,13 @@
     <div class="tier"><span class="t c-t2">T2</span><h4>Model-checked</h4><p>TLC or Apalache has exhausted every behaviour of a finite instance.</p></div>
     <div class="tier"><span class="t c-t3">T3</span><h4>Machine proof</h4><p>A Lean, Rocq or TLAPS proof valid at any scale, for the abstract model, exact arithmetic or a line-by-line model of the code.</p></div>
     <div class="tier"><span class="t c-t4">T4</span><h4>End to end</h4><p>Machine proof all the way down to executable code and floating-point rounding. Precedent: Boldo et al.’s proof of a C program for the 1D wave equation.</p></div>
+  </div>
+  <div class="prose"><p>T0–T4 measure mathematical and software correctness. Physical correctness cannot be proved, so it is measured on a separate axis, the <b>validation grades</b> V0–V3. A conclusion carries both, for example “band-gap interval T4, comparison with experiment V2”. Every result so far is at V0: the ledger has no validation claims yet, and the physical track is planned (§8).</p></div>
+  <div class="tiers four">
+    <div class="tier"><span class="t c-v">V0</span><h4>Not validated</h4><p>No comparison with observation. All one can say is “the model gives this number”.</p></div>
+    <div class="tier"><span class="t c-v">V1</span><h4>Single comparison</h4><p>Compared with experimental data that have a source and an uncertainty; the deviation is reported together with the computed interval and the measurement uncertainty.</p></div>
+    <div class="tier"><span class="t c-v">V2</span><h4>Systematic validation</h4><p>Compared on a data set and protocol fixed in advance, separate from the fitting data, giving the distribution of model errors and the validated range.</p></div>
+    <div class="tier"><span class="t c-v">V3</span><h4>Blind prediction</h4><p>The computed interval is archived, time-stamped and with its certificate, before the measurement, and then confirmed or refuted by an independent experiment.</p></div>
   </div>
 </section>
 
@@ -307,7 +352,9 @@
     <div class="principle"><h4>Verify the checker, not the solver</h4><p>Large numerical libraries such as LAPACK or FFT libraries are not proved; their outputs are checked by proved checkers. Solvers are replaceable; the guarantee comes from the checker.</p></div>
     <div class="principle"><h4>Every run comes with a report</h4><p>Each line of the report cites a claim in the trust ledger, from which its tier and assumptions can be looked up; the report ends with the assumptions the run used.</p></div>
     <div class="principle"><h4>Every output has a theorem</h4><p>Every number the program prints must correspond to a machine-proved theorem. Where the result is an approximation — iteration, discretisation, <i class="v">k</i>-point sampling, finite temperature, floating point — what is proved is an error bound. Tests, model checking and sanitizers are supporting evidence only. An output without such a theorem is unfinished and is listed as a gap.</p></div>
-    <div class="principle"><h4>Open</h4><p>Specifications, proofs, benchmarks and the trust ledger are to be public, so that anyone can re-check them.</p></div>
+    <div class="principle"><h4>The three correctnesses are kept apart</h4><p>Mathematical and software conclusions carry T tiers, physical conclusions V grades, and reports state them separately. Rigorous intervals and statistical uncertainties are never mixed.</p></div>
+    <div class="principle"><h4>Experimental data are traceable</h4><p>Every experimental value used for validation has a source, conditions, an uncertainty and documented corrections; fitting and validation sets are kept apart, and the comparison protocol is fixed before the comparison.</p></div>
+    <div class="principle"><h4>Open</h4><p>Specifications, proofs, benchmarks, experimental data sets and the trust ledger are to be public, so that anyone can re-check them.</p></div>
   </div>
 </section>
 
@@ -315,7 +362,7 @@
   <p class="sec-no">§7</p>
   <h2>What we do not do</h2>
   <div class="cards three">
-    <div class="card"><h3>Judge the physics</h3><p>The gap between exchange-correlation functionals, force fields or constitutive laws and the real world is validation. This project does verification: solving the given equations correctly.</p></div>
+    <div class="card"><h3>Claim to prove a physical model</h3><p>Physical correctness can only be confirmed by observation; its conclusions always carry a measurement uncertainty and hold only in the validated range (the V grades of §5). We measure model error, but developing new functionals, force fields or constitutive laws is not a goal. Versions before 8 October 2026 excluded validation altogether (“we do not judge whether the physical model is correct”); that non-goal is withdrawn, and validation is now one of the three correctnesses.</p></div>
     <div class="card"><h3>Replace existing software at the outset</h3><p>Quantum ESPRESSO, VASP, LAMMPS, GROMACS, deal.II and FEniCS are benchmarks and references, not targets for replacement.</p></div>
     <div class="card"><h3>Prove all the code</h3><p>Input parsing, I/O and visualisation can stay at T0, as long as they do not enter the error budget.</p></div>
   </div>
@@ -325,7 +372,17 @@
   <p class="sec-no">§8</p>
   <h2>Roadmap</h2>
   <div class="goal">
-    <h3>Current goal G1 — feature parity with DFTK <span class="tag n">set 29 Sep 2026</span></h3>
+    <h3>Current goal — a 3D showcase of triple correctness <span class="tag n">set 8 Oct 2026</span></h3>
+    <p>Extend DFT to three-dimensional real materials and give, on the same systems, evidence for all three correctnesses: mathematical (existence and uniqueness of the SCF solution, rigorous intervals for energies and band gaps, where possible for the continuous problem), software (TLA+ specifications and trace validation of the parallel protocols, proved checkers) and physical (systematic validation against experimental band gaps, lattice constants and magnetic moments, with a certified exchange–correlation model error). Planned showcases, none with results yet:</p>
+    <ul>
+      <li><span class="tag ph">Physics</span> <b>S1 Certified model error.</b> LDA (later PBE) band gaps and lattice constants of semiconductors and insulators against experiment; the computed values are rigorous intervals, so the deviation is the error of the functional — a quantitative band-gap problem free of numerical error.</li>
+      <li><span class="tag m">Maths</span> <b>S2 Not the ground state.</b> On a real magnetic or correlated system, prove that another self-consistent solution has strictly lower free energy, so the commonly reported one is not the ground state.</li>
+      <li><span class="tag s">Software</span> <b>S3 Parallel correctness.</b> 3D k-point, band and plane-wave parallelism and distributed FFT transposes specified in TLA+, model-checked and trace-validated; bitwise-identical results at any process count; planted parallel bugs caught.</li>
+    </ul>
+    <p>Alongside runs the physical track P: V grades in the ledger rules, a validation section per domain ledger, a versioned experimental data set traced to the original publications, protocols fixed before comparison, and run reports in three columns (maths, software, physics). The plan, its phases and open decisions are in <code>docs/plan-dft3d.md</code>. DFTK parity (G1) remains the reference for the 1D and 3D implementations.</p>
+  </div>
+  <div class="goal">
+    <h3>Goal G1 — feature parity with DFTK <span class="tag n">set 29 Sep 2026</span></h3>
     <p>Bring mini-DFT to the main feature set of DFTK.jl. A feature is <b>done</b> only when it is implemented, agrees with DFTK on the same discrete problem, and its output carries a Lean certificate. Order: complete everything in 1D first, then generalise the Lean model to <i class="v">d</i> dimensions for 3D, and finally infrastructure and external interfaces. FEM moved to the parallel goal G2; for MD (phase 2), a basic version, mini-MD v0, was built on 1 October 2026. <a href="dft.html#g1">Status →</a></p>
   </div>
   <div class="goal">
@@ -413,6 +470,7 @@
   <h3 style="margin-top:28px">Open questions</h3>
   <ul class="prose">
     <li><b>Continuum theory of 1D rHF.</b> Resolved at T1 on 5 October 2026: no published result covers the 1D periodic Hartree kernel directly, so the project supplies paper proofs (existence and unique density at zero and finite temperature, the cutoff limit equals the continuum energy, exponential plane-wave convergence for analytic potentials). What remains is to machine-check them, which ties in with the next question. The cutoff limit was machine-checked on 8 October 2026 (DFT-C02, T3) with the continuum model written in Fourier space, which avoids periodic Sobolev spaces; its equivalence with the operator model on H¹ is assumption A-DFT-08.</li>
+    <li><b>Comparing with experiment.</b> Measured and model quantities rarely mean the same thing: band gaps need zero-point and temperature corrections, lattice constants zero-point expansion, and the corrections come from other models or measurements. How they enter a V grade without contaminating the rigorous part, and how to keep fitting and validation sets apart when published functionals and databases do not always say what they were fitted to, are open.</li>
     <li><b>How deep to formalise Sobolev spaces</b> — what to axiomatise first, and which theorems to prove first.</li>
     <li><b>Randomness.</b> Langevin dynamics and random initial guesses involve probabilistic properties; TLA+ only describes nondeterminism.</li>
     <li><b>GPUs.</b> How asynchronous streams and weak memory models enter a TLA+ specification.</li>
@@ -425,6 +483,9 @@
   <ol class="refs">
     <li>B. Jakobsen, F. Rosendahl. The Sleipner platform accident. <i>Structural Engineering International</i> 4(3), 1994.</li>
     <li>K. Lejaeghere et al. Reproducibility in density functional theory calculations of solids. <i>Science</i> 351, aad3000, 2016.</li>
+    <li>J. P. Perdew, M. Levy. Physical content of the exact Kohn–Sham orbital energies: band gaps and derivative discontinuities. <i>Physical Review Letters</i> 51, 1884, 1983.</li>
+    <li>L. J. Sham, M. Schlüter. Density-functional theory of the energy gap. <i>Physical Review Letters</i> 51, 1888, 1983.</li>
+    <li>W. L. Oberkampf, C. J. Roy. <i>Verification and Validation in Scientific Computing</i>. Cambridge University Press, 2010.</li>
     <li>S. Boldo, F. Clément, J.-C. Filliâtre, M. Mayero, G. Melquiond, P. Weis. Wave equation numerical resolution: a comprehensive mechanized proof of a C program. <i>Journal of Automated Reasoning</i> 50(4), 2013.</li>
     <li>S. Boldo, F. Clément, F. Faissole, V. Martin, M. Mayero. A Coq formal proof of the Lax–Milgram theorem. CPP 2017.</li>
     <li>J. P. Solovej. Proof of the ionization conjecture in a reduced Hartree–Fock model. <i>Inventiones Mathematicae</i> 104, 1991.</li>
@@ -443,7 +504,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · Programme v0.3 · revised as the project evolves<span class="updated"> · updated <time datetime="2026-10-08T05:37+08:00">2026-10-08 05:37 UTC+8</time></span></span>
+  <span>Formal in Silico · Programme v0.4 · revised as the project evolves<span class="updated"> · updated <time datetime="2026-10-08T08:11+08:00">2026-10-08 08:11 UTC+8</time></span></span>
   <span><a href="progress.html">Progress</a> · <a href="showcases.html">Showcases</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="zh/" hreflang="zh-CN">中文版</a></span>
 </div></footer>
 </body>
