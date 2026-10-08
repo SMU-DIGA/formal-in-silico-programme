@@ -44,9 +44,9 @@
     <div class="j ph"><span class="k">实验</span><span class="e"><i class="v">y</i><sub>obs</sub> − <i class="v">y</i><sub>model</sub> ∈ [<i class="v">y</i><sub>obs</sub> − hi, <i class="v">y</i><sub>obs</sub> − lo] ± <i class="v">σ</i><sub>exp</sub></span></div>
   </div>
   <div class="stats">
-    <div class="stat"><b>298</b><span>条命题登记在可信账本中</span></div>
-    <div class="stat"><b>265</b><span>条已有机器证明（T3 或 T4）</span></div>
-    <div class="stat"><b>96</b><span>条达到端到端等级 T4：检查器可靠性、内核安全与内核浮点</span></div>
+    <div class="stat"><b data-n="all">324</b><span>条命题登记在可信账本中</span></div>
+    <div class="stat"><b data-n="all.proved">282</b><span>条已有机器证明（T3 或 T4）</span></div>
+    <div class="stat"><b data-n="all.T4">101</b><span>条达到端到端等级 T4：检查器可靠性、内核安全与内核浮点</span></div>
     <div class="stat"><b>4</b><span>个参照程序交叉校验：DFTK.jl、scikit-fem、ASE 与 pycalphad</span></div>
   </div>
   <div class="cta">
@@ -63,7 +63,7 @@
   <div class="prose"><p>五个领域新增的功能、研究结果，以及论文与本网站的变化，新的在前。逐项状态见<a href="progress.html">实现进度</a>；这里引用的命题都登记在可信账本中。</p></div>
   <ol class="news">
     <li><time datetime="2026-10-08">2026-10-08</time><ul>
-      <li><span class="tag n">网站</span><a href="progress.html#glance">进度页</a>开头新增一张全局图：可信账本逐日的增长（9 月 27 日 16 条命题，现在 324 条，87% 有机器证明）、三重正确各自的进展，以及各领域与参照程序的对齐程度；页面上的账本数字同步更新。</li>
+      <li><span class="tag n">网站</span><a href="progress.html#glance">进度页</a>开头新增一张全局图：可信账本逐日的增长（9 月 27 日 16 条命题，现在 324 条，87% 有机器证明）、三重正确各自的进展，以及各领域与参照程序的对齐程度；网站上所有来自账本与对齐清单的数字今后都由脚本生成（<code>scripts/site_numbers.py</code>），每次验证都会检查，页面不会再落后于账本；DFT 页新增三维平面波与三维并行协议两行。</li>
       <li><span class="tag n">物理</span><b>第一个三重都齐的结果。</b>Cohen–Bergstresser 经验赝势下 Si、Ge、GaAs 的能带能量有严格区间（宽约 10<sup>−7</sup>&nbsp;eV），与模型没有拟合过的光电子能谱数据比较；比较协议在任何证书数字出现之前提交并推送。Si 在 0.3&nbsp;eV 的测量不确定度内一致；Ge 的价带宽度（窄 0.54&nbsp;eV）与 GaAs 的 <i>L</i><sub>3</sub> 能级（高 0.38&nbsp;eV）不一致，这是数值与软件误差解释不了的模型误差（DFT-O01、O02 为 V2，O03 为 V0）。拟合集恰为 CB 1966 年 Table I 的 86 个实验值，已对照原文核对。</li>
       <li><span class="tag n">DFT</span>三维检查器 <code>certify-pw</code>：CB 模型在列出的 k 点上的能带区间、带边与带隙，在 Lean 中证明可靠，截断基组、规范与 (2π/<i>a</i>)² 都在定理之内（DFT-W04–W06、W13、W14 升为 T4）；DFTK 的 216 个值与空晶格的 108 个精确能级都在区间内。Lean 还证明了连续 Bloch 算子的界，以及由有限个 k 点给出整个 Brillouin 区的带边（DFT-W08、W20–W25，T3）；这样认证 meV 级的带隙需要二阶的界，在计划中。</li>
       <li><span class="tag n">检查</span>三维并行（k 点 × 能带 × FFT 进程，slab 与 pencil 的 FFT 转置）的 TLA<sup>+</sup> 规范细化一维的规范，TLC 发现全部四个植入的并行错误（DFT-R08–R12）。<code>verify_all</code> 按依赖图并行运行各步骤，完整验证约 16 分钟。</li>
@@ -511,7 +511,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · 项目纲领 v0.4 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-10-08T22:48+08:00">2026-10-08 22:48 UTC+8</time></span></span>
+  <span>Formal in Silico · 项目纲领 v0.4 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-10-08T22:56+08:00">2026-10-08 22:56 UTC+8</time></span></span>
   <span><a href="progress.html">实现进度</a> · <a href="showcases.html">成果展示</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="../" hreflang="en">English</a></span>
 </div></footer>
 </body>

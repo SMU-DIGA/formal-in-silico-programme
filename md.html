@@ -39,7 +39,7 @@
   <h1>mini-MD</h1>
   <p class="lead">A one-dimensional Lennard-Jones chain integrated with velocity Verlet. The Lean checker bounds how far the computed trajectory is from the <b>true solution of Newton’s equations</b> — for every step, and from the initial state over about one vibration period — and computes the conserved quantities exactly. Built on 1 October 2026 as the charter’s phase-2 MD version and cross-checked against ASE 3.29.</p>
   <div class="stats">
-    <div class="stat"><b>22</b><span>claims in the trust ledger: 8 at T4, 12 at T3, 2 at T0 (the problem echo and the exit code)</span></div>
+    <div class="stat"><b data-n="MD">22</b><span>claims in the trust ledger: <span data-n="MD.T4">8</span> at T4, <span data-n="MD.T3">12</span> at T3, <span data-n="MD.T0">2</span> at T0 (the problem echo and the exit code)</span></div>
     <div class="stat"><b>0.99</b><span>true local error ÷ certified local bound: the bound is almost exact</span></div>
     <div class="stat"><b>≤ 5×10⁻¹⁴</b><span>difference from ASE in positions, momenta and energy</span></div>
     <div class="stat"><b>≈ 1 period</b><span>covered by the global bound from the initial state (t = 0.5 for 8 atoms)</span></div>
@@ -137,10 +137,10 @@ Lean  EPSMAX 0.00000004460799189706</pre>
 <section id="claims">
   <p class="sec-no">05</p>
   <h2>Claims in the trust ledger</h2>
-  <div class="sbar big" role="img" aria-label="22 claims: 8 at T4, 12 at T3, 2 at T0">
+  <div class="sbar big" data-bar="MD" role="img" aria-label="22 claims: 8 at T4, 12 at T3, 2 at T0">
     <i class="sw-t4" style="flex:8"></i><i class="sw-t3" style="flex:12"></i><i class="sw-t0" style="flex:2"></i>
   </div>
-  <div class="legend">
+  <div class="legend" data-legend="MD">
     <span><i class="sw-t4"></i>T4 end to end · 8</span>
     <span><i class="sw-t3"></i>T3 machine proof · 12</span>
     <span><i class="sw-t0"></i>T0 tested · 2</span>
@@ -210,7 +210,7 @@ Lean  EPSMAX 0.00000004460799189706</pre>
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · status snapshot 8 October 2026<span class="updated"> · updated <time datetime="2026-10-08T05:37+08:00">2026-10-08 05:37 UTC+8</time></span></span>
+  <span>Formal in Silico · status snapshot 8 October 2026<span class="updated"> · updated <time datetime="2026-10-08T22:56+08:00">2026-10-08 22:56 UTC+8</time></span></span>
   <span><a href="./">Programme</a> · <a href="progress.html">Progress</a> · <a href="showcases.html">Showcases</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="zh/md.html" hreflang="zh-CN">中文版</a></span>
 </div></footer>
 </body>

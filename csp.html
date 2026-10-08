@@ -38,7 +38,7 @@
   <h1>mini-CSP</h1>
   <p class="lead">Crystal structure prediction, starting with Lennard-Jones clusters. The searcher — random generation, relaxation, particle-swarm updates, deduplication, the same ingredients as CALYPSO, written from the published papers — is <b>untrusted</b>. Every candidate it proposes goes to the Lean checker <code>certify-csp</code>, which proves it an <b>exact local minimum</b>, unique up to rotation, reflection and translation, with a rigorous energy interval, and proves pairs of candidates equal or distinct. Started on 7 October 2026.</p>
   <div class="stats">
-    <div class="stat"><b>11</b><span>claims in the trust ledger: 3 at T4, 5 at T3, 3 at T0</span></div>
+    <div class="stat"><b data-n="CSP">11</b><span>claims in the trust ledger: <span data-n="CSP.T4">3</span> at T4, <span data-n="CSP.T3">5</span> at T3, <span data-n="CSP.T0">3</span> at T0</span></div>
     <div class="stat"><b>11 / 11</b><span>LJ₃…LJ₁₃: the best certified energy matches the Cambridge Cluster Database</span></div>
     <div class="stat"><b>≤ 7×10⁻¹⁵</b><span>energy difference from ASE on the same structures</span></div>
     <div class="stat"><b>≤ 2×10⁻¹⁵</b><span>width of each printed energy interval: about 16 significant digits</span></div>
@@ -137,10 +137,10 @@ CSP_OK 4</pre>
 <section id="claims">
   <p class="sec-no">05</p>
   <h2>Claims in the trust ledger</h2>
-  <div class="sbar big" role="img" aria-label="11 claims: 3 at T4, 5 at T3, 3 at T0">
+  <div class="sbar big" data-bar="CSP" role="img" aria-label="11 claims: 3 at T4, 5 at T3, 3 at T0">
     <i class="sw-t4" style="flex:3"></i><i class="sw-t3" style="flex:5"></i><i class="sw-t0" style="flex:3"></i>
   </div>
-  <div class="legend">
+  <div class="legend" data-legend="CSP">
     <span><i class="sw-t4"></i>T4 end to end · 3</span>
     <span><i class="sw-t3"></i>T3 machine proof · 5</span>
     <span><i class="sw-t0"></i>T0 tested · 3</span>
@@ -211,7 +211,7 @@ CSP_OK 4</pre>
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · status snapshot 8 October 2026<span class="updated"> · updated <time datetime="2026-10-08T05:37+08:00">2026-10-08 05:37 UTC+8</time></span></span>
+  <span>Formal in Silico · status snapshot 8 October 2026<span class="updated"> · updated <time datetime="2026-10-08T22:56+08:00">2026-10-08 22:56 UTC+8</time></span></span>
   <span><a href="./">Programme</a> · <a href="progress.html">Progress</a> · <a href="showcases.html">Showcases</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="zh/csp.html" hreflang="zh-CN">中文版</a></span>
 </div></footer>
 </body>

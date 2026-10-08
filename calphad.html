@@ -39,8 +39,8 @@
   <h1>mini-CALPHAD</h1>
   <p class="lead">Phase equilibria of binary alloys, read from the same TDB thermodynamic databases that pycalphad uses. The Lean checker certifies the <b>true global equilibrium</b> of the database model — the lowest Gibbs energy over every possible combination of phases — not only the solution the driver happened to find. Since 4 October the checker reads the TDB file itself, so its conclusions are about the model the database defines, and a second kind of certificate proves that a phase has <i>no</i> miscibility gap. Goal G3, set on 1 October 2026, is feature parity with pycalphad 0.11.1.</p>
   <div class="stats">
-    <div class="stat"><b>28</b><span>claims in the trust ledger: 9 at T4, 12 at T3, and 7 at T0: the Lean reading of TDB files, a definition, and the checker’s echo, hash, output escaping, phase-table completeness, header and exit code</span></div>
-    <div class="stat"><b>18 / 25</b><span>pycalphad parity items done: all of C0; in C1 phase diagrams with certified region partitions, magnetism, driving forces, sharp chemical potentials and thermodynamic properties; in C2 sublattice phases with up to two mixing sublattices and conditions on a chemical potential or an activity</span></div>
+    <div class="stat"><b data-n="CAL">28</b><span>claims in the trust ledger: <span data-n="CAL.T4">9</span> at T4, <span data-n="CAL.T3">12</span> at T3, and <span data-n="CAL.T0">7</span> at T0: the Lean reading of TDB files, a definition, and the checker’s echo, hash, output escaping, phase-table completeness, header and exit code</span></div>
+    <div class="stat"><b><span data-n="g3.done">18</span> / <span data-n="g3.total">25</span></b><span>pycalphad parity items done: all of C0; in C1 phase diagrams with certified region partitions, magnetism, driving forces, sharp chemical potentials and thermodynamic properties; in C2 sublattice phases with up to two mixing sublattices and conditions on a chemical potential or an activity</span></div>
     <div class="stat"><b>29 / 29</b><span>pycalphad equilibria inside the Lean intervals and windows</span></div>
     <div class="stat"><b>246 650</b><span>grid points in 316 binary systems from 17 databases, each certified against its TDB file in the <a href="#audit">database audit</a></span></div>
   </div>
@@ -210,10 +210,10 @@ Lean  EXISTS</pre>
 <section id="claims">
   <p class="sec-no">08</p>
   <h2>Claims in the trust ledger</h2>
-  <div class="sbar big" role="img" aria-label="28 claims: 9 at T4, 12 at T3, 7 at T0">
+  <div class="sbar big" data-bar="CAL" role="img" aria-label="28 claims: 9 at T4, 12 at T3, 7 at T0">
     <i class="sw-t4" style="flex:9"></i><i class="sw-t3" style="flex:12"></i><i class="sw-t0" style="flex:7"></i>
   </div>
-  <div class="legend">
+  <div class="legend" data-legend="CAL">
     <span><i class="sw-t4"></i>T4 end to end · 9</span>
     <span><i class="sw-t3"></i>T3 machine proof · 12</span>
     <span><i class="sw-t0"></i>T0 tested · 7</span>
@@ -379,7 +379,7 @@ Lean  EXISTS</pre>
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · status snapshot 8 October 2026<span class="updated"> · updated <time datetime="2026-10-08T05:37+08:00">2026-10-08 05:37 UTC+8</time></span></span>
+  <span>Formal in Silico · status snapshot 8 October 2026<span class="updated"> · updated <time datetime="2026-10-08T22:56+08:00">2026-10-08 22:56 UTC+8</time></span></span>
   <span><a href="./">Programme</a> · <a href="progress.html">Progress</a> · <a href="showcases.html">Showcases</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="zh/calphad.html" hreflang="zh-CN">中文版</a></span>
 </div></footer>
 </body>

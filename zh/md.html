@@ -39,7 +39,7 @@
   <h1>mini-MD</h1>
   <p class="lead">一维 Lennard-Jones 原子链，Velocity Verlet 积分。Lean 检查器给出计算轨道与 <b>Newton 方程真解</b>之间距离的严格界：每一步都有，从初值出发的整体界覆盖约一个振动周期；守恒量则精确计算。2026-10-01 作为纲领阶段 2 的 MD 基础版本完成，与 ASE 3.29 交叉校验。</p>
   <div class="stats">
-    <div class="stat"><b>22</b><span>条命题登记在可信账本中：T4 8 条，T3 12 条，T0 2 条（问题回显与退出码）</span></div>
+    <div class="stat"><b data-n="MD">22</b><span>条命题登记在可信账本中：T4 <span data-n="MD.T4">8</span> 条，T3 <span data-n="MD.T3">12</span> 条，T0 <span data-n="MD.T0">2</span> 条（问题回显与退出码）</span></div>
     <div class="stat"><b>0.99</b><span>真实局部误差 ÷ 证书的局部界：界几乎是精确的</span></div>
     <div class="stat"><b>≤ 5×10⁻¹⁴</b><span>与 ASE 在位置、动量、能量上的差</span></div>
     <div class="stat"><b>约 1 个周期</b><span>由从初值出发的整体界覆盖（8 个原子时 t = 0.5）</span></div>
@@ -137,10 +137,10 @@ Lean  EPSMAX 0.00000004460799189706</pre>
 <section id="claims">
   <p class="sec-no">05</p>
   <h2>可信账本中的命题</h2>
-  <div class="sbar big" role="img" aria-label="22 条命题：T4 8 条，T3 12 条，T0 2 条">
+  <div class="sbar big" data-bar="MD" role="img" aria-label="22 条命题：T4 8 条，T3 12 条，T0 2 条">
     <i class="sw-t4" style="flex:8"></i><i class="sw-t3" style="flex:12"></i><i class="sw-t0" style="flex:2"></i>
   </div>
-  <div class="legend">
+  <div class="legend" data-legend="MD">
     <span><i class="sw-t4"></i>T4 端到端 · 8</span>
     <span><i class="sw-t3"></i>T3 机器证明 · 12</span>
     <span><i class="sw-t0"></i>T0 测试 · 2</span>
@@ -210,7 +210,7 @@ Lean  EPSMAX 0.00000004460799189706</pre>
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · 现状快照 2026-10-08<span class="updated"> · 更新于 <time datetime="2026-10-08T05:37+08:00">2026-10-08 05:37 UTC+8</time></span></span>
+  <span>Formal in Silico · 现状快照 2026-10-08<span class="updated"> · 更新于 <time datetime="2026-10-08T22:56+08:00">2026-10-08 22:56 UTC+8</time></span></span>
   <span><a href="./">纲领</a> · <a href="progress.html">进度</a> · <a href="showcases.html">成果展示</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="../md.html" hreflang="en">English</a></span>
 </div></footer>
 </body>

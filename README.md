@@ -34,6 +34,18 @@ newest first, with the claim IDs it rests on. Add an entry in both languages
 whenever a ledger claim, parity item or showcase is added; entries older than
 the three most recent days go inside the "Earlier" `<details>` block.
 
+Numbers taken from the trust ledger and the parity trackers are never typed by hand.
+They are marked in the HTML (`data-n="KEY"` on an element holding one number,
+`data-bar` on a tier bar, `data-legend` on its legend; the progress page's
+`<figure class="glance">` is generated whole) and rewritten by
+`python3 scripts/site_numbers.py` in the main project. Run it whenever the ledger,
+a parity tracker or the adversarial suite changes; `make verify-all` runs
+`--check` in its `ledger` step and fails while any page is stale. When you add a
+number to a page, mark it the same way. The prose around the numbers (for example
+what the T0 claims are) still has to be rewritten by hand. A new `##` section in
+`domains/dft/LEDGER.md` must be assigned to a row of the DFT page (`DFT_ROWS` in
+the script), and new milestones for the progress figure go in `MILESTONES`.
+
 Every page's footer also shows when the page last changed ("updated …"). Before
 publishing, run `python3 scripts/stamp_site.py` in the main project: pages edited
 since the last commit get the current time, the others the time of the last commit

@@ -44,9 +44,9 @@
     <div class="j ph"><span class="k">Experiment</span><span class="e"><i class="v">y</i><sub>obs</sub> − <i class="v">y</i><sub>model</sub> ∈ [<i class="v">y</i><sub>obs</sub> − hi, <i class="v">y</i><sub>obs</sub> − lo] ± <i class="v">σ</i><sub>exp</sub></span></div>
   </div>
   <div class="stats">
-    <div class="stat"><b>298</b><span>claims registered in the trust ledger</span></div>
-    <div class="stat"><b>265</b><span>of them machine-proved (tier T3 or T4)</span></div>
-    <div class="stat"><b>96</b><span>at the end-to-end tier T4: checker soundness, kernel safety and kernel floating point</span></div>
+    <div class="stat"><b data-n="all">324</b><span>claims registered in the trust ledger</span></div>
+    <div class="stat"><b data-n="all.proved">282</b><span>of them machine-proved (tier T3 or T4)</span></div>
+    <div class="stat"><b data-n="all.T4">101</b><span>at the end-to-end tier T4: checker soundness, kernel safety and kernel floating point</span></div>
     <div class="stat"><b>4</b><span>reference codes cross-checked: DFTK.jl, scikit-fem, ASE and pycalphad</span></div>
   </div>
   <div class="cta">
@@ -63,7 +63,7 @@
   <div class="prose"><p>Features added to the five domains, research results, and changes to the paper and this site, newest first. Item-by-item status is on the <a href="progress.html">progress page</a>; every claim cited here is in the trust ledger.</p></div>
   <ol class="news">
     <li><time datetime="2026-10-08">8 Oct 2026</time><ul>
-      <li><span class="tag n">Site</span>The <a href="progress.html#glance">progress page</a> now opens with one figure for the whole programme: the trust ledger’s growth day by day (16 claims on 27 September, 324 today, 87% proved by machine), the three correctnesses side by side, and how far each domain has come against its reference code. Its ledger numbers are brought up to date.</li>
+      <li><span class="tag n">Site</span>The <a href="progress.html#glance">progress page</a> now opens with one figure for the whole programme: the trust ledger’s growth day by day (16 claims on 27 September, 324 today, 87% proved by machine), the three correctnesses side by side, and how far each domain has come against its reference code. Every number on the site that comes from the ledger or a parity tracker is now generated from it (<code>scripts/site_numbers.py</code>) and checked on every verification run, so the pages can no longer fall behind; the DFT page gains rows for the 3D plane-wave and 3D parallel claims.</li>
       <li><span class="tag n">Physics</span><b>First result with all three correctnesses.</b> Certified band energies of the Cohen–Bergstresser empirical pseudopotential for Si, Ge and GaAs (intervals about 10<sup>−7</sup>&nbsp;eV wide) were compared with photoemission data the model was not fitted to, under a protocol committed and pushed before any certified number existed. Si agrees within the 0.3&nbsp;eV measurement uncertainty; the Ge valence-band width (0.54&nbsp;eV too narrow) and the GaAs <i>L</i><sub>3</sub> level (0.38&nbsp;eV too high) disagree, a model error that numerical and software errors cannot explain (DFT-O01, O02 at V2; O03 at V0). The fit set is exactly the 86 experimental values of CB’s 1966 Table I, checked against the original paper.</li>
       <li><span class="tag n">DFT</span>3D checker <code>certify-pw</code>: band intervals, band edges and gaps of the CB model at listed k-points, proved sound in Lean with the cutoff basis, gauge and (2π/<i>a</i>)² inside the theorem (DFT-W04–W06, W13, W14 now T4); DFTK’s 216 values and 108 exact empty-lattice levels lie inside. Lean also proves bounds for the continuous Bloch operator and band edges over the whole Brillouin zone from finitely many k-points (DFT-W08, W20–W25, T3); certifying a meV-level gap that way needs a second-order bound, planned.</li>
       <li><span class="tag n">Checks</span>TLA<sup>+</sup> specifications of 3D parallelism (k-points × bands × FFT ranks, slab and pencil FFT transposes) refine the 1D specs, and TLC finds all four planted parallel bugs (DFT-R08–R12). <code>verify_all</code> now runs its steps in parallel along a dependency graph, and a full verification takes about 16 minutes.</li>
@@ -511,7 +511,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · Programme v0.4 · revised as the project evolves<span class="updated"> · updated <time datetime="2026-10-08T22:48+08:00">2026-10-08 22:48 UTC+8</time></span></span>
+  <span>Formal in Silico · Programme v0.4 · revised as the project evolves<span class="updated"> · updated <time datetime="2026-10-08T22:56+08:00">2026-10-08 22:56 UTC+8</time></span></span>
   <span><a href="progress.html">Progress</a> · <a href="showcases.html">Showcases</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="zh/" hreflang="zh-CN">中文版</a></span>
 </div></footer>
 </body>
