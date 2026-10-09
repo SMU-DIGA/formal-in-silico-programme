@@ -38,8 +38,8 @@
   <h1>mini-DFT</h1>
   <p class="lead">一维周期约化 Hartree–Fock 模型，平面波离散。这是项目的第一个领域，可信账本、证书检查器与 trace validation 都在这里建立。目标 G1：在同一离散问题上与 DFTK.jl 0.8.0 功能对齐，每个输出都有 Lean 定理保证。</p>
   <div class="stats">
-    <div class="stat"><b data-n="DFT">258</b><span>条命题登记在可信账本中</span></div>
-    <div class="stat"><b data-n="DFT.pct">90%</b><span>已有机器证明：T3 <span data-n="DFT.T3">154</span> 条，T4 <span data-n="DFT.T4">77</span> 条</span></div>
+    <div class="stat"><b data-n="DFT">269</b><span>条命题登记在可信账本中</span></div>
+    <div class="stat"><b data-n="DFT.pct">90%</b><span>已有机器证明：T3 <span data-n="DFT.T3">163</span> 条，T4 <span data-n="DFT.T4">79</span> 条</span></div>
     <div class="stat"><b><span data-n="g1.done">9</span> / <span data-n="g1.total">46</span></b><span>项 DFTK 对齐功能完成，其中包括 LDA 与共线自旋；另有 2 项已一致、证书不全</span></div>
     <div class="stat"><b>≤ 5×10⁻¹⁵</b><span>与 DFTK 在同一离散问题上的能量差</span></div>
   </div>
@@ -63,13 +63,13 @@
 <section id="ledger">
   <p class="sec-no">01</p>
   <h2>可信账本中的命题</h2>
-  <div class="prose"><p>账本的 <span data-n="all">340</span> 条命题中有 <span data-n="DFT">258</span> 条属于 mini-DFT，下面按主题分组。等级的定义见<a href="./#s5">纲领页</a>。</p></div>
-  <div class="sbar big" data-bar="DFT" role="img" aria-label="258 条命题：T4 77 条，T3 154 条，T2 6 条，T1 4 条，T0 16 条，1 条尚未达到">
-    <i class="sw-t4" style="flex:77"></i><i class="sw-t3" style="flex:154"></i><i class="sw-t2" style="flex:6"></i><i class="sw-t1" style="flex:4"></i><i class="sw-t0" style="flex:16"></i><i class="sw-no" style="flex:1"></i>
+  <div class="prose"><p>账本的 <span data-n="all">351</span> 条命题中有 <span data-n="DFT">269</span> 条属于 mini-DFT，下面按主题分组。等级的定义见<a href="./#s5">纲领页</a>。</p></div>
+  <div class="sbar big" data-bar="DFT" role="img" aria-label="269 条命题：T4 79 条，T3 163 条，T2 6 条，T1 4 条，T0 16 条，1 条尚未达到">
+    <i class="sw-t4" style="flex:79"></i><i class="sw-t3" style="flex:163"></i><i class="sw-t2" style="flex:6"></i><i class="sw-t1" style="flex:4"></i><i class="sw-t0" style="flex:16"></i><i class="sw-no" style="flex:1"></i>
   </div>
   <div class="legend" data-legend="DFT">
-    <span><i class="sw-t4"></i>T4 端到端 · 77</span>
-    <span><i class="sw-t3"></i>T3 机器证明 · 154</span>
+    <span><i class="sw-t4"></i>T4 端到端 · 79</span>
+    <span><i class="sw-t3"></i>T3 机器证明 · 163</span>
     <span><i class="sw-t2"></i>T2 模型检验 · 6</span>
     <span><i class="sw-t1"></i>T1 纸面证明 · 4</span>
     <span><i class="sw-t0"></i>T0 测试 · 16</span>
@@ -91,7 +91,7 @@
     <div class="row"><div>SCF 解本身的唯一性、输入检查与回显<div class="cap">每个 SCF 解都是辅助映射的零点 · 表头与输入格式在检查前核对 · 能带与态密度的 k 点、权重、展宽回显 · 零温能隙的输出规则（2026-10-07 复审） · 统一的退出码、自旋向下 k 点的输入门、LSDA 能带回显（2026-10-07 第二轮复审）</div></div><span class="n" data-n="DFT/io">14</span><div class="barcell"><div class="sbar" data-bar="DFT/io"><i class="sw-t4" style="flex:4"></i><i class="sw-t3" style="flex:3"></i><i class="sw-t0" style="flex:7"></i></div></div></div>
     <div class="row"><div>力（Hellmann–Feynman）<div class="cap">带二阶余项的一阶展开 · 基态（自由）能量的导数 · 总力为零 · 力区间检查器 · 零温与有限温度的格点力证书 FORCE_OK、FORCE_SUM</div></div><span class="n" data-n="DFT/force">8</span><div class="barcell"><div class="sbar" data-bar="DFT/force"><i class="sw-t4" style="flex:5"></i><i class="sw-t3" style="flex:3"></i></div></div></div>
     <div class="row"><div>精确交换（Hartree–Fock）<div class="cap">任意实核的交换矩阵与 Fock 矩阵 · Frobenius 界 · 能量展开 · 自相互作用抵消 · q = 0 处核的平移 · SCF 解在球内存在且唯一 · 检查器 · 驱动、DFTK 不动点检查、已知答案</div></div><span class="n" data-n="DFT/hf">11</span><div class="barcell"><div class="sbar" data-bar="DFT/hf"><i class="sw-t4" style="flex:1"></i><i class="sw-t3" style="flex:7"></i><i class="sw-t0" style="flex:3"></i></div></div></div>
-    <div class="row"><div>三维平面波：Cohen–Bergstresser 模型与能带区间<div class="cap"><i class="v">d</i> 维平面波模型 · 惯性给出的本征值区间 · 带边与带隙 · Schur 补截断 · 连续 Bloch 算子 · <code>certify-pw</code> · 整个布里渊区上的带隙 · DFTK、空晶格、正对照</div></div><span class="n" data-n="DFT/pw3d">37</span><div class="barcell"><div class="sbar" data-bar="DFT/pw3d"><i class="sw-t4" style="flex:7"></i><i class="sw-t3" style="flex:26"></i><i class="sw-t0" style="flex:3"></i><i class="sw-no" style="flex:1"></i></div></div></div>
+    <div class="row"><div>三维平面波：Cohen–Bergstresser 模型与能带区间<div class="cap"><i class="v">d</i> 维平面波模型 · 惯性给出的本征值区间 · 带边与带隙 · Schur 补截断 · 连续 Bloch 算子 · <code>certify-pw</code> · 整个布里渊区上的带隙 · DFTK、空晶格、正对照</div></div><span class="n" data-n="DFT/pw3d">48</span><div class="barcell"><div class="sbar" data-bar="DFT/pw3d"><i class="sw-t4" style="flex:9"></i><i class="sw-t3" style="flex:35"></i><i class="sw-t0" style="flex:3"></i><i class="sw-no" style="flex:1"></i></div></div></div>
     <div class="row"><div>三维并行协议（TLA<sup>+</sup>）<div class="cap">k 点池 × 能带组 · 逐位可复现的归约 · 细化一维规范 · slab 与 pencil FFT 转置 · 任意进程数（纸面证明）</div></div><span class="n" data-n="DFT/par3d">5</span><div class="barcell"><div class="sbar" data-bar="DFT/par3d"><i class="sw-t2" style="flex:4"></i><i class="sw-t1" style="flex:1"></i></div></div></div>
   </div>
   <p class="note">T4 命题是各个证书检查器的可靠性定理（检查器全程用精确有理数，不涉及浮点）与 Frama-C/WP 对 C 可信内核的证明：无运行时错误（DFT-F03），以及 10 月 6 日起在 IEEE 754 模型下对 C 代码证明的区间算术浮点正确性——电荷区间、残差上界与惯性计数（DFT-F01、F02；由精确消去得到本征值个数是 Lean 定理 <code>exactElim_inertia</code>）。纸面证明（T1，<code>domains/dft/notes/</code>；文献中没有直接覆盖一维周期 Hartree 核的结果）的 3 条：一维 rHF 的连续适定性、平面波先验误差估计、线性混合在 α &lt; 2/λ<sub>max</sub>（介电算子的最大本征值）时的局部收敛，都已达目标；10 月 8 日起还有第 4 条：TLC 在有限实例上检验过的三维并行协议（DFT-R08–R11，T2）推广到任意进程数、k 点数、能带数与网格（DFT-R12，T1，已达目标）。有一条三维命题已登记、尚未达到：PW_CBAND，连续 Bloch 算子的能带区间（DFT-W15，目标 T4）。截断极限等于连续模型的能量（DFT-C02）10 月 8 日起有机器证明（T3）：连续模型写在 Fourier 空间，它与 H¹ 上算子模型的等价是假设 A-DFT-08。Lean 与 Rocq 的接口命题 DFT-I01 于 10 月 6 日撤销（决定 D1 选定 Frama-C，不用 Rocq）。</p>
@@ -307,7 +307,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · 现状快照 2026-10-08<span class="updated"> · 更新于 <time datetime="2026-10-09T02:42+08:00">2026-10-09 02:42 UTC+8</time></span></span>
+  <span>Formal in Silico · 现状快照 2026-10-08<span class="updated"> · 更新于 <time datetime="2026-10-09T15:23+08:00">2026-10-09 15:23 UTC+8</time></span></span>
   <span><a href="./">纲领</a> · <a href="progress.html">进度</a> · <a href="showcases.html">成果展示</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="../dft.html" hreflang="en">English</a></span>
 </div></footer>
 </body>
