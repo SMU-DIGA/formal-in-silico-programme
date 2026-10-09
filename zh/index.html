@@ -63,6 +63,7 @@
   <div class="prose"><p>五个领域新增的功能、研究结果，以及论文与本网站的变化，新的在前。逐项状态见<a href="progress.html">实现进度</a>；这里引用的命题都登记在可信账本中。</p></div>
   <ol class="news">
     <li><time datetime="2026-10-09">2026-10-09</time><ul>
+      <li><span class="tag n">纲领</span>普查之后改写展示例子 S2（“不是基态”）的措辞：它是严格性上的第一次，即机器检查地证明一个收敛的 SCF 解不是离散模型的基态，不再当作物理发现。第一例提前到阶段 2（拉长的 H<sub>2</sub> 或 bcc H），真实材料的例子从 fcc Fe 换成 NiO；论文关于新结果的主张靠带证书的模型误差（S1）与预先登记的确认。<a href="#s2">详情 →</a></li>
       <li><span class="tag n">DFT</span><b>第一个三维 SCF 解证书。</b>面心立方 Si（模型局域赝势）、约化 Hartree–Fock、Γ 点、Fermi–Dirac 展宽 <i class="v">T</i> = 0.01&nbsp;Ha：新检查器 <code>certify-pw3d</code> 证明离散 SCF 方程在证书附近 10<sup>−11</sup>–10<sup>−9</sup> 内恰有一个解，并给出化学势与最低 16 条能带的区间，平面波数 15 到 89（DFT-M07–M12、U01–U05，检查器定理为 T4）；DFTK 在同一问题上的解在区间内。限制都实测了：稠密精确检查的代价约为 <i class="v">n</i><sup>4</sup>（<i class="v">n</i> = 89 时 38 CPU 小时），<i class="v">T</i> 低于约 1/300&nbsp;Ha 时不闭合，扩展到真实规模还需要一个尚未证明的尾部估计。</li>
       <li><span class="tag n">物理</span>“不是基态”候选的收敛普查（浮点，只有笔记）：fcc Fe 中铁磁解比 AFM-I 高 21&nbsp;meV/2 原子（最初估计的 90 是截断不够的假象），双层反铁磁比两者都低；NiO 的 AFM-II 在所有设置下都最低，余量至少 359&nbsp;meV；拉长的 H<sub>2</sub> 与 bcc H 有一个自旋限制解比对称破缺解高 0.3–0.7&nbsp;eV，只需要局域赝势。文献核对发现这些次序都是已知的，所以认证它们展示的是严格性，不是新物理。</li>
       <li><span class="tag n">DFT</span>三维的第二条算术路线：Lean 中证明过的二进区间库（尾数 × 2<sup><i class="v">e</i></sup>，向外舍入到 <i class="v">p</i> 位）让 <code>certify-pw --dyadic p</code> 用与精确有理数路线相同的可靠性定理检查同样的证书（DFT-J01–J09，J08、J09 为 T4）。在 Si、Ge、GaAs 的证书上，二进区间与精确区间逐行相交（83 行全部）；最低 5 条能带从 <i class="v">p</i> = 26 起通过，9 条能带需要 <i class="v">p</i> = 32–36。如实说明：约 200 个平面波时它还不比精确有理数快（每个 k 点 11–22 秒对 6–14 秒），下一步是预条件。</li>
@@ -389,7 +390,7 @@
     <p>把 DFT 推广到三维真实材料，并在同一批体系上同时给出三重正确的证据：数学正确（SCF 解的存在唯一、能量与带隙的严格区间，能做到时针对连续问题）、软件正确（并行协议的 TLA+ 规范与 trace validation，经过证明的检查器）、物理正确（与实验带隙、晶格常数、磁矩的系统确认，给出带证书的交换关联泛函误差）。计划中的展示例子，目前都还没有结果：</p>
     <ul>
       <li><span class="tag ph">物理</span> <b>S1 带证书的模型误差。</b>一组半导体与绝缘体的 LDA（之后 PBE）带隙、晶格常数与实验系统比较；计算值是严格区间，偏差就是模型（泛函与赝势，以 Kohn–Sham 带隙代表测量的带隙）的误差：不含数值误差的带隙问题。</li>
-      <li><span class="tag m">数学</span> <b>S2 不是基态。</b>在真实磁性或关联体系上证明另一个自洽解存在且自由能严格更低，于是常见报告的解不是基态。</li>
+      <li><span class="tag m">数学</span> <b>S2 不是基态。</b>用机器检查的证书证明一个收敛的自洽解不是离散模型的基态：较高的解有证书，另一个试探态的自由能上界严格更低。涉及的能量次序是已知物理，所以这是严格性上的第一次，不是物理发现；第一例是拉长的 H<sub>2</sub> 或 bcc H（只需局域赝势），然后是 NiO。</li>
       <li><span class="tag s">软件</span> <b>S3 并行正确与逐位可复现。</b>三维的 k 点、能带、平面波并行与分布式 FFT 转置写成 TLA+ 规范，模型检验并做 trace validation；任意进程数下逐位一致；植入的并行错误被发现。</li>
     </ul>
     <p>与之并行的是物理确认线 P：V 等级写进账本规则，各领域账本新开“确认”一节，实验数据集逐项核对原始文献并随仓库版本化，比较协议在比较前固定，运行报告分数学、软件、物理三栏。计划、阶段与待定事项见 <code>docs/plan-dft3d.md</code>。DFTK 功能对齐（G1）继续作为一维与三维实现的参照。</p>
@@ -517,7 +518,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · 项目纲领 v0.4 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-10-09T15:40+08:00">2026-10-09 15:40 UTC+8</time></span></span>
+  <span>Formal in Silico · 项目纲领 v0.4 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-10-09T16:45+08:00">2026-10-09 16:45 UTC+8</time></span></span>
   <span><a href="progress.html">实现进度</a> · <a href="showcases.html">成果展示</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="../" hreflang="en">English</a></span>
 </div></footer>
 </body>
