@@ -44,9 +44,9 @@
     <div class="j ph"><span class="k">实验</span><span class="e"><i class="v">y</i><sub>obs</sub> − <i class="v">y</i><sub>model</sub> ∈ [<i class="v">y</i><sub>obs</sub> − hi, <i class="v">y</i><sub>obs</sub> − lo] ± <i class="v">σ</i><sub>exp</sub></span></div>
   </div>
   <div class="stats">
-    <div class="stat"><b data-n="all">351</b><span>条命题登记在可信账本中</span></div>
-    <div class="stat"><b data-n="all.proved">309</b><span>条已有机器证明（T3 或 T4）</span></div>
-    <div class="stat"><b data-n="all.T4">105</b><span>条达到端到端等级 T4：检查器可靠性、内核安全与内核浮点</span></div>
+    <div class="stat"><b data-n="all">369</b><span>条命题登记在可信账本中</span></div>
+    <div class="stat"><b data-n="all.proved">327</b><span>条已有机器证明（T3 或 T4）</span></div>
+    <div class="stat"><b data-n="all.T4">111</b><span>条达到端到端等级 T4：检查器可靠性、内核安全与内核浮点</span></div>
     <div class="stat"><b>4</b><span>个参照程序交叉校验：DFTK.jl、scikit-fem、ASE 与 pycalphad</span></div>
   </div>
   <div class="cta">
@@ -62,6 +62,11 @@
   <h2>动态</h2>
   <div class="prose"><p>五个领域新增的功能、研究结果，以及论文与本网站的变化，新的在前。逐项状态见<a href="progress.html">实现进度</a>；这里引用的命题都登记在可信账本中。</p></div>
   <ol class="news">
+    <li><time datetime="2026-10-10">2026-10-10</time><ul>
+      <li><span class="tag n">DFT</span><b>三维 SCF 证书可以扩展规模了。</b>高频尾部的“动能主导”界在 Lean 中证明（DFT-U06–U10），<code>certify-pw3d</code> 的分裂模式只精确检查低频块（U11–U13，T4，结论与稠密模式相同）。fcc Si 模型现在认证到 411 个平面波（这个模型收敛到 meV 级大约就需要这个规模），用时 56 分钟；稠密模式只到 89。证明出的常数仍比真实值松 18–90 倍。</li>
+      <li><span class="tag n">DFT</span><b>第一个“不是基态”证书（S2）。</b>简单立方氢（局域赝势、Slater 交换）：检查器证明收敛的自旋限制解在它的球内唯一、也是 LSDA 的解，而一个反铁磁试探态的自由能至少低 330&nbsp;meV，所以自旋限制解不是这个离散模型的基态（DFT-M20–M26、Z06–Z08，检查器定理为 T4）。DFTK 的解在界内。这个次序是教科书物理，截断也小，所以这是严格性上的第一次，不是发现。</li>
+      <li><span class="tag n">纲领</span>符号计算（SymPy、FLINT、spglib，可选 GAP）作为生成待证命题的不可信工具加入工具链，命题在 Lean 中证明后才算数。新增实验记录：带出处地记下编写本项目的 AI agent 收到了什么指令、做出了什么、哪些错误被哪一层验证拦下。</li>
+    </ul></li>
     <li><time datetime="2026-10-09">2026-10-09</time><ul>
       <li><span class="tag n">纲领</span>普查之后改写展示例子 S2（“不是基态”）的措辞：它是严格性上的第一次，即机器检查地证明一个收敛的 SCF 解不是离散模型的基态，不再当作物理发现。第一例提前到阶段 2（拉长的 H<sub>2</sub> 或 bcc H），真实材料的例子从 fcc Fe 换成 NiO；论文关于新结果的主张靠带证书的模型误差（S1）与预先登记的确认。<a href="#s2">详情 →</a></li>
       <li><span class="tag n">DFT</span><b>第一个三维 SCF 解证书。</b>面心立方 Si（模型局域赝势）、约化 Hartree–Fock、Γ 点、Fermi–Dirac 展宽 <i class="v">T</i> = 0.01&nbsp;Ha：新检查器 <code>certify-pw3d</code> 证明离散 SCF 方程在证书附近 10<sup>−11</sup>–10<sup>−9</sup> 内恰有一个解，并给出化学势与最低 16 条能带的区间，平面波数 15 到 89（DFT-M07–M12、U01–U05，检查器定理为 T4）；DFTK 在同一问题上的解在区间内。限制都实测了：稠密精确检查的代价约为 <i class="v">n</i><sup>4</sup>（<i class="v">n</i> = 89 时 38 CPU 小时），<i class="v">T</i> 低于约 1/300&nbsp;Ha 时不闭合，扩展到真实规模还需要一个尚未证明的尾部估计。</li>
@@ -90,7 +95,7 @@
       <li><span class="tag n">网站</span>mini-CSP 有了自己的领域页面，导航栏加上 <b>CSP</b> 标签：LJ₁₃ 上检查器的完整输出、局部极小与去重证书如何工作、粒子群与随机补充的定理、全部十条命题，以及 LJ₃…LJ₁₃ 认证最低能量与剑桥团簇数据库的对照（<a href="csp.html">mini-CSP</a>）。</li>
       <li><span class="tag n">检查</span>对四个检查器的可靠性复审查出的漏洞已全部修复：MD 检查器曾接受原子重合、没有步数或 σ = 0 的证书（Lean 的 0⁻¹ = 0 使它们看起来无害），从 TDB 文件读入的 CALPHAD 相名可以注入伪造的输出行，若干问题数据没有回显。现在 MD 的这些条件属于已验证的检查；每个检查器都以精确的 <code>PROBLEM</code> 行回显完整的问题、严格解析并转义名字；可信 C 内核的 ACSL 契约登记了指纹；<code>verify_all</code> 留下运行记录并报告跳过的用例（MD-B06–B09，CAL-B08、B12、I03–I05，FEM-B06、B07、B10，DFT-I05–I08）。<a href="progress.html#ledger">详情 →</a></li>
       <li><span class="tag n">DFT</span><code>SCF_OK</code>、<code>LDA_OK</code>、<code>LSDA_OK</code> 现在证明的是 SCF 解本身在证书的球内唯一（Γ 点与 k 点），而不只是辅助映射的零点唯一：每个 SCF 解都是这个映射的零点（DFT-T32–T38）。<a href="dft.html#outputs">详情 →</a></li>
-      <li><span class="tag n">DFT</span>共线自旋扩展：Monkhorst–Pack k 点上的 LSDA（<code>--nk</code>，DFT-X35–X37）与 Γ 点的零温 LSDA（磁化为精确整数，公共能隙有证书，<code>fis-lsda0</code>，DFT-X40–X42）已端到端检查；SCF 解处 LSDA 能量与自由能的界有了机器证明（DFT-X45、X46）；DFTK 的值都在区间内。<a href="dft.html#lsda">详情 →</a></li>
+      <li><span class="tag n">DFT</span>共线自旋扩展：Monkhorst–Pack k 点上的 LSDA（<code>--nk</code>，DFT-X35–X37）与 Γ 点的零温 LSDA（磁化为精确整数，公共能隙有证书，<code>fis-lsda0</code>，DFT-X40–X42）已端到端检查；SCF 解处 LSDA 能量与自由能的界有了机器证明（DFT-X45、X46，T3）；打印能量区间的检查器是同一天第二轮加上的（DFT-X47），DFTK 的值都在它打印的区间内。（10 月 9 日订正措辞：原文暗示 X45、X46 已经打印区间。）<a href="dft.html#lsda">详情 →</a></li>
       <li><span class="tag n">DFT</span>共线自旋第二轮：Monkhorst–Pack k 点上的零温 LSDA，每个原胞的磁化是精确有理数（自由电子三个 k 点时为 4/3），全部 k 点、两个自旋共用一个有证书的能隙（DFT-X43、X44）；有限温度 LSDA 解在 Γ 点与 k 点的每个自旋的能带、态密度与总态密度（DFT-S09–S11、X38）；LSDA 能量与自由能的区间有证书，k 点为每个原胞（DFT-X47），Γ 点的命名高斯外势也有（DFT-V15–V17）。DFTK 的磁化、能带、态密度、能量与自由能都落在区间内。<a href="dft.html#lsda">详情 →</a></li>
       <li><span class="tag n">DFT</span>有限温度的完整 LSDA：自旋插值的 PW92 关联（<code>--spin collinear --xc lda</code>，DFTK 的 <code>Xc([:lda_x, :lda_c_pw])</code>）在 Γ 点与 k 点有证书。它的 Jacobian 把两个自旋耦合在一起，一致常数松约 100 倍，所以通用的 LSDA 检查器在每个格点的小方块上界住它（DFT-X29–X34）；DFTK 的磁化与费米能级在区间内。PW92 时检查器只证明 SCF 解、磁化与费米能级：它明确写出能量没有证书，并拒绝要求能带的证书。DFTK 对标表的共线自旋一项在有限温度已基本完成。<a href="dft.html#lsda">详情 →</a></li>
       <li><span class="tag n">DFT</span>用户自己的外势：<code>--pot file</code> 读精确有理的 Fourier 系数，<code>--pot sites</code> 读周期化的高斯格点；检查器自己重读输入，二进系数精确绑定，其余给出精确算出的偏差，命名外势下的结论对用户的外势成立，DFTK 的值都在区间内（DFT-V18–V24）。<a href="dft.html#binding">详情 →</a></li>
@@ -390,7 +395,7 @@
     <p>把 DFT 推广到三维真实材料，并在同一批体系上同时给出三重正确的证据：数学正确（SCF 解的存在唯一、能量与带隙的严格区间，能做到时针对连续问题）、软件正确（并行协议的 TLA+ 规范与 trace validation，经过证明的检查器）、物理正确（与实验带隙、晶格常数、磁矩的系统确认，给出带证书的交换关联泛函误差）。计划中的展示例子，目前都还没有结果：</p>
     <ul>
       <li><span class="tag ph">物理</span> <b>S1 带证书的模型误差。</b>一组半导体与绝缘体的 LDA（之后 PBE）带隙、晶格常数与实验系统比较；计算值是严格区间，偏差就是模型（泛函与赝势，以 Kohn–Sham 带隙代表测量的带隙）的误差：不含数值误差的带隙问题。</li>
-      <li><span class="tag m">数学</span> <b>S2 不是基态。</b>用机器检查的证书证明一个收敛的自洽解不是离散模型的基态：较高的解有证书，另一个试探态的自由能上界严格更低。涉及的能量次序是已知物理，所以这是严格性上的第一次，不是物理发现；第一例是拉长的 H<sub>2</sub> 或 bcc H（只需局域赝势），然后是 NiO。</li>
+      <li><span class="tag m">数学</span> <b>S2 不是基态。</b>用机器检查的证书证明一个收敛的自洽解不是离散模型的基态：较高的解有证书，另一个试探态的自由能上界严格更低。涉及的能量次序是已知物理，所以这是严格性上的第一次，不是物理发现；第一例已在简单立方氢上完成（局域赝势，证书余量 330&nbsp;meV），下一个是 NiO。</li>
       <li><span class="tag s">软件</span> <b>S3 并行正确与逐位可复现。</b>三维的 k 点、能带、平面波并行与分布式 FFT 转置写成 TLA+ 规范，模型检验并做 trace validation；任意进程数下逐位一致；植入的并行错误被发现。</li>
     </ul>
     <p>与之并行的是物理确认线 P：V 等级写进账本规则，各领域账本新开“确认”一节，实验数据集逐项核对原始文献并随仓库版本化，比较协议在比较前固定，运行报告分数学、软件、物理三栏。计划、阶段与待定事项见 <code>docs/plan-dft3d.md</code>。DFTK 功能对齐（G1）继续作为一维与三维实现的参照。</p>
@@ -518,7 +523,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · 项目纲领 v0.4 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-10-09T16:45+08:00">2026-10-09 16:45 UTC+8</time></span></span>
+  <span>Formal in Silico · 项目纲领 v0.4 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-10-10T00:30+08:00">2026-10-10 00:30 UTC+8</time></span></span>
   <span><a href="progress.html">实现进度</a> · <a href="showcases.html">成果展示</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="../" hreflang="en">English</a></span>
 </div></footer>
 </body>
