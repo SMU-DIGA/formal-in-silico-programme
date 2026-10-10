@@ -44,9 +44,9 @@
     <div class="j ph"><span class="k">Experiment</span><span class="e"><i class="v">y</i><sub>obs</sub> − <i class="v">y</i><sub>model</sub> ∈ [<i class="v">y</i><sub>obs</sub> − hi, <i class="v">y</i><sub>obs</sub> − lo] ± <i class="v">σ</i><sub>exp</sub></span></div>
   </div>
   <div class="stats">
-    <div class="stat"><b data-n="all">369</b><span>claims registered in the trust ledger</span></div>
-    <div class="stat"><b data-n="all.proved">327</b><span>of them machine-proved (tier T3 or T4)</span></div>
-    <div class="stat"><b data-n="all.T4">111</b><span>at the end-to-end tier T4: checker soundness, kernel safety and kernel floating point</span></div>
+    <div class="stat"><b data-n="all">393</b><span>claims registered in the trust ledger</span></div>
+    <div class="stat"><b data-n="all.proved">349</b><span>of them machine-proved (tier T3 or T4)</span></div>
+    <div class="stat"><b data-n="all.T4">119</b><span>at the end-to-end tier T4: checker soundness, kernel safety and kernel floating point</span></div>
     <div class="stat"><b>4</b><span>reference codes cross-checked: DFTK.jl, scikit-fem, ASE and pycalphad</span></div>
   </div>
   <div class="cta">
@@ -63,6 +63,8 @@
   <div class="prose"><p>Features added to the five domains, research results, and changes to the paper and this site, newest first. Item-by-item status is on the <a href="progress.html">progress page</a>; every claim cited here is in the trust ledger.</p></div>
   <ol class="news">
     <li><time datetime="2026-10-10">10 Oct 2026</time><ul>
+      <li><span class="tag n">DFT</span><b>First certificate for real silicon.</b> <code>certify-pw3d</code> now handles separable GTH/HGH pseudopotentials with nonlocal projectors (DFT-Q01–Q12; checker theorems T4). For Si with the GTH-LDA q4 pseudopotential from DFTK's pseudopotential library (all of it: local part, two s projectors and the p channel), reduced Hartree–Fock at the Γ point and <i class="v">T</i> = 0.01&nbsp;Ha, the SCF solution is certified up to 411 plane waves (cutoff about 10&nbsp;Ha), with band intervals 1.3·10<sup>−7</sup>&nbsp;Ha wide; DFTK's solution lies inside at every size checked. The tail theorem holds unchanged with the nonlocal term.</li>
+      <li><span class="tag n">DFT</span><b>Zero temperature and k points for 3D SCF certificates.</b> A zero-temperature mode (DFT-M30–M35; checker theorems T4) proves that the certified density matrix is the <i>unique ground state</i> of the discrete rHF model, not only the unique solution near the certificate, and encloses the Γ-point gap; the Si model is certified up to 411 plane waves with a gap interval about 5&nbsp;μeV wide. A k-point mode (DFT-M13–M15, M40–M42; T4) certifies SCF solutions on Monkhorst–Pack meshes up to 4×4×4 (64 k points, 87&nbsp;s), with band intervals at every k point; all 2864 DFTK eigenvalues checked lie inside. Combining the three pieces (real Si, zero temperature, k mesh, with LDA) is the next step towards showcase S1; nothing has been compared with experiment yet.</li>
       <li><span class="tag n">DFT</span><b>3D SCF certificates now scale.</b> A kinetic-dominance bound for the high-frequency tail is proved in Lean (DFT-U06–U10), and a split mode of <code>certify-pw3d</code> checks only the low-frequency block exactly (U11–U13, T4, the same conclusions as the dense mode). The fcc Si model is now certified up to 411 plane waves, about the size at which this model converges to the meV level, in 56 minutes; the dense mode stopped at 89. The proved constants are still 18–90 times looser than the true ones.</li>
       <li><span class="tag n">DFT</span><b>First “not the ground state” certificate (S2).</b> For simple-cubic hydrogen with a local pseudopotential and Slater exchange, the checker proves that the converged spin-restricted solution is unique in its ball and is also an LSDA solution, and that an antiferromagnetic trial state has a free energy at least 330&nbsp;meV lower, so the restricted solution is not the ground state of this discrete model (DFT-M20–M26, Z06–Z08, checker theorems at T4). DFTK’s solutions lie inside the bounds. The ordering is textbook physics and the cutoff is small, so this is a first in rigour, not a discovery.</li>
       <li><span class="tag n">Programme</span>Symbolic computation (SymPy, FLINT, spglib; optional GAP) joins the toolchain as an untrusted generator of statements, which count only once proved in Lean. A lab notebook now records, with sources, how the AI agents that write this project were instructed, what they produced and which of their mistakes the verification layers caught.</li>
@@ -523,7 +525,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · Programme v0.4 · revised as the project evolves<span class="updated"> · updated <time datetime="2026-10-10T00:30+08:00">2026-10-10 00:30 UTC+8</time></span></span>
+  <span>Formal in Silico · Programme v0.4 · revised as the project evolves<span class="updated"> · updated <time datetime="2026-10-10T11:48+08:00">2026-10-10 11:48 UTC+8</time></span></span>
   <span><a href="progress.html">Progress</a> · <a href="showcases.html">Showcases</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="zh/" hreflang="zh-CN">中文版</a></span>
 </div></footer>
 </body>

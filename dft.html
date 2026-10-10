@@ -38,8 +38,8 @@
   <h1>mini-DFT</h1>
   <p class="lead">A one-dimensional periodic reduced Hartree–Fock model with plane waves — the project’s first domain, where the trust ledger, the certificate checkers and trace validation were built. Goal G1 is feature parity with DFTK.jl 0.8.0 on the same discrete problem, with every output covered by a Lean theorem.</p>
   <div class="stats">
-    <div class="stat"><b data-n="DFT">287</b><span>claims in the trust ledger</span></div>
-    <div class="stat"><b data-n="DFT.pct">91%</b><span>machine-proved: <span data-n="DFT.T3">175</span> at T3, <span data-n="DFT.T4">85</span> at T4</span></div>
+    <div class="stat"><b data-n="DFT">311</b><span>claims in the trust ledger</span></div>
+    <div class="stat"><b data-n="DFT.pct">91%</b><span>machine-proved: <span data-n="DFT.T3">189</span> at T3, <span data-n="DFT.T4">93</span> at T4</span></div>
     <div class="stat"><b><span data-n="g1.done">9</span> / <span data-n="g1.total">46</span></b><span>DFTK parity items done, LDA and collinear spin among them; 2 more agree but lack full certificates</span></div>
     <div class="stat"><b>≤ 5×10⁻¹⁵</b><span>energy difference from DFTK on the same discrete problem</span></div>
   </div>
@@ -63,16 +63,16 @@
 <section id="ledger">
   <p class="sec-no">01</p>
   <h2>Claims in the trust ledger</h2>
-  <div class="prose"><p>Of the ledger’s <span data-n="all">369</span> claims, <span data-n="DFT">287</span> concern mini-DFT; they are grouped below by topic. The tiers are defined on the <a href="./#s5">programme page</a>.</p></div>
-  <div class="sbar big" data-bar="DFT" role="img" aria-label="287 claims: 85 at T4, 175 at T3, 6 at T2, 4 at T1, 16 at T0, 1 not yet reached">
-    <i class="sw-t4" style="flex:85"></i><i class="sw-t3" style="flex:175"></i><i class="sw-t2" style="flex:6"></i><i class="sw-t1" style="flex:4"></i><i class="sw-t0" style="flex:16"></i><i class="sw-no" style="flex:1"></i>
+  <div class="prose"><p>Of the ledger’s <span data-n="all">393</span> claims, <span data-n="DFT">311</span> concern mini-DFT; they are grouped below by topic. The tiers are defined on the <a href="./#s5">programme page</a>.</p></div>
+  <div class="sbar big" data-bar="DFT" role="img" aria-label="311 claims: 93 at T4, 189 at T3, 6 at T2, 4 at T1, 18 at T0, 1 not yet reached">
+    <i class="sw-t4" style="flex:93"></i><i class="sw-t3" style="flex:189"></i><i class="sw-t2" style="flex:6"></i><i class="sw-t1" style="flex:4"></i><i class="sw-t0" style="flex:18"></i><i class="sw-no" style="flex:1"></i>
   </div>
   <div class="legend" data-legend="DFT">
-    <span><i class="sw-t4"></i>T4 end to end · 85</span>
-    <span><i class="sw-t3"></i>T3 machine proof · 175</span>
+    <span><i class="sw-t4"></i>T4 end to end · 93</span>
+    <span><i class="sw-t3"></i>T3 machine proof · 189</span>
     <span><i class="sw-t2"></i>T2 model-checked · 6</span>
     <span><i class="sw-t1"></i>T1 paper proof · 4</span>
-    <span><i class="sw-t0"></i>T0 tested · 16</span>
+    <span><i class="sw-t0"></i>T0 tested · 18</span>
     <span><i class="sw-no"></i>not yet reached · 1</span>
   </div>
   <div class="rows">
@@ -91,7 +91,7 @@
     <div class="row"><div>SCF-solution uniqueness, input checks and echo<div class="cap">every SCF solution is a zero of the auxiliary map · header and input format checked before checking · k-points, weights and DOS width echoed · zero-temperature gap printing rule (2026-10-07 audit) · one exit-code rule, spin-down k-point gate, LSDA band echo (2026-10-07 second review)</div></div><span class="n" data-n="DFT/io">14</span><div class="barcell"><div class="sbar" data-bar="DFT/io"><i class="sw-t4" style="flex:4"></i><i class="sw-t3" style="flex:3"></i><i class="sw-t0" style="flex:7"></i></div></div></div>
     <div class="row"><div>Forces (Hellmann–Feynman)<div class="cap">first-order expansion with a second-order remainder · derivative of the ground (free) energy · zero total force · force-interval checker · certified site forces FORCE_OK, FORCE_SUM at zero and finite temperature</div></div><span class="n" data-n="DFT/force">8</span><div class="barcell"><div class="sbar" data-bar="DFT/force"><i class="sw-t4" style="flex:5"></i><i class="sw-t3" style="flex:3"></i></div></div></div>
     <div class="row"><div>Exact exchange (Hartree–Fock)<div class="cap">exchange and Fock matrices for any real kernel · Frobenius bounds · energy expansion · self-interaction cancellation · q = 0 kernel shift · SCF solution exists and is unique in a ball · checker · driver, DFTK fixed-point check, known answers</div></div><span class="n" data-n="DFT/hf">11</span><div class="barcell"><div class="sbar" data-bar="DFT/hf"><i class="sw-t4" style="flex:1"></i><i class="sw-t3" style="flex:7"></i><i class="sw-t0" style="flex:3"></i></div></div></div>
-    <div class="row"><div>3D plane waves: Cohen–Bergstresser model and band intervals<div class="cap"><i class="v">d</i>-dimensional plane-wave model · eigenvalue intervals by inertia · band edges and gaps · Schur-complement truncation · continuous Bloch operator · <code>certify-pw</code> · gap over the whole Brillouin zone · DFTK, empty lattice, positive control</div></div><span class="n" data-n="DFT/pw3d">66</span><div class="barcell"><div class="sbar" data-bar="DFT/pw3d"><i class="sw-t4" style="flex:15"></i><i class="sw-t3" style="flex:47"></i><i class="sw-t0" style="flex:3"></i><i class="sw-no" style="flex:1"></i></div></div></div>
+    <div class="row"><div>3D plane waves: Cohen–Bergstresser model and band intervals<div class="cap"><i class="v">d</i>-dimensional plane-wave model · eigenvalue intervals by inertia · band edges and gaps · Schur-complement truncation · continuous Bloch operator · <code>certify-pw</code> · gap over the whole Brillouin zone · DFTK, empty lattice, positive control</div></div><span class="n" data-n="DFT/pw3d">90</span><div class="barcell"><div class="sbar" data-bar="DFT/pw3d"><i class="sw-t4" style="flex:23"></i><i class="sw-t3" style="flex:61"></i><i class="sw-t0" style="flex:5"></i><i class="sw-no" style="flex:1"></i></div></div></div>
     <div class="row"><div>3D parallel protocols (TLA<sup>+</sup>)<div class="cap">k-point pools × band groups · bit-reproducible reductions · refinement of the 1D specifications · slab and pencil FFT transposes · any number of processes (paper proof)</div></div><span class="n" data-n="DFT/par3d">5</span><div class="barcell"><div class="sbar" data-bar="DFT/par3d"><i class="sw-t2" style="flex:4"></i><i class="sw-t1" style="flex:1"></i></div></div></div>
   </div>
   <p class="note">The T4 claims are the soundness theorems of the certificate checkers (which run in exact rational arithmetic, so no floating point is involved) and the Frama-C/WP proofs about the trusted C kernel: no run-time errors (DFT-F03) and, since 6 October, the floating-point correctness of its interval arithmetic on the C code under an IEEE 754 model — the charge interval, the residual bound and the inertia count (DFT-F01, F02; the step from the exact elimination to the eigenvalue count is the Lean theorem <code>exactElim_inertia</code>). Three claims rest on paper proofs in <code>domains/dft/notes/</code> (T1; no published result covers the 1D periodic Hartree kernel directly): continuum well-posedness of 1D rHF, the a priori plane-wave estimate and the local convergence of linear mixing for α &lt; 2/λ<sub>max</sub> of the dielectric operator, all at their target; since 8 October a fourth extends the 3D parallel protocols, model-checked by TLC on finite instances (DFT-R08–R11, T2), to any number of processes, k-points, bands and grid points (DFT-R12, T1, at its target). One 3D claim is registered but not yet reached: PW_CBAND, band intervals for the continuous Bloch operator (DFT-W15, target T4). The equality of the truncation limit with the continuum energy (DFT-C02) is machine-proved since 8 October (T3): the continuum model is written in Fourier space, and its equivalence with the operator model on H¹ is assumption A-DFT-08. The Lean–Rocq interface claim DFT-I01 was withdrawn on 6 October, when decision D1 chose Frama-C rather than Rocq.</p>
@@ -307,7 +307,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · status snapshot 8 October 2026<span class="updated"> · updated <time datetime="2026-10-10T00:05+08:00">2026-10-10 00:05 UTC+8</time></span></span>
+  <span>Formal in Silico · status snapshot 8 October 2026<span class="updated"> · updated <time datetime="2026-10-10T11:48+08:00">2026-10-10 11:48 UTC+8</time></span></span>
   <span><a href="./">Programme</a> · <a href="progress.html">Progress</a> · <a href="showcases.html">Showcases</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="zh/dft.html" hreflang="zh-CN">中文版</a></span>
 </div></footer>
 </body>

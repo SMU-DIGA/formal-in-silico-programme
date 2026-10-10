@@ -44,9 +44,9 @@
     <div class="j ph"><span class="k">实验</span><span class="e"><i class="v">y</i><sub>obs</sub> − <i class="v">y</i><sub>model</sub> ∈ [<i class="v">y</i><sub>obs</sub> − hi, <i class="v">y</i><sub>obs</sub> − lo] ± <i class="v">σ</i><sub>exp</sub></span></div>
   </div>
   <div class="stats">
-    <div class="stat"><b data-n="all">369</b><span>条命题登记在可信账本中</span></div>
-    <div class="stat"><b data-n="all.proved">327</b><span>条已有机器证明（T3 或 T4）</span></div>
-    <div class="stat"><b data-n="all.T4">111</b><span>条达到端到端等级 T4：检查器可靠性、内核安全与内核浮点</span></div>
+    <div class="stat"><b data-n="all">393</b><span>条命题登记在可信账本中</span></div>
+    <div class="stat"><b data-n="all.proved">349</b><span>条已有机器证明（T3 或 T4）</span></div>
+    <div class="stat"><b data-n="all.T4">119</b><span>条达到端到端等级 T4：检查器可靠性、内核安全与内核浮点</span></div>
     <div class="stat"><b>4</b><span>个参照程序交叉校验：DFTK.jl、scikit-fem、ASE 与 pycalphad</span></div>
   </div>
   <div class="cta">
@@ -63,6 +63,8 @@
   <div class="prose"><p>五个领域新增的功能、研究结果，以及论文与本网站的变化，新的在前。逐项状态见<a href="progress.html">实现进度</a>；这里引用的命题都登记在可信账本中。</p></div>
   <ol class="news">
     <li><time datetime="2026-10-10">2026-10-10</time><ul>
+      <li><span class="tag n">DFT</span><b>第一张真实硅的证书。</b><code>certify-pw3d</code> 现在支持带非局域投影子的可分离 GTH/HGH 赝势（DFT-Q01–Q12，检查器定理为 T4）。Si 用 DFTK 赝势库中的 GTH-LDA q4（全部用上：局域部分、s 通道两个投影子与 p 通道），约化 Hartree–Fock、Γ 点、<i class="v">T</i> = 0.01&nbsp;Ha：SCF 解认证到 411 个平面波（截断约 10&nbsp;Ha），能带区间宽 1.3·10<sup>−7</sup>&nbsp;Ha；检查的每个规模上 DFTK 的解都落在区间内。尾部定理对非局域项照常成立。</li>
+      <li><span class="tag n">DFT</span><b>三维 SCF 证书有了零温与 k 点。</b>零温模式（DFT-M30–M35，检查器定理为 T4）证明认证的密度矩阵是离散 rHF 模型<i>唯一的基态</i>（不只是证书附近唯一的解），并给出 Γ 点能隙的区间；Si 模型认证到 411 个平面波，能隙区间宽约 5&nbsp;μeV。k 点模式（DFT-M13–M15、M40–M42，T4）在 Monkhorst–Pack 网格上认证 SCF 解，最大 4×4×4（64 个 k 点，87&nbsp;秒），每个 k 点都有能带区间；检查的 2864 个 DFTK 本征值全在区间内。把三块合起来（真实硅、零温、k 网格，并且用 LDA）是走向展示例子 S1 的下一步；还没有和实验比较。</li>
       <li><span class="tag n">DFT</span><b>三维 SCF 证书可以扩展规模了。</b>高频尾部的“动能主导”界在 Lean 中证明（DFT-U06–U10），<code>certify-pw3d</code> 的分裂模式只精确检查低频块（U11–U13，T4，结论与稠密模式相同）。fcc Si 模型现在认证到 411 个平面波（这个模型收敛到 meV 级大约就需要这个规模），用时 56 分钟；稠密模式只到 89。证明出的常数仍比真实值松 18–90 倍。</li>
       <li><span class="tag n">DFT</span><b>第一个“不是基态”证书（S2）。</b>简单立方氢（局域赝势、Slater 交换）：检查器证明收敛的自旋限制解在它的球内唯一、也是 LSDA 的解，而一个反铁磁试探态的自由能至少低 330&nbsp;meV，所以自旋限制解不是这个离散模型的基态（DFT-M20–M26、Z06–Z08，检查器定理为 T4）。DFTK 的解在界内。这个次序是教科书物理，截断也小，所以这是严格性上的第一次，不是发现。</li>
       <li><span class="tag n">纲领</span>符号计算（SymPy、FLINT、spglib，可选 GAP）作为生成待证命题的不可信工具加入工具链，命题在 Lean 中证明后才算数。新增实验记录：带出处地记下编写本项目的 AI agent 收到了什么指令、做出了什么、哪些错误被哪一层验证拦下。</li>
@@ -523,7 +525,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · 项目纲领 v0.4 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-10-10T00:30+08:00">2026-10-10 00:30 UTC+8</time></span></span>
+  <span>Formal in Silico · 项目纲领 v0.4 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-10-10T11:48+08:00">2026-10-10 11:48 UTC+8</time></span></span>
   <span><a href="progress.html">实现进度</a> · <a href="showcases.html">成果展示</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="../" hreflang="en">English</a></span>
 </div></footer>
 </body>
