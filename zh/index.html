@@ -44,9 +44,9 @@
     <div class="j ph"><span class="k">实验</span><span class="e"><i class="v">y</i><sub>obs</sub> − <i class="v">y</i><sub>model</sub> ∈ [<i class="v">y</i><sub>obs</sub> − hi, <i class="v">y</i><sub>obs</sub> − lo] ± <i class="v">σ</i><sub>exp</sub></span></div>
   </div>
   <div class="stats">
-    <div class="stat"><b data-n="all">393</b><span>条命题登记在可信账本中</span></div>
-    <div class="stat"><b data-n="all.proved">349</b><span>条已有机器证明（T3 或 T4）</span></div>
-    <div class="stat"><b data-n="all.T4">119</b><span>条达到端到端等级 T4：检查器可靠性、内核安全与内核浮点</span></div>
+    <div class="stat"><b data-n="all">418</b><span>条命题登记在可信账本中</span></div>
+    <div class="stat"><b data-n="all.proved">367</b><span>条已有机器证明（T3 或 T4）</span></div>
+    <div class="stat"><b data-n="all.T4">124</b><span>条达到端到端等级 T4：检查器可靠性、内核安全与内核浮点</span></div>
     <div class="stat"><b>4</b><span>个参照程序交叉校验：DFTK.jl、scikit-fem、ASE 与 pycalphad</span></div>
   </div>
   <div class="cta">
@@ -63,6 +63,10 @@
   <div class="prose"><p>五个领域新增的功能、研究结果，以及论文与本网站的变化，新的在前。逐项状态见<a href="progress.html">实现进度</a>；这里引用的命题都登记在可信账本中。</p></div>
   <ol class="news">
     <li><time datetime="2026-10-10">2026-10-10</time><ul>
+      <li><span class="tag n">DFT</span><b>一个检查器同时处理 LDA、非局域赝势、零温与 k 点。</b><code>certify-pw3d</code> 的统一 LDA 模式（DFT-M50–M58，可靠性与能带定理为 T4）在一个可靠性定理下支持 Slater 交换（可加 PW92 关联）、每个 k 点上的 GTH 非局域投影子、零温或 Fermi–Dirac 占据，以及 Monkhorst–Pack 网格。第一张组合证书：真实 Si（GTH-LDA q4）、LDA、零温，2×2×2 与 4×4×4 网格，能隙区间宽度小于 10<sup>−9</sup>&nbsp;Ha（4×4×4 用时 228&nbsp;秒）；检查的 1023 个 DFTK 本征值全在区间内。截断还很低（约 1.6&nbsp;Ha，每个 k 点 22–28 个平面波），所以这是管线的检验，还不是 S1 的数字。</li>
+      <li><span class="tag n">DFT</span><b>k 点证书只需检查一半的网格。</b>时间反演使 κ 与 −κ 两个块的 SCF 映射处处相等（DFT-K08–K10，T3），所以 <code>certify-pw3d</code> 新的分裂模式每对只检查一个块（低频部分精确检查），结论仍然覆盖完整网格（DFT-U21–U24，T4）。同样的规模下 CPU 时间约为稠密 k 点模式的 1/16。Si 模型在 4×4×4 网格上认证到每个 k 点 180 个平面波（73 分钟），在 2×2×2 上到 410 个（2.5 小时，25&nbsp;GB）；检查的每个 DFTK 本征值（包括没有直接检查的 k 点上的）都在区间内。实测每个块的代价约随 <i class="v">n</i><sup>3</sup> 增长：4×4×4、410 个平面波约需 1100 CPU 小时，点群对称（尚未做）大约能再省到三分之一。</li>
+      <li><span class="tag n">DFT</span><b>从离散模型到连续模型。</b>对凸的 rHF 模型，连续模型的真实 SCF 密度与任意试探密度的距离不超过 SCF 映射在试探密度处的残差，常数为 1，不需要 Jacobian 的逆（DFT-C20）；加上能量的对偶下界、Coulomb 势的形式界与本征值移动引理（C21–C23），这些在 Lean 中证明（T3），关于能隙与能量的完整结论有纸面证明（C24–C26，T1）。在 Si 模型上的浮点试算中，得到的区间都包含 5577 个平面波参照解的能隙，宽度随投入的计算从 126 降到 9&nbsp;meV。两个发现决定了下一轮：论证要用凸性，LDA 需要另一个论证；浮点计算显示 rHF 的 Si 模型在整个布里渊区上没有能隙，因此不能给出零温 k 网格证书。</li>
+      <li><span class="tag n">确认</span><b>S1 的比较预先登记。</b>在任何真实材料的 LDA 带隙证书出现之前，固定并冻结了 Si、C、Ge 的 Kohn–Sham LDA 带隙与实验比较的全部规则（确认命题 DFT-O04–O06，已登记，尚未比较）：Slater 交换加 PW92 关联、GTH-LDA q4 赝势、扣除零点膨胀的静态晶格、由浮点扫描定下的最低截断与 k 网格、实验带隙及其修正取自 10 月 8 日冻结的数据集，以及把“不一致”也算作有效结果的判据。只有离散误差也有严格界时，偏差才叫模型误差；否则命题如实写成关于离散模型的结论。登记提交时协议文件的 SHA-256：<code>519339c091548f3082106e4cb285a617ce9d7747390013ce59420a3b28052738</code>。</li>
       <li><span class="tag n">DFT</span><b>第一张真实硅的证书。</b><code>certify-pw3d</code> 现在支持带非局域投影子的可分离 GTH/HGH 赝势（DFT-Q01–Q12，检查器定理为 T4）。Si 用 DFTK 赝势库中的 GTH-LDA q4（全部用上：局域部分、s 通道两个投影子与 p 通道），约化 Hartree–Fock、Γ 点、<i class="v">T</i> = 0.01&nbsp;Ha：SCF 解认证到 411 个平面波（截断约 10&nbsp;Ha），能带区间宽 1.3·10<sup>−7</sup>&nbsp;Ha；检查的每个规模上 DFTK 的解都落在区间内。尾部定理对非局域项照常成立。</li>
       <li><span class="tag n">DFT</span><b>三维 SCF 证书有了零温与 k 点。</b>零温模式（DFT-M30–M35，检查器定理为 T4）证明认证的密度矩阵是离散 rHF 模型<i>唯一的基态</i>（不只是证书附近唯一的解），并给出 Γ 点能隙的区间；Si 模型认证到 411 个平面波，能隙区间宽约 5&nbsp;μeV。k 点模式（DFT-M13–M15、M40–M42，T4）在 Monkhorst–Pack 网格上认证 SCF 解，最大 4×4×4（64 个 k 点，87&nbsp;秒），每个 k 点都有能带区间；检查的 2864 个 DFTK 本征值全在区间内。把三块合起来（真实硅、零温、k 网格，并且用 LDA）是走向展示例子 S1 的下一步；还没有和实验比较。</li>
       <li><span class="tag n">DFT</span><b>三维 SCF 证书可以扩展规模了。</b>高频尾部的“动能主导”界在 Lean 中证明（DFT-U06–U10），<code>certify-pw3d</code> 的分裂模式只精确检查低频块（U11–U13，T4，结论与稠密模式相同）。fcc Si 模型现在认证到 411 个平面波（这个模型收敛到 meV 级大约就需要这个规模），用时 56 分钟；稠密模式只到 89。证明出的常数仍比真实值松 18–90 倍。</li>
@@ -525,7 +529,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · 项目纲领 v0.4 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-10-10T11:48+08:00">2026-10-10 11:48 UTC+8</time></span></span>
+  <span>Formal in Silico · 项目纲领 v0.4 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-10-10T23:40+08:00">2026-10-10 23:40 UTC+8</time></span></span>
   <span><a href="progress.html">实现进度</a> · <a href="showcases.html">成果展示</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="../" hreflang="en">English</a></span>
 </div></footer>
 </body>
