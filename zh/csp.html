@@ -12,6 +12,8 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@600;700;900&display=swap">
 <link rel="stylesheet" href="../assets/style.css">
 <script src="../assets/site.js"></script>
+<script src="../assets/graph-data.js" defer></script>
+<script src="../assets/graph.js" defer></script>
 </head>
 <body>
 
@@ -169,8 +171,49 @@ CSP_OK 4</pre>
 <section id="deps">
   <p class="sec-no">06</p>
   <h2>证明依赖</h2>
-  <div class="prose"><p>命题之间谁建立在谁之上，直接从 Lean 证明项读出（不是账本里手写的“依赖”列）：<a href="graph.html?dom=csp">依赖图</a>把本领域的命题（或全部 Lean 定理）画成一张可以缩放的图，箭头从每个节点指向它的证明用到的东西。点一个节点可以追踪它的整条链。</p></div>
-  <p><a class="btn ghost" href="graph.html?dom=csp">打开依赖图 →</a></p>
+  <div class="prose"><p>命题之间谁建立在谁之上，直接从 Lean 证明项读出（不是账本里手写的“依赖”列）。图中先只显示本领域；点图例可以加上其他领域，切到“全部 Lean 定理”可以看到定理一级。所有领域合在一起的图见<a href="graph.html">依赖图</a>页。</p></div>
+<div class="g-sec" id="graph" data-dom="csp" aria-label="依赖图">
+<div class="g-bar">
+  <div class="g-search">
+    <label class="vh" for="g-q">查找命题或定理</label>
+    <input id="g-q" type="search" placeholder="查找命题（如 DFT-M59）或定理" autocomplete="off" role="combobox" aria-expanded="false" aria-controls="g-hits">
+    <ul id="g-hits" class="g-hits" role="listbox" hidden></ul>
+  </div>
+  <div class="seg" role="group" aria-label="节点">
+    <button type="button" data-view="claim" aria-pressed="true">账本命题</button>
+    <button type="button" data-view="thm" aria-pressed="false">全部 Lean 定理</button>
+  </div>
+  <div class="g-legend" role="group" aria-label="领域，点击隐藏或显示"><button type="button" class="g-dom" data-dom="0" aria-pressed="true"><span class="sw" style="background:var(--g1)"></span>DFT（一维与检查器）<span class="c" data-dom-count="0"></span></button><button type="button" class="g-dom" data-dom="1" aria-pressed="true"><span class="sw" style="background:var(--g2)"></span>DFT（三维平面波）<span class="c" data-dom-count="1"></span></button><button type="button" class="g-dom" data-dom="2" aria-pressed="true"><span class="sw" style="background:var(--g3)"></span>算术（浮点、二进）<span class="c" data-dom-count="2"></span></button><button type="button" class="g-dom" data-dom="3" aria-pressed="true"><span class="sw" style="background:var(--g4)"></span>FEM<span class="c" data-dom-count="3"></span></button><button type="button" class="g-dom" data-dom="4" aria-pressed="true"><span class="sw" style="background:var(--g5)"></span>MD<span class="c" data-dom-count="4"></span></button><button type="button" class="g-dom" data-dom="5" aria-pressed="true"><span class="sw" style="background:var(--g6)"></span>CALPHAD<span class="c" data-dom-count="5"></span></button><button type="button" class="g-dom" data-dom="6" aria-pressed="true"><span class="sw" style="background:var(--g7)"></span>CSP<span class="c" data-dom-count="6"></span></button></div>
+</div>
+<div class="g-layout">
+  <div class="g-stage" id="g-stage">
+    <canvas id="g-canvas" aria-label="证明依赖图"></canvas>
+    <div class="g-tip" id="g-tip" hidden></div>
+    <div class="g-zoom">
+      <button type="button" data-zoom="in" aria-label="放大">+</button>
+      <button type="button" data-zoom="out" aria-label="缩小">&minus;</button>
+      <button type="button" data-zoom="fit" aria-label="适应窗口">适应</button>
+      <button type="button" id="g-labels" class="g-labels" aria-pressed="true" title="显示或隐藏名字">名字</button>
+    </div>
+    <p class="g-count" id="g-count" aria-live="polite"></p>
+    <noscript><p class="g-nojs">依赖图需要 JavaScript。</p></noscript>
+  </div>
+  <aside class="g-panel" id="g-panel" aria-live="polite" hidden>
+    <button type="button" class="g-close" id="g-close" aria-label="关闭">&times;</button>
+    <div id="g-sel"></div>
+  </aside>
+</div>
+<div class="g-read">
+  <ul class="g-help">
+    <li><span class="g-key dot"></span>命题或定理，颜色表示领域</li>
+    <li><span class="g-key arr"></span>用到：箭头指向证明依赖的东西</li>
+    <li><span class="g-key big"></span>越大，被越多的结果用到</li>
+    <li><span class="g-key up"></span>选中节点用到的</li>
+    <li><span class="g-key down"></span>用到选中节点的</li>
+  </ul>
+  <p>拖动平移，滚轮或双指缩放，拖动节点可以移动它；点一个节点看它的上下游，“只看它的链”只显示它直接或间接用到的与用到它的。命题 A 指向命题 B 表示 A 的证明（沿着不属于任何命题的引理）用到了 B 的定理；两个命题可以互相用到。没有 Lean 定理的命题（测试、T0–T2）不在图中。图由 <code>scripts/depgraph.py</code> 生成，只帮助阅读，不属于可信链。</p>
+</div>
+</div>
 </section>
 
 <section id="evidence">
@@ -220,7 +263,7 @@ CSP_OK 4</pre>
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · 现状快照 2026-10-08<span class="updated"> · 更新于 <time datetime="2026-10-12T23:03+08:00">2026-10-12 23:03 UTC+8</time></span></span>
+  <span>Formal in Silico · 现状快照 2026-10-08<span class="updated"> · 更新于 <time datetime="2026-10-12T23:08+08:00">2026-10-12 23:08 UTC+8</time></span></span>
   <span><a href="./">纲领</a> · <a href="progress.html">进度</a> · <a href="showcases.html">成果展示</a> · <a href="graph.html">依赖图</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="../csp.html" hreflang="en">English</a></span>
 </div></footer>
 </body>

@@ -26,6 +26,9 @@
   const ctx = canvas.getContext('2d');
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const groupName = g => G.groups[g][zh ? 2 : 1];
+  // On a domain page the graph sits in the page (data-dom on #graph) and starts with that domain only.
+  const host = document.getElementById('graph');
+  const fixedDom = host && host.dataset.dom;
 
   // ------------------------------------------------------------ model
   const norm = s => s.toLowerCase().replace(/[_.\s]+/g, ' ').trim();
@@ -655,6 +658,7 @@
   // ?n=<claim or theorem>, view=thm, chain=1, labels=0, dom=<dft|fem|md|calphad|csp> (show one ledger only).
   const DOMS = {dft: [0, 1, 2], fem: [3], md: [4], calphad: [5], csp: [6]};
   function writeUrl() {
+    if (fixedDom) return;
     const p = new URLSearchParams(location.search);
     const set = (k, v) => { if (v) p.set(k, v); else p.delete(k); };
     set('n', state.sel >= 0 ? N[state.sel].name : '');
@@ -668,7 +672,8 @@
   const p = new URLSearchParams(location.search);
   state.thms = p.get('view') === 'thm';
   state.labels = p.get('labels') !== '0';
-  if (DOMS[p.get('dom')]) G.groups.forEach((_, g) => { if (!DOMS[p.get('dom')].includes(g)) state.off.add(g); });
+  const onlyDom = fixedDom || p.get('dom');
+  if (DOMS[onlyDom]) G.groups.forEach((_, g) => { if (!DOMS[onlyDom].includes(g)) state.off.add(g); });
   const want = byName.get((state.thms ? 't:' : 'c:') + p.get('n')) || byName.get('c:' + p.get('n')) || byName.get('t:' + p.get('n'));
   if (want) {
     state.sel = want.i;

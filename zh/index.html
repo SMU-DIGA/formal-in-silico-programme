@@ -64,7 +64,7 @@
   <div class="prose"><p>五个领域新增的功能、研究结果，以及论文与本网站的变化，新的在前。逐项状态见<a href="progress.html">实现进度</a>；这里引用的命题都登记在可信账本中。</p></div>
   <ol class="news">
     <li><time datetime="2026-10-12">2026-10-12</time><ul>
-      <li><span class="tag n">网站</span><b>证明依赖图。</b>新的<a href="graph.html">依赖图</a>页面显示账本命题之间、8975 个 Lean 定理之间谁建立在谁之上，直接从 Lean 证明项读出，而不是账本里手写的“依赖”列：一张按领域着色、可以缩放的图，可以搜索，可以在命题与定理之间切换，“只看它的链”只保留一个节点直接或间接用到的和用到它的。每个领域页都有链接，打开时只显示本领域的命题。</li>
+      <li><span class="tag n">网站</span><b>证明依赖图。</b>新的<a href="graph.html">依赖图</a>页面显示账本命题之间、8975 个 Lean 定理之间谁建立在谁之上，直接从 Lean 证明项读出，而不是账本里手写的“依赖”列：一张按领域着色、可以缩放的图，可以搜索，可以在命题与定理之间切换，“只看它的链”只保留一个节点直接或间接用到的和用到它的。每个领域页里也嵌入了同一张图，打开时只显示本领域的命题。</li>
       <li><span class="tag n">DFT</span><b>LDA 的尾部界闭合了，有了 LDA 的分裂模式。</b>LDA 的交换关联核是局域的，高频部分没有 Hartree 项的 1/|G|² 衰减，原来的尾部界收不住。改用响应密度的逐点 Cauchy–Schwarz 界、每对占据与未占据能级的精确能量分母，以及配对 Gram 矩阵的算子范数，就收住了（DFT-U25–U31，T4）。<code>certify-pw3d</code> 新的 LDA 分裂模式带时间反演与每个 k 点上的 GTH 投影子，可靠性定理的结论与统一 LDA 模式逐字相同，关于完整网格（DFT-M59–M67，T4）。真实 Si、零温、2×2×2 网格、每个 k 点 24–27 个平面波：32&nbsp;秒通过，DFTK 在完整网格上的 128 个本征值全在区间内。协议要求的截断（约 410 个平面波，10&nbsp;Ha）的证书已经生成，但在共享机器上检查了 6 小时后停止，没有结论。</li>
       <li><span class="tag n">DFT</span><b>晶体对称性，有证明。</b>k 点各块的 SCF 映射在晶体的空间群操作（含分数平移）下等变，所以证书球内唯一的解是对称的，只含不可约 k 点的方程与完整方程有相同的解（DFT-K11–K14，T3）。<code>certify-pw3d</code> 的点群模式自己核对这些操作，不假设网格对称，结论关于每一个 k 点，包括能带（K15–K18，T4）。Si 模型在 S1 协议要求的 8×8×8 网格上通过（512 个 k 点中 29 个不可约，80 CPU 小时），在 4×4×4、410 个平面波上也通过（276 CPU 小时）；8×8×8 的 8192 个 DFTK 本征值全在区间内。与只用时间反演相比 CPU 时间少三倍；外推 S1 证书约需 1000 CPU 小时。</li>
       <li><span class="tag n">DFT</span><b>整个布里渊区的能带界。</b>由一张通过的 SCF 证书，<code>certify-pw3d</code> 的新模式界定有效 Hamiltonian 在任意 k 点（包括网格外）的能带，并用立方体八叉树与非局域核的梯度界，界定整个布里渊区上最高价带的上界（DFT-W30–W40，检查器定理为 T4）。在粗截断的真实 Si 证书上，它给出带隙的严格上界，正是 S1 协议单侧规则要用的量，DFTK 的 48 个能带值全在区间内。对应的下界在小问题上可用，但对硅用现在的一阶检验约需一百万个立方体。</li>
@@ -538,7 +538,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · 项目纲领 v0.4 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-10-12T23:03+08:00">2026-10-12 23:03 UTC+8</time></span></span>
+  <span>Formal in Silico · 项目纲领 v0.4 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-10-12T23:04+08:00">2026-10-12 23:04 UTC+8</time></span></span>
   <span><a href="progress.html">实现进度</a> · <a href="showcases.html">成果展示</a> · <a href="graph.html">依赖图</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="../" hreflang="en">English</a></span>
 </div></footer>
 </body>

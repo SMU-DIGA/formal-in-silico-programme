@@ -12,6 +12,8 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700;8..60,800&display=swap">
 <link rel="stylesheet" href="assets/style.css">
 <script src="assets/site.js"></script>
+<script src="assets/graph-data.js" defer></script>
+<script src="assets/graph.js" defer></script>
 </head>
 <body>
 
@@ -114,8 +116,49 @@
 <section id="deps">
   <p class="sec-no">03</p>
   <h2>Proof dependencies</h2>
-  <div class="prose"><p>Which claims are built on which, read from the Lean proof terms themselves (not from the ledger’s hand-written dependency column): the <a href="graph.html?dom=fem">dependency graph</a> shows this domain’s claims, or every Lean theorem, as a zoomable map with an arrow from each to what its proofs use. Click a node to follow its chain.</p></div>
-  <p><a class="btn ghost" href="graph.html?dom=fem">Open the dependency graph →</a></p>
+  <div class="prose"><p>Which claims are built on which, read from the Lean proof terms themselves (not from the ledger’s hand-written dependency column). The graph starts with this domain only; click the legend to add the others, or switch to “All Lean theorems” for the theorem level. All domains together are on the <a href="graph.html">Graph</a> page.</p></div>
+<div class="g-sec" id="graph" data-dom="fem" aria-label="Dependency graph">
+<div class="g-bar">
+  <div class="g-search">
+    <label class="vh" for="g-q">Find a claim or theorem</label>
+    <input id="g-q" type="search" placeholder="Find a claim (e.g. DFT-M59) or a theorem" autocomplete="off" role="combobox" aria-expanded="false" aria-controls="g-hits">
+    <ul id="g-hits" class="g-hits" role="listbox" hidden></ul>
+  </div>
+  <div class="seg" role="group" aria-label="Nodes">
+    <button type="button" data-view="claim" aria-pressed="true">Ledger claims</button>
+    <button type="button" data-view="thm" aria-pressed="false">All Lean theorems</button>
+  </div>
+  <div class="g-legend" role="group" aria-label="Domains, click to hide or show"><button type="button" class="g-dom" data-dom="0" aria-pressed="true"><span class="sw" style="background:var(--g1)"></span>DFT (1D, checker)<span class="c" data-dom-count="0"></span></button><button type="button" class="g-dom" data-dom="1" aria-pressed="true"><span class="sw" style="background:var(--g2)"></span>DFT (3D plane waves)<span class="c" data-dom-count="1"></span></button><button type="button" class="g-dom" data-dom="2" aria-pressed="true"><span class="sw" style="background:var(--g3)"></span>Arithmetic (float, dyadic)<span class="c" data-dom-count="2"></span></button><button type="button" class="g-dom" data-dom="3" aria-pressed="true"><span class="sw" style="background:var(--g4)"></span>FEM<span class="c" data-dom-count="3"></span></button><button type="button" class="g-dom" data-dom="4" aria-pressed="true"><span class="sw" style="background:var(--g5)"></span>MD<span class="c" data-dom-count="4"></span></button><button type="button" class="g-dom" data-dom="5" aria-pressed="true"><span class="sw" style="background:var(--g6)"></span>CALPHAD<span class="c" data-dom-count="5"></span></button><button type="button" class="g-dom" data-dom="6" aria-pressed="true"><span class="sw" style="background:var(--g7)"></span>CSP<span class="c" data-dom-count="6"></span></button></div>
+</div>
+<div class="g-layout">
+  <div class="g-stage" id="g-stage">
+    <canvas id="g-canvas" aria-label="Proof-dependency graph"></canvas>
+    <div class="g-tip" id="g-tip" hidden></div>
+    <div class="g-zoom">
+      <button type="button" data-zoom="in" aria-label="Zoom in">+</button>
+      <button type="button" data-zoom="out" aria-label="Zoom out">&minus;</button>
+      <button type="button" data-zoom="fit" aria-label="Fit the graph to the view">Fit</button>
+      <button type="button" id="g-labels" class="g-labels" aria-pressed="true" title="Show or hide the names">Labels</button>
+    </div>
+    <p class="g-count" id="g-count" aria-live="polite"></p>
+    <noscript><p class="g-nojs">The graph needs JavaScript.</p></noscript>
+  </div>
+  <aside class="g-panel" id="g-panel" aria-live="polite" hidden>
+    <button type="button" class="g-close" id="g-close" aria-label="Close">&times;</button>
+    <div id="g-sel"></div>
+  </aside>
+</div>
+<div class="g-read">
+  <ul class="g-help">
+    <li><span class="g-key dot"></span>a claim or theorem, coloured by domain</li>
+    <li><span class="g-key arr"></span>uses — points at what the proof relies on</li>
+    <li><span class="g-key big"></span>bigger — used by more results</li>
+    <li><span class="g-key up"></span>what the selection uses</li>
+    <li><span class="g-key down"></span>what uses the selection</li>
+  </ul>
+  <p>Drag to pan, scroll or pinch to zoom, drag a node to move it; click a node to see what it uses and what uses it, and “Only its chain” to keep just those, directly or not. An arrow from claim A to claim B means that a proof behind A uses a theorem behind B (through lemmas that belong to no claim); two claims can use each other. Claims without a Lean theorem (tests, T0–T2) are not drawn. Generated by <code>scripts/depgraph.py</code>; a reading aid, not part of the trust chain.</p>
+</div>
+</div>
 </section>
 
 <section id="g2">
@@ -214,7 +257,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · status snapshot 8 October 2026<span class="updated"> · updated <time datetime="2026-10-12T23:03+08:00">2026-10-12 23:03 UTC+8</time></span></span>
+  <span>Formal in Silico · status snapshot 8 October 2026<span class="updated"> · updated <time datetime="2026-10-12T23:08+08:00">2026-10-12 23:08 UTC+8</time></span></span>
   <span><a href="./">Programme</a> · <a href="progress.html">Progress</a> · <a href="showcases.html">Showcases</a> · <a href="graph.html">Graph</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="zh/fem.html" hreflang="zh-CN">中文版</a></span>
 </div></footer>
 </body>
