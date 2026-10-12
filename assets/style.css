@@ -485,7 +485,7 @@ footer a{color:var(--muted)}
 body span[data-n]{display:inline;margin:0;padding:0;font:inherit;color:inherit;letter-spacing:inherit;white-space:nowrap}
 
 
-/* Dependency graph page (graph.html, assets/graph.js; layout after the AFTD knowledgebase graph) */
+/* Proof-dependency graph (assets/graph.js; programme and domain pages; layout after the AFTD knowledgebase graph) */
 .gwrap{max-width:1400px;margin:0 auto;padding:24px 24px 72px}
 @media (max-width:480px){.gwrap{padding-inline:16px}}
 .vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
@@ -562,3 +562,5 @@ body span[data-n]{display:inline;margin:0;padding:0;font:inherit;color:inherit;l
 @media (max-width:900px){.g-panel{position:relative;top:auto;right:auto;width:auto;max-height:none;margin-top:12px}.g-stage{height:62vh;min-height:360px}}
 main .g-sec{margin-top:18px}
 main .g-stage{height:min(70vh,620px)}
+.hero .g-cap{margin:28px 0 10px;font-size:14px;color:var(--ink-2);max-width:820px}
+.hero .g-sec{margin-bottom:28px}

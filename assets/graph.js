@@ -1,4 +1,4 @@
-// The proof-dependency graph page (graph.html): ledger claims, or every Lean theorem, with an arrow
+// The proof-dependency graph (programme page: all domains; domain pages: data-dom): ledger claims, or every Lean theorem, with an arrow
 // from each to what its proofs use. No library -- a small force layout on a canvas (adapted from the
 // AFTD knowledgebase graph), fed by assets/graph-data.js, which scripts/depgraph.py writes.
 
@@ -26,7 +26,7 @@
   const ctx = canvas.getContext('2d');
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const groupName = g => G.groups[g][zh ? 2 : 1];
-  // On a domain page the graph sits in the page (data-dom on #graph) and starts with that domain only.
+  // On a domain page (data-dom on #graph) the graph starts with that domain only.
   const host = document.getElementById('graph');
   const fixedDom = host && host.dataset.dom;
 
@@ -658,7 +658,7 @@
   // ?n=<claim or theorem>, view=thm, chain=1, labels=0, dom=<dft|fem|md|calphad|csp> (show one ledger only).
   const DOMS = {dft: [0, 1, 2], fem: [3], md: [4], calphad: [5], csp: [6]};
   function writeUrl() {
-    if (fixedDom) return;
+    return;  // the graph sits inside a page: leave its address alone (?n=, view=, dom= are still read)
     const p = new URLSearchParams(location.search);
     const set = (k, v) => { if (v) p.set(k, v); else p.delete(k); };
     set('n', state.sel >= 0 ? N[state.sel].name : '');
