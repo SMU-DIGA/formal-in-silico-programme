@@ -12,6 +12,8 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@600;700;900&display=swap">
 <link rel="stylesheet" href="../assets/style.css">
 <script src="../assets/site.js"></script>
+<script src="../assets/deps-data.js" defer></script>
+<script src="../assets/depgraph.js" defer></script>
 </head>
 <body>
 
@@ -51,10 +53,11 @@
   <ol>
     <li><a href="#problem"><span>01</span>问题</a></li>
     <li><a href="#claims"><span>02</span>命题</a></li>
-    <li><a href="#g2"><span>03</span>G2 · scikit-fem</a></li>
-    <li><a href="#outputs"><span>04</span>有证书的输出</a></li>
-    <li><a href="#evidence"><span>05</span>交叉校验</a></li>
-    <li><a href="#gaps"><span>06</span>缺口</a></li>
+    <li><a href="#deps"><span>03</span>证明依赖</a></li>
+    <li><a href="#g2"><span>04</span>G2 · scikit-fem</a></li>
+    <li><a href="#outputs"><span>05</span>有证书的输出</a></li>
+    <li><a href="#evidence"><span>06</span>交叉校验</a></li>
+    <li><a href="#gaps"><span>07</span>缺口</a></li>
   </ol>
 </nav>
 <main>
@@ -109,8 +112,15 @@
   </table></div>
 </section>
 
-<section id="g2">
+<section id="deps">
   <p class="sec-no">03</p>
+  <h2>证明依赖</h2>
+  <div class="prose"><p>命题之间谁建立在谁之上，直接从 Lean 证明中读出：从 B 向下指到 A 的箭头表示命题 A 的证明用到了命题 B 的定理，所以基础在上方。每个节点是一个命题，颜色表示等级；虚线框属于其他领域。图由 <code>scripts/depgraph.py</code> 从证明项生成（不是账本里手写的“依赖”列），只帮助阅读，不属于可信链。只画有 Lean 定理的命题。</p></div>
+  <div class="depgraph" data-domain="fem"></div>
+</section>
+
+<section id="g2">
+  <p class="sec-no">04</p>
   <h2>目标 G2：带形式化证明的有限元，对照 scikit-fem</h2>
   <div class="prose"><p>参照 scikit-fem 12.0.2，在同一离散问题上比较。完成标准与 G1 相同，另加一条：能做到的地方，证书的结论针对<b>连续问题的真解</b>，而不只是离散解。一维时可以绕开 Sobolev 空间，用 Green 函数与经典解；二维需要 Lean 中的 H¹ 模型。</p></div>
   <div class="ms">
@@ -160,7 +170,7 @@
 </section>
 
 <section id="outputs">
-  <p class="sec-no">04</p>
+  <p class="sec-no">05</p>
   <h2>一次有证书的运行现在能给出什么</h2>
   <div class="card"><h3>关于真解的严格结论</h3>
     <ul style="padding-left:1.1em;margin:8px 0 0;font-size:15px">
@@ -174,7 +184,7 @@
 </section>
 
 <section id="evidence">
-  <p class="sec-no">05</p>
+  <p class="sec-no">06</p>
   <h2>交叉校验与辅助证据</h2>
   <ul class="checks">
     <li><span>11 个 Poisson、6 个梁用例，Lean 节点区间都包含参考解</span><b>宽度 ≤ 3×10⁻¹⁵</b></li>
@@ -190,7 +200,7 @@
 </section>
 
 <section id="gaps">
-  <p class="sec-no">06</p>
+  <p class="sec-no">07</p>
   <h2>缺口</h2>
   <ul class="gaps">
     <li><strong>连续问题的本征值</strong>只有离散 P1 本征值有证书。两端 Dirichlet 时的 λ<sub><i class="v">k</i></sub> ≤ λ<sub><i class="v">k</i>,<i class="v">h</i></sub> 还缺 P1 函数的代入（计数引理已证明）；没有本征向量的界，Neumann、Robin 没有连续问题的结论。</li>
@@ -205,7 +215,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · 现状快照 2026-10-08<span class="updated"> · 更新于 <time datetime="2026-10-08T22:56+08:00">2026-10-08 22:56 UTC+8</time></span></span>
+  <span>Formal in Silico · 现状快照 2026-10-08<span class="updated"> · 更新于 <time datetime="2026-10-12T22:50+08:00">2026-10-12 22:50 UTC+8</time></span></span>
   <span><a href="./">纲领</a> · <a href="progress.html">进度</a> · <a href="showcases.html">成果展示</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="../fem.html" hreflang="en">English</a></span>
 </div></footer>
 </body>

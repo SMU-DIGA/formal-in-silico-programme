@@ -12,6 +12,8 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@600;700;900&display=swap">
 <link rel="stylesheet" href="../assets/style.css">
 <script src="../assets/site.js"></script>
+<script src="../assets/deps-data.js" defer></script>
+<script src="../assets/depgraph.js" defer></script>
 </head>
 <body>
 
@@ -54,8 +56,9 @@
     <li><a href="#method"><span>03</span>证书如何工作</a></li>
     <li><a href="#search"><span>04</span>搜索</a></li>
     <li><a href="#claims"><span>05</span>命题</a></li>
-    <li><a href="#evidence"><span>06</span>交叉校验</a></li>
-    <li><a href="#gaps"><span>07</span>缺口</a></li>
+    <li><a href="#deps"><span>06</span>证明依赖</a></li>
+    <li><a href="#evidence"><span>07</span>交叉校验</a></li>
+    <li><a href="#gaps"><span>08</span>缺口</a></li>
   </ol>
 </nav>
 <main>
@@ -164,8 +167,15 @@ CSP_OK 4</pre>
   <p class="note"><code>checkMin_sound</code>、<code>checkSame_sound</code>、<code>distinct_sound</code>、<code>ball_min</code>、<code>align</code> 的 <code>#print axioms</code> 只有 Lean 的标准公理 <code>propext</code>、<code>Classical.choice</code>、<code>Quot.sound</code>。</p>
 </section>
 
-<section id="evidence">
+<section id="deps">
   <p class="sec-no">06</p>
+  <h2>证明依赖</h2>
+  <div class="prose"><p>命题之间谁建立在谁之上，直接从 Lean 证明中读出：从 B 向下指到 A 的箭头表示命题 A 的证明用到了命题 B 的定理，所以基础在上方。每个节点是一个命题，颜色表示等级；虚线框属于其他领域。图由 <code>scripts/depgraph.py</code> 从证明项生成（不是账本里手写的“依赖”列），只帮助阅读，不属于可信链。只画有 Lean 定理的命题。</p></div>
+  <div class="depgraph" data-domain="csp"></div>
+</section>
+
+<section id="evidence">
+  <p class="sec-no">07</p>
   <h2>交叉校验与辅助证据</h2>
   <div class="tbl"><table>
     <thead><tr><th>团簇</th><th>认证的最低能量（Lean 区间）</th><th>剑桥团簇数据库</th></tr></thead>
@@ -195,7 +205,7 @@ CSP_OK 4</pre>
 </section>
 
 <section id="gaps">
-  <p class="sec-no">07</p>
+  <p class="sec-no">08</p>
   <h2>缺口</h2>
   <ul class="gaps">
     <li><strong>全局最优</strong><code>BEST</code> 是这次运行找到的最低认证极小。证明它是全局最优需要构型空间上的分支定界证书（计划阶段 5，CSP-B05）。</li>
@@ -211,7 +221,7 @@ CSP_OK 4</pre>
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · 现状快照 2026-10-08<span class="updated"> · 更新于 <time datetime="2026-10-08T22:56+08:00">2026-10-08 22:56 UTC+8</time></span></span>
+  <span>Formal in Silico · 现状快照 2026-10-08<span class="updated"> · 更新于 <time datetime="2026-10-12T22:50+08:00">2026-10-12 22:50 UTC+8</time></span></span>
   <span><a href="./">纲领</a> · <a href="progress.html">进度</a> · <a href="showcases.html">成果展示</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="../csp.html" hreflang="en">English</a></span>
 </div></footer>
 </body>

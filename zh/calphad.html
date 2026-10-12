@@ -12,6 +12,8 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@600;700;900&display=swap">
 <link rel="stylesheet" href="../assets/style.css">
 <script src="../assets/site.js"></script>
+<script src="../assets/deps-data.js" defer></script>
+<script src="../assets/depgraph.js" defer></script>
 <script src="../assets/chart.js"></script>
 </head>
 <body>
@@ -58,10 +60,11 @@
     <li><a href="#convex"><span>06</span>没有混溶隙</a></li>
     <li><a href="#method"><span>07</span>检查器如何工作</a></li>
     <li><a href="#claims"><span>08</span>命题</a></li>
-    <li><a href="#g3"><span>09</span>G3 · pycalphad</a></li>
-    <li><a href="#evidence"><span>10</span>交叉校验</a></li>
-    <li><a href="#audit"><span>11</span>数据库审计</a></li>
-    <li><a href="#gaps"><span>12</span>缺口</a></li>
+    <li><a href="#deps"><span>09</span>证明依赖</a></li>
+    <li><a href="#g3"><span>10</span>G3 · pycalphad</a></li>
+    <li><a href="#evidence"><span>11</span>交叉校验</a></li>
+    <li><a href="#audit"><span>12</span>数据库审计</a></li>
+    <li><a href="#gaps"><span>13</span>缺口</a></li>
   </ol>
 </nav>
 <main>
@@ -253,8 +256,15 @@ Lean  EXISTS</pre>
   </table></div>
 </section>
 
-<section id="g3">
+<section id="deps">
   <p class="sec-no">09</p>
+  <h2>证明依赖</h2>
+  <div class="prose"><p>命题之间谁建立在谁之上，直接从 Lean 证明中读出：从 B 向下指到 A 的箭头表示命题 A 的证明用到了命题 B 的定理，所以基础在上方。每个节点是一个命题，颜色表示等级；虚线框属于其他领域。图由 <code>scripts/depgraph.py</code> 从证明项生成（不是账本里手写的“依赖”列），只帮助阅读，不属于可信链。只画有 Lean 定理的命题。</p></div>
+  <div class="depgraph" data-domain="calphad"></div>
+</section>
+
+<section id="g3">
+  <p class="sec-no">10</p>
   <h2>目标 G3——对照 pycalphad 的带证书 CALPHAD</h2>
   <div class="prose"><p>参照：pycalphad 0.11.1，同一数据库、同一组相。完成标准与 G1、G2 相同，而且证书必须针对数据库模型<b>真正的全局平衡</b>。顺序：先做完二元（C0–C1），分支定界在一个成分变量上进行；再做多元与亚点阵模型（C2），分支定界在单纯形的乘积上进行；最后是派生计算（C3）。</p></div>
   <div class="legend">
@@ -307,7 +317,7 @@ Lean  EXISTS</pre>
 </section>
 
 <section id="evidence">
-  <p class="sec-no">10</p>
+  <p class="sec-no">11</p>
   <h2>交叉校验与佐证</h2>
   <ul class="checks">
     <li><span>每个相在 <i class="v">x</i> = <i class="v">k</i>/20 处的 <i class="v">G</i>(<i class="v">x</i>) 对照 pycalphad 的 <code>calculate</code></span><b>相对差 ≤ 5×10⁻¹²</b></li>
@@ -336,7 +346,7 @@ Lean  EXISTS</pre>
 </section>
 
 <section id="audit">
-  <p class="sec-no">11</p>
+  <p class="sec-no">12</p>
   <h2>研究结果：CALPHAD 数据库的严格审计</h2>
   <div class="prose">
     <p>两个浮点软件回答不了的问题：公开的数据库在多大的温度、成分范围内给出物理上合理的平衡？通用求解器在哪些点没有找到真正的全局平衡？两者都需要“不存在更低的相组合”“这个相不出现”这样的结论，而这正是证书给出的。审计取 pycalphad 自带的 17 个数据库（其中包括 COST 507）的每个二元体系，网格从 300 K 起每 100 K 一点，直到数据库参数的温度上限（至多 6000 K），成分 <i class="v">x</i> = 0.02、0.06、…、0.98；每个点写一份证书，用 <code>--tdb</code> 模式对照 TDB 文件本身检查，并在同一组相上运行 pycalphad。</p>
@@ -363,7 +373,7 @@ Lean  EXISTS</pre>
 </section>
 
 <section id="gaps">
-  <p class="sec-no">12</p>
+  <p class="sec-no">13</p>
   <h2>尚未解决的缺口</h2>
   <ul class="gaps">
     <li><strong>从 TDB 文件到认证的模型</strong>10 月 4 日起检查器在 Lean 中从 TDB 文件构造模型（CAL-I01、B02），驱动的翻译不再在可信链内。剩下的是 Lean 的定义是否按原意读 TDB 文件（A-CAL-01）：它只有与驱动和 pycalphad 的对照（T0），没有更高的证据。不加 <code>--tdb</code> 检查的证书（例如 TDB 从管道读入时）仍只认证证书里写的模型。10 月 7 日起 <code>--tdb</code> 模式还输出 TDB 文件的 SHA-256（CAL-I04），名字一律转义，伪造的相名不能再注入输出行（CAL-I05）。此前模糊测试曾发现驱动把一些输入翻译成另一个模型、检查器照样接受（<code>3*T**1.5</code> 被读成 3<i class="v">T</i> + 0.5、系数被截断、相被丢掉），数据库审计又发现分子物种被丢掉；这些都已修正，Lean 的读法对拒绝或跳过哪些输入遵循同样的规则。</li>
@@ -379,7 +389,7 @@ Lean  EXISTS</pre>
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · 现状快照 2026-10-08<span class="updated"> · 更新于 <time datetime="2026-10-08T22:56+08:00">2026-10-08 22:56 UTC+8</time></span></span>
+  <span>Formal in Silico · 现状快照 2026-10-08<span class="updated"> · 更新于 <time datetime="2026-10-12T22:50+08:00">2026-10-12 22:50 UTC+8</time></span></span>
   <span><a href="./">纲领</a> · <a href="progress.html">进度</a> · <a href="showcases.html">成果展示</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="../calphad.html" hreflang="en">English</a></span>
 </div></footer>
 </body>
