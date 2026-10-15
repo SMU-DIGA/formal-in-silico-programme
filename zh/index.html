@@ -46,9 +46,9 @@
     <div class="j ph"><span class="k">实验</span><span class="e"><i class="v">y</i><sub>obs</sub> − <i class="v">y</i><sub>model</sub> ∈ [<i class="v">y</i><sub>obs</sub> − hi, <i class="v">y</i><sub>obs</sub> − lo] ± <i class="v">σ</i><sub>exp</sub></span></div>
   </div>
   <div class="stats">
-    <div class="stat"><b data-n="all">583</b><span>条命题登记在可信账本中</span></div>
-    <div class="stat"><b data-n="all.proved">515</b><span>条已有机器证明（T3 或 T4）</span></div>
-    <div class="stat"><b data-n="all.T4">196</b><span>条达到端到端等级 T4：检查器可靠性、内核安全与内核浮点</span></div>
+    <div class="stat"><b data-n="all">622</b><span>条命题登记在可信账本中</span></div>
+    <div class="stat"><b data-n="all.proved">545</b><span>条已有机器证明（T3 或 T4）</span></div>
+    <div class="stat"><b data-n="all.T4">222</b><span>条达到端到端等级 T4：检查器可靠性、内核安全与内核浮点</span></div>
     <div class="stat"><b>4</b><span>个参照程序交叉校验：DFTK.jl、scikit-fem、ASE 与 pycalphad</span></div>
   </div>
     <p class="g-cap">证明依赖：账本里的每个命题建立在哪些命题之上，直接从 Lean 证明项读出。点一个节点追踪它的链；各领域页里有只看本领域的同一张图。</p>
@@ -107,6 +107,11 @@
   <h2>动态</h2>
   <div class="prose"><p>五个领域新增的功能、研究结果，以及论文与本网站的变化，新的在前。逐项状态见<a href="progress.html">实现进度</a>；这里引用的命题都登记在可信账本中。</p></div>
   <ol class="news">
+    <li><time datetime="2026-10-16">2026-10-16</time><ul>
+      <li><span class="tag n">DFT</span><b>S1 设定下硅的 Kohn–Sham LDA 解得到证书。</b>真实 Si（GTH-LDA 赝势，晶格常数恰好 5.416&nbsp;Å，截断约 10&nbsp;Ha，每个 k 点 399–419 个平面波，8×8×8 Monkhorst–Pack 网格共 512 个 k 点，零温）：<code>certify-pw3d</code> 证明离散的自洽 KS-LDA 方程在证书中心 2·10<sup>−10</sup> 之内恰有一个解，全部 8192 个能带能量的区间宽都小于 10<sup>−8</sup>&nbsp;Ha，网格上的带隙在 [0.5307363, 0.5307367]&nbsp;eV 内（DFT-K29）。检查器利用 48 个对称操作，512 个 k 点只算 29 个，其可靠性在 Lean 中证明（DFT-M75–M77、K21–K28）；检查用 32 核 8 小时。网格带隙是整个布里渊区带隙的上界；S1 与实验的比较需要布里渊区上的界，这是下一步。目前没有与实验比较。</li>
+      <li><span class="tag n">DFT</span><b>更紧的 LDA 常数与机器字算术。</b>零温交换关联项的界更紧，并加了预检：没有希望的证书几分钟内就被拒绝，不必等一整天的检查（DFT-M70–M74）。检查器的精确有理运算换成对若干机器字素数取模的运算，Lean 证明结果完全相同（DFT-J10–J17）：生产检查由估计的 1150 CPU 小时降到 196。用 Frama-C 证明的 C 点积试过，没有采用（J19）。</li>
+      <li><span class="tag n">DFT</span><b>低密度下 LDA 的连续极限：还没有。</b>势空间中给连续（无限截断）KS-LDA 解发证书的路线，抽象部分已证明；但在真实 Si 上只有用估计的（非严格的）常数才闭合，所以没有连续极限的证书（DFT-C40–C49）。</li>
+    </ul></li>
     <li><time datetime="2026-10-15">2026-10-15</time><ul>
       <li><span class="tag n">FEM</span><b>二维的多项式右端项。</b>二维 Prager–Synge 检查器现在对任何有理系数多项式右端项都给出在 Lean 中证明的误差界，不再只限于常数：多项式在单元上的积分通过参考三角形上的 Beta 积分精确算出（FEM-B12）。10 月 14 日时这类右端项只给浮点结果；不是多项式的右端项仍然如此。</li>
       <li><span class="tag n">Checks</span><b>更快的完整验证与快速档。</b><code>verify_all</code> 现在把所有证书用例和步骤放进同一个核池，最长的先排，线程数按以前运行的实测来定，同一张证书在一次运行里只由同一个检查器检查一次。完整验证从约 100 分钟缩短到约 63 分钟，检查的内容完全不变。新的快速档（约 20 分钟）跳过最耗时的用例，用于开发中的分支，不能代替合并前的完整验证。</li>
@@ -121,6 +126,9 @@
       <li><span class="tag n">CALPHAD</span><b>间隙相与磁性相，以及 Fe–C 共析。</b>TDB 读取器与检查器现在能处理间隙亚晶格与磁性化合物（CAL-C22–C24、B23、I09、I10）。Fe–C 数据库（取无压力项的极限）中 γ → α + Fe<sub>3</sub>C 的共析温度认证在 [999.6738, 999.6938]&nbsp;K 内，pycalphad 的 999.6838&nbsp;K 在区间内（B24）。</li>
       <li><span class="tag n">DFT</span><b>四次振子的十六位有效数字。</b>整条实轴上 −d²/dx² + x⁴ 的基态能量认证在宽 1.1·10<sup>−16</sup> 的区间内，中心约 1.0603620904841829；下界来自 Riccati（Barta）不等式，上界来自精确的 Rayleigh 商，两者都在 Lean 中证明。同一问题上 Temple 不等式只到 2·10<sup>−8</sup>，Dirichlet–Neumann 夹逼约 10<sup>−7</sup>（DFT-Y21–Y30）。</li>
     </ul></li>
+  </ol>
+  <details class="news-more"><summary>更早：2026-09-27 至 10-12</summary>
+  <ol class="news">
     <li><time datetime="2026-10-12">2026-10-12</time><ul>
       <li><span class="tag n">网站</span><b>证明依赖图。</b><a href="./#graph">纲领页</a>上新的依赖图显示账本命题之间、8975 个 Lean 定理之间谁建立在谁之上，直接从 Lean 证明项读出，而不是账本里手写的“依赖”列：一张按领域着色、可以缩放的图，可以搜索，可以在命题与定理之间切换，“只看它的链”只保留一个节点直接或间接用到的和用到它的。每个领域页里也嵌入了同一张图，打开时只显示本领域的命题。</li>
       <li><span class="tag n">DFT</span><b>LDA 的尾部界闭合了，有了 LDA 的分裂模式。</b>LDA 的交换关联核是局域的，高频部分没有 Hartree 项的 1/|G|² 衰减，原来的尾部界收不住。改用响应密度的逐点 Cauchy–Schwarz 界、每对占据与未占据能级的精确能量分母，以及配对 Gram 矩阵的算子范数，就收住了（DFT-U25–U31，T4）。<code>certify-pw3d</code> 新的 LDA 分裂模式带时间反演与每个 k 点上的 GTH 投影子，可靠性定理的结论与统一 LDA 模式逐字相同，关于完整网格（DFT-M59–M67，T4）。真实 Si、零温、2×2×2 网格、每个 k 点 24–27 个平面波：32&nbsp;秒通过，DFTK 在完整网格上的 128 个本征值全在区间内。协议要求的截断（约 410 个平面波，10&nbsp;Ha）的证书已经生成，但在共享机器上检查了 6 小时后停止，没有结论。</li>
@@ -140,9 +148,6 @@
       <li><span class="tag n">DFT</span><b>第一个“不是基态”证书（S2）。</b>简单立方氢（局域赝势、Slater 交换）：检查器证明收敛的自旋限制解在它的球内唯一、也是 LSDA 的解，而一个反铁磁试探态的自由能至少低 330&nbsp;meV，所以自旋限制解不是这个离散模型的基态（DFT-M20–M26、Z06–Z08，检查器定理为 T4）。DFTK 的解在界内。这个次序是教科书物理，截断也小，所以这是严格性上的第一次，不是发现。</li>
       <li><span class="tag n">纲领</span>符号计算（SymPy、FLINT、spglib，可选 GAP）作为生成待证命题的不可信工具加入工具链，命题在 Lean 中证明后才算数。新增实验记录：带出处地记下编写本项目的 AI agent 收到了什么指令、做出了什么、哪些错误被哪一层验证拦下。</li>
     </ul></li>
-  </ol>
-  <details class="news-more"><summary>更早：2026-09-27 至 10-09</summary>
-  <ol class="news">
     <li><time datetime="2026-10-09">2026-10-09</time><ul>
       <li><span class="tag n">纲领</span>普查之后改写展示例子 S2（“不是基态”）的措辞：它是严格性上的第一次，即机器检查地证明一个收敛的 SCF 解不是离散模型的基态，不再当作物理发现。第一例提前到阶段 2（拉长的 H<sub>2</sub> 或 bcc H），真实材料的例子从 fcc Fe 换成 NiO；论文关于新结果的主张靠带证书的模型误差（S1）与预先登记的确认。<a href="#s2">详情 →</a></li>
       <li><span class="tag n">DFT</span><b>第一个三维 SCF 解证书。</b>面心立方 Si（模型局域赝势）、约化 Hartree–Fock、Γ 点、Fermi–Dirac 展宽 <i class="v">T</i> = 0.01&nbsp;Ha：新检查器 <code>certify-pw3d</code> 证明离散 SCF 方程在证书附近 10<sup>−11</sup>–10<sup>−9</sup> 内恰有一个解，并给出化学势与最低 16 条能带的区间，平面波数 15 到 89（DFT-M07–M12、U01–U05，检查器定理为 T4）；DFTK 在同一问题上的解在区间内。限制都实测了：稠密精确检查的代价约为 <i class="v">n</i><sup>4</sup>（<i class="v">n</i> = 89 时 38 CPU 小时），<i class="v">T</i> 低于约 1/300&nbsp;Ha 时不闭合，扩展到真实规模还需要一个尚未证明的尾部估计。</li>
@@ -596,7 +601,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · 项目纲领 v0.4 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-10-14T22:17+08:00">2026-10-14 22:17 UTC+8</time></span></span>
+  <span>Formal in Silico · 项目纲领 v0.4 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-10-16T01:58+08:00">2026-10-16 01:58 UTC+8</time></span></span>
   <span><a href="progress.html">实现进度</a> · <a href="showcases.html">成果展示</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="../" hreflang="en">English</a></span>
 </div></footer>
 </body>
