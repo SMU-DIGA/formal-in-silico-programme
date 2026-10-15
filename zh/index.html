@@ -107,6 +107,10 @@
   <h2>动态</h2>
   <div class="prose"><p>五个领域新增的功能、研究结果，以及论文与本网站的变化，新的在前。逐项状态见<a href="progress.html">实现进度</a>；这里引用的命题都登记在可信账本中。</p></div>
   <ol class="news">
+    <li><time datetime="2026-10-15">2026-10-15</time><ul>
+      <li><span class="tag n">FEM</span><b>二维的多项式右端项。</b>二维 Prager–Synge 检查器现在对任何有理系数多项式右端项都给出在 Lean 中证明的误差界，不再只限于常数：多项式在单元上的积分通过参考三角形上的 Beta 积分精确算出（FEM-B12）。10 月 14 日时这类右端项只给浮点结果；不是多项式的右端项仍然如此。</li>
+      <li><span class="tag n">Checks</span><b>更快的完整验证与快速档。</b><code>verify_all</code> 现在把所有证书用例和步骤放进同一个核池，最长的先排，线程数按以前运行的实测来定，同一张证书在一次运行里只由同一个检查器检查一次。完整验证从约 100 分钟缩短到约 63 分钟，检查的内容完全不变。新的快速档（约 20 分钟）跳过最耗时的用例，用于开发中的分支，不能代替合并前的完整验证。</li>
+    </ul></li>
     <li><time datetime="2026-10-14">2026-10-14</time><ul>
       <li><span class="tag n">FEM</span><b>二维的保证误差界。</b>三角网格上的 Poisson 问题，新的检查器用平衡的 Raviart–Thomas 通量构造 Prager–Synge 误差界，整条链在 Lean 中证明：三角形上的分部积分、网格铺满区域、P1 插值的协调性、内部边项相互抵消（FEM-D10–D18、B12、B14；检查器 T4）。单位正方形 16×16 网格上，认证的误差界为 0.0253，真实误差为 0.0210；scikit-fem 的节点值与之相差 3·10<sup>−16</sup>。右端项不是常数时只给浮点结果（B13，T0）。</li>
       <li><span class="tag n">FEM</span><b>一维的能量范数误差与本征值上下界。</b><code>certify-fem --energy</code> 认证 P1 解的能量范数误差，端点可以是 Dirichlet、Neumann 或 Robin 条件；−u″ = e<sup>x</sup>、16 个单元时，误差界只比真实误差大 6·10<sup>−19</sup>（FEM-D20–D22、B20、C10）。Sturm–Liouville 检查器给出 −(pu′)′ + qu = λwu 前几个本征值的上下界，上界来自极小极大原理，下界来自 Liu–Oishi 估计：−u″ 的 λ<sub>1</sub> 在 [9.869598, 9.869635] 内，包含 π²（D23–D27、B21、C11、C12）。</li>
