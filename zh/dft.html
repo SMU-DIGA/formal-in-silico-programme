@@ -42,7 +42,7 @@
   <div class="stats">
     <div class="stat"><b data-n="DFT">444</b><span>条命题登记在可信账本中</span></div>
     <div class="stat"><b data-n="DFT.pct">87%</b><span>已有机器证明：T3 <span data-n="DFT.T3">228</span> 条，T4 <span data-n="DFT.T4">160</span> 条</span></div>
-    <div class="stat"><b><span data-n="g1.done">9</span> / <span data-n="g1.total">46</span></b><span>项 DFTK 对齐功能完成，其中包括 LDA 与共线自旋；另有 2 项已一致、证书不全</span></div>
+    <div class="stat"><b><span data-n="g1.done">10</span> / <span data-n="g1.total">46</span></b><span>项 DFTK 对齐功能完成，其中包括 LDA 与共线自旋；另有 2 项已一致、证书不全</span></div>
     <div class="stat"><b>≤ 5×10⁻¹⁵</b><span>与 DFTK 在同一离散问题上的能量差</span></div>
   </div>
 </div></div>
@@ -163,7 +163,7 @@
     <div class="row"><span class="code">M1</span><div>一维求解器、占据与 k 点</div><div class="barcell"><div class="sbar"><i class="sw-done" style="flex:2"></i><i class="sw-align" style="flex:1"></i><i class="sw-todo" style="flex:4"></i></div></div><span class="n">2 / 7</span></div>
     <div class="row"><span class="code">M2</span><div>一维物理项</div><div class="barcell"><div class="sbar"><i class="sw-done" style="flex:2"></i><i class="sw-align" style="flex:1"></i><i class="sw-todo" style="flex:4"></i></div></div><span class="n">2 / 7</span></div>
     <div class="row"><span class="code">M3</span><div>一维后处理与响应</div><div class="barcell"><div class="sbar"><i class="sw-align" style="flex:1"></i><i class="sw-todo" style="flex:8"></i></div></div><span class="n">0 / 9</span></div>
-    <div class="row"><span class="code">M4</span><div><i class="v">d</i> 维</div><div class="barcell"><div class="sbar"><i class="sw-todo" style="flex:7"></i></div></div><span class="n">0 / 7</span></div>
+    <div class="row"><span class="code">M4</span><div><i class="v">d</i> 维</div><div class="barcell"><div class="sbar"><i class="sw-done" style="flex:1"></i><i class="sw-impl" style="flex:4"></i><i class="sw-todo" style="flex:2"></i></div></div><span class="n">1 / 7</span></div>
     <div class="row"><span class="code">M5</span><div>完整三维</div><div class="barcell"><div class="sbar"><i class="sw-todo" style="flex:4"></i></div></div><span class="n">0 / 4</span></div>
     <div class="row"><span class="code">M6</span><div>基础设施与接口</div><div class="barcell"><div class="sbar"><i class="sw-todo" style="flex:3"></i></div></div><span class="n">0 / 3</span></div>
   </div>
@@ -216,13 +216,25 @@
     </tbody>
   </table></div>
 
-  <details class="more"><summary>计划中：M2–M6（26 项未开始）</summary>
+  <h3 style="margin-top:28px">M4 · <i class="v">d</i> 维</h3>
+  <div class="tbl"><table class="feat">
+    <thead><tr><th>功能</th><th>状态</th><th>认证的内容</th></tr></thead>
+    <tbody>
+      <tr><td>Lean 模型推广到 <i class="v">d</i> 维晶格</td><td class="st"><span class="tag st-done">完成</span></td><td>任意 Bravais 晶格上 <i class="v">d</i> 维平面波的约化 Hartree–Fock：基态存在，密度唯一，能量随截断单调；一维模型是 <i class="v">d</i> = 1 的特例，去掉 Hartree 项时 Hamiltonian 就是 Cohen–Bergstresser 的（DFT-M01–M06）。LDA 的极小元存在，但密度不必唯一（M16）。一维证书不会自动推广，三维检查器是新写的（下几行）。</td></tr>
+      <tr><td>2D/3D 平面波、FFTW</td><td class="st"><span class="tag st-align">部分：3D 完成；2D 与 FFTW 未做</span></td><td><code>certify-pw3d</code> 认证约化 Hartree–Fock 与 Kohn–Sham LDA（Slater 交换、PW92 关联）的 SCF 解，Γ 点与 Monkhorst–Pack 网格，有限温度与零温，并给出每个 k 点的能带区间。DFTK 对同一离散问题的解落在唯一性球内，比较过的 DFTK 本征值全部落在区间内，8×8×8 网格上 8192 个中 8192 个（DFT-M07–M79、K20、Q10）。真实 Si 在展示 S1 的设定下，网格带隙被认证在 [0.5307363, 0.5307367] eV（DFT-K29）。驱动用 numpy 的 FFT，不用 FFTW。</td></tr>
+      <tr><td>晶格、原子结构、对称性</td><td class="st"><span class="tag st-align">部分：fcc、时间反演、点群</span></td><td>检查器绑定金刚石结构的 fcc 晶胞。时间反演（DFT-K08–K10）与点群约化（K11–K18、K21–K28）已证明：检查器自己核对空间群操作，只算不可约 k 点，结论关于完整网格。任意晶格与自动的对称性检测未做。</td></tr>
+      <tr><td>HGH 与 UPF 赝势</td><td class="st"><span class="tag st-align">部分：GTH 的 s、p 通道</span></td><td>可分离的 GTH/HGH 赝势，写法与 DFTK 相同：局域部分、两个 s 投影子与 p 通道，文件哈希与来源登记（DFT-Q01–Q12）。d 通道与 UPF 文件未做。</td></tr>
+      <tr><td>DFTK 示例对标：硅、石墨烯、GaAs 表面、Cohen–Bergstresser</td><td class="st"><span class="tag st-align">部分：硅、Cohen–Bergstresser</span></td><td>GTH-LDA q4 赝势的硅在预注册的 S1 协议设定下有证书（DFT-K29、M78）；Si、Ge、GaAs 的 Cohen–Bergstresser 能带区间包含 DFTK 的值（DFT-W13、W14）。石墨烯与 GaAs 表面未做。</td></tr>
+    </tbody>
+  </table></div>
+
+  <details class="more"><summary>计划中：M2–M6（21 项未开始）</summary>
     <h4 style="margin-top:14px">M2 · 一维物理项</h4>
     <ul class="planned"><li>局部非线性（Gross–Pitaevskii）</li><li>原子与赝势：局域与非局域部分、Ewald、修正项</li><li>原子间两体势</li><li>DFT+U</li></ul>
     <h4>M3 · 一维后处理与响应</h4>
     <ul class="planned"><li>结构优化</li><li>应力</li><li>响应：χ<sub>0</sub>、Hessian、DFPT</li><li>极化率</li><li>声子</li><li>弹性常数</li><li>后验误差估计与细化</li><li>电流</li></ul>
     <h4>M4 · <i class="v">d</i> 维</h4>
-    <ul class="planned"><li>Lean 模型推广到 <i class="v">d</i> 维晶格</li><li>2D/3D 平面波与 FFTW</li><li>任意晶格、原子结构、对称性</li><li>HGH 与 UPF 赝势</li><li>三维 Ewald 与赝势修正</li><li>anyon（2D）</li><li>与 DFTK 示例对标：硅、石墨烯、GaAs 表面、Cohen–Bergstresser</li></ul>
+    <ul class="planned"><li>三维 Ewald 与赝势修正</li><li>anyon（2D）</li></ul>
     <h4>M5 · 完整三维</h4>
     <ul class="planned"><li>GGA、meta-GGA</li><li>三维受力、应力、声子、弹性常数</li><li>精确交换（ACE）</li><li>MPI k 点并行，1 到 64 个进程逐位一致</li></ul>
     <h4>M6 · 基础设施（最后做，可删减）</h4>
@@ -358,7 +370,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · 现状快照 2026-10-08<span class="updated"> · 更新于 <time datetime="2026-10-16T01:58+08:00">2026-10-16 01:58 UTC+8</time></span></span>
+  <span>Formal in Silico · 现状快照 2026-10-08<span class="updated"> · 更新于 <time datetime="2026-10-16T21:16+08:00">2026-10-16 21:16 UTC+8</time></span></span>
   <span><a href="./">纲领</a> · <a href="progress.html">进度</a> · <a href="showcases.html">成果展示</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="../dft.html" hreflang="en">English</a></span>
 </div></footer>
 </body>

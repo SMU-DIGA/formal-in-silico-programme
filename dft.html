@@ -42,7 +42,7 @@
   <div class="stats">
     <div class="stat"><b data-n="DFT">444</b><span>claims in the trust ledger</span></div>
     <div class="stat"><b data-n="DFT.pct">87%</b><span>machine-proved: <span data-n="DFT.T3">228</span> at T3, <span data-n="DFT.T4">160</span> at T4</span></div>
-    <div class="stat"><b><span data-n="g1.done">9</span> / <span data-n="g1.total">46</span></b><span>DFTK parity items done, LDA and collinear spin among them; 2 more agree but lack full certificates</span></div>
+    <div class="stat"><b><span data-n="g1.done">10</span> / <span data-n="g1.total">46</span></b><span>DFTK parity items done, LDA and collinear spin among them; 2 more agree but lack full certificates</span></div>
     <div class="stat"><b>≤ 5×10⁻¹⁵</b><span>energy difference from DFTK on the same discrete problem</span></div>
   </div>
 </div></div>
@@ -163,7 +163,7 @@
     <div class="row"><span class="code">M1</span><div>1D solvers, occupation, k-points</div><div class="barcell"><div class="sbar"><i class="sw-done" style="flex:2"></i><i class="sw-align" style="flex:1"></i><i class="sw-todo" style="flex:4"></i></div></div><span class="n">2 / 7</span></div>
     <div class="row"><span class="code">M2</span><div>1D physics terms</div><div class="barcell"><div class="sbar"><i class="sw-done" style="flex:2"></i><i class="sw-align" style="flex:1"></i><i class="sw-todo" style="flex:4"></i></div></div><span class="n">2 / 7</span></div>
     <div class="row"><span class="code">M3</span><div>1D post-processing and response</div><div class="barcell"><div class="sbar"><i class="sw-align" style="flex:1"></i><i class="sw-todo" style="flex:8"></i></div></div><span class="n">0 / 9</span></div>
-    <div class="row"><span class="code">M4</span><div><i class="v">d</i> dimensions</div><div class="barcell"><div class="sbar"><i class="sw-todo" style="flex:7"></i></div></div><span class="n">0 / 7</span></div>
+    <div class="row"><span class="code">M4</span><div><i class="v">d</i> dimensions</div><div class="barcell"><div class="sbar"><i class="sw-done" style="flex:1"></i><i class="sw-impl" style="flex:4"></i><i class="sw-todo" style="flex:2"></i></div></div><span class="n">1 / 7</span></div>
     <div class="row"><span class="code">M5</span><div>Full 3D</div><div class="barcell"><div class="sbar"><i class="sw-todo" style="flex:4"></i></div></div><span class="n">0 / 4</span></div>
     <div class="row"><span class="code">M6</span><div>Infrastructure and interfaces</div><div class="barcell"><div class="sbar"><i class="sw-todo" style="flex:3"></i></div></div><span class="n">0 / 3</span></div>
   </div>
@@ -216,13 +216,25 @@
     </tbody>
   </table></div>
 
-  <details class="more"><summary>Planned: M2–M6 (26 items not started)</summary>
+  <h3 style="margin-top:28px">M4 · <i class="v">d</i> dimensions</h3>
+  <div class="tbl"><table class="feat">
+    <thead><tr><th>Feature</th><th>Status</th><th>What is certified</th></tr></thead>
+    <tbody>
+      <tr><td>Lean model generalised to <i class="v">d</i>-dimensional lattices</td><td class="st"><span class="tag st-done">Done</span></td><td>Reduced Hartree–Fock in plane waves on any Bravais lattice in <i class="v">d</i> dimensions: a ground state exists, its density is unique and the energy is monotone in the cutoff; the 1D model is the case <i class="v">d</i> = 1, and without the Hartree term the Hamiltonian is the Cohen–Bergstresser one (DFT-M01–M06). For LDA minimisers exist but the density need not be unique (M16). The 1D certificates do not carry over by themselves; the 3D checkers are new (next rows).</td></tr>
+      <tr><td>2D/3D plane waves, FFTW</td><td class="st"><span class="tag st-align">Partial: 3D done; 2D and FFTW not</span></td><td><code>certify-pw3d</code> certifies SCF solutions of reduced Hartree–Fock and Kohn–Sham LDA (Slater exchange, PW92 correlation) at the Γ point and on Monkhorst–Pack meshes, at finite and zero temperature, with band intervals at every k point. DFTK’s solutions of the same discrete problems lie inside the uniqueness balls, and every DFTK eigenvalue compared lies in its interval, 8192 of 8192 on an 8×8×8 mesh (DFT-M07–M79, K20, Q10). For real Si at the settings of showcase S1 the mesh gap is certified in [0.5307363, 0.5307367] eV (DFT-K29). The drivers use numpy’s FFT, not FFTW.</td></tr>
+      <tr><td>Lattices, atomic structures, symmetry</td><td class="st"><span class="tag st-align">Partial: fcc, time reversal, point groups</span></td><td>The checkers bind fcc cells with the diamond structure. Time reversal (DFT-K08–K10) and point-group reduction (K11–K18, K21–K28) are proved: the checker verifies the space-group operations itself, computes only the irreducible k points and draws its conclusion about the full mesh. Arbitrary lattices and automatic symmetry detection are not done.</td></tr>
+      <tr><td>HGH and UPF pseudopotentials</td><td class="st"><span class="tag st-align">Partial: GTH, s and p channels</span></td><td>Separable GTH/HGH pseudopotentials written as DFTK implements them: local part, two s projectors and the p channel, with file hash and provenance recorded (DFT-Q01–Q12). The d channel and UPF files are not done.</td></tr>
+      <tr><td>DFTK examples: silicon, graphene, GaAs surface, Cohen–Bergstresser</td><td class="st"><span class="tag st-align">Partial: silicon, Cohen–Bergstresser</span></td><td>Silicon with the GTH-LDA q4 pseudopotential is certified at the settings of the pre-registered S1 protocol (DFT-K29, M78); Cohen–Bergstresser band intervals for Si, Ge and GaAs contain DFTK’s values (DFT-W13, W14). Graphene and the GaAs surface are not done.</td></tr>
+    </tbody>
+  </table></div>
+
+  <details class="more"><summary>Planned: M2–M6 (21 items not started)</summary>
     <h4 style="margin-top:14px">M2 · 1D physics terms</h4>
     <ul class="planned"><li>Local nonlinearity (Gross–Pitaevskii)</li><li>Atoms and pseudopotentials: local and nonlocal parts, Ewald, correction terms</li><li>Pairwise interatomic potentials</li><li>DFT+U</li></ul>
     <h4>M3 · 1D post-processing and response</h4>
     <ul class="planned"><li>Geometry optimisation</li><li>Stresses</li><li>Response: χ<sub>0</sub>, Hessian, DFPT</li><li>Polarisability</li><li>Phonons</li><li>Elastic constants</li><li>A posteriori error estimates and refinement</li><li>Currents</li></ul>
     <h4>M4 · <i class="v">d</i> dimensions</h4>
-    <ul class="planned"><li>Lean model generalised to <i class="v">d</i>-dimensional lattices</li><li>2D/3D plane waves with FFTW</li><li>Arbitrary lattices, atomic structures, symmetry</li><li>HGH and UPF pseudopotentials</li><li>3D Ewald and pseudopotential correction</li><li>Anyons (2D)</li><li>DFTK examples: silicon, graphene, GaAs surface, Cohen–Bergstresser</li></ul>
+    <ul class="planned"><li>3D Ewald and pseudopotential correction</li><li>Anyons (2D)</li></ul>
     <h4>M5 · full 3D</h4>
     <ul class="planned"><li>GGA and meta-GGA</li><li>3D forces, stresses, phonons, elastic constants</li><li>Exact exchange (ACE)</li><li>MPI k-point parallelism, bitwise identical on 1–64 processes</li></ul>
     <h4>M6 · infrastructure (last; may be trimmed)</h4>
@@ -358,7 +370,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · status snapshot 8 October 2026<span class="updated"> · updated <time datetime="2026-10-16T01:58+08:00">2026-10-16 01:58 UTC+8</time></span></span>
+  <span>Formal in Silico · status snapshot 8 October 2026<span class="updated"> · updated <time datetime="2026-10-16T21:16+08:00">2026-10-16 21:16 UTC+8</time></span></span>
   <span><a href="./">Programme</a> · <a href="progress.html">Progress</a> · <a href="showcases.html">Showcases</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="zh/dft.html" hreflang="zh-CN">中文版</a></span>
 </div></footer>
 </body>
