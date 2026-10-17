@@ -46,9 +46,9 @@
     <div class="j ph"><span class="k">实验</span><span class="e"><i class="v">y</i><sub>obs</sub> − <i class="v">y</i><sub>model</sub> ∈ [<i class="v">y</i><sub>obs</sub> − hi, <i class="v">y</i><sub>obs</sub> − lo] ± <i class="v">σ</i><sub>exp</sub></span></div>
   </div>
   <div class="stats">
-    <div class="stat"><b data-n="all">632</b><span>条命题登记在可信账本中</span></div>
-    <div class="stat"><b data-n="all.proved">553</b><span>条已有机器证明（T3 或 T4）</span></div>
-    <div class="stat"><b data-n="all.T4">227</b><span>条达到端到端等级 T4：检查器可靠性、内核安全与内核浮点</span></div>
+    <div class="stat"><b data-n="all">646</b><span>条命题登记在可信账本中</span></div>
+    <div class="stat"><b data-n="all.proved">562</b><span>条已有机器证明（T3 或 T4）</span></div>
+    <div class="stat"><b data-n="all.T4">236</b><span>条达到端到端等级 T4：检查器可靠性、内核安全与内核浮点</span></div>
     <div class="stat"><b>4</b><span>个参照程序交叉校验：DFTK.jl、scikit-fem、ASE 与 pycalphad</span></div>
   </div>
     <p class="g-cap">证明依赖：账本里的每个命题建立在哪些命题之上，直接从 Lean 证明项读出。点一个节点追踪它的链；各领域页里有只看本领域的同一张图。</p>
@@ -109,6 +109,8 @@
   <ol class="news">
     <li><time datetime="2026-10-17">2026-10-17</time><ul>
       <li><span class="tag n">Site</span><b>新增七个成果展示。</b><a href="showcases.html">成果展示页</a>从 12 个存档运行增加到 19 个，每个都是驱动 → 证书 → Lean 检查器 → 参考软件：真实的硅在 4×4×4 k 点网格上的 LDA 自洽解（1024 个能带区间，DFTK 的本征值全部在内）；硅的能带在整个布里渊区上的界，附 S1 的生产记录作为存档记录（只核对输出的哈希，不重跑：检查一次在 32 核上约 8 小时）；S2，一个自洽解被证明不是基态（余量 330&nbsp;meV）；十二种半导体的 Cohen–Bergstresser 能带在预注册规则下与实测能级比较；L 形膜的第一本征值；周期盒子中的 Lennard-Jones 原子；Pb–Sn 的共晶温度。两个硅的例子截断较低，不是收敛的硅。<code>verify_all</code> 约 10 分钟重查全部 19 个。</li>
+      <li><span class="tag n">Validation</span><b>扩展的 Cohen–Bergstresser 验证：比较结果。</b>按 12:58 登记的协议，<code>certify-pw</code> 认证了九种新材料在 Γ、X、L 的价带（区间宽 2·10<sup>−9</sup>&nbsp;Ha；DFT-W70–W78，T4；DFTK 的 243 个本征值全部落在区间内，W79）。50 个测量值中 12 个与模型一致，37 个不一致，1 个不判定：InP 最好（六个中四个一致），InSb、ZnS 全不一致。X<sub>3</sub> 价带能级在每种材料中都不一致，测量值比模型深 0.45–2.4&nbsp;eV。分级：四条命题不一致（DFT-O09、O13、O15、O16），八条部分一致，都是 V2；CdTe 的 UPS 值没有给出误差（O19，V0）。用光学带隙拟合的局域赝势放不准深价带能级，这一点早已知道；新的是判定规则在数字出现之前就定下，模型一侧又有认证，所以每个不一致都归于模型，而不是数值误差。</li>
+      <li><span class="tag n">DFT</span><b>S1 的硅带隙离收敛还有多远。</b>用 DFTK 做的浮点研究（DFT-Z09–Z12，T0）把截断从协议的 10&nbsp;Ha 提高到 50&nbsp;Ha、SCF 网格从 8³ 加密到 16³：真 KS-LDA 带隙只变 +0.47&nbsp;meV，8×8×8 网格上的带隙变 +2.4&nbsp;meV。规则 U 的上界与真带隙相差的 45&nbsp;meV 因此来自导带底不在网格上，而不是离散化。</li>
       <li><span class="tag n">DFT</span><b>S1 设定下硅在整个布里渊区上的能带界。</b>从 S1 的硅证书（DFT-K29）出发，<code>certify-pw3d</code> 的能带模式证明：最高价带在布里渊区每个 k 点上都有上界（约 7,500 个立方体，每个都通过 Rayleigh–Ritz 检验），并在 Γ 和 (0,&nbsp;5/8,&nbsp;5/8) 给出宽约 6·10<sup>−6</sup>&nbsp;Ha 的两侧能带界；可靠性在 Lean 中证明（DFT-W42–W51，检查器 T4）。由此得到 Si 在规则 U 下的 S1 记录：协议设定下的 Kohn–Sham LDA 带隙不超过 0.530902&nbsp;eV。DFTK 在每个列出的点上一致；网格外一个更紧的界（0.84&nbsp;Γ–X 附近的 Rayleigh–Ritz 点，低于 0.486&nbsp;eV）写在笔记里，不进记录。检查在 32 核上用 44 分钟。与实验的比较是单独的一步。</li>
       <li><span class="tag n">Validation</span><b>Cohen–Bergstresser 验证扩展，已预注册。</b>在算出新材料的任何能带能量之前，经验 Cohen–Bergstresser 赝势与实验的比较从 Si、Ge、GaAs 扩展到 1966 年论文中的另外九种半导体（GaP、GaSb、InP、InAs、InSb、ZnS、ZnSe、ZnTe、CdTe），规则不变：来自同一项 X 射线光电子能谱研究（Ley 等，1974）的 50 个价带能量与带宽测量值，其中 49 个给出误差，落在拟合数据范围内的值已排除；α-Sn 与 AlSb 因找不到可用数据而放弃（DFT-O07–O19，已登记，尚未比较）。预注册于 12:58（UTC+8）推送。</li>
     </ul></li>
@@ -476,11 +478,11 @@
   <h2>路线图</h2>
   <div class="goal">
     <h3>当前目标：三重正确的三维展示 <span class="tag n">2026-10-08 设定</span></h3>
-    <p>把 DFT 推广到三维真实材料，并在同一批体系上同时给出三重正确的证据：数学正确（SCF 解的存在唯一、能量与带隙的严格区间，能做到时针对连续问题）、软件正确（并行协议的 TLA+ 规范与 trace validation，经过证明的检查器）、物理正确（与实验带隙、晶格常数、磁矩的系统确认，给出带证书的交换关联泛函误差）。计划中的展示例子，目前都还没有结果：</p>
+    <p>把 DFT 推广到三维真实材料，并在同一批体系上同时给出三重正确的证据：数学正确（SCF 解的存在唯一、能量与带隙的严格区间，能做到时针对连续问题）、软件正确（并行协议的 TLA+ 规范与 trace validation，经过证明的检查器）、物理正确（与实验带隙、晶格常数、磁矩的系统确认，给出带证书的交换关联泛函误差）。三个展示例子及其在 2026-10-17 的进展：</p>
     <ul>
-      <li><span class="tag ph">物理</span> <b>S1 带证书的模型误差。</b>一组半导体与绝缘体的 LDA（之后 PBE）带隙、晶格常数与实验系统比较；计算值是严格区间，偏差就是模型（泛函与赝势，以 Kohn–Sham 带隙代表测量的带隙）的误差：不含数值误差的带隙问题。</li>
+      <li><span class="tag ph">物理</span> <b>S1 带证书的模型误差。</b>一组半导体与绝缘体的 LDA（之后 PBE）带隙、晶格常数与实验系统比较；计算值是严格区间，偏差就是模型（泛函与赝势，以 Kohn–Sham 带隙代表测量的带隙）的误差：不含数值误差的带隙问题。<i>进展：</i>协议设定下的 Si 模型已有证书（DFT-K29），并在整个布里渊区上有界：规则 U 下带隙不超过 0.530902&nbsp;eV（W42–W51）；与实验的比较尚未进行；两侧界（规则 B）在做。确认一侧，Cohen–Bergstresser 赝势已在预注册的规则下与十二种半导体的实验比较（DFT-O01–O03、O07–O19）。</li>
       <li><span class="tag m">数学</span> <b>S2 不是基态。</b>用机器检查的证书证明一个收敛的自洽解不是离散模型的基态：较高的解有证书，另一个试探态的自由能上界严格更低。涉及的能量次序是已知物理，所以这是严格性上的第一次，不是物理发现；第一例已在简单立方氢上完成（局域赝势，证书余量 330&nbsp;meV），下一个是 NiO。</li>
-      <li><span class="tag s">软件</span> <b>S3 并行正确与逐位可复现。</b>三维的 k 点、能带、平面波并行与分布式 FFT 转置写成 TLA+ 规范，模型检验并做 trace validation；任意进程数下逐位一致；植入的并行错误被发现。</li>
+      <li><span class="tag s">软件</span> <b>S3 并行正确与逐位可复现。</b>三维的 k 点、能带、平面波并行与分布式 FFT 转置写成 TLA+ 规范，模型检验并做 trace validation；任意进程数下逐位一致；植入的并行错误被发现。<i>进展：</i>协议层规范已用 TLC 检验（DFT-R08–R11，T2）；三维并行驱动本身还没有。</li>
     </ul>
     <p>与之并行的是物理确认线 P：V 等级写进账本规则，各领域账本新开“确认”一节，实验数据集逐项核对原始文献并随仓库版本化，比较协议在比较前固定，运行报告分数学、软件、物理三栏。计划、阶段与待定事项见 <code>docs/plan-dft3d.md</code>。DFTK 功能对齐（G1）继续作为一维与三维实现的参照。</p>
   </div>
@@ -607,7 +609,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · 项目纲领 v0.4 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-10-17T23:30+08:00">2026-10-17 23:30 UTC+8</time></span></span>
+  <span>Formal in Silico · 项目纲领 v0.4 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-10-17T23:26+08:00">2026-10-17 23:26 UTC+8</time></span></span>
   <span><a href="progress.html">实现进度</a> · <a href="showcases.html">成果展示</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="../" hreflang="en">English</a></span>
 </div></footer>
 </body>
