@@ -108,6 +108,7 @@
   <div class="prose"><p>五个领域新增的功能、研究结果，以及论文与本网站的变化，新的在前。逐项状态见<a href="progress.html">实现进度</a>；这里引用的命题都登记在可信账本中。</p></div>
   <ol class="news">
     <li><time datetime="2026-10-17">2026-10-17</time><ul>
+      <li><span class="tag n">Site</span><b>新增七个成果展示。</b><a href="showcases.html">成果展示页</a>从 12 个存档运行增加到 19 个，每个都是驱动 → 证书 → Lean 检查器 → 参考软件：真实的硅在 4×4×4 k 点网格上的 LDA 自洽解（1024 个能带区间，DFTK 的本征值全部在内）；硅的能带在整个布里渊区上的界，附 S1 的生产记录作为存档记录（只核对输出的哈希，不重跑：检查一次在 32 核上约 8 小时）；S2，一个自洽解被证明不是基态（余量 330&nbsp;meV）；十二种半导体的 Cohen–Bergstresser 能带在预注册规则下与实测能级比较；L 形膜的第一本征值；周期盒子中的 Lennard-Jones 原子；Pb–Sn 的共晶温度。两个硅的例子截断较低，不是收敛的硅。<code>verify_all</code> 约 10 分钟重查全部 19 个。</li>
       <li><span class="tag n">DFT</span><b>S1 设定下硅在整个布里渊区上的能带界。</b>从 S1 的硅证书（DFT-K29）出发，<code>certify-pw3d</code> 的能带模式证明：最高价带在布里渊区每个 k 点上都有上界（约 7,500 个立方体，每个都通过 Rayleigh–Ritz 检验），并在 Γ 和 (0,&nbsp;5/8,&nbsp;5/8) 给出宽约 6·10<sup>−6</sup>&nbsp;Ha 的两侧能带界；可靠性在 Lean 中证明（DFT-W42–W51，检查器 T4）。由此得到 Si 在规则 U 下的 S1 记录：协议设定下的 Kohn–Sham LDA 带隙不超过 0.530902&nbsp;eV。DFTK 在每个列出的点上一致；网格外一个更紧的界（0.84&nbsp;Γ–X 附近的 Rayleigh–Ritz 点，低于 0.486&nbsp;eV）写在笔记里，不进记录。检查在 32 核上用 44 分钟。与实验的比较是单独的一步。</li>
       <li><span class="tag n">Validation</span><b>Cohen–Bergstresser 验证扩展，已预注册。</b>在算出新材料的任何能带能量之前，经验 Cohen–Bergstresser 赝势与实验的比较从 Si、Ge、GaAs 扩展到 1966 年论文中的另外九种半导体（GaP、GaSb、InP、InAs、InSb、ZnS、ZnSe、ZnTe、CdTe），规则不变：来自同一项 X 射线光电子能谱研究（Ley 等，1974）的 50 个价带能量与带宽测量值，其中 49 个给出误差，落在拟合数据范围内的值已排除；α-Sn 与 AlSb 因找不到可用数据而放弃（DFT-O07–O19，已登记，尚未比较）。预注册于 12:58（UTC+8）推送。</li>
     </ul></li>
@@ -606,7 +607,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · 项目纲领 v0.4 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-10-17T17:42+08:00">2026-10-17 17:42 UTC+8</time></span></span>
+  <span>Formal in Silico · 项目纲领 v0.4 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-10-17T23:30+08:00">2026-10-17 23:30 UTC+8</time></span></span>
   <span><a href="progress.html">实现进度</a> · <a href="showcases.html">成果展示</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="../" hreflang="en">English</a></span>
 </div></footer>
 </body>
