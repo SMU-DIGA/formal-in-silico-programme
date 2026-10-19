@@ -46,9 +46,9 @@
     <div class="j ph"><span class="k">Experiment</span><span class="e"><i class="v">y</i><sub>obs</sub> − <i class="v">y</i><sub>model</sub> ∈ [<i class="v">y</i><sub>obs</sub> − hi, <i class="v">y</i><sub>obs</sub> − lo] ± <i class="v">σ</i><sub>exp</sub></span></div>
   </div>
   <div class="stats">
-    <div class="stat"><b data-n="all">656</b><span>claims registered in the trust ledger</span></div>
-    <div class="stat"><b data-n="all.proved">570</b><span>of them machine-proved (tier T3 or T4)</span></div>
-    <div class="stat"><b data-n="all.T4">239</b><span>at the end-to-end tier T4: checker soundness, kernel safety and kernel floating point</span></div>
+    <div class="stat"><b data-n="all">664</b><span>claims registered in the trust ledger</span></div>
+    <div class="stat"><b data-n="all.proved">576</b><span>of them machine-proved (tier T3 or T4)</span></div>
+    <div class="stat"><b data-n="all.T4">244</b><span>at the end-to-end tier T4: checker soundness, kernel safety and kernel floating point</span></div>
     <div class="stat"><b>4</b><span>reference codes cross-checked: DFTK.jl, scikit-fem, ASE and pycalphad</span></div>
   </div>
     <p class="g-cap">Proof dependencies: what every claim in the ledger is built on, read from the Lean proof terms. Click a node to follow its chain; each domain page has the same graph for its own claims.</p>
@@ -107,6 +107,9 @@
   <h2>News</h2>
   <div class="prose"><p>Features added to the five domains, research results, and changes to the paper and this site, newest first. Item-by-item status is on the <a href="progress.html">progress page</a>; every claim cited here is in the trust ledger.</p></div>
   <ol class="news">
+    <li><time datetime="2026-10-20">20 Oct 2026</time><ul>
+      <li><span class="tag n">DFT</span><b>A second S1 material: aluminium phosphide.</b> AlP was pre-registered before any calculation (protocol DFT-O20, <i>a</i>&nbsp;=&nbsp;5.4672&nbsp;Å, real GTH-LDA with two species, cutoff 10.08&nbsp;Ha, 8×8×8 k mesh) and is now certified at those settings. The 3D checker gained a second species (per-species pseudopotentials and structure factors, with the zinc-blende symmetry checked in Lean). The SCF certificate bounds all 8192 band energies to within 2.6×10⁻⁹&nbsp;Ha; the gap on the mesh lies in [1.4778801, 1.4778802]&nbsp;eV (top of the valence band at Γ, bottom of the conduction band at X). The whole-zone check gives the S1 record under the one-sided rule: the KS-LDA gap at these settings is at most 1.478051&nbsp;eV (DFT-W96). The SCF check takes 14.5&nbsp;h on 32 cores (362 CPU-hours, 103&nbsp;GB), the zone check 1&nbsp;h. DFTK 0.8 on the same discrete problem puts all 8192 bands inside the intervals. The comparison with experiment has not been made yet. DFT-W90–W97.</li>
+    </ul></li>
     <li><time datetime="2026-10-19">19 Oct 2026</time><ul>
       <li><span class="tag n">DFT</span><b>A certified total energy for the S1 silicon solution.</b> A new mode of the 3D checker (<code>fis-pw3d-energy 1</code>) bounds the total LDA energy of a certified SCF solution: the electronic energy through an energy identity at the solution (second-order remainder, band-sum bound) and the ion–ion Ewald energy through rational bounds on <code>erfc</code> and the lattice-sum tails. For the S1 silicon certificate (real GTH-LDA, 8×8×8 k mesh) it gives <i>E</i> ∈ [−7.928721861, −7.928721780]&nbsp;Ha per cell, a width of 8.0×10⁻⁸&nbsp;Ha (2.2&nbsp;µeV), with soundness proved in Lean (DFT-W85, W87); DFTK 0.8 on the same discrete problem lands inside. Caveat: the Ewald sum is bounded at a fixed splitting parameter (η&nbsp;=&nbsp;7/2, the formula DFTK uses); its independence of η is classical but not proved. DFT-W80–W89.</li>
     </ul></li>
@@ -612,7 +615,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · Programme v0.4 · revised as the project evolves<span class="updated"> · updated <time datetime="2026-10-19T11:10+08:00">2026-10-19 11:10 UTC+8</time></span></span>
+  <span>Formal in Silico · Programme v0.4 · revised as the project evolves<span class="updated"> · updated <time datetime="2026-10-20T07:52+08:00">2026-10-20 07:52 UTC+8</time></span></span>
   <span><a href="progress.html">Progress</a> · <a href="showcases.html">Showcases</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="zh/" hreflang="zh-CN">中文版</a></span>
 </div></footer>
 </body>
