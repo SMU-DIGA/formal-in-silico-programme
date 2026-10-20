@@ -46,9 +46,9 @@
     <div class="j ph"><span class="k">实验</span><span class="e"><i class="v">y</i><sub>obs</sub> − <i class="v">y</i><sub>model</sub> ∈ [<i class="v">y</i><sub>obs</sub> − hi, <i class="v">y</i><sub>obs</sub> − lo] ± <i class="v">σ</i><sub>exp</sub></span></div>
   </div>
   <div class="stats">
-    <div class="stat"><b data-n="all">664</b><span>条命题登记在可信账本中</span></div>
-    <div class="stat"><b data-n="all.proved">576</b><span>条已有机器证明（T3 或 T4）</span></div>
-    <div class="stat"><b data-n="all.T4">244</b><span>条达到端到端等级 T4：检查器可靠性、内核安全与内核浮点</span></div>
+    <div class="stat"><b data-n="all">676</b><span>条命题登记在可信账本中</span></div>
+    <div class="stat"><b data-n="all.proved">585</b><span>条已有机器证明（T3 或 T4）</span></div>
+    <div class="stat"><b data-n="all.T4">247</b><span>条达到端到端等级 T4：检查器可靠性、内核安全与内核浮点</span></div>
     <div class="stat"><b>4</b><span>个参照程序交叉校验：DFTK.jl、scikit-fem、ASE 与 pycalphad</span></div>
   </div>
     <p class="g-cap">证明依赖：账本里的每个命题建立在哪些命题之上，直接从 Lean 证明项读出。点一个节点追踪它的链；各领域页里有只看本领域的同一张图。</p>
@@ -108,6 +108,9 @@
   <div class="prose"><p>五个领域新增的功能、研究结果，以及论文与本网站的变化，新的在前。逐项状态见<a href="progress.html">实现进度</a>；这里引用的命题都登记在可信账本中。</p></div>
   <ol class="news">
     <li><time datetime="2026-10-20">2026-10-20</time><ul>
+      <li><span class="tag n">CALPHAD</span><b>NIST 焊料数据库与它自己的表对照。</b>按在任何认证计算之前登记的协议（CAL-B35），<code>certify-calphad --tdb</code> 计算了 NIST 焊料数据库文件（<code>NIST-solder.tdb</code>）中、同一网站的计算不变反应表列出的 26 个不变平衡，并与表中的值逐条比较。22 条一致；4 条不一致，放宽容差后也不一致。Ag–Sn L&nbsp;+&nbsp;ζ&nbsp;→&nbsp;Ag<sub>3</sub>Sn：文件给出 [754.3137, 754.3337]&nbsp;K，表中为 753.05&nbsp;K（1999 版的文件给出的值在表的容差内）。Ag–Pb L&nbsp;→&nbsp;(Ag)&nbsp;+&nbsp;(Pb)：比表高 1.20&nbsp;K。Cu–Pb 的偏晶与共晶反应：在检验成分处文件只给出 FCC_A1 一个相，没有液相。每一条陈述只关于这个文件与这张表，不说哪一方有误，也不涉及实验。用 pycalphad 缺省设定做的浮点重算在 47 个点中有 2 个给出错误的平衡，证书把它们揭示出来。2055 份证书已存档，由 <code>verify_all</code> 重新检查。CAL-B35、B36。</li>
+      <li><span class="tag n">确认</span><b>S1 与实验比较：硅与磷化铝。</b>按预登记的协议（DFT-O04、O20）与冻结的数据集 <code>band-gaps-batch1</code>（第 1 版，登记后没有改动），比较工具 <code>fis.s1val</code> 把认证的单侧带隙界与可比的观测带隙（低温带隙去掉零点重整化与自旋轨道分裂，不确定度相加）放在一起。硅：协议设定下的 KS-LDA 带隙至多 0.530902&nbsp;eV，观测 1.2437&nbsp;±&nbsp;0.017&nbsp;eV，观测比模型至少高 0.696&nbsp;eV。磷化铝：至多 1.478051&nbsp;eV，观测 2.6263&nbsp;±&nbsp;0.073&nbsp;eV，至少高 1.075&nbsp;eV。两项的判定都是“模型低于观测”，等级 V1。单侧规则只给出偏差的这个下界；对象是离散化的 KS-LDA 模型（固定截断与 k 点网格），不是收敛的 LDA。LDA 低估带隙是熟知的；新的是带隙的模型一侧是证明过的界，偏差不可能来自数值。<code>verify_all</code> 从存档的检查器输出重新计算这两项比较。</li>
+      <li><span class="tag n">DFT</span><b>完整的 GTH 赝势：<i>d</i> 通道与三个投影子。</b>三维 LDA 检查器与整区能带检查器（规则 U）现在接受完整的 GTH/HGH 非局域部分：角动量 <i>l</i>&nbsp;≤&nbsp;2，每个通道至多三个投影子，这是镓、砷的赝势所需要的。投影子的 Fourier 变换、fcc 晶格上的 <i>d</i> 通道核及其在时间反演与点群下的变换都在 Lean 中证明；没有新项时检查器与原来的逐字相同。在一个小的 GaAs 测试上（<i>a</i>&nbsp;=&nbsp;10.5&nbsp;bohr，截断约 1&nbsp;Ha，2×2×2 k 点网格），SCF 证书通过，残差 5.6×10⁻¹²，DFTK 的 104 个本征值全部落在区间内；能带检查也通过。这是 S1 加入 GaAs、GaP、AlAs 的前提；它们的协议还没有登记。DFT-W110–W119。</li>
       <li><span class="tag n">DFT</span><b>S1 的第二种材料：磷化铝。</b>AlP 在任何计算之前预登记（协议 DFT-O20，<i>a</i>&nbsp;=&nbsp;5.4672&nbsp;Å，两种元素的真实 GTH-LDA，截断 10.08&nbsp;Ha，8×8×8 k 点网格），现已在这些设定下认证。三维检查器支持了两种元素（各元素的赝势与结构因子，闪锌矿对称性在 Lean 中检查）。SCF 证书把全部 8192 个能带能量界到 2.6×10⁻⁹&nbsp;Ha 以内；网格上的带隙在 [1.4778801, 1.4778802]&nbsp;eV（价带顶在 Γ，导带底在 X）。整个布里渊区的检查给出单侧规则下的 S1 记录：这些设定下 KS-LDA 带隙至多 1.478051&nbsp;eV（DFT-W96）。SCF 检查在 32 核上用 14.5 小时（362 CPU 小时，103&nbsp;GB），整区检查 1 小时。DFTK 0.8 在同一离散问题上的 8192 条能带全部落在区间内。尚未与实验比较。DFT-W90–W97。</li>
     </ul></li>
     <li><time datetime="2026-10-19">2026-10-19</time><ul>
@@ -615,7 +618,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · 项目纲领 v0.4 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-10-20T07:52+08:00">2026-10-20 07:52 UTC+8</time></span></span>
+  <span>Formal in Silico · 项目纲领 v0.4 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-10-20T23:59+08:00">2026-10-20 23:59 UTC+8</time></span></span>
   <span><a href="progress.html">实现进度</a> · <a href="showcases.html">成果展示</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="../" hreflang="en">English</a></span>
 </div></footer>
 </body>
