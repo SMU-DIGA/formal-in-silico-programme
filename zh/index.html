@@ -46,9 +46,9 @@
     <div class="j ph"><span class="k">实验</span><span class="e"><i class="v">y</i><sub>obs</sub> − <i class="v">y</i><sub>model</sub> ∈ [<i class="v">y</i><sub>obs</sub> − hi, <i class="v">y</i><sub>obs</sub> − lo] ± <i class="v">σ</i><sub>exp</sub></span></div>
   </div>
   <div class="stats">
-    <div class="stat"><b data-n="all">676</b><span>条命题登记在可信账本中</span></div>
-    <div class="stat"><b data-n="all.proved">585</b><span>条已有机器证明（T3 或 T4）</span></div>
-    <div class="stat"><b data-n="all.T4">247</b><span>条达到端到端等级 T4：检查器可靠性、内核安全与内核浮点</span></div>
+    <div class="stat"><b data-n="all">698</b><span>条命题登记在可信账本中</span></div>
+    <div class="stat"><b data-n="all.proved">603</b><span>条已有机器证明（T3 或 T4）</span></div>
+    <div class="stat"><b data-n="all.T4">255</b><span>条达到端到端等级 T4：检查器可靠性、内核安全与内核浮点</span></div>
     <div class="stat"><b>4</b><span>个参照程序交叉校验：DFTK.jl、scikit-fem、ASE 与 pycalphad</span></div>
   </div>
     <p class="g-cap">证明依赖：账本里的每个命题建立在哪些命题之上，直接从 Lean 证明项读出。点一个节点追踪它的链；各领域页里有只看本领域的同一张图。</p>
@@ -107,6 +107,11 @@
   <h2>动态</h2>
   <div class="prose"><p>五个领域新增的功能、研究结果，以及论文与本网站的变化，新的在前。逐项状态见<a href="progress.html">实现进度</a>；这里引用的命题都登记在可信账本中。</p></div>
   <ol class="news">
+    <li><time datetime="2026-10-21">2026-10-21</time><ul>
+      <li><span class="tag n">DFT</span><b>复核 Chelikowsky–Cohen 1976 的能带能量。</b>按在计算任何能带能量之前登记的协议（DFT-O21），新的 Lean 检查器 <code>certify-pwnl</code> 给出 Chelikowsky 与 Cohen（1976）按原文印出的非局域经验赝势模型的本征值区间，可靠性定理为 <code>checkKCC_sound</code>。9 组参数在 Γ、X、L 上共 30 个运行，区间宽不超过 5×10⁻⁷&nbsp;eV。登记的 111 个印出值中，28 个与印出位数一致，64 个在原文自述的精度内一致。最清楚的是硅的纯局域模型，它的参数原文全部印出：印出的 11 个能级全部与模型本征值相差 0.034–0.087&nbsp;eV。截断解释不了这个差（截断从 Q&nbsp;=&nbsp;33.5 变到 150，结果变化不到 4×10⁻⁴&nbsp;eV），按原文自己的基组重算也解释不了。差最大的是 InP 的 X<sub>5v</sub>（−0.196&nbsp;eV）与 CdTe 的 Γ<sub>15c</sub>（−0.133&nbsp;eV）。其余闪锌矿参数组要用到原文没有印出的一个半径的读法，结论注明所用的读法。每一条只比较印出的表与印出的模型，不涉及实验。DFT-W150–W159。</li>
+      <li><span class="tag n">CALPHAD</span><b>已发表的二元评估与它们自己的表对照。</b>与 NIST 焊料数据库相同的方法，用于六篇附带数据库文件并印出计算不变反应表的已发表 CALPHAD 评估，协议在任何认证计算之前登记（CAL-B37）。登记的 56 个反应中 32 个一致（其中 10 个由点证书判定），3 个不一致，21 个按登记的规则不比较。Al–Cu 的 18 个、Mg–Si 的 3 个反应全部一致。3 个不一致都在 Pt–Pb，差 4–17&nbsp;K：论文印出的式&nbsp;3 加上它的 Table&nbsp;2 参数，算不出它自己印出的表；液相一阶参数取相反的符号约定时，4 个值都在 0.08&nbsp;K 内重现。另有 49 个反应用到检查器还不支持的相模型（例如有序–无序的 BCC_B2），列为不可比较。2030 份证书已存档，由 <code>verify_all</code> 重新检查。CAL-B37、B38。</li>
+      <li><span class="tag n">DFT</span><b>完整 GTH 核的两侧带隙。</b>两侧的整区能带检查（规则&nbsp;B）现在接受完整的 GTH 赝势：两种元素、<i>d</i> 通道与三个投影子。可靠性在 Lean 中证明，包括分段的形式，各段可以分开检查、断点续算。在一个小的 GaAs 测试上（<i>a</i>&nbsp;=&nbsp;10.5&nbsp;bohr，截断约 1&nbsp;Ha，2×2×2 k 点网格），整个布里渊区的带隙被证明在 [0.188, 2.202]&nbsp;eV 之内。这是用这个核得到的第一个为正的下界。这个测试离收敛的 GaAs 还很远；在 S1 设定下的生产运行估计要在 32 核上跑 60–90 小时。DFT-W120–W129。</li>
+    </ul></li>
     <li><time datetime="2026-10-20">2026-10-20</time><ul>
       <li><span class="tag n">CALPHAD</span><b>NIST 焊料数据库与它自己的表对照。</b>按在任何认证计算之前登记的协议（CAL-B35），<code>certify-calphad --tdb</code> 计算了 NIST 焊料数据库文件（<code>NIST-solder.tdb</code>）中、同一网站的计算不变反应表列出的 26 个不变平衡，并与表中的值逐条比较。22 条一致；4 条不一致，放宽容差后也不一致。Ag–Sn L&nbsp;+&nbsp;ζ&nbsp;→&nbsp;Ag<sub>3</sub>Sn：文件给出 [754.3137, 754.3337]&nbsp;K，表中为 753.05&nbsp;K（1999 版的文件给出的值在表的容差内）。Ag–Pb L&nbsp;→&nbsp;(Ag)&nbsp;+&nbsp;(Pb)：比表高 1.20&nbsp;K。Cu–Pb 的偏晶与共晶反应：在检验成分处文件只给出 FCC_A1 一个相，没有液相。每一条陈述只关于这个文件与这张表，不说哪一方有误，也不涉及实验。用 pycalphad 缺省设定做的浮点重算在 47 个点中有 2 个给出错误的平衡，证书把它们揭示出来。2055 份证书已存档，由 <code>verify_all</code> 重新检查。CAL-B35、B36。</li>
       <li><span class="tag n">确认</span><b>S1 与实验比较：硅与磷化铝。</b>按预登记的协议（DFT-O04、O20）与冻结的数据集 <code>band-gaps-batch1</code>（第 1 版，登记后没有改动），比较工具 <code>fis.s1val</code> 把认证的单侧带隙界与可比的观测带隙（低温带隙去掉零点重整化与自旋轨道分裂，不确定度相加）放在一起。硅：协议设定下的 KS-LDA 带隙至多 0.530902&nbsp;eV，观测 1.2437&nbsp;±&nbsp;0.017&nbsp;eV，观测比模型至少高 0.696&nbsp;eV。磷化铝：至多 1.478051&nbsp;eV，观测 2.6263&nbsp;±&nbsp;0.073&nbsp;eV，至少高 1.075&nbsp;eV。两项的判定都是“模型低于观测”，等级 V1。单侧规则只给出偏差的这个下界；对象是离散化的 KS-LDA 模型（固定截断与 k 点网格），不是收敛的 LDA。LDA 低估带隙是熟知的；新的是带隙的模型一侧是证明过的界，偏差不可能来自数值。<code>verify_all</code> 从存档的检查器输出重新计算这两项比较。</li>
@@ -618,7 +623,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · 项目纲领 v0.4 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-10-20T23:59+08:00">2026-10-20 23:59 UTC+8</time></span></span>
+  <span>Formal in Silico · 项目纲领 v0.4 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-10-21T06:07+08:00">2026-10-21 06:07 UTC+8</time></span></span>
   <span><a href="progress.html">实现进度</a> · <a href="showcases.html">成果展示</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="../" hreflang="en">English</a></span>
 </div></footer>
 </body>
