@@ -46,9 +46,9 @@
     <div class="j ph"><span class="k">实验</span><span class="e"><i class="v">y</i><sub>obs</sub> − <i class="v">y</i><sub>model</sub> ∈ [<i class="v">y</i><sub>obs</sub> − hi, <i class="v">y</i><sub>obs</sub> − lo] ± <i class="v">σ</i><sub>exp</sub></span></div>
   </div>
   <div class="stats">
-    <div class="stat"><b data-n="all">698</b><span>条命题登记在可信账本中</span></div>
-    <div class="stat"><b data-n="all.proved">603</b><span>条已有机器证明（T3 或 T4）</span></div>
-    <div class="stat"><b data-n="all.T4">255</b><span>条达到端到端等级 T4：检查器可靠性、内核安全与内核浮点</span></div>
+    <div class="stat"><b data-n="all">706</b><span>条命题登记在可信账本中</span></div>
+    <div class="stat"><b data-n="all.proved">607</b><span>条已有机器证明（T3 或 T4）</span></div>
+    <div class="stat"><b data-n="all.T4">257</b><span>条达到端到端等级 T4：检查器可靠性、内核安全与内核浮点</span></div>
     <div class="stat"><b>4</b><span>个参照程序交叉校验：DFTK.jl、scikit-fem、ASE 与 pycalphad</span></div>
   </div>
     <p class="g-cap">证明依赖：账本里的每个命题建立在哪些命题之上，直接从 Lean 证明项读出。点一个节点追踪它的链；各领域页里有只看本领域的同一张图。</p>
@@ -108,6 +108,7 @@
   <div class="prose"><p>五个领域新增的功能、研究结果，以及论文与本网站的变化，新的在前。逐项状态见<a href="progress.html">实现进度</a>；这里引用的命题都登记在可信账本中。</p></div>
   <ol class="news">
     <li><time datetime="2026-10-21">2026-10-21</time><ul>
+      <li><span class="tag n">DFT</span><b>势固定时，截断让 S1 硅的带隙移动多少。</b>三维检查器的新模式（<code>fis-pw3d-trunc 1</code>，可靠性定理 <code>runTR_sound</code>）在认证的 SCF 解上把势固定，界住<i>连续</i>（没有平面波截断）的 Kohn–Sham 算子的本征值：Rayleigh–Ritz 上界，加上处理局域与非局域赝势无穷尾部的 Schur 型下界。对 S1 的硅解，离散模型与固定势连续算子之间，两个带边合起来让带隙移动 [4.17, 6.32]&nbsp;meV（浮点 +5.25&nbsp;meV；DFTK 在 35、45、80&nbsp;Ha 的值都在界内）。这只界住截断误差中非自洽的部分。可行性研究表明，用这种方法界住完整的自洽误差做不到：真实误差 +1.2&nbsp;meV 是 +5.3 与 −4.0&nbsp;meV 之差，只用范数的界看不到这种抵消。DFT-W140–W147。</li>
       <li><span class="tag n">DFT</span><b>复核 Chelikowsky–Cohen 1976 的能带能量。</b>按在计算任何能带能量之前登记的协议（DFT-O21），新的 Lean 检查器 <code>certify-pwnl</code> 给出 Chelikowsky 与 Cohen（1976）按原文印出的非局域经验赝势模型的本征值区间，可靠性定理为 <code>checkKCC_sound</code>。9 组参数在 Γ、X、L 上共 30 个运行，区间宽不超过 5×10⁻⁷&nbsp;eV。登记的 111 个印出值中，28 个与印出位数一致，64 个在原文自述的精度内一致。最清楚的是硅的纯局域模型，它的参数原文全部印出：印出的 11 个能级全部与模型本征值相差 0.034–0.087&nbsp;eV。截断解释不了这个差（截断从 Q&nbsp;=&nbsp;33.5 变到 150，结果变化不到 4×10⁻⁴&nbsp;eV），按原文自己的基组重算也解释不了。差最大的是 InP 的 X<sub>5v</sub>（−0.196&nbsp;eV）与 CdTe 的 Γ<sub>15c</sub>（−0.133&nbsp;eV）。其余闪锌矿参数组要用到原文没有印出的一个半径的读法，结论注明所用的读法。每一条只比较印出的表与印出的模型，不涉及实验。DFT-W150–W159。</li>
       <li><span class="tag n">CALPHAD</span><b>已发表的二元评估与它们自己的表对照。</b>与 NIST 焊料数据库相同的方法，用于六篇附带数据库文件并印出计算不变反应表的已发表 CALPHAD 评估，协议在任何认证计算之前登记（CAL-B37）。登记的 56 个反应中 32 个一致（其中 10 个由点证书判定），3 个不一致，21 个按登记的规则不比较。Al–Cu 的 18 个、Mg–Si 的 3 个反应全部一致。3 个不一致都在 Pt–Pb，差 4–17&nbsp;K：论文印出的式&nbsp;3 加上它的 Table&nbsp;2 参数，算不出它自己印出的表；液相一阶参数取相反的符号约定时，4 个值都在 0.08&nbsp;K 内重现。另有 49 个反应用到检查器还不支持的相模型（例如有序–无序的 BCC_B2），列为不可比较。2030 份证书已存档，由 <code>verify_all</code> 重新检查。CAL-B37、B38。</li>
       <li><span class="tag n">DFT</span><b>完整 GTH 核的两侧带隙。</b>两侧的整区能带检查（规则&nbsp;B）现在接受完整的 GTH 赝势：两种元素、<i>d</i> 通道与三个投影子。可靠性在 Lean 中证明，包括分段的形式，各段可以分开检查、断点续算。在一个小的 GaAs 测试上（<i>a</i>&nbsp;=&nbsp;10.5&nbsp;bohr，截断约 1&nbsp;Ha，2×2×2 k 点网格），整个布里渊区的带隙被证明在 [0.188, 2.202]&nbsp;eV 之内。这是用这个核得到的第一个为正的下界。这个测试离收敛的 GaAs 还很远；在 S1 设定下的生产运行估计要在 32 核上跑 60–90 小时。DFT-W120–W129。</li>
@@ -623,7 +624,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · 项目纲领 v0.4 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-10-21T06:07+08:00">2026-10-21 06:07 UTC+8</time></span></span>
+  <span>Formal in Silico · 项目纲领 v0.4 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-10-21T10:21+08:00">2026-10-21 10:21 UTC+8</time></span></span>
   <span><a href="progress.html">实现进度</a> · <a href="showcases.html">成果展示</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="../" hreflang="en">English</a></span>
 </div></footer>
 </body>
