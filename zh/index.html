@@ -46,9 +46,9 @@
     <div class="j ph"><span class="k">实验</span><span class="e"><i class="v">y</i><sub>obs</sub> − <i class="v">y</i><sub>model</sub> ∈ [<i class="v">y</i><sub>obs</sub> − hi, <i class="v">y</i><sub>obs</sub> − lo] ± <i class="v">σ</i><sub>exp</sub></span></div>
   </div>
   <div class="stats">
-    <div class="stat"><b data-n="all">771</b><span>条命题登记在可信账本中</span></div>
-    <div class="stat"><b data-n="all.proved">632</b><span>条已有机器证明（T3 或 T4）</span></div>
-    <div class="stat"><b data-n="all.T4">276</b><span>条达到端到端等级 T4：检查器可靠性、内核安全与内核浮点</span></div>
+    <div class="stat"><b data-n="all">780</b><span>条命题登记在可信账本中</span></div>
+    <div class="stat"><b data-n="all.proved">634</b><span>条已有机器证明（T3 或 T4）</span></div>
+    <div class="stat"><b data-n="all.T4">278</b><span>条达到端到端等级 T4：检查器可靠性、内核安全与内核浮点</span></div>
     <div class="stat"><b>4</b><span>个参照程序交叉校验：DFTK.jl、scikit-fem、ASE 与 pycalphad</span></div>
   </div>
     <p class="g-cap">证明依赖：账本里的每个命题建立在哪些命题之上，直接从 Lean 证明项读出。点一个节点追踪它的链；各领域页里有只看本领域的同一张图。</p>
@@ -108,6 +108,8 @@
   <div class="prose"><p>五个领域新增的功能、研究结果，以及论文与本网站的变化，新的在前。逐项状态见<a href="progress.html">实现进度</a>；这里引用的命题都登记在可信账本中。</p></div>
   <ol class="news">
     <li><time datetime="2026-10-22">2026-10-22</time><ul>
+      <li><span class="tag n">DFT</span><b>GTH-PBE 赝势层逐项认证。</b>按运行前冻结的协议（DFT-O28），检查器为 GTH 证书的每一个赝势项打印认证区间。Krack 的 GTH-PBE 文件的非对角 <i>h</i><sub>12</sub> 在这一族全部 211 个多投影通道中都不满足 HGH 关系，而 ABINIT、Quantum ESPRESSO 与 DFTK 都正确地读入了它（零结果）。只保留对角项的转换（pspcod&nbsp;3）给出另一个赝势，没有任何警告（最小的问题上最低能带高 0.084&nbsp;Ha，运行仍声称收敛），QE 的 <code>upfconv.x</code> 读不了 CPMD 格式却以退出码 0 结束。认证的能带结果仍是 LDA；PBE 只覆盖到赝势这一层。</li>
+      <li><span class="tag n">检查</span><b>更快的验证：按内容寻址的结果缓存加抽样的全新复查；每晚一次不用缓存的完整运行。</b><code>verify_all</code> 在检查器可执行文件、它装载的库、每个输入字节与相关环境都相同时，可以复用较早一次检查器运行的原始输出；全部判定（与存档比较、篡改对照、已知答案、问题回显）仍然重新进行。复用的结果中按种子随机抽取一部分从头重跑、逐字节比较，有任何不符整次运行失败。日常合并可用这样复查过的运行；主分支每晚一次不用缓存的完整运行，论文引用的结果来自不用缓存的运行。</li>
       <li><span class="tag n">CALPHAD</span><b>已证明的数据库与求解器错误会不会改变用户的决定？</b>系统复核的又一个补充登记在任何新证书之前冻结并打上时间戳（CAL-B48–B51），对两个决定回答这个问题。决定&nbsp;1：在登记的检验成分上，把工艺温度放在印出的不变温度之下或之上、留余量 <i>m</i>；数据库自己的认证平衡是否把它放进另一个相区，或使液相出现或消失？共检查了 678 份新的点证书。<i>m</i>&nbsp;=&nbsp;10&nbsp;K 时，47 个可比较的数据库中有 7–9 个的决定改变（7/47：95% 区间 0.06–0.28；9/47：0.09–0.33）。这 7 个中有 5 个只来自转写表格时印出成分被标为可疑的行；排除它们是 2–4 个。10&nbsp;K 的余量是看过温度不一致的分布之后选的，因此五个余量全部报告，并给出每条反应的临界余量：2 与 5&nbsp;K 为 7–9，20&nbsp;K 为 5–8，50&nbsp;K 为 5–12。NIST 焊料数据库中，Cu–Pb 反应在每个余量下都改变决定。决定&nbsp;2：在求解器答案被证明错误的每个点上，用户读到的相组合是否不同（至少 1% 的相出现或消失），或相分数差至少 0.05？缺省设置下的 pycalphad 0.11.2：63 个数据库中 2 个（Ce–Zr 1100&nbsp;K、Be–Pu 750&nbsp;K）；缺省设置下的 OpenCalphad 开发版：54 个中 10 个。合计，66 个数据库中有 17–18 个至少有一条已证明的错误改变两个决定之一（排除可疑行时 12–13 个）。这些陈述只在登记的成分上成立。CAL-B48–B51。</li>
       <li><span class="tag n">DFT</span><b>哪些程序偏差会改变派生量。</b>按任何计算之前冻结的协议（DFT-O27），程序审计（DFT-O25）判为在认证区间外或未收敛的 131 个运行，按用户从能带与能量中取用的量重新读出：带隙、跃迁能、带宽、极值位置、简并、有限差分曲率与能量。阈值事先固定：能量差 10&nbsp;meV，曲率 1%，1&nbsp;meV/原子，0.001&nbsp;Å。28 个运行至少有一个量改变（ABINIT 21、QE 7、DFTK 0）。在两个 S1 问题（硅与 AlP）上用缺省风格的输入时，ABINIT 与 QE 使带隙偏 1.8–3.4&nbsp;meV：在主阈值下没有量改变，在 1&nbsp;meV 的阈值下每个带隙都改变。DFT-O25 发现的大的空带误差位于最上面一两条计算的带，预登记的量都不用这些带；这一观察没有预登记。在小的硅问题上，照 ABINIT 自己的错误信息建议的设置（<code>chksymbreak 0</code>）运行，带隙偏 +18.0&nbsp;meV，没有警告。把 QE 有文档的 Ewald 精度用到认证的晶格常数括号上，占用其最小余量的 0.24，括号仍成立。DFT-W208–W213。</li>
       <li><span class="tag n">DFT</span><b>缺省与教程设置对照认证的答案。</b>按运行之前冻结的协议（DFT-O26），ABINIT 10.0.3、Quantum ESPRESSO 7.6 与 DFTK 0.8.0 解同样四个认证的问题，只对齐物理问题（晶格、原子、赝势、LDA 参数化、基组、k 点网格），数值设置取程序缺省或照官方教程；有一个变体连泛函也取缺省。结果：86 个运行，在内 7、在外 54、停止 25。用缺省或教程数值设置且给出数的 33 个运行全部在外，其中 29 个无声（退出码 0、声称收敛、没有收敛警告）。在两个 S1 问题上，缺省的数值设置使带隙偏差不超过 1.4&nbsp;meV，缺省的泛函使带隙偏 0.8–3.7&nbsp;meV。按 DFT-O27 的阈值，这两个问题上唯一的改变在 ABINIT 教程的 AlP 能带步骤中：在 X 点认证为简并的两条带被分开 4.7&nbsp;meV，程序给出一条提示。最大的影响在小的硅问题上，它的 k 点网格平移 ½。QE 在缺省下，以及 ABINIT 在照其信息的建议越过它的拒绝（<code>chksymbreak</code>）之后，用全部 48 个立方操作对称化密度，其中 36 个不把网格映到自身。这定义了另一个离散问题：带隙变化 +20.25&nbsp;meV，总能量每原子变化 −2.49&nbsp;meV，QE 除一条通用提示外没有警告。机制由结果之后应用户要求运行的单项诊断确立：只关掉密度的对称化，偏差就消失。从输出读出的程序实际使用的 k 点等于证书网格，所以输入没有错。DFTK 只用保持网格的操作。这些陈述只关于这些输入与版本。DFT-W230–W239。</li>
@@ -637,7 +639,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · 项目纲领 v0.4 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-10-22T15:06+08:00">2026-10-22 15:06 UTC+8</time></span></span>
+  <span>Formal in Silico · 项目纲领 v0.4 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-10-22T22:15+08:00">2026-10-22 22:15 UTC+8</time></span></span>
   <span><a href="progress.html">实现进度</a> · <a href="showcases.html">成果展示</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="../" hreflang="en">English</a></span>
 </div></footer>
 </body>
