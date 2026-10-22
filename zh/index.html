@@ -46,9 +46,9 @@
     <div class="j ph"><span class="k">实验</span><span class="e"><i class="v">y</i><sub>obs</sub> − <i class="v">y</i><sub>model</sub> ∈ [<i class="v">y</i><sub>obs</sub> − hi, <i class="v">y</i><sub>obs</sub> − lo] ± <i class="v">σ</i><sub>exp</sub></span></div>
   </div>
   <div class="stats">
-    <div class="stat"><b data-n="all">706</b><span>条命题登记在可信账本中</span></div>
-    <div class="stat"><b data-n="all.proved">607</b><span>条已有机器证明（T3 或 T4）</span></div>
-    <div class="stat"><b data-n="all.T4">257</b><span>条达到端到端等级 T4：检查器可靠性、内核安全与内核浮点</span></div>
+    <div class="stat"><b data-n="all">745</b><span>条命题登记在可信账本中</span></div>
+    <div class="stat"><b data-n="all.proved">631</b><span>条已有机器证明（T3 或 T4）</span></div>
+    <div class="stat"><b data-n="all.T4">275</b><span>条达到端到端等级 T4：检查器可靠性、内核安全与内核浮点</span></div>
     <div class="stat"><b>4</b><span>个参照程序交叉校验：DFTK.jl、scikit-fem、ASE 与 pycalphad</span></div>
   </div>
     <p class="g-cap">证明依赖：账本里的每个命题建立在哪些命题之上，直接从 Lean 证明项读出。点一个节点追踪它的链；各领域页里有只看本领域的同一张图。</p>
@@ -107,6 +107,14 @@
   <h2>动态</h2>
   <div class="prose"><p>五个领域新增的功能、研究结果，以及论文与本网站的变化，新的在前。逐项状态见<a href="progress.html">实现进度</a>；这里引用的命题都登记在可信账本中。</p></div>
   <ol class="news">
+    <li><time datetime="2026-10-22">2026-10-22</time><ul>
+      <li><span class="tag n">DFT</span><b>S1 硅的带隙在整个布里渊区上两侧有界。</b>两侧的整区能带检查（规则&nbsp;B，<code>fis-pw3d-bzb 1</code>，可靠性定理 <code>runBZB_sound</code>，分段形式 <code>runBZB_of_ranges</code>）在认证的 S1 硅解上跑完：32 段，在 32 核上 34 小时，共 939 CPU 小时。离散化的 KS-LDA 模型（截断约 10.08&nbsp;Ha，密度用 8×8×8 Monkhorst–Pack 网格）的带隙被证明在 [0.4146, 0.4856]&nbsp;eV 之内；10 月 20 日的单侧规则只给出上界 0.5309&nbsp;eV。DFTK 0.8 在全部 27 个对照点上都在界内。与可比较的实测带隙 1.2437&nbsp;±&nbsp;0.017&nbsp;eV 相比，偏差为 [0.741, 0.847]&nbsp;eV：模型低于观测，等级 V1。这个结果记为补充比较，这是预登记的 S1 协议（§1.1）为“比较之后才有更强的规则”规定的形式；第一次的单侧判定留在记录中。补充比较的形式于 10 月 22 日在确认工具中实现，<code>verify_all</code> 由存档的检查器输出重新计算这个比较。DFT-W52–W66、DFT-O04。</li>
+      <li><span class="tag n">DFT</span><b>离散模型中硅晶格常数的认证括号。</b>在 5.354683、5.356683、5.358683&nbsp;Å 三个晶格常数上，用 S1 的设定、在约化坐标中固定平面波基组（<i>Q</i>&nbsp;=&nbsp;107/2），得到认证的 SCF 解与总能量，能量区间宽不超过 2.6×10⁻⁷&nbsp;Ha，中间点比两端至少低 4.1×10⁻⁷&nbsp;Ha。Lean 中证明的括号定理（<code>lattBracket_sound</code>），比较由 Lean 内核在精确数上判定，于是把这个固定 <i>Q</i> 的离散 KS-LDA 族的每个能量极小点都放在 5.354683 与 5.358683&nbsp;Å 之间，窗口宽 0.004&nbsp;Å。有一个假设不由检查器给出：两个端点上认证的解是基态。这不是收敛的 LDA 晶格常数，也没有与实验比较。三次检查共 847 CPU 小时。DFT-W100–W107。</li>
+      <li><span class="tag n">DFT</span><b>三个平面波程序对照认证的答案。</b>按运行之前冻结的协议（DFT-O25），ABINIT 10.0.3、Quantum ESPRESSO 7.6 与 DFTK 0.8.0 在四个答案为认证区间的离散 Kohn–Sham 问题上共运行 219 次，每个报告的数按是否落在区间内判定，不加容差。输入与认证的问题对齐时，ABINIT 在小的硅问题上在内（在两个 S1 问题上数在内，但严格的波函数容差始终达不到，记为未收敛）；QE 在两个 S1 问题上在内，在小问题上能量在外（总能量差 4.9×10⁻⁸&nbsp;Ha，几乎全部来自它对 Ewald 参数的选择），在砷化镓测试上一项假设公共能量零点的检验差 9×10⁻¹¹&nbsp;Ha，带隙在内；DFTK 在跑完的问题上都在内。用缺省输入时，12 个（问题，程序）组合没有一个在内：ABINIT 与 QE 缺省用另一种 LDA 关联，使带隙偏 1.8–4.0&nbsp;meV。按能量容差设收敛（10⁻¹⁰，与缺省风格的输入相同）时，ABINIT 与 QE 报告收敛、退出码为 0、没有警告，而空带的本征值离认证区间 3×10⁻⁴ 到 8×10⁻³&nbsp;Ha；占据带与带隙在 10⁻⁷&nbsp;Ha 内。在一个对齐的 ABINIT 运行中，带数等于平面波数，程序正常退出，只有一条迭代次数的警告，带隙偏 0.22&nbsp;Ha。这些陈述只关于这些输入与版本。DFT-W200–W207。</li>
+      <li><span class="tag n">CALPHAD</span><b>系统地复核已发表的 CALPHAD 二元数据库。</b>按在任何认证计算之前登记的协议（CAL-B39），抽样框是 TDBDB 索引中以 <i>Calphad</i> 期刊补充材料发表的全部二元、非动力学数据库（161 个文件、99 篇论文）。量一把每个数据库与它自己的论文印出的计算不变反应表对照：在有可比较反应的 47 个数据库中，25 个至少有一个反应不一致（0.53，95% 区间 [0.38, 0.68]）；其中 21 个的不一致对印出的舍入与气体常数 8.31451 都稳健。多数稳健的不一致在 1&nbsp;K 以内，最大的是 7.5&nbsp;K。41,788 份证书已存档。一条处理断开的证书链的规则是看过判定之后才选的，只作为敏感性分析报告。量二在固定的 (<i>T</i>,&nbsp;<i>x</i>) 网格上运行文档缺省设置下的 pycalphad 0.11.2：63 个数据库中 7 个至少有一个点被证明不是全局平衡（0.11，[0.05, 0.22]）。例如 Ce–Zr 在 1100&nbsp;K，pycalphad 给出单相，证书证明是 LIQUID&nbsp;+&nbsp;HCP，pycalphad 的答案比认证的最小值高 1.7–6.4&nbsp;kJ/mol。预登记的补充登记用第二个求解器 OpenCalphad 6.137（缺省设置）重做量二：54 个数据库中 16 个（0.30，[0.18, 0.44]），另在 14.9% 的有证书的点上没有给出答案。它的单相解读对照是看过结果之后修订的；这次修订标为事后修订，经用户批准。连同 10 月 22 日预先规定的后续（用下面的性质检查器），可比较的数据库从 43 个变为 54 个。两个求解器很少在同一点上出错：两者都给出答案的 48,584 个点中，两者都错 4 个，只有 OpenCalphad 错 78 个，只有 pycalphad 错 4 个。每个陈述只说求解器在该点的输出是否为文件所定义模型的全局平衡。CAL-B39–B43。</li>
+      <li><span class="tag n">DFT</span><b>k 点 SCF 检查器的扩展精度。</b>三维检查器的 k 点模式现在把动能前因子 (2π/<i>a</i>)² 舍入到 2⁻⁹⁶，而不是 2⁻⁵²。可靠性定理的陈述不变；5 个已钉定理因证明依赖这一改动而重新记录。驱动可以用扩展精度细化 SCF 的中心（<code>--xprec</code>）。在登记的 S1 砷化镓设定、2×2×2 网格上，浮点预检量 4<i>a</i>η<sub>T</sub>（必须小于 1）从 23.9 降到 0.011。这是预检，不是证书；它去掉了 S1 砷化镓运行在精度上的障碍。DFT-W170–W172。</li>
+      <li><span class="tag n">CALPHAD</span><b>间隙相与带磁性项的化合物的性质证书。</b>相的性质（固定成分处的 <i>G</i>、<i>S</i>、<i>H</i> 与 <i>C</i><sub>p</sub>，CAL-B07）的检查器现在支持原来缺的两类相：线性占位的相，例如间隙溶体（CAL-C22），与带磁性项的化学计量化合物（CAL-C23），可靠性在 Lean 中证明。被拒绝的证书现在给出相、它的类型与原因，不再是笼统的信息。上面 OpenCalphad 的解读对照因此能在含这类相的六个数据库上做完。CAL-B07。</li>
+    </ul></li>
     <li><time datetime="2026-10-21">2026-10-21</time><ul>
       <li><span class="tag n">DFT</span><b>势固定时，截断让 S1 硅的带隙移动多少。</b>三维检查器的新模式（<code>fis-pw3d-trunc 1</code>，可靠性定理 <code>runTR_sound</code>）在认证的 SCF 解上把势固定，界住<i>连续</i>（没有平面波截断）的 Kohn–Sham 算子的本征值：Rayleigh–Ritz 上界，加上处理局域与非局域赝势无穷尾部的 Schur 型下界。对 S1 的硅解，离散模型与固定势连续算子之间，两个带边合起来让带隙移动 [4.17, 6.32]&nbsp;meV（浮点 +5.25&nbsp;meV；DFTK 在 35、45、80&nbsp;Ha 的值都在界内）。这只界住截断误差中非自洽的部分。可行性研究表明，用这种方法界住完整的自洽误差做不到：真实误差 +1.2&nbsp;meV 是 +5.3 与 −4.0&nbsp;meV 之差，只用范数的界看不到这种抵消。DFT-W140–W147。</li>
       <li><span class="tag n">DFT</span><b>复核 Chelikowsky–Cohen 1976 的能带能量。</b>按在计算任何能带能量之前登记的协议（DFT-O21），新的 Lean 检查器 <code>certify-pwnl</code> 给出 Chelikowsky 与 Cohen（1976）按原文印出的非局域经验赝势模型的本征值区间，可靠性定理为 <code>checkKCC_sound</code>。9 组参数在 Γ、X、L 上共 30 个运行，区间宽不超过 5×10⁻⁷&nbsp;eV。登记的 111 个印出值中，28 个与印出位数一致，64 个在原文自述的精度内一致。最清楚的是硅的纯局域模型，它的参数原文全部印出：印出的 11 个能级全部与模型本征值相差 0.034–0.087&nbsp;eV。截断解释不了这个差（截断从 Q&nbsp;=&nbsp;33.5 变到 150，结果变化不到 4×10⁻⁴&nbsp;eV），按原文自己的基组重算也解释不了。差最大的是 InP 的 X<sub>5v</sub>（−0.196&nbsp;eV）与 CdTe 的 Γ<sub>15c</sub>（−0.133&nbsp;eV）。其余闪锌矿参数组要用到原文没有印出的一个半径的读法，结论注明所用的读法。每一条只比较印出的表与印出的模型，不涉及实验。DFT-W150–W159。</li>
@@ -624,7 +632,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · 项目纲领 v0.4 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-10-21T10:21+08:00">2026-10-21 10:21 UTC+8</time></span></span>
+  <span>Formal in Silico · 项目纲领 v0.4 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-10-22T09:53+08:00">2026-10-22 09:53 UTC+8</time></span></span>
   <span><a href="progress.html">实现进度</a> · <a href="showcases.html">成果展示</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="../" hreflang="en">English</a></span>
 </div></footer>
 </body>
