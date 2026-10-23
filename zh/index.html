@@ -46,9 +46,9 @@
     <div class="j ph"><span class="k">实验</span><span class="e"><i class="v">y</i><sub>obs</sub> − <i class="v">y</i><sub>model</sub> ∈ [<i class="v">y</i><sub>obs</sub> − hi, <i class="v">y</i><sub>obs</sub> − lo] ± <i class="v">σ</i><sub>exp</sub></span></div>
   </div>
   <div class="stats">
-    <div class="stat"><b data-n="all">793</b><span>条命题登记在可信账本中</span></div>
-    <div class="stat"><b data-n="all.proved">634</b><span>条已有机器证明（T3 或 T4）</span></div>
-    <div class="stat"><b data-n="all.T4">278</b><span>条达到端到端等级 T4：检查器可靠性、内核安全与内核浮点</span></div>
+    <div class="stat"><b data-n="all">796</b><span>条命题登记在可信账本中</span></div>
+    <div class="stat"><b data-n="all.proved">636</b><span>条已有机器证明（T3 或 T4）</span></div>
+    <div class="stat"><b data-n="all.T4">280</b><span>条达到端到端等级 T4：检查器可靠性、内核安全与内核浮点</span></div>
     <div class="stat"><b>4</b><span>个参照程序交叉校验：DFTK.jl、scikit-fem、ASE 与 pycalphad</span></div>
   </div>
     <p class="g-cap">证明依赖：账本里的每个命题建立在哪些命题之上，直接从 Lean 证明项读出。点一个节点追踪它的链；各领域页里有只看本领域的同一张图。</p>
@@ -108,6 +108,7 @@
   <div class="prose"><p>五个领域新增的功能、研究结果，以及论文与本网站的变化，新的在前。逐项状态见<a href="progress.html">实现进度</a>；这里引用的命题都登记在可信账本中。</p></div>
   <ol class="news">
     <li><time datetime="2026-10-23">2026-10-23</time><ul>
+      <li><span class="tag n">DFT</span><b>第三种材料：GaP 的 KS-LDA 带隙在整个布里渊区上有了上界。</b>按任何证书之前登记的协议的设定（DFT-O24：闪锌矿 GaP，GTH-LDA，Ga 用完整核，截断 <i>Q</i>&nbsp;=&nbsp;59，Monkhorst&ndash;Pack 8&times;8&times;8），自洽解由 Lean 检查器认证（DFT-W190，T4；网格带隙 1.5855485&ndash;1.5855486&nbsp;eV），整区能带证书给出最高价带在整个布里渊区上的上界，从而得到离散模型带隙的单侧上界 <i>C</i>&nbsp;=&nbsp;1.585748&nbsp;eV（规则 U，DFT-W191，T4）。导带底不在网格上而在 &Gamma;&ndash;X 线上，所以 <i>C</i> 比浮点带隙高 48&nbsp;meV，与协议的预计（约 47&nbsp;meV）一致。DFTK 算出的 8192 个本征值全部落在认证区间内（DFT-W193）。代价：32 核约 1,100 CPU 小时（SCF 检查 931，能带检查 174），内存 129&nbsp;GB。与实验的比较尚未进行。已登记的 GaAs、AlAs 协议（DFT-O22、O23）不再计算：这一决定只出于成本，作出时它们还没有任何认证数字；两条命题保持“已登记，未比较”。</li>
       <li><span class="tag n">DFT</span><b>公开分发的 GTH/HGH 赝势文件全面普查。</b>按任何比较之前冻结并加时间戳的协议（DFT-O29），对七个来源（CP2K、cp2k-data、DFTK 所用的 PseudoLibrary、ABINIT、Quantum ESPRESSO 网站、PySCF 与本仓库）的 2821 个文件、7040 个赝势条目、113,775 个参数做精确比较，除印出位数本身的舍入外不设容差：各分发之间、对 Goedecker–Teter–Hutter 1996、Hartwigsen–Goedecker–Hutter 1998 与 Krack 2005 的表、对文件自身应满足的关系。946 组副本中 932 组一致。CP2K v2026.2 与它所依据的 cp2k-data 对 B <code>GTH-PBESOL-q3</code> 这个名字给出两个不同的赝势；PySCF 的 UZH 文件对 Ca、Cr、Tc、Ru、Rh、Pd 给出另外的赝势，它的 Na <code>GTH-*-q9</code> 带的是 CP2K <code>_old</code> 版本的数。对论文：HGH 1926 条中 1856 条一致，Krack 1186 条中 1126 条一致；CP2K 谱系（含 DFTK 所用的 LDA 族）的半芯 Ce、Ga、Y、Zr、Na <code>GTH-PADE</code> 条目与 Krack 的 Na、Ga 条目与印出的表不同，ABINIT 的副本与表一致。7040 个价电荷全部一致，本仓库的文件与参考一致。普查只关于文件里的数；这些差异是否改变计算的量不在本协议内。</li>
     </ul></li>
     <li><time datetime="2026-10-22">2026-10-22</time><ul>
