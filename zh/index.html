@@ -46,7 +46,7 @@
     <div class="j ph"><span class="k">实验</span><span class="e"><i class="v">y</i><sub>obs</sub> − <i class="v">y</i><sub>model</sub> ∈ [<i class="v">y</i><sub>obs</sub> − hi, <i class="v">y</i><sub>obs</sub> − lo] ± <i class="v">σ</i><sub>exp</sub></span></div>
   </div>
   <div class="stats">
-    <div class="stat"><b data-n="all">780</b><span>条命题登记在可信账本中</span></div>
+    <div class="stat"><b data-n="all">793</b><span>条命题登记在可信账本中</span></div>
     <div class="stat"><b data-n="all.proved">634</b><span>条已有机器证明（T3 或 T4）</span></div>
     <div class="stat"><b data-n="all.T4">278</b><span>条达到端到端等级 T4：检查器可靠性、内核安全与内核浮点</span></div>
     <div class="stat"><b>4</b><span>个参照程序交叉校验：DFTK.jl、scikit-fem、ASE 与 pycalphad</span></div>
@@ -107,6 +107,9 @@
   <h2>动态</h2>
   <div class="prose"><p>五个领域新增的功能、研究结果，以及论文与本网站的变化，新的在前。逐项状态见<a href="progress.html">实现进度</a>；这里引用的命题都登记在可信账本中。</p></div>
   <ol class="news">
+    <li><time datetime="2026-10-23">2026-10-23</time><ul>
+      <li><span class="tag n">DFT</span><b>公开分发的 GTH/HGH 赝势文件全面普查。</b>按任何比较之前冻结并加时间戳的协议（DFT-O29），对七个来源（CP2K、cp2k-data、DFTK 所用的 PseudoLibrary、ABINIT、Quantum ESPRESSO 网站、PySCF 与本仓库）的 2821 个文件、7040 个赝势条目、113,775 个参数做精确比较，除印出位数本身的舍入外不设容差：各分发之间、对 Goedecker–Teter–Hutter 1996、Hartwigsen–Goedecker–Hutter 1998 与 Krack 2005 的表、对文件自身应满足的关系。946 组副本中 932 组一致。CP2K v2026.2 与它所依据的 cp2k-data 对 B <code>GTH-PBESOL-q3</code> 这个名字给出两个不同的赝势；PySCF 的 UZH 文件对 Ca、Cr、Tc、Ru、Rh、Pd 给出另外的赝势，它的 Na <code>GTH-*-q9</code> 带的是 CP2K <code>_old</code> 版本的数。对论文：HGH 1926 条中 1856 条一致，Krack 1186 条中 1126 条一致；CP2K 谱系（含 DFTK 所用的 LDA 族）的半芯 Ce、Ga、Y、Zr、Na <code>GTH-PADE</code> 条目与 Krack 的 Na、Ga 条目与印出的表不同，ABINIT 的副本与表一致。7040 个价电荷全部一致，本仓库的文件与参考一致。普查只关于文件里的数；这些差异是否改变计算的量不在本协议内。</li>
+    </ul></li>
     <li><time datetime="2026-10-22">2026-10-22</time><ul>
       <li><span class="tag n">DFT</span><b>GTH-PBE 赝势层逐项认证。</b>按运行前冻结的协议（DFT-O28），检查器为 GTH 证书的每一个赝势项打印认证区间。Krack 的 GTH-PBE 文件的非对角 <i>h</i><sub>12</sub> 在这一族全部 211 个多投影通道中都不满足 HGH 关系，而 ABINIT、Quantum ESPRESSO 与 DFTK 都正确地读入了它（零结果）。只保留对角项的转换（pspcod&nbsp;3）给出另一个赝势，没有任何警告（最小的问题上最低能带高 0.084&nbsp;Ha，运行仍声称收敛），QE 的 <code>upfconv.x</code> 读不了 CPMD 格式却以退出码 0 结束。认证的能带结果仍是 LDA；PBE 只覆盖到赝势这一层。</li>
       <li><span class="tag n">检查</span><b>更快的验证：按内容寻址的结果缓存加抽样的全新复查；每晚一次不用缓存的完整运行。</b><code>verify_all</code> 在检查器可执行文件、它装载的库、每个输入字节与相关环境都相同时，可以复用较早一次检查器运行的原始输出；全部判定（与存档比较、篡改对照、已知答案、问题回显）仍然重新进行。复用的结果中按种子随机抽取一部分从头重跑、逐字节比较，有任何不符整次运行失败。日常合并可用这样复查过的运行；主分支每晚一次不用缓存的完整运行，论文引用的结果来自不用缓存的运行。</li>
