@@ -46,9 +46,9 @@
     <div class="j ph"><span class="k">实验</span><span class="e"><i class="v">y</i><sub>obs</sub> − <i class="v">y</i><sub>model</sub> ∈ [<i class="v">y</i><sub>obs</sub> − hi, <i class="v">y</i><sub>obs</sub> − lo] ± <i class="v">σ</i><sub>exp</sub></span></div>
   </div>
   <div class="stats">
-    <div class="stat"><b data-n="all">822</b><span>条命题登记在可信账本中</span></div>
-    <div class="stat"><b data-n="all.proved">656</b><span>条已有机器证明（T3 或 T4）</span></div>
-    <div class="stat"><b data-n="all.T4">300</b><span>条达到端到端等级 T4：检查器可靠性、内核安全与内核浮点</span></div>
+    <div class="stat"><b data-n="all">830</b><span>条命题登记在可信账本中</span></div>
+    <div class="stat"><b data-n="all.proved">657</b><span>条已有机器证明（T3 或 T4）</span></div>
+    <div class="stat"><b data-n="all.T4">301</b><span>条达到端到端等级 T4：检查器可靠性、内核安全与内核浮点</span></div>
     <div class="stat"><b>4</b><span>个参照程序交叉校验：DFTK.jl、scikit-fem、ASE 与 pycalphad</span></div>
   </div>
     <p class="g-cap">证明依赖：账本里的每个命题建立在哪些命题之上，直接从 Lean 证明项读出。点一个节点追踪它的链；各领域页里有只看本领域的同一张图。</p>
@@ -108,6 +108,7 @@
   <div class="prose"><p>五个领域新增的功能、研究结果，以及论文与本网站的变化，新的在前。逐项状态见<a href="progress.html">实现进度</a>；这里引用的命题都登记在可信账本中。</p></div>
   <ol class="news">
     <li><time datetime="2026-10-26">2026-10-26</time><ul>
+      <li><span class="tag n">CALPHAD</span><b>在不变反应附近，审计的 52 个数据库中有 16 个，pycalphad&nbsp;0.11.2 在默认设置下给出的平衡被证明不是该文件定义的模型的全局平衡。</b>计算之前登记的系统审计（R-D，10 月 21 日冻结）有第二部分，要等论文不变反应表的抄录冻结后才做。它的点在每个印出的不变温度之下与之上 0.5&nbsp;K 和 2&nbsp;K，取印出的各相成分、相邻印出成分的中点与认证的反应的成分 <i>x</i><sub>0</sub>；另在 <i>x</i><sub>0</sub> 处取每个认证的转变区间之外 0.05&nbsp;K 的点。点清单（53 个数据库、6,364 个点；列出 54 个，其中一个没有点）在调用 pycalphad 之前提交。进入计数的 52 个数据库中 16 个的 50 个点上，pycalphad&nbsp;0.11.2 在文档的默认设置下给出的平衡被 Lean 检查过的证书证明不是这个数据库文件定义的模型的全局平衡，最多高 1.2&times;10<sup>4</sup>&nbsp;J/mol（CAL-B54、B55）。50 个点中 14 个是认证区间之外 0.05&nbsp;K 的点，有 5 个数据库的错点只在这些点上。加上均匀网格（63 个中 7 个，CAL-B41；两个数据库两组都有错点），登记的抽样框中审计的 63 个数据库有 21 个至少有一个错点，95% 区间 0.22&ndash;0.46（CAL-B56）。在 <i>x</i><sub>0</sub> 处的反应扫描中，第一次、严格按预先规定的扫描在 331 条认证的反应中重现 269 条、错位 14 条、遗漏 45 条；这些遗漏多数是反应旁 pycalphad 不给结果（NaN）的一段。看过扫描之后加上对这些段的二分（CAL-B57；两种读法都报告），计数为重现 273、错位 14（3 条差 1&ndash;2.4&nbsp;K）、遗漏 2、在反应旁 0.002&ndash;5.6&nbsp;K 的一段内不给结果 39、不可分类 3，另有多出的转变 2 条。加密起始网格（<code>pdens</code>&nbsp;=&nbsp;2000）后 50 个错点中 49 个消失（CAL-B58）。今天冻结的补充登记在均匀网格上确认判定不随 Python 的散列种子改变（32 个错点在种子 0&ndash;7 下全部仍错，200 个对照点 0 个改变；CAL-B64）；不变反应附近同样如此（50 个错点在每个种子下都仍错，100 个对照点 0 个改变；CAL-B65），所以量二登记的判定没有一个依赖种子。它还独立确认了代理用户试用在 <code>crtiv_ghosh.tdb</code>（Cr&ndash;Ti）上发现的个案，那里结果随种子改变（933&nbsp;K 处 8 个种子中 5 个错；CAL-B66）。</li>
       <li><span class="tag n">CALPHAD</span><b>CALPHAD 驱动不再悄悄跳过不受支持的相。</b>TDB 中有适用于该体系、但驱动不支持的相时，驱动原先跳过它们、在报告中列出，然后对其余的相给出证书。在 pycalphad 自带的 <code>alni_dupin_2001.tdb</code> 上（Al–Ni，1000&nbsp;K，<i>x</i>(Ni)&nbsp;=&nbsp;0.5），这样得到 LIQUID&nbsp;+&nbsp;AL3NI5：对缩小的相集合为真，而完整数据库的平衡是 BCC_B2。现在驱动与 <code>fis</code> 缺省拒绝这样的运行（退出码&nbsp;4），除非用 <code>--phases</code> 明确列出相，或用 <code>--allow-skip</code> 接受缩小的相集合；缩小的运行在每份报告中都写明结论不是完整数据库的平衡。Lean 检查器没有改动。三维平面波驱动的每个选项都有说明，每次运行都提示证书只针对所声明的离散问题；在自己的材料上运行它们的使用指南见 <code>docs/usage-pw3d.md</code>。</li>
       <li><span class="tag n">DFT</span><b>GaP 的带隙在整个布里渊区上有了两侧的界，并与实验比较。</b>对磷化镓的 S1 模型（DFT-O24：DFT-W190 的自洽解，Ga 用完整 GTH 核，截断 <i>Q</i>&nbsp;=&nbsp;59，Monkhorst&ndash;Pack 8&times;8&times;8），规则&nbsp;B 的证书（2.1&nbsp;GB，496 个下界片，51,519 个自有下界叶子）由 Lean 检查器分 34 段检查，全部通过，再组合。对每一个波矢，第 4 条能带都低于、第 5 条都高于认证的界，所以基本带隙在 [1.4668132,&nbsp;1.5377628]&nbsp;eV 内（宽 0.071&nbsp;eV；DFT-W192，T4）。导带底不在 k 网格上，而在 &Gamma;&ndash;X 线上；证书列出了那里的一个点，所以上端比原来的单侧上界低 48&nbsp;meV。检查用了 1,842 CPU 小时，分 4 个 32 核进程（墙钟 46&nbsp;h）。作为 DFT-O24 的补充比较，与登记的带隙（<code>band-gaps-batch2</code> 的 <code>gap-GaP</code>，扣除列出的修正后 2.4617&nbsp;&plusmn;&nbsp;0.05&nbsp;eV）相比：离散模型低于观测 0.873&ndash;1.045&nbsp;eV（V1），方向与 10 月 24 日的单侧比较相同。Si、AlP、GaP 现在都有两侧的界。</li>
       <li><span class="tag n">DFT</span><b>AlP 的 KS-LDA 带隙在整个布里渊区上有了两侧的界，并与实验比较。</b>对磷化铝的 S1 模型（DFT-O20：DFT-W95 的自洽解，截断 <i>Q</i>&nbsp;=&nbsp;109/2，Monkhorst&ndash;Pack 8&times;8&times;8），规则&nbsp;B 的证书（2.0&nbsp;GB，362 个下界片，17,050 个自有下界叶子）由 Lean 检查器分 25 段检查，全部通过，再组合（<code>runBZBXD_of_ranges</code>、<code>runBZBXD_sound</code>）。对布里渊区里每一个波矢，第 4 条能带都低于、第 5 条都高于认证的界，所以基本带隙 min&nbsp;&epsilon;<sub>5</sub>&nbsp;&minus;&nbsp;max&nbsp;&epsilon;<sub>4</sub> 在 [1.4071305,&nbsp;1.4780513]&nbsp;eV 内（宽 0.071&nbsp;eV；DFT-W300，T4）。区间窄于 AlP 协议登记的宽度门槛 0.10&nbsp;eV，所以规则&nbsp;B 适用于这条命题。检查在 32 核上用了 705 CPU 小时（连组合墙钟 27&nbsp;h）。驱动只有一个设定与 GaP 不同：片条件的浮点裕度由 0.02 降到 0.008（协议允许自由选的检查器参数），因为 AlP 的导带底恰好在 X。作为 DFT-O20 的补充比较，与登记的低温实测带隙（<code>band-gaps-batch1</code> 的 <code>gap-AlP</code>，扣除列出的修正后 2.6263&nbsp;&plusmn;&nbsp;0.073&nbsp;eV）相比：离散模型低于观测 1.075&ndash;1.292&nbsp;eV（V1）。方向与 10 月 20 日单侧的规则&nbsp;U 比较相同，现在两侧有界；第一次的判定留在历史中。偏差包括 Kohn&ndash;Sham 本征值带隙与实测带隙之差。</li>
@@ -654,7 +655,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · 项目纲领 v0.4 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-10-26T14:15+08:00">2026-10-26 14:15 UTC+8</time></span></span>
+  <span>Formal in Silico · 项目纲领 v0.4 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-10-26T22:33+08:00">2026-10-26 22:33 UTC+8</time></span></span>
   <span><a href="progress.html">实现进度</a> · <a href="showcases.html">成果展示</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="../" hreflang="en">English</a></span>
 </div></footer>
 </body>
