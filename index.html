@@ -46,9 +46,9 @@
     <div class="j ph"><span class="k">Experiment</span><span class="e"><i class="v">y</i><sub>obs</sub> − <i class="v">y</i><sub>model</sub> ∈ [<i class="v">y</i><sub>obs</sub> − hi, <i class="v">y</i><sub>obs</sub> − lo] ± <i class="v">σ</i><sub>exp</sub></span></div>
   </div>
   <div class="stats">
-    <div class="stat"><b data-n="all">821</b><span>claims registered in the trust ledger</span></div>
-    <div class="stat"><b data-n="all.proved">655</b><span>of them machine-proved (tier T3 or T4)</span></div>
-    <div class="stat"><b data-n="all.T4">299</b><span>at the end-to-end tier T4: checker soundness, kernel safety and kernel floating point</span></div>
+    <div class="stat"><b data-n="all">822</b><span>claims registered in the trust ledger</span></div>
+    <div class="stat"><b data-n="all.proved">656</b><span>of them machine-proved (tier T3 or T4)</span></div>
+    <div class="stat"><b data-n="all.T4">300</b><span>at the end-to-end tier T4: checker soundness, kernel safety and kernel floating point</span></div>
     <div class="stat"><b>4</b><span>reference codes cross-checked: DFTK.jl, scikit-fem, ASE and pycalphad</span></div>
   </div>
     <p class="g-cap">Proof dependencies: what every claim in the ledger is built on, read from the Lean proof terms. Click a node to follow its chain; each domain page has the same graph for its own claims.</p>
@@ -108,6 +108,7 @@
   <div class="prose"><p>Features added to the five domains, research results, and changes to the paper and this site, newest first. Item-by-item status is on the <a href="progress.html">progress page</a>; every claim cited here is in the trust ledger.</p></div>
   <ol class="news">
     <li><time datetime="2026-10-26">26 Oct 2026</time><ul>
+      <li><span class="tag n">DFT</span><b>GaP: the band gap bounded on both sides over the whole zone, and compared with experiment.</b> For the S1 model of gallium phosphide (DFT-O24: the SCF solution of DFT-W190, the full GTH kernel for Ga, cutoff <i>Q</i>&nbsp;=&nbsp;59, Monkhorst&ndash;Pack 8&times;8&times;8), the Rule&nbsp;B certificate (2.1&nbsp;GB, 496 lower-bound patches, 51,519 own lower-bound leaves) was checked by the Lean checker in 34 ranges, all accepted, and combined. For every wave vector, band&nbsp;4 lies below and band&nbsp;5 above the certified bounds, so the fundamental gap lies in [1.4668132,&nbsp;1.5377628]&nbsp;eV (width 0.071&nbsp;eV; DFT-W192, T4). The conduction-band minimum lies off the k mesh, on the &Gamma;&ndash;X line; the certificate lists a point there, so the upper end is 48&nbsp;meV below the earlier one-sided bound. The check took 1,842 CPU hours, run in four processes of 32 cores (46&nbsp;h wall clock). Compared, as a supplement comparison of DFT-O24, with the registered gap (<code>gap-GaP</code> of <code>band-gaps-batch2</code>, 2.4617&nbsp;&plusmn;&nbsp;0.05&nbsp;eV after the listed corrections): the discrete model lies 0.873&ndash;1.045&nbsp;eV below observation (V1), the same direction as the one-sided comparison of 24 October. Si, AlP and GaP are now all bounded on both sides.</li>
       <li><span class="tag n">DFT</span><b>The KS-LDA band gap of AlP bounded on both sides over the whole Brillouin zone, and compared with experiment.</b> For the S1 model of aluminium phosphide (DFT-O20: the SCF solution of DFT-W95, cutoff <i>Q</i>&nbsp;=&nbsp;109/2, Monkhorst&ndash;Pack 8&times;8&times;8), a Rule&nbsp;B certificate (2.0&nbsp;GB, 362 lower-bound patches, 17,050 own lower-bound leaves) was checked by the Lean checker in 25 ranges, all accepted, and combined (<code>runBZBXD_of_ranges</code>, <code>runBZBXD_sound</code>). For every wave vector of the zone, band&nbsp;4 lies below and band&nbsp;5 above the certified bounds, so the fundamental gap min&nbsp;&epsilon;<sub>5</sub>&nbsp;&minus;&nbsp;max&nbsp;&epsilon;<sub>4</sub> lies in [1.4071305,&nbsp;1.4780513]&nbsp;eV (width 0.071&nbsp;eV; DFT-W300, T4). The interval is narrower than the 0.10&nbsp;eV width gate registered in the AlP protocol, so Rule&nbsp;B applies to this claim. The check took 705 CPU hours on 32 cores (27&nbsp;h wall clock including the combination). One driver setting differs from GaP: the floating-point margin of the patch condition was lowered from 0.02 to 0.008, a free checker parameter under the protocol, because the conduction-band minimum of AlP lies exactly at X. Compared with the registered low-temperature gap (<code>gap-AlP</code> of <code>band-gaps-batch1</code>, 2.6263&nbsp;&plusmn;&nbsp;0.073&nbsp;eV after the listed corrections) as a supplement comparison of DFT-O20: the discrete model lies 1.075&ndash;1.292&nbsp;eV below observation (V1). This is the same direction as the one-sided Rule&nbsp;U comparison of 20 October, now bounded on both sides; the first verdict stays in the history. The deviation includes the difference between the Kohn&ndash;Sham eigenvalue gap and the measured gap.</li>
     </ul></li>
     <li><time datetime="2026-10-24">24 Oct 2026</time><ul>
@@ -652,7 +653,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · Programme v0.4 · revised as the project evolves<span class="updated"> · updated <time datetime="2026-10-26T09:56+08:00">2026-10-26 09:56 UTC+8</time></span></span>
+  <span>Formal in Silico · Programme v0.4 · revised as the project evolves<span class="updated"> · updated <time datetime="2026-10-26T12:24+08:00">2026-10-26 12:24 UTC+8</time></span></span>
   <span><a href="progress.html">Progress</a> · <a href="showcases.html">Showcases</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="zh/" hreflang="zh-CN">中文版</a></span>
 </div></footer>
 </body>
