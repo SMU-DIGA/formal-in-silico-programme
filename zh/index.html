@@ -46,9 +46,9 @@
     <div class="j ph"><span class="k">实验</span><span class="e"><i class="v">y</i><sub>obs</sub> − <i class="v">y</i><sub>model</sub> ∈ [<i class="v">y</i><sub>obs</sub> − hi, <i class="v">y</i><sub>obs</sub> − lo] ± <i class="v">σ</i><sub>exp</sub></span></div>
   </div>
   <div class="stats">
-    <div class="stat"><b data-n="all">836</b><span>条命题登记在可信账本中</span></div>
-    <div class="stat"><b data-n="all.proved">659</b><span>条已有机器证明（T3 或 T4）</span></div>
-    <div class="stat"><b data-n="all.T4">303</b><span>条达到端到端等级 T4：检查器可靠性、内核安全与内核浮点</span></div>
+    <div class="stat"><b data-n="all">859</b><span>条命题登记在可信账本中</span></div>
+    <div class="stat"><b data-n="all.proved">668</b><span>条已有机器证明（T3 或 T4）</span></div>
+    <div class="stat"><b data-n="all.T4">305</b><span>条达到端到端等级 T4：检查器可靠性、内核安全与内核浮点</span></div>
     <div class="stat"><b>4</b><span>个参照程序交叉校验：DFTK.jl、scikit-fem、ASE 与 pycalphad</span></div>
   </div>
     <p class="g-cap">证明依赖：账本里的每个命题建立在哪些命题之上，直接从 Lean 证明项读出。点一个节点追踪它的链；各领域页里有只看本领域的同一张图。</p>
@@ -107,6 +107,11 @@
   <h2>动态</h2>
   <div class="prose"><p>五个领域新增的功能、研究结果，以及论文与本网站的变化，新的在前。逐项状态见<a href="progress.html">实现进度</a>；这里引用的命题都登记在可信账本中。</p></div>
   <ol class="news">
+    <li><time datetime="2026-10-29">2026-10-29</time><ul>
+      <li><span class="tag n">DFT</span><b>S1 的硅结果现在被证明是关于登记的问题本身，问题用 Lean 写出。</b>此前检查器证明的是证书里写的问题，S1 的证书写的是不是登记的问题，由 Lean 之外的比较核对。现在登记的问题是一个只用 Mathlib 写的 Lean 定义（<code>S1.S1Si</code>：a&nbsp;=&nbsp;5.416&nbsp;&Aring;、<i>Q</i>&nbsp;=&nbsp;107/2、无平移的 8&times;8&times;8 网格、24<sup>3</sup> 格点、零温）；有哈希的 <code>Si.gth</code> 的 217 个字节是 Lean 字符串，系数由一个全函数解析器读出，用内核求值证明（DFT-K30&ndash;K36，T3）。检查器的一个模式先判定证书写的恰好是这个问题，再在同一个进程里检查 SCF 证书与区证书。在存档的证书上，一次 8&nbsp;h&nbsp;42&nbsp;min 的运行（213 CPU 小时、90&nbsp;GB）绑定了 SCF 证书与单侧的区界，没有关于另一次运行的前提；两侧的带隙界 [0.4146,&nbsp;0.4856]&nbsp;eV 由这次运行与 32 段分段运行（727 CPU 小时）经组合定理得到，胶水（同一文件字节、同一可执行文件）在 Lean 之外（DFT-K38，T4）。区界不变。当前的检查器给出的 SCF 球比最初的检查紧（半径 8.5&times;10<sup>&minus;11</sup>，原为 2.1&times;10<sup>&minus;10</sup>，嵌套在其中），因为动能项现在舍入到 2<sup>&minus;96</sup>（DFT-W170）。</li>
+      <li><span class="tag n">DFT</span><b>DFT 程序审计按各程序自身容差的事后读法（回应模拟审稿）。</b>在给出认证区间之外数字的 33 次运行中，11 次解的是另一个离散问题（例如在平移网格上用 48 个操作对称化的密度，或另一个缺省 FFT 网格），22 次解的是认证的问题。如果把能量判据 <i>t</i> 读作允许 &radic;<i>t</i> 量级的本征值误差（一个数量级的敏感性读法，不是界），这 22 次在程序自身的容差之内（这种读法下 33 次中 24 次，按字面读每个判据则 11 次）。在平移网格的小问题上，<i>k</i> 收敛的参考值显示认证的问题离它 29&ndash;46&nbsp;meV，对称化的问题 5&ndash;44&nbsp;meV（DFT-W316&ndash;W320，T0）。公理审计现在覆盖全部 11 个检查器可执行文件的入口模块（975 个常量），列表缺少任何一个就失败。</li>
+      <li><span class="tag n">CALPHAD</span><b>与印刷的不变反应表的已证明不一致，有多少能由舍入解释（事后）。</b>对 34 个有闭认证区间的已证明不一致，把各篇文章印刷的参数在最后一位之内扰动：28 个落在这种舍入能产生的范围之内，6 个（4 个数据库：Cd&ndash;Sr 3 个、Ge&ndash;Lu、Nd&ndash;Ti、Ho&ndash;Sb）超出这个范围的线性化估计。按超出印刷精度的距离，8 个小于 0.1&nbsp;K，13 个在 0.1&ndash;1&nbsp;K，13 个不小于 1&nbsp;K，其中 10 个来自同一篇 Ca&ndash;Ga 文章；有已证明不一致的 21 个数据库来自 32 篇文章中的 16 篇，另有 12 个差别没有闭区间。66 个工程决策中有 17&ndash;18 个改变，没有一个来自闭区间的移动：下界的 17 个里，7 个来自转录中存疑的行与平台温度，10 个来自 OpenCalphad 的开发版；去掉存疑的行与开发版后剩 4&ndash;6 个（CAL-B70&ndash;B78）。</li>
+    </ul></li>
     <li><time datetime="2026-10-28">2026-10-28</time><ul>
       <li><span class="tag n">DFT</span><b>成果展示 S3：三维并行驱动，运行日志对照模型检验过的协议检查，在测试的布局中结果逐位相同。</b>此前三维平面波代码的并行协议（<code>PWParallel</code>、<code>FFTTranspose</code>）只是 TLA<sup>+</sup> 规范，没有实现。新的 MPI 驱动用于 S1 的零温点群 LDA 问题：用远程原子计数器领取 <i>k</i> 点，能带分组，FFT 按 slab 分块、一次 all-to-all 转置；每个归约都按固定次序（能带、<i>k</i> 点、平面），一个进程时走同一算法。在一个真实 Si 的小例子上，测试的 25 种布局（1、2、3、4、7、8、16、29、30、32 个进程）的本征值、密度、能量、轨迹与证书的 SHA-256 全部相同；305,619 个日志事件由 TLC 对照 <code>PWParallel</code> 重放并被接受，6 种篡改的日志被拒绝，代码中植入的 4 个错误（非原子领取、按到达次序归约、按能带组折叠、转置丢块）每一个都被 trace validation 或哈希比较发现（DFT-R13–R16，测试，T0）。证书被 Lean 检查器接受（DFT-R17，T4）。在 S1 设定本身（Si，8×8×8 个 <i>k</i> 点，29 个不可约点）上，1 到 32 个进程的 6 种布局给出同一张 253&nbsp;MB 的证书；它的 Lean 检查用了 7 小时 53 分，证明在证书中心附近的一个小球内恰有一个零温自洽解，网格带隙在 [0.0195042035, 0.0195042094]&nbsp;Ha 内，落在串行证书 DFT-K29 的区间之内（DFT-R18，T4）。逐位一致只在一台机器、一份库上测试；FFT 转置、Jacobian 与修正阶段不在 trace 内。</li>
     </ul></li>
@@ -658,7 +663,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · 项目纲领 v0.4 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-10-28T08:47+08:00">2026-10-28 08:47 UTC+8</time></span></span>
+  <span>Formal in Silico · 项目纲领 v0.4 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-10-29T07:34+08:00">2026-10-29 07:34 UTC+8</time></span></span>
   <span><a href="progress.html">实现进度</a> · <a href="showcases.html">成果展示</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="../" hreflang="en">English</a></span>
 </div></footer>
 </body>
