@@ -46,8 +46,8 @@
     <div class="j ph"><span class="k">Experiment</span><span class="e"><i class="v">y</i><sub>obs</sub> − <i class="v">y</i><sub>model</sub> ∈ [<i class="v">y</i><sub>obs</sub> − hi, <i class="v">y</i><sub>obs</sub> − lo] ± <i class="v">σ</i><sub>exp</sub></span></div>
   </div>
   <div class="stats">
-    <div class="stat"><b data-n="all">859</b><span>claims registered in the trust ledger</span></div>
-    <div class="stat"><b data-n="all.proved">668</b><span>of them machine-proved (tier T3 or T4)</span></div>
+    <div class="stat"><b data-n="all">884</b><span>claims registered in the trust ledger</span></div>
+    <div class="stat"><b data-n="all.proved">686</b><span>of them machine-proved (tier T3 or T4)</span></div>
     <div class="stat"><b data-n="all.T4">305</b><span>at the end-to-end tier T4: checker soundness, kernel safety and kernel floating point</span></div>
     <div class="stat"><b>4</b><span>reference codes cross-checked: DFTK.jl, scikit-fem, ASE and pycalphad</span></div>
   </div>
@@ -107,6 +107,11 @@
   <h2>News</h2>
   <div class="prose"><p>Features added to the five domains, research results, and changes to the paper and this site, newest first. Item-by-item status is on the <a href="progress.html">progress page</a>; every claim cited here is in the trust ledger.</p></div>
   <ol class="news">
+    <li><time datetime="2026-10-30">30 Oct 2026</time><ul>
+      <li><span class="tag n">Programme</span><b>Stage I is frozen; Stage II aims to make DFT and CALPHAD usable for research.</b> Everything up to the paper is fixed at the tag <code>stage-1</code>: its claims keep their statements and tiers, and later work extends them only through new claims. Stage II (to January 2027) targets problems researchers bring themselves, judged against acceptance tasks fixed in advance: crystal structures beyond fcc, the PBE functional, metals and multicomponent CALPHAD.</li>
+      <li><span class="tag n">DFT</span><b>First Stage II foundations in Lean: general crystal lattices and PBE exchange.</b> Lattices are now described by an exact rational Gram matrix, so any Bravais lattice and any number of species at rational fractional coordinates can be stated; the Stage I fcc problems are proved to be special cases (DFT-G100&ndash;G118, no end-to-end checker yet). PBE exchange has proved closed-form derivatives and an outward-rounded interval enclosure (DFT-E100&ndash;E102); on 428,032 boxes from DFTK densities it contains Libxc&rsquo;s values in every case (DFT-E103).</li>
+      <li><span class="tag n">Tools</span><b><code>fis</code> records provenance, citations and cost.</b> Every run writes a manifest (inputs, hashes, verdict, time and memory) and a BibTeX file for the methods, pseudopotentials and databases it used; <code>scripts/install.sh</code> checks dependencies first; <code>fis dft estimate</code> predicts the cost of a 3D check before it runs and <code>fis dft run</code> refuses a check that would not fit in memory.</li>
+    </ul></li>
     <li><time datetime="2026-10-29">29 Oct 2026</time><ul>
       <li><span class="tag n">DFT</span><b>The silicon results of S1 are now proved to be about the registered problem itself, written in Lean.</b> Until now a checker certified the problem written in its certificate, and that the S1 certificates state the registered problem was checked by comparisons outside Lean. The registered problem is now a Lean definition stated with Mathlib alone (<code>S1.S1Si</code>: a&nbsp;=&nbsp;5.416&nbsp;&Aring;, <i>Q</i>&nbsp;=&nbsp;107/2, the unshifted 8&times;8&times;8 mesh, a 24<sup>3</sup> grid, zero temperature); the 217 bytes of the hashed <code>Si.gth</code> are a Lean string whose coefficients a total parser reads, proved by kernel evaluation (DFT-K30&ndash;K36, T3). A checker mode decides that a certificate states exactly this problem and then checks the SCF and zone certificates in one process. On the archived certificates, one run of 8&nbsp;h&nbsp;42&nbsp;min (213 CPU hours, 90&nbsp;GB) binds the SCF certificate and the one-sided zone bound, with no premise about another run, and the two-sided gap bound [0.4146,&nbsp;0.4856]&nbsp;eV follows from that run and 32 range runs (727 CPU hours) by a composition theorem whose glue (same file bytes, same executable) is outside Lean (DFT-K38, T4). The zone bounds are unchanged. The current checker gives a tighter SCF ball than the original check (radius 8.5&times;10<sup>&minus;11</sup> instead of 2.1&times;10<sup>&minus;10</sup>, nested in it) because it now rounds the kinetic term to 2<sup>&minus;96</sup> (DFT-W170).</li>
       <li><span class="tag n">DFT</span><b>Post hoc reading of the DFT code audit by each code&rsquo;s own tolerance, in response to a mock referee round.</b> Of the 33 runs that returned numbers outside the certified intervals, 11 solved a different discrete problem (for example a density symmetrised over 48 operations on the shifted mesh, or another default FFT grid) and 22 solved the certified one. These 22 lie within the code&rsquo;s own tolerance if an energy criterion <i>t</i> is read as allowing eigenvalue errors of order &radic;<i>t</i>, an order-of-magnitude sensitivity reading, not a bound (24 of the 33 under this reading, 11 if every criterion is read literally). On the shifted-grid toy problem, a <i>k</i>-converged reference shows the certified problem 29&ndash;46&nbsp;meV and the symmetrised one 5&ndash;44&nbsp;meV away from it (DFT-W316&ndash;W320, T0). The axiom audit now covers the entry modules of all eleven checker executables (975 constants) and fails if one is missing from its list.</li>
@@ -663,7 +668,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · Programme v0.4 · revised as the project evolves<span class="updated"> · updated <time datetime="2026-10-29T07:34+08:00">2026-10-29 07:34 UTC+8</time></span></span>
+  <span>Formal in Silico · Programme v0.4 · revised as the project evolves<span class="updated"> · updated <time datetime="2026-10-30T21:13+08:00">2026-10-30 21:13 UTC+8</time></span></span>
   <span><a href="progress.html">Progress</a> · <a href="showcases.html">Showcases</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="zh/" hreflang="zh-CN">中文版</a></span>
 </div></footer>
 </body>

@@ -46,8 +46,8 @@
     <div class="j ph"><span class="k">实验</span><span class="e"><i class="v">y</i><sub>obs</sub> − <i class="v">y</i><sub>model</sub> ∈ [<i class="v">y</i><sub>obs</sub> − hi, <i class="v">y</i><sub>obs</sub> − lo] ± <i class="v">σ</i><sub>exp</sub></span></div>
   </div>
   <div class="stats">
-    <div class="stat"><b data-n="all">859</b><span>条命题登记在可信账本中</span></div>
-    <div class="stat"><b data-n="all.proved">668</b><span>条已有机器证明（T3 或 T4）</span></div>
+    <div class="stat"><b data-n="all">884</b><span>条命题登记在可信账本中</span></div>
+    <div class="stat"><b data-n="all.proved">686</b><span>条已有机器证明（T3 或 T4）</span></div>
     <div class="stat"><b data-n="all.T4">305</b><span>条达到端到端等级 T4：检查器可靠性、内核安全与内核浮点</span></div>
     <div class="stat"><b>4</b><span>个参照程序交叉校验：DFTK.jl、scikit-fem、ASE 与 pycalphad</span></div>
   </div>
@@ -107,6 +107,11 @@
   <h2>动态</h2>
   <div class="prose"><p>五个领域新增的功能、研究结果，以及论文与本网站的变化，新的在前。逐项状态见<a href="progress.html">实现进度</a>；这里引用的命题都登记在可信账本中。</p></div>
   <ol class="news">
+    <li><time datetime="2026-10-30">2026-10-30</time><ul>
+      <li><span class="tag n">纲领</span><b>第一阶段冻结；第二阶段的目标是让 DFT 与 CALPHAD 能用于研究。</b>论文为止的全部内容固定在标签 <code>stage-1</code>：其命题的陈述与等级不变，以后的工作只通过新命题扩展。第二阶段（到 2027 年 1 月）面向研究者自己带来的问题，以事先固定的验收任务评判：fcc 以外的晶体结构、PBE 泛函、金属与多元 CALPHAD。</li>
+      <li><span class="tag n">DFT</span><b>第二阶段在 Lean 中的第一批基础：一般晶格与 PBE 交换。</b>晶格现在用精确的有理 Gram 矩阵描述，可以写出任意 Bravais 格子、有理分数坐标上任意多种元素；第一阶段的 fcc 问题被证明是特例（DFT-G100–G118，尚无端到端检查器）。PBE 交换的闭式导数已证明，并有向外舍入的区间包含（DFT-E100–E102）；在来自 DFTK 密度的 428,032 个方块上全部包含 Libxc 的值（DFT-E103）。</li>
+      <li><span class="tag n">工具</span><b><code>fis</code> 记录来源、引用与代价。</b>每次运行写出清单（输入、哈希、判决、时间与内存）与所用方法、赝势、数据库的 BibTeX；<code>scripts/install.sh</code> 先检查依赖；<code>fis dft estimate</code> 在运行前预测三维检查的代价，<code>fis dft run</code> 拒绝内存放不下的检查。</li>
+    </ul></li>
     <li><time datetime="2026-10-29">2026-10-29</time><ul>
       <li><span class="tag n">DFT</span><b>S1 的硅结果现在被证明是关于登记的问题本身，问题用 Lean 写出。</b>此前检查器证明的是证书里写的问题，S1 的证书写的是不是登记的问题，由 Lean 之外的比较核对。现在登记的问题是一个只用 Mathlib 写的 Lean 定义（<code>S1.S1Si</code>：a&nbsp;=&nbsp;5.416&nbsp;&Aring;、<i>Q</i>&nbsp;=&nbsp;107/2、无平移的 8&times;8&times;8 网格、24<sup>3</sup> 格点、零温）；有哈希的 <code>Si.gth</code> 的 217 个字节是 Lean 字符串，系数由一个全函数解析器读出，用内核求值证明（DFT-K30&ndash;K36，T3）。检查器的一个模式先判定证书写的恰好是这个问题，再在同一个进程里检查 SCF 证书与区证书。在存档的证书上，一次 8&nbsp;h&nbsp;42&nbsp;min 的运行（213 CPU 小时、90&nbsp;GB）绑定了 SCF 证书与单侧的区界，没有关于另一次运行的前提；两侧的带隙界 [0.4146,&nbsp;0.4856]&nbsp;eV 由这次运行与 32 段分段运行（727 CPU 小时）经组合定理得到，胶水（同一文件字节、同一可执行文件）在 Lean 之外（DFT-K38，T4）。区界不变。当前的检查器给出的 SCF 球比最初的检查紧（半径 8.5&times;10<sup>&minus;11</sup>，原为 2.1&times;10<sup>&minus;10</sup>，嵌套在其中），因为动能项现在舍入到 2<sup>&minus;96</sup>（DFT-W170）。</li>
       <li><span class="tag n">DFT</span><b>DFT 程序审计按各程序自身容差的事后读法（回应模拟审稿）。</b>在给出认证区间之外数字的 33 次运行中，11 次解的是另一个离散问题（例如在平移网格上用 48 个操作对称化的密度，或另一个缺省 FFT 网格），22 次解的是认证的问题。如果把能量判据 <i>t</i> 读作允许 &radic;<i>t</i> 量级的本征值误差（一个数量级的敏感性读法，不是界），这 22 次在程序自身的容差之内（这种读法下 33 次中 24 次，按字面读每个判据则 11 次）。在平移网格的小问题上，<i>k</i> 收敛的参考值显示认证的问题离它 29&ndash;46&nbsp;meV，对称化的问题 5&ndash;44&nbsp;meV（DFT-W316&ndash;W320，T0）。公理审计现在覆盖全部 11 个检查器可执行文件的入口模块（975 个常量），列表缺少任何一个就失败。</li>
@@ -663,7 +668,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · 项目纲领 v0.4 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-10-29T07:34+08:00">2026-10-29 07:34 UTC+8</time></span></span>
+  <span>Formal in Silico · 项目纲领 v0.4 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-10-30T21:13+08:00">2026-10-30 21:13 UTC+8</time></span></span>
   <span><a href="progress.html">实现进度</a> · <a href="showcases.html">成果展示</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="../" hreflang="en">English</a></span>
 </div></footer>
 </body>
