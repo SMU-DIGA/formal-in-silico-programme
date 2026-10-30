@@ -46,8 +46,8 @@
     <div class="j ph"><span class="k">实验</span><span class="e"><i class="v">y</i><sub>obs</sub> − <i class="v">y</i><sub>model</sub> ∈ [<i class="v">y</i><sub>obs</sub> − hi, <i class="v">y</i><sub>obs</sub> − lo] ± <i class="v">σ</i><sub>exp</sub></span></div>
   </div>
   <div class="stats">
-    <div class="stat"><b data-n="all">923</b><span>条命题登记在可信账本中</span></div>
-    <div class="stat"><b data-n="all.proved">721</b><span>条已有机器证明（T3 或 T4）</span></div>
+    <div class="stat"><b data-n="all">936</b><span>条命题登记在可信账本中</span></div>
+    <div class="stat"><b data-n="all.proved">734</b><span>条已有机器证明（T3 或 T4）</span></div>
     <div class="stat"><b data-n="all.T4">315</b><span>条达到端到端等级 T4：检查器可靠性、内核安全与内核浮点</span></div>
     <div class="stat"><b>4</b><span>个参照程序交叉校验：DFTK.jl、scikit-fem、ASE 与 pycalphad</span></div>
   </div>
@@ -111,6 +111,7 @@
       <li><span class="tag n">CALPHAD</span><b>各类二元不变反应的证书，含 Laves 相。</b>一个证书现在覆盖共晶型、包晶型反应与同成分转变，允许两个混合亚点阵的相（Laves C14/C15、D0<sub>19</sub>）与磁性溶体；第一阶段的共晶证书被证明是特例（CAL-T100&ndash;T107）。认证的温度区间：Mg&ndash;Zn 包晶 L&nbsp;+&nbsp;Mg<sub>2</sub>Zn<sub>3</sub>&nbsp;&rarr;&nbsp;Mg<sub>12</sub>Zn<sub>13</sub> 在 [618.643,&nbsp;618.663]&nbsp;K，MgZn<sub>2</sub> 的同成分熔化在 [857.443,&nbsp;857.463]&nbsp;K，以及 Cr&ndash;Ti 中含 Laves 相与磁性 bcc 的三个反应；pycalphad 的温度都在区间内。这些体系去掉了有序 B2 相；区间内只有这一次相变，与第一阶段一样仍未证明。</li>
       <li><span class="tag n">CALPHAD</span><b>第一批多元平衡证书。</b>任意组元数的检查器从 TDB 文件读出模型，证明最小 Gibbs 能、化学势与哪些相不出现：450&nbsp;K 的 Ag&ndash;Cu&ndash;Sn（NIST 焊料库）与 673.15&nbsp;K 的 Al&ndash;Cu&ndash;Mg（COST507，46 个相中的 45 个），各在一个核上 40&nbsp;s 内检查完；各相的 Gibbs 能与 pycalphad 相差不超过 2.2&times;10<sup>&minus;11</sup>&nbsp;J/mol。pycalphad 与 Thermo-Calc 读法不同的参数（写在端元上的相互作用参数）所在的相被拒绝，并在输出中写明（CAL-K100&ndash;K112）。</li>
       <li><span class="tag n">DFT</span><b>一般晶格描述上的第一份端到端证书，以及 PBE 关联。</b>NaCl（限制 Hartree&ndash;Fock、GTH 局域部分、<i>Q</i>&nbsp;=&nbsp;17/2、&Gamma;）9&nbsp;s 检查完，化学势认证到 3.7&times;10<sup>&minus;11</sup>&nbsp;Ha；DFTK 与之相差 5.6&times;10<sup>&minus;10</sup>&nbsp;Ha，略在区间之外，本征值的差在 5&times;10<sup>&minus;11</sup> 到 5.5&times;10<sup>&minus;10</sup> 之间变化，与收敛容差相符。一般模型在第一阶段的 fcc 问题上被证明给出与第一阶段完全相同的哈密顿量（DFT-G119&ndash;G131）。PBE 关联的闭式导数已证明，并有向外舍入的区间包含；在 428,032 个方块上，除 18 个点方块外都包含 Libxc 的值，在这 18 个上 50 位精度的计算显示 Libxc 的值偏离可达尺度的 3&times;10<sup>&minus;12</sup>，远大于区间的宽度（DFT-E106&ndash;E110）。</li>
+      <li><span class="tag n">DFT</span><b>无矩阵 DFT 检查器的理论，在 Lean 中证明（目前只有理论）。</b>稠密检查器要存整块哈密顿量，离子晶体与氧化物在收敛的截断下放不进内存；无矩阵的检查只存占据能带，哈密顿量随用随算。它的数学现在部分进了 Lean：用加权 Gershgorin 论证给出高频块的下界，低于某个能量的本征值个数的先验上界，三角多项式由网格最大值得到的上确界，第一阶段模型上带直接余项的 Newton&ndash;Kantorovich，以及经由格林函数的密度响应一阶、二阶界（DFT-F110&ndash;F121、F125、F128、F129，T3）。检查器本身计划在第三阶段做。</li>
     </ul></li>
     <li><time datetime="2026-10-30">2026-10-30</time><ul>
       <li><span class="tag n">纲领</span><b>第一阶段冻结；第二阶段的目标是让 DFT 与 CALPHAD 能用于研究。</b>论文为止的全部内容固定在标签 <code>stage-1</code>：其命题的陈述与等级不变，以后的工作只通过新命题扩展。第二阶段（到 2027 年 1 月）面向研究者自己带来的问题，以事先固定的验收任务评判：fcc 以外的晶体结构、PBE 泛函、金属与多元 CALPHAD。</li>
@@ -673,7 +674,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · 项目纲领 v0.4 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-10-31T02:25+08:00">2026-10-31 02:25 UTC+8</time></span></span>
+  <span>Formal in Silico · 项目纲领 v0.4 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-10-31T07:32+08:00">2026-10-31 07:32 UTC+8</time></span></span>
   <span><a href="progress.html">实现进度</a> · <a href="showcases.html">成果展示</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="../" hreflang="en">English</a></span>
 </div></footer>
 </body>
