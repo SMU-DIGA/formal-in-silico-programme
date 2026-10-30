@@ -46,9 +46,9 @@
     <div class="j ph"><span class="k">Experiment</span><span class="e"><i class="v">y</i><sub>obs</sub> − <i class="v">y</i><sub>model</sub> ∈ [<i class="v">y</i><sub>obs</sub> − hi, <i class="v">y</i><sub>obs</sub> − lo] ± <i class="v">σ</i><sub>exp</sub></span></div>
   </div>
   <div class="stats">
-    <div class="stat"><b data-n="all">884</b><span>claims registered in the trust ledger</span></div>
-    <div class="stat"><b data-n="all.proved">686</b><span>of them machine-proved (tier T3 or T4)</span></div>
-    <div class="stat"><b data-n="all.T4">305</b><span>at the end-to-end tier T4: checker soundness, kernel safety and kernel floating point</span></div>
+    <div class="stat"><b data-n="all">923</b><span>claims registered in the trust ledger</span></div>
+    <div class="stat"><b data-n="all.proved">721</b><span>of them machine-proved (tier T3 or T4)</span></div>
+    <div class="stat"><b data-n="all.T4">315</b><span>at the end-to-end tier T4: checker soundness, kernel safety and kernel floating point</span></div>
     <div class="stat"><b>4</b><span>reference codes cross-checked: DFTK.jl, scikit-fem, ASE and pycalphad</span></div>
   </div>
     <p class="g-cap">Proof dependencies: what every claim in the ledger is built on, read from the Lean proof terms. Click a node to follow its chain; each domain page has the same graph for its own claims.</p>
@@ -107,6 +107,11 @@
   <h2>News</h2>
   <div class="prose"><p>Features added to the five domains, research results, and changes to the paper and this site, newest first. Item-by-item status is on the <a href="progress.html">progress page</a>; every claim cited here is in the trust ledger.</p></div>
   <ol class="news">
+    <li><time datetime="2026-10-31">31 Oct 2026</time><ul>
+      <li><span class="tag n">CALPHAD</span><b>Certified binary invariant reactions of every type, including Laves phases.</b> One certificate now covers eutectic- and peritectic-type reactions and congruent transformations, with two-sublattice phases (Laves C14/C15, D0<sub>19</sub>) and magnetic solutions allowed; the Stage I eutectic certificates are proved to be special cases (CAL-T100&ndash;T107). Certified brackets: the Mg&ndash;Zn peritectic L&nbsp;+&nbsp;Mg<sub>2</sub>Zn<sub>3</sub>&nbsp;&rarr;&nbsp;Mg<sub>12</sub>Zn<sub>13</sub> in [618.643,&nbsp;618.663]&nbsp;K, congruent melting of MgZn<sub>2</sub> in [857.443,&nbsp;857.463]&nbsp;K, and three Cr&ndash;Ti reactions with Laves and magnetic bcc phases; pycalphad&rsquo;s temperature lies in every bracket. The ordered B2 phase is left out of these systems, and that the reaction is the only crossing inside a bracket is still unproved, as in Stage I.</li>
+      <li><span class="tag n">CALPHAD</span><b>First multicomponent equilibrium certificates.</b> A checker for any number of components reads the model from the TDB file and certifies the minimum Gibbs energy, the chemical potentials and which phases are absent: Ag&ndash;Cu&ndash;Sn at 450&nbsp;K (NIST solder database) and Al&ndash;Cu&ndash;Mg at 673.15&nbsp;K (COST507, 45 of 46 phases), each checked in under 40&nbsp;s on one core; pycalphad&rsquo;s Gibbs energies of every phase agree to 2.2&times;10<sup>&minus;11</sup>&nbsp;J/mol. A phase whose parameter pycalphad and Thermo-Calc read differently (an interaction parameter written on an endmember) is refused and named in the output (CAL-K100&ndash;K112).</li>
+      <li><span class="tag n">DFT</span><b>First end-to-end certificate from the general lattice description, and PBE correlation.</b> NaCl (restricted Hartree&ndash;Fock, local GTH parts, <i>Q</i>&nbsp;=&nbsp;17/2, &Gamma;) is checked in 9&nbsp;s with the chemical potential certified to 3.7&times;10<sup>&minus;11</sup>&nbsp;Ha; DFTK agrees to 5.6&times;10<sup>&minus;10</sup>&nbsp;Ha, just outside that interval, with eigenvalue differences that vary from 5&times;10<sup>&minus;11</sup> to 5.5&times;10<sup>&minus;10</sup>, as a convergence tolerance would give. The general model is proved to give exactly the Stage I Hamiltonian on the Stage I fcc problems (DFT-G119&ndash;G131). PBE correlation has proved closed-form derivatives and an outward-rounded enclosure; on 428,032 boxes it contains Libxc&rsquo;s values in all but 18 point boxes, where a 50-digit evaluation shows Libxc&rsquo;s values off by up to 3&times;10<sup>&minus;12</sup> of scale, far more than the enclosure&rsquo;s width (DFT-E106&ndash;E110).</li>
+    </ul></li>
     <li><time datetime="2026-10-30">30 Oct 2026</time><ul>
       <li><span class="tag n">Programme</span><b>Stage I is frozen; Stage II aims to make DFT and CALPHAD usable for research.</b> Everything up to the paper is fixed at the tag <code>stage-1</code>: its claims keep their statements and tiers, and later work extends them only through new claims. Stage II (to January 2027) targets problems researchers bring themselves, judged against acceptance tasks fixed in advance: crystal structures beyond fcc, the PBE functional, metals and multicomponent CALPHAD.</li>
       <li><span class="tag n">DFT</span><b>First Stage II foundations in Lean: general crystal lattices and PBE exchange.</b> Lattices are now described by an exact rational Gram matrix, so any Bravais lattice and any number of species at rational fractional coordinates can be stated; the Stage I fcc problems are proved to be special cases (DFT-G100&ndash;G118, no end-to-end checker yet). PBE exchange has proved closed-form derivatives and an outward-rounded interval enclosure (DFT-E100&ndash;E102); on 428,032 boxes from DFTK densities it contains Libxc&rsquo;s values in every case (DFT-E103).</li>
@@ -668,7 +673,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · Programme v0.4 · revised as the project evolves<span class="updated"> · updated <time datetime="2026-10-30T21:13+08:00">2026-10-30 21:13 UTC+8</time></span></span>
+  <span>Formal in Silico · Programme v0.4 · revised as the project evolves<span class="updated"> · updated <time datetime="2026-10-31T02:25+08:00">2026-10-31 02:25 UTC+8</time></span></span>
   <span><a href="progress.html">Progress</a> · <a href="showcases.html">Showcases</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="zh/" hreflang="zh-CN">中文版</a></span>
 </div></footer>
 </body>
