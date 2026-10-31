@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Formal in Silico — Progress</title>
+<title>Formal in Silico — Roadmap</title>
 <meta name="description" content="Implementation progress of Formal in Silico across its five domains — mini-DFT, mini-FEM, mini-MD, mini-CALPHAD and mini-CSP: the trust ledger, the parity goals and the roadmap phases.">
 <link rel="alternate" hreflang="en" href="progress.html">
 <link rel="alternate" hreflang="zh-CN" href="zh/progress.html">
@@ -19,7 +19,7 @@
   <a class="brand" href="./">Formal in Silico</a>
   <nav class="nav" aria-label="Site">
     <a href="./">Programme</a>
-    <a href="progress.html" aria-current="page">Progress</a>
+    <a href="progress.html" aria-current="page">Roadmap</a>
     <a href="showcases.html">Showcases</a>
     <span class="sep" aria-hidden="true"></span>
     <a class="dom" href="dft.html">DFT</a>
@@ -33,8 +33,8 @@
 </div></header>
 
 <div class="hero small"><div class="hero-in">
-  <p class="eyebrow">Status snapshot · 8 October 2026</p>
-  <h1>Progress</h1>
+  <p class="eyebrow">Goals, status and plans · 1 November 2026</p>
+  <h1>Roadmap</h1>
   <p class="lead">Where the programme stands across its five domains: how many claims have reached which trust tier, how far each domain is towards its reference code, and which roadmap phases are done. Each domain has its own page with the item-by-item status, cross-checks and open gaps. A feature counts as <b>done</b> only when it is implemented, agrees with the reference code, <i>and</i> every number it outputs is covered by a Lean theorem.</p>
   <figure class="glance" id="glance">
     <div class="gl-top"><div><p class="eyebrow">Programme at a glance · 31 October 2026</p><h2>Triple correctness, one ledger, five domains</h2></div>
@@ -122,8 +122,6 @@
     <li><a href="#ledger"><span>02</span>Trust ledger</a></li>
     <li><a href="#how"><span>03</span>How it works</a></li>
     <li><a href="#phases"><span>04</span>Goals and roadmap</a></li>
-    <li><a href="#base"><span>05</span>Trusted base</a></li>
-    <li><a href="#research"><span>06</span>Research results</a></li>
   </ol>
 </nav>
 <main>
@@ -297,7 +295,7 @@
   </table></div>
 
   <h3 class="stage-h" id="stage1">Stage I (Sept – Oct 2026, frozen at tag <code>stage-1</code> on 30 Oct 2026)</h3>
-  <div class="prose"><p>Stage I established machine-checked triple correctness on certified discrete problems and used it to audit widely used DFT codes and CALPHAD databases. Its claims keep their statements, tiers and pins; later work extends them only through new claims. The three goals and the charter’s five phases come first, then the headline results; the research results on multiple Kohn–Sham solutions and the first database audit are described under <a href="#research">Research results</a>.</p></div>
+  <div class="prose"><p>Stage I established machine-checked triple correctness on certified discrete problems and used it to audit widely used DFT codes and CALPHAD databases. Its claims keep their statements, tiers and pins; later work extends them only through new claims. The three goals and the charter’s five phases come first, then the headline results; the proof of several exact Kohn–Sham solutions of one discrete problem is described on the <a href="dft.html#multiple">DFT page</a>.</p></div>
   <div class="goal">
     <h3>G1 — mini-DFT reaches DFTK parity <span class="tag n">set 29 Sep 2026</span> <span class="tag p">Partial</span></h3>
     <p><span data-n="g1.done">10</span> of <span data-n="g1.total">46</span> items done and <span data-n="g1.align">2</span> more agree with DFTK. In one dimension the smearings (Fermi–Dirac, Gaussian, Marzari–Vanderbilt and Methfessel–Paxton of any order), LDA and collinear spin (LSDA, with PW92 correlation) are complete: SCF-solution certificates at finite and zero temperature, at the Γ point and with Monkhorst–Pack k-points, with bands and DOS, all bound to the named external potential (to 8 Oct). Forces on Gaussian sites and closed-shell Hartree–Fock are partly done (8 Oct; the Hartree–Fock energy interval is not yet certified). Since 16 October the tracker also covers the 3D work: real silicon, AlP and GaP with GTH pseudopotentials and LDA (headline results below). <a href="dft.html#g1">Item-by-item status →</a></p>
@@ -370,39 +368,11 @@
   </ul>
 </section>
 
-<section id="base">
-  <p class="sec-no">05</p>
-  <h2>What is trusted without proof</h2>
-  <div class="prose"><p>Every guarantee in every domain is conditional on this small, explicit base.</p></div>
-  <div class="tbl"><table>
-    <tbody>
-      <tr><td class="l">Lean 4</td><td>The kernel that checks every proof; Mathlib, with only the three standard axioms</td></tr>
-      <tr><td class="l">Lean compiler</td><td>Compiles the checkers into executables, together with their input parsing (including reading a TDB file byte by byte) and decimal output (lower bounds rounded down, upper bounds up)</td></tr>
-      <tr><td class="l">TLC</td><td>The TLA+ model checker</td></tr>
-      <tr><td class="l">Frama-C / WP</td><td>With Why3, Alt-Ergo, CVC5 and Z3, for the run-time safety of the C kernel and, under WP’s IEEE 754 model, the floating-point correctness of its interval arithmetic; a contract for <code>nextafter</code>, libc contracts for <code>sqrt</code>, <code>fabs</code>, <code>isfinite</code>, and one <code>admit</code> for the value of <code>INFINITY</code></td></tr>
-      <tr><td class="l">C compiler</td><td>Unverified for now; CompCert is an option for the trusted kernel</td></tr>
-      <tr><td class="l">IEEE 754</td><td>Only that round-to-nearest returns the nearest double; no error-size property is relied on</td></tr>
-    </tbody>
-  </table></div>
-  <p class="note">Each domain also has its own modelling conventions — for example that the certified problem uses the exact rationals written in the certificate, or that Lean’s definitions of the DFT external potentials and of how a TDB file is read say what the specifications intend — named on its page where they apply.</p>
-  <p class="note">The C drivers that write those problems are untrusted, but they are kept honest. Their reports are checked line by line against the checkers’ own output. Their thread protocol is replayed against its TLA+ specification. They are fuzzed under AddressSanitizer and UBSan, and they reject any input they cannot write into a certificate exactly. Known-answer cases in every domain compare the checkers’ intervals with answers computed from the command line rather than the certificate, so a driver that solves the wrong problem is caught. All of this runs in <code>make verify-all</code>. Since 4 October the two largest gaps in how a certificate is tied to its problem are closed: the DFT checker verifies the external potential against its Lean definition, and the CALPHAD checker builds the model from the TDB file itself. The remaining problem data, such as the cell length, cutoff and temperature in DFT, are echoed exactly and compared with the command line, not recomputed. Since 5 October the DFT binding is mandatory: a certificate without it is rejected, and the archived certificates carry it. Since 6 October the parsers also refuse forged names and resource-exhausting numbers, and every DFT echo is compared (<a href="#how">adversarial review</a>).</p>
-</section>
-
-<section id="research">
-  <p class="sec-no">06</p>
-  <h2>Research results</h2>
-  <div class="prose"><p>Since 4 October the certificates are also used to answer questions that floating-point software cannot: that something does <i>not</i> happen, is <i>global</i>, or occurs <i>more than once</i>. Each result is archived with its certificates in the project’s <code>research/</code> directory and re-checked by <code>make verify-all</code>.</p></div>
-  <div class="cards">
-    <div class="card"><h3>Several exact Kohn–Sham solutions</h3><p>A 1D LDA electron gas — four electrons per period, a cosine potential with a quarter of that period, Fermi–Dirac smearing — has at least five distinct exact solutions of its discrete SCF equations, proved by five SCF-solution certificates whose balls are disjoint. Their free-energy intervals also order them: the symmetric solution is not the lowest. A lower bound for one discrete problem, not a count. <a href="dft.html#multiple">Details →</a></p></div>
-    <div class="card"><h3>A certified audit of CALPHAD databases</h3><p>316 binary systems from the 17 databases shipped with pycalphad, 246 650 grid points, every one certified against its TDB file. Five anomalous liquid miscibility gaps that open as the temperature rises, each bracketed to 1 K with proofs on both sides; a narrow fcc gap in Fe–Ni that pycalphad misses; in Cr–Ti, a Laves-phase equilibrium pycalphad misses by at least 9.8 kJ/mol; and a driver translation bug, now fixed. <a href="calphad.html#audit">Details →</a></p></div>
-  </div>
-</section>
-
 </main>
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · status snapshot 8 October 2026<span class="updated"> · updated <time datetime="2026-11-01T00:21+08:00">2026-11-01 00:21 UTC+8</time></span></span>
+  <span>Formal in Silico · status snapshot 8 October 2026<span class="updated"> · updated <time datetime="2026-11-01T00:49+08:00">2026-11-01 00:49 UTC+8</time></span></span>
   <span><a href="./">Programme</a> · <a href="showcases.html">Showcases</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="zh/progress.html" hreflang="zh-CN">中文版</a></span>
 </div></footer>
 </body>
