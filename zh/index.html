@@ -46,8 +46,8 @@
     <div class="j ph"><span class="k">实验</span><span class="e"><i class="v">y</i><sub>obs</sub> − <i class="v">y</i><sub>model</sub> ∈ [<i class="v">y</i><sub>obs</sub> − hi, <i class="v">y</i><sub>obs</sub> − lo] ± <i class="v">σ</i><sub>exp</sub></span></div>
   </div>
   <div class="stats">
-    <div class="stat"><b data-n="all">984</b><span>条命题登记在可信账本中</span></div>
-    <div class="stat"><b data-n="all.proved">775</b><span>条已有机器证明（T3 或 T4）</span></div>
+    <div class="stat"><b data-n="all">997</b><span>条命题登记在可信账本中</span></div>
+    <div class="stat"><b data-n="all.proved">785</b><span>条已有机器证明（T3 或 T4）</span></div>
     <div class="stat"><b data-n="all.T4">333</b><span>条达到端到端等级 T4：检查器可靠性、内核安全与内核浮点</span></div>
     <div class="stat"><b>4</b><span>个参照程序交叉校验：DFTK.jl、scikit-fem、ASE 与 pycalphad</span></div>
   </div>
@@ -116,6 +116,7 @@
       <li><span class="tag n">CALPHAD</span><b>第一份含磁性相的多元证书。</b>多元检查器现在从 TDB 文件读出磁性贡献（居里温度与玻尔磁子参数），并在每个成分盒子上给出界。1073.15&nbsp;K 的 Cr&ndash;Fe&ndash;Ni（COST507，<i>x</i><sub>Cr</sub>&nbsp;=&nbsp;<i>x</i><sub>Ni</sub>&nbsp;=&nbsp;0.2，全部 18 个可形成的相，其中 4 个带磁性项）上，证明了两相平衡 bcc（无序的 B2）+ fcc、宽 3&times;10<sup>&minus;10</sup>&nbsp;J/mol 且含 pycalphad 的值的最小 Gibbs 能区间、三个化学势，以及其余 15 个相不出现；检查在一个核上 120&nbsp;s（CAL-K113&ndash;K121）。</li>
       <li><span class="tag n">DFT</span><b>三维 DFT 检查器便宜了 2 到 5 倍，并证明计算的是同一个函数。</b>三维主模式换成新的检查器，在 Lean 中证明与第一阶段的检查器相等，第一阶段的全部命题原样成立（DFT-P100&ndash;P113，T4）。旧检查器的大部分代价来自内层循环里反复重建 <i>k</i> 点列表；现在只算一次，交换关联列变成整数矩阵乘法，同时在算的 Gram 块也少了。34 份验证证书（接受的与篡改的）上，输出与旧检查器逐字节相同。CPU 时间降为 1/1.9 到 1/5.3，峰值内存降为 1/1.6 到 1/3.0（金刚石，<i>Q</i>&nbsp;=&nbsp;20，8<sup>3</sup> 网格：8.9 &rarr; 1.7 CPU 小时）；S1 截断、两个 <i>k</i> 点的硅检查现在 5.3 CPU 小时、12.6&nbsp;GB 完成，旧检查器 27 CPU 小时后仍未完成（DFT-P114&ndash;P116，T0）。</li>
       <li><span class="tag n">DFT</span><b>无矩阵理论：由残差得到本征值个数与子空间的界。</b>无矩阵检查器的数学又有三部分在 Lean 中证明：Weyl 不等式的计数形式，单边 Davis&ndash;Kahan 界以及两个同秩投影之差的界，以及把近似本征向量的残差变成哈密顿量的下界与占据投影之界的引理；密度响应界中的交叉项现在只需要网格上的最大值（DFT-F122、F123、F130，T3）。</li>
+      <li><span class="tag n">DFT</span><b>PBE 的阈值不再破坏不动点论证；S1 的生产证书用三分之一的时间重新检查。</b>Libxc 的梯度下限在网格的每个对称点都会被跨过，而解在这些点上梯度为零；在那里带常数项的界推不动 Newton&ndash;Kantorovich 的收缩。把下限写成取最大值，折点就落在一个 1-Lipschitz 函数里，余项界成为纯比例的，只比解析常数大 1.0&ndash;1.3&nbsp;%；带阈值的 PBE 问题的逐点响应数据，以及它在任意晶格上的对称协变，都已证明（DFT-E120&ndash;E131）。新的三维检查器用 60 CPU 小时、21.5&nbsp;GB 重新检查了 S1 的硅生产证书（原来的检查：196 CPU 小时、93&nbsp;GB）；结论行与第一阶段检查器的逐字节相同，每个能带区间都在原始运行存档的区间内（那次运行早于动能项更紧的舍入）（DFT-P117，T0）。</li>
     </ul></li>
     <li><time datetime="2026-10-30">2026-10-30</time><ul>
       <li><span class="tag n">纲领</span><b>第一阶段冻结；第二阶段的目标是让 DFT 与 CALPHAD 能用于研究。</b>论文为止的全部内容固定在标签 <code>stage-1</code>：其命题的陈述与等级不变，以后的工作只通过新命题扩展。第二阶段（到 2027 年 1 月）面向研究者自己带来的问题，以事先固定的验收任务评判：fcc 以外的晶体结构、PBE 泛函、金属与多元 CALPHAD。</li>
@@ -678,7 +679,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · 项目纲领 v0.4 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-10-31T14:04+08:00">2026-10-31 14:04 UTC+8</time></span></span>
+  <span>Formal in Silico · 项目纲领 v0.4 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-10-31T15:23+08:00">2026-10-31 15:23 UTC+8</time></span></span>
   <span><a href="progress.html">实现进度</a> · <a href="showcases.html">成果展示</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="../" hreflang="en">English</a></span>
 </div></footer>
 </body>
