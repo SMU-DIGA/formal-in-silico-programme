@@ -245,6 +245,13 @@ td.st{white-space:nowrap}
 .goal p:last-child{margin:0}
 .goal ul{margin:.4em 0 .7em;padding-left:1.1em;font-size:15px}
 .goal li{margin-bottom:5px}
+/* progress page §04: stage headings, table headings, status legend, candidate list */
+.stage-h{font-size:clamp(21px,2.6vw,25px);margin:44px 0 12px;padding-top:20px;border-top:1px solid var(--rule)}
+.tbl-h{margin:26px 0 0;color:var(--ink-2)}
+.rm-legend{gap:8px 20px}
+.rm-legend .tag{margin-right:2px}
+.rm-cands li{border-left-color:var(--math)}
+.rm-cands .tag{margin-right:6px}
 
 /* ---------- decisions ---------- */
 .decision{background:var(--surface);border:1px solid var(--rule);padding:20px 24px;margin:18px 0}

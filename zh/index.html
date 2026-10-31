@@ -107,6 +107,9 @@
   <h2>动态</h2>
   <div class="prose"><p>五个领域新增的功能、研究结果，以及论文与本网站的变化，新的在前。逐项状态见<a href="progress.html">实现进度</a>；这里引用的命题都登记在可信账本中。</p></div>
   <ol class="news">
+    <li><time datetime="2026-11-01">2026-11-01</time><ul>
+      <li><span class="tag n">网站</span><b>进度页上有了目标与路线图。</b><a href="progress.html#phases">进度页第 04 节</a>现在按阶段（最新的在前）列出项目已实现和计划中的每个目标，每项标明状态（完成、进行中、部分完成、计划中、候选）、日期与账本编号：第二段的里程碑和全部 24 个验收任务的现状、第一段的目标、阶段与主要成果，以及第二段之后的候选。过时的状态标签已在那里和本页 &sect;8 改正：阶段 1、3、4 部分完成，S1 已与实验比较，S3 已有并行驱动。</li>
+    </ul></li>
     <li><time datetime="2026-10-31">2026-10-31</time><ul>
       <li><span class="tag n">CALPHAD</span><b>各类二元不变反应的证书，含 Laves 相。</b>一个证书现在覆盖共晶型、包晶型反应与同成分转变，允许两个混合亚点阵的相（Laves C14/C15、D0<sub>19</sub>）与磁性溶体；第一阶段的共晶证书被证明是特例（CAL-T100&ndash;T107）。认证的温度区间：Mg&ndash;Zn 包晶 L&nbsp;+&nbsp;Mg<sub>2</sub>Zn<sub>3</sub>&nbsp;&rarr;&nbsp;Mg<sub>12</sub>Zn<sub>13</sub> 在 [618.643,&nbsp;618.663]&nbsp;K，MgZn<sub>2</sub> 的同成分熔化在 [857.443,&nbsp;857.463]&nbsp;K，以及 Cr&ndash;Ti 中含 Laves 相与磁性 bcc 的三个反应；pycalphad 的温度都在区间内。这些体系去掉了有序 B2 相；区间内只有这一次相变，与第一阶段一样仍未证明。</li>
       <li><span class="tag n">CALPHAD</span><b>第一批多元平衡证书。</b>任意组元数的检查器从 TDB 文件读出模型，证明最小 Gibbs 能、化学势与哪些相不出现：450&nbsp;K 的 Ag&ndash;Cu&ndash;Sn（NIST 焊料库）与 673.15&nbsp;K 的 Al&ndash;Cu&ndash;Mg（COST507，46 个相中的 45 个），各在一个核上 40&nbsp;s 内检查完；各相的 Gibbs 能与 pycalphad 相差不超过 2.2&times;10<sup>&minus;11</sup>&nbsp;J/mol。pycalphad 与 Thermo-Calc 读法不同的参数（写在端元上的相互作用参数）所在的相被拒绝，并在输出中写明（CAL-K100&ndash;K112）。</li>
@@ -554,9 +557,9 @@
     <h3>当前目标：三重正确的三维展示 <span class="tag n">2026-10-08 设定</span></h3>
     <p>把 DFT 推广到三维真实材料，并在同一批体系上同时给出三重正确的证据：数学正确（SCF 解的存在唯一、能量与带隙的严格区间，能做到时针对连续问题）、软件正确（并行协议的 TLA+ 规范与 trace validation，经过证明的检查器）、物理正确（与实验带隙、晶格常数、磁矩的系统确认，给出带证书的交换关联泛函误差）。三个展示例子及其在 2026-10-17 的进展：</p>
     <ul>
-      <li><span class="tag ph">物理</span> <b>S1 带证书的模型误差。</b>一组半导体与绝缘体的 LDA（之后 PBE）带隙、晶格常数与实验系统比较；计算值是严格区间，偏差就是模型（泛函与赝势，以 Kohn–Sham 带隙代表测量的带隙）的误差：不含数值误差的带隙问题。<i>进展：</i>协议设定下的 Si 模型已有证书（DFT-K29），并在整个布里渊区上有界：规则 U 下带隙不超过 0.530902&nbsp;eV（W42–W51）；与实验的比较尚未进行；两侧界（规则 B）在做。确认一侧，Cohen–Bergstresser 赝势已在预注册的规则下与十二种半导体的实验比较（DFT-O01–O03、O07–O19）。</li>
+      <li><span class="tag ph">物理</span> <b>S1 带证书的模型误差。</b>一组半导体与绝缘体的 LDA（之后 PBE）带隙、晶格常数与实验系统比较；计算值是严格区间，偏差就是模型（泛函与赝势，以 Kohn–Sham 带隙代表测量的带隙）的误差：不含数值误差的带隙问题。<i>进展：</i>协议设定下的 Si 模型已有证书（DFT-K29），并在整个布里渊区上有界：规则 U 下带隙不超过 0.530902&nbsp;eV（W42–W51）；10 月 22–26 日起，Si、AlP、GaP 模型的带隙在整个布里渊区上有两侧界，并已与实验比较（DFT-O04、O20、O24）。确认一侧，Cohen–Bergstresser 赝势已在预注册的规则下与十二种半导体的实验比较（DFT-O01–O03、O07–O19）。</li>
       <li><span class="tag m">数学</span> <b>S2 不是基态。</b>用机器检查的证书证明一个收敛的自洽解不是离散模型的基态：较高的解有证书，另一个试探态的自由能上界严格更低。涉及的能量次序是已知物理，所以这是严格性上的第一次，不是物理发现；第一例已在简单立方氢上完成（局域赝势，证书余量 330&nbsp;meV），下一个是 NiO。</li>
-      <li><span class="tag s">软件</span> <b>S3 并行正确与逐位可复现。</b>三维的 k 点、能带、平面波并行与分布式 FFT 转置写成 TLA+ 规范，模型检验并做 trace validation；任意进程数下逐位一致；植入的并行错误被发现。<i>进展：</i>协议层规范已用 TLC 检验（DFT-R08–R11，T2）；三维并行驱动本身还没有。</li>
+      <li><span class="tag s">软件</span> <b>S3 并行正确与逐位可复现。</b>三维的 k 点、能带、平面波并行与分布式 FFT 转置写成 TLA+ 规范，模型检验并做 trace validation；任意进程数下逐位一致；植入的并行错误被发现。<i>进展：</i>协议层规范已用 TLC 检验（DFT-R08–R11，T2）；10 月 28 日起，三维 MPI 驱动在 1 到 32 个进程的 25 种布局下结果逐位相同，日志通过轨迹验证（DFT-R13–R18）。</li>
     </ul>
     <p>与之并行的是物理确认线 P：V 等级写进账本规则，各领域账本新开“确认”一节，实验数据集逐项核对原始文献并随仓库版本化，比较协议在比较前固定，运行报告分数学、软件、物理三栏。计划、阶段与待定事项见 <code>docs/plan-dft3d.md</code>。DFTK 功能对齐（G1）继续作为一维与三维实现的参照。</p>
   </div>
@@ -576,20 +579,20 @@
     <li class="phase"><div class="hd"><b>阶段 0</b><strong>最小 DFT</strong><span class="tag s">已达退出标准</span></div><div class="bd">
       <p>一维周期约化 Hartree 模型，平面波离散，串行执行。用它把 L1 到 L6 完整走通一遍，同时建立整个项目会复用的基础设施：可信账本、证书检查器、运行报告格式、trace validation。</p>
       <p><span class="k">退出标准</span>义务清单中的命题全部达到目标等级；四组基准通过；每次运行都输出可信报告。</p></div></li>
-    <li class="phase"><div class="hd"><b>阶段 1</b><strong>DFT 扩展</strong><span class="tag f">部分提前完成</span></div><div class="bd">
+    <li class="phase"><div class="hd"><b>阶段 1</b><strong>DFT 扩展</strong><span class="tag p">部分完成</span></div><div class="bd">
       <p>一维 LDA 交换关联（凸性丢失，唯一性改为局部结论）；<i class="v">k</i> 点采样，以及 <i class="v">k</i> 点的 MPI 并行——项目第一个真正的并行协议；三维平面波与局域赝势，与 DFTK.jl 交叉校验。</p>
       <p><span class="k">退出标准</span><i class="v">k</i> 点并行在 1 到 64 个进程上结果逐位一致，运行日志全部通过 trace validation。</p></div></li>
     <li class="phase"><div class="hd"><b>阶段 2</b><strong>推广到 MD 与 FEM</strong><span class="tag s">已达退出标准</span></div><div class="bd">
       <p>复用阶段 0 建立的框架，做两个最小版本：一维 Lennard-Jones 原子链加 Velocity Verlet；一维 Poisson 方程加 P1 线性元。TLA+ 模块覆盖 halo 交换、原子迁移、并行组装、检查点。</p>
       <p><span class="k">退出标准</span>两个最小版本都输出可信报告；Céa 引理与 Verlet 辛性达到 T3。</p></div></li>
-    <li class="phase"><div class="hd"><b>阶段 3</b><strong>可信内核</strong><span class="tag n">未开始</span></div><div class="bd">
+    <li class="phase"><div class="hd"><b>阶段 3</b><strong>可信内核</strong><span class="tag p">部分完成</span></div><div class="bd">
       <p>选定少数内核达到 T4：平面波动能算子的作用、FEM 单元刚度矩阵组装、Verlet 单步；浮点误差界的机器证明与代码相连。</p>
       <p><span class="k">退出标准</span>这些内核的浮点误差界经过机器检查，并进入全局误差预算。</p></div></li>
-    <li class="phase"><div class="hd"><b>阶段 4</b><strong>对标</strong><span class="tag n">未开始</span></div><div class="bd">
+    <li class="phase"><div class="hd"><b>阶段 4</b><strong>对标</strong><span class="tag p">部分完成</span></div><div class="bd">
       <p>在标准基准上与既有代码比较：DFT 用 Δ 量规，MD 用 NVE 能量漂移和径向分布函数，FEM 用制造解方法检验收敛阶。</p>
       <p><span class="k">退出标准</span>公开基准结果，以及每个结果对应的可信账本。</p></div></li>
   </ol>
-  <p class="note">逐项现状见<a href="progress.html">进度页</a>，以及每个领域各自的页面：<a href="dft.html">DFT</a>、<a href="fem.html">FEM</a>、<a href="md.html">MD</a>、<a href="calphad.html">CALPHAD</a>、<a href="csp.html">CSP</a>。</p>
+  <p class="note">第一段与第二段每个目标的现状（已实现与计划中）见<a href="progress.html#phases">进度页第 04 节</a>。逐项现状见<a href="progress.html">进度页</a>，以及每个领域各自的页面：<a href="dft.html">DFT</a>、<a href="fem.html">FEM</a>、<a href="md.html">MD</a>、<a href="calphad.html">CALPHAD</a>、<a href="csp.html">CSP</a>。</p>
 </section>
 
 <section id="s9">
@@ -683,7 +686,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · 项目纲领 v0.4 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-10-31T22:49+08:00">2026-10-31 22:49 UTC+8</time></span></span>
+  <span>Formal in Silico · 项目纲领 v0.4 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-11-01T00:21+08:00">2026-11-01 00:21 UTC+8</time></span></span>
   <span><a href="progress.html">实现进度</a> · <a href="showcases.html">成果展示</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="../" hreflang="en">English</a></span>
 </div></footer>
 </body>

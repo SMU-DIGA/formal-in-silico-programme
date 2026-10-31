@@ -121,7 +121,7 @@
     <li><a href="#domains"><span>01</span>Domains</a></li>
     <li><a href="#ledger"><span>02</span>Trust ledger</a></li>
     <li><a href="#how"><span>03</span>How it works</a></li>
-    <li><a href="#phases"><span>04</span>Goals and phases</a></li>
+    <li><a href="#phases"><span>04</span>Goals and roadmap</a></li>
     <li><a href="#base"><span>05</span>Trusted base</a></li>
     <li><a href="#research"><span>06</span>Research results</a></li>
   </ol>
@@ -212,37 +212,162 @@
 
 <section id="phases">
   <p class="sec-no">04</p>
-  <h2>Goals and roadmap phases</h2>
+  <h2>Goals and roadmap</h2>
+  <div class="prose"><p>Every goal the programme has reached and every goal it plans, newest stage first, as of 1 November 2026. Each item carries one status tag:</p></div>
+  <div class="legend rm-legend">
+    <span><span class="tag s">Done</span>with its date and ledger ids</span>
+    <span><span class="tag f">In progress</span>being built now</span>
+    <span><span class="tag n">Planned</span>with its target milestone</span>
+    <span><span class="tag p">Partial</span>what is covered and what is not</span>
+    <span><span class="tag m">Candidate</span>after Stage II, not a commitment</span>
+  </div>
+
+  <h3 class="stage-h" id="stage2">Stage II (30 Oct 2026 – 29 Jan 2027): make DFT and CALPHAD usable for research</h3>
+  <div class="prose"><p>A researcher brings their own problem — their crystal structure, pseudopotential and settings in DFT, their own database and conditions in CALPHAD — and gets, on one workstation and within a fixed time, a Lean-checked certificate for the stated discrete problem or a refusal that says exactly why not. FEM, MD and CSP stay as they are. Progress is measured against 24 acceptance tasks that were fixed, with their input files and hashes, on 30 October 2026, before any Stage II development.</p>
+  <p class="note">The acceptance tasks are judged formally at the end of the stage by a fresh agent who reads only the public documentation. “Done” here means that the capability exists and has been checked, not that the acceptance run has passed.</p></div>
+
+  <h4 class="tbl-h">Milestones</h4>
+  <div class="tbl"><table class="feat">
+    <thead><tr><th>Milestone</th><th>Status</th><th>Contents</th></tr></thead>
+    <tbody>
+      <tr><td>M0 · 30 Oct</td><td class="st"><span class="tag s">Done</span></td><td>Acceptance tasks frozen; cost profile of the 3D checker; designs for general lattices, PBE and multicomponent CALPHAD (all 30 Oct)</td></tr>
+      <tr><td>M1 · 29 Nov</td><td class="st"><span class="tag f">In progress</span></td><td>LDA certificate for any crystal structure; ternary point equilibrium (done 31 Oct, CAL-K110, K111)</td></tr>
+      <tr><td>M2 · 27 Dec</td><td class="st"><span class="tag n">Planned</span></td><td>PBE certificates (Si, C) and metal certificates (Al, Cu); ternary isothermal sections; order–disorder models; pycalphad interface; mid-stage agent trial</td></tr>
+      <tr><td>M3 · 24 Jan</td><td class="st"><span class="tag n">Planned</span></td><td>Collinear spin; conversion of DFTK and ABINIT inputs; certified binary phase diagram; database self-check; quaternary point equilibrium; prebuilt binaries; tutorials; full acceptance run</td></tr>
+    </tbody>
+  </table></div>
+
+  <h4 class="tbl-h">The 24 acceptance tasks</h4>
+  <div class="tbl"><table class="feat">
+    <thead><tr><th>Task</th><th>System</th><th>Status</th><th>Note</th></tr></thead>
+    <tbody>
+      <tr><td>D1</td><td>Si, C, Ge (diamond), PBE</td><td class="st"><span class="tag f">In progress</span></td><td>PBE mathematics done, including Libxc’s thresholds with a proportional remainder bound (DFT-E100–E131, 30–31 Oct); the 3D PBE checker on general lattices comes next. M2 commits to coarse cut-offs only</td></tr>
+      <tr><td>D2</td><td>GaAs, AlP (zinc blende), PBE</td><td class="st"><span class="tag n">Planned</span></td><td>M2</td></tr>
+      <tr><td>D3</td><td>MgO, NaCl (rock salt), LDA</td><td class="st"><span class="tag f">In progress</span></td><td>First end-to-end certificates from the general lattice description done on 31 Oct: NaCl, reduced Hartree–Fock with the full GTH pseudopotentials at the Γ point, small cut-off (DFT-G125, G138); the LDA checker on general lattices is being built. M1</td></tr>
+      <tr><td>D4</td><td>GaN, ZnO (wurtzite), LDA</td><td class="st"><span class="tag n">Planned</span></td><td>The dense checker cannot reach converged cut-offs within the task’s 64 GB. Expected result this stage: a reasoned refusal at converged settings; reduced settings will be tried. The matrix-free route, whose theory is proved this stage, is the path beyond it</td></tr>
+      <tr><td>D5</td><td>SrTiO₃ (cubic perovskite), LDA</td><td class="st"><span class="tag n">Planned</span></td><td>As D4</td></tr>
+      <tr><td>D6</td><td>TiO₂ (rutile), LDA</td><td class="st"><span class="tag n">Planned</span></td><td>As D4</td></tr>
+      <tr><td>D7</td><td>Al, Cu (fcc metals), LDA with Fermi–Dirac smearing</td><td class="st"><span class="tag n">Planned</span></td><td>M2</td></tr>
+      <tr><td>D8</td><td>Fe (bcc, ferromagnetic), collinear LSDA</td><td class="st"><span class="tag n">Planned</span></td><td>M3</td></tr>
+      <tr><td>D9</td><td>Si: equilibrium lattice constant, PBE</td><td class="st"><span class="tag p">Partial</span></td><td>The LDA bracket was done in Stage I (DFT-W100–W107, 22 Oct); the PBE version is planned</td></tr>
+      <tr><td>D10</td><td>A researcher’s DFTK script (AlAs, LDA)</td><td class="st"><span class="tag n">Planned</span></td><td>M3</td></tr>
+      <tr><td>D11</td><td>A researcher’s ABINIT input (GaAs, HGH)</td><td class="st"><span class="tag n">Planned</span></td><td>M3</td></tr>
+      <tr><td>D12</td><td>Convergence table (GaAs, LDA)</td><td class="st"><span class="tag n">Planned</span></td><td>M2</td></tr>
+      <tr><td>C1</td><td>Al–Cu–Mg isothermal section</td><td class="st"><span class="tag n">Planned</span></td><td>M2; ternary point certificates already exist, one of them at a point of this section (CAL-K110, K111)</td></tr>
+      <tr><td>C2</td><td>Cr–Fe–Ni isothermal section, magnetic phases</td><td class="st"><span class="tag p">Partial</span></td><td>A point certificate with magnetic phases is done for Cr–Fe–Ni at 1073.15 K (CAL-K113–K121), from the COST 507 database rather than the task’s database; sections need a tighter magnetic bound</td></tr>
+      <tr><td>C3</td><td>Ni–Al γ/γ′ (L1₂ order–disorder)</td><td class="st"><span class="tag p">Partial</span></td><td>Certificates at <i class="v">x</i><sub>Al</sub> = 0.10, 0.20 and 0.24 on the problem restricted to <i class="v">N</i> ≥ <i class="v">N</i><sub>min</sub> (CAL-K129–K138), with 9 of the task’s 10 phases (the gas phase, which has a molecular species, is refused); telling γ from γ′ and <i class="v">x</i><sub>Al</sub> = 0.40 are open</td></tr>
+      <tr><td>C4</td><td>Ni–Al–Cr isothermal section, Ni-rich half</td><td class="st"><span class="tag n">Planned</span></td><td>M2</td></tr>
+      <tr><td>C5</td><td>Cu–Zn complete binary diagram with B2 ordering</td><td class="st"><span class="tag n">Planned</span></td><td>Needs the order–disorder models of M2</td></tr>
+      <tr><td>C6</td><td>Cr–Ti invariant reactions with Laves phases</td><td class="st"><span class="tag p">Partial</span></td><td>Cr–Ti reactions with Laves phases and magnetic bcc are certified (CAL-T100–T107, 31 Oct); the coverage of the whole temperature range is still being integrated</td></tr>
+      <tr><td>C7</td><td>Mg–Zn peritectic</td><td class="st"><span class="tag p">Partial</span></td><td>L + Mg₂Zn₃ → Mg₁₂Zn₁₃ in [618.643, 618.663] K (CAL-T104, T105, 31 Oct); the ordered BCC_B2 phase is not yet in the phase set</td></tr>
+      <tr><td>C8</td><td>Mg–Zn congruent melting of MgZn₂</td><td class="st"><span class="tag p">Partial</span></td><td>In [857.443, 857.463] K (CAL-T104, T105, 31 Oct); the ordered BCC_B2 phase is not yet in the phase set</td></tr>
+      <tr><td>C9</td><td>Certified complete Al–Si diagram</td><td class="st"><span class="tag n">Planned</span></td><td>M3</td></tr>
+      <tr><td>C10</td><td>An assessor’s self-check of a new ESPEI assessment (Cu–Mg)</td><td class="st"><span class="tag n">Planned</span></td><td>M3</td></tr>
+      <tr><td>C11</td><td>A verdict inside a pycalphad script (Cr–Ti)</td><td class="st"><span class="tag n">Planned</span></td><td>M2</td></tr>
+      <tr><td>C12</td><td>Quaternary point equilibrium (Ag–Bi–Cu–Sn solder)</td><td class="st"><span class="tag n">Planned</span></td><td>M3; the checker accepts any number of components but has not yet been tried at four</td></tr>
+    </tbody>
+  </table></div>
+
+  <h4 class="tbl-h">Other Stage II results already done</h4>
+  <div class="tbl"><table class="feat">
+    <thead><tr><th>Result</th><th>Status</th><th>Date and ledger ids</th></tr></thead>
+    <tbody>
+      <tr><td>The 3D checker is two to five times cheaper and proved in Lean to compute the same function as the Stage I one, so every Stage I claim carries over</td><td class="st"><span class="tag s">Done</span></td><td>31 Oct · DFT-P100–P116</td></tr>
+      <tr><td>The S1 production certificate re-checked by the new checker in 60 CPU hours instead of 196</td><td class="st"><span class="tag s">Done</span></td><td>31 Oct · DFT-P117</td></tr>
+      <tr><td>Theory of a matrix-free checker (eigenvalue counts, subspace and Green-function bounds from residuals, non-orthonormal approximate eigenvectors); theory only this stage</td><td class="st"><span class="tag s">Done</span></td><td>31 Oct · DFT-F110–F134</td></tr>
+      <tr><td>Multicomponent CALPHAD point equilibria, certificate formats 1–4: any number of components, magnetic phases, parameters written as expressions, a proved refusal of phases whose energy per atom is unbounded as <i class="v">N</i> → 0 (with an optional <i class="v">N</i> ≥ <i class="v">N</i><sub>min</sub>), and the reference pressure of molar volumes</td><td class="st"><span class="tag s">Done</span></td><td>31 Oct · CAL-K100–K138</td></tr>
+      <tr><td>Binary invariant reactions of every type (eutectic and peritectic type, congruent), including Laves phases; the Stage I eutectic certificates are proved to be special cases</td><td class="st"><span class="tag s">Done</span></td><td>31 Oct · CAL-T100–T107</td></tr>
+      <tr><td>General-lattice foundations: any Bravais lattice through an exact rational Gram matrix, any number of species, crystal symmetry checked exactly, the full GTH pseudopotential; the Stage I fcc problems proved to be special cases</td><td class="st"><span class="tag s">Done</span></td><td>30–31 Oct · DFT-G100–G141</td></tr>
+      <tr><td>PBE foundations: exchange and correlation with proved derivatives and interval enclosures, Libxc’s thresholds in the problem definition</td><td class="st"><span class="tag s">Done</span></td><td>30–31 Oct · DFT-E100–E131</td></tr>
+      <tr><td><code>fis</code> records provenance, citations and cost; <code>fis dft estimate</code> predicts the cost of a 3D check before it runs</td><td class="st"><span class="tag s">Done</span></td><td>30 Oct</td></tr>
+    </tbody>
+  </table></div>
+
+  <h4 class="tbl-h">Platform</h4>
+  <div class="tbl"><table class="feat">
+    <thead><tr><th>Item</th><th>Status</th><th>Note</th></tr></thead>
+    <tbody>
+      <tr><td>Messages and specifications all in English</td><td class="st"><span class="tag f">In progress</span></td><td>The user documentation (README, trust document, 3D usage guide, JSON contract) is in English; driver messages are still printed in Chinese and English, and the DFT and CALPHAD specifications are partly in Chinese. M2</td></tr>
+      <tr><td>Installation</td><td class="st"><span class="tag p">Partial</span></td><td>An install script that checks every dependency first (30 Oct); prebuilt checker binaries and a container are planned for M3</td></tr>
+      <tr><td>JSON output contract</td><td class="st"><span class="tag p">Partial</span></td><td>Versioned JSON shapes and exit codes for the <code>fis</code> commands, checked by tests (30 Oct); the new Stage II checkers are not wrapped yet</td></tr>
+      <tr><td>Researcher guides and tutorials</td><td class="st"><span class="tag p">Partial</span></td><td>Guides for users coming from DFTK and from pycalphad, good practices and troubleshooting (30 Oct), and the four tutorial notebooks of Stage I; about twelve tutorials for the Stage II features are planned for M3</td></tr>
+      <tr><td>Reading CIF and POSCAR files</td><td class="st"><span class="tag s">Done</span></td><td><code>fis dft prepare</code> turns a structure file into an exact rational problem and prints how far the rationalisation moved the lattice and the atoms (30 Oct, DFT-G117, tested); it feeds D3</td></tr>
+      <tr><td>Certified error bars in plots (<code>fis plot</code>)</td><td class="st"><span class="tag n">Planned</span></td><td>M3</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3 class="stage-h" id="stage1">Stage I (Sept – Oct 2026, frozen at tag <code>stage-1</code> on 30 Oct 2026)</h3>
+  <div class="prose"><p>Stage I established machine-checked triple correctness on certified discrete problems and used it to audit widely used DFT codes and CALPHAD databases. Its claims keep their statements, tiers and pins; later work extends them only through new claims. The three goals and the charter’s five phases come first, then the headline results; the research results on multiple Kohn–Sham solutions and the first database audit are described under <a href="#research">Research results</a>.</p></div>
   <div class="goal">
-    <h3>G1 — mini-DFT reaches DFTK parity <span class="tag n">set 29 Sep 2026</span></h3>
-    <p>9 of 46 items done and 2 more agree with DFTK; Gaussian, Marzari–Vanderbilt and Methfessel–Paxton smearing of any order are complete, and LDA is complete: SCF-solution certificates with every finite-temperature smearing and, since 6 October, at zero temperature under a gap, at the Γ point and with Monkhorst–Pack k-points. Since 4 October finite-temperature SCF solutions also have band and DOS certificates, since 6 October also with k-points (rHF with any smearing, LDA and zero-temperature rHF), and every certificate is checked against the named external potential; since 6 October the results for a Gaussian potential hold for the named potential itself. Collinear spin (LSDA) is complete (except DFTK’s <code>Magnetic</code> vector-potential term): with spin-polarised Slater exchange and a Zeeman field, SCF-solution certificates with magnetisation, chemical-potential, energy and free-energy intervals and per-spin bands and DOS at finite temperature, zero-temperature certificates under a common gap, both at the Γ point and with k-points, and the named Gaussian potential at Γ; since 7 October also spin-interpolated PW92 correlation, and since 8 October PW92 has all the same results (zero temperature, energy, bands and DOS, the Gaussian potential). Since 8 October two more items are partly done: forces on Gaussian sites for rHF at the Γ point (<code>FORCE_OK</code>) and closed-shell Hartree–Fock at finite temperature and the Γ point (<code>HF_OK</code>; its energy interval is not yet certified). 1D first, then <i class="v">d</i> dimensions. <a href="dft.html#g1">Item-by-item status →</a></p>
+    <h3>G1 — mini-DFT reaches DFTK parity <span class="tag n">set 29 Sep 2026</span> <span class="tag p">Partial</span></h3>
+    <p><span data-n="g1.done">10</span> of <span data-n="g1.total">46</span> items done and <span data-n="g1.align">2</span> more agree with DFTK. In one dimension the smearings (Fermi–Dirac, Gaussian, Marzari–Vanderbilt and Methfessel–Paxton of any order), LDA and collinear spin (LSDA, with PW92 correlation) are complete: SCF-solution certificates at finite and zero temperature, at the Γ point and with Monkhorst–Pack k-points, with bands and DOS, all bound to the named external potential (to 8 Oct). Forces on Gaussian sites and closed-shell Hartree–Fock are partly done (8 Oct; the Hartree–Fock energy interval is not yet certified). Since 16 October the tracker also covers the 3D work: real silicon, AlP and GaP with GTH pseudopotentials and LDA (headline results below). <a href="dft.html#g1">Item-by-item status →</a></p>
   </div>
   <div class="goal">
-    <h3>G2 — certified finite elements against scikit-fem <span class="tag n">set 30 Sep 2026</span></h3>
-    <p>12 of 27 items done; F0 (1D Poisson) complete, F1 (1D extensions) under way, Neumann at both ends added on 5 October; since 6 October the eigenvalue problem agrees with scikit-fem and its discrete eigenvalues are certified. <a href="fem.html#g2">Item-by-item status →</a></p>
+    <h3>G2 — certified finite elements against scikit-fem <span class="tag n">set 30 Sep 2026</span> <span class="tag p">Partial</span></h3>
+    <p><span data-n="g2.done">17</span> of <span data-n="g2.total">27</span> items done and <span data-n="g2.align">1</span> more agrees with scikit-fem. One dimension is complete in F0: Poisson with P1 elements and beams with cubic Hermite elements, certified against the true solution, Neumann at both ends (5 Oct) and certified discrete eigenvalues (6 Oct). Since 14 October there are guaranteed error bounds in two dimensions (below). <a href="fem.html#g2">Item-by-item status →</a></p>
   </div>
   <div class="goal">
-    <h3>G3 — certified CALPHAD against pycalphad <span class="tag n">set 1 Oct 2026</span></h3>
-    <p>18 of 25 items done; C0 (binary point equilibrium) complete, and in C1 certified phase diagrams with a partition certificate per temperature (the completeness of each isothermal section), the Inden–Hillert–Jarl magnetic model, driving forces and sharp chemical potentials. Since 4 October the checker reads the TDB file itself, and convexity certificates prove that a phase has no miscibility gap; since 5 October sublattice phases with one or two mixing sublattices (compound energy formalism, including Laves phases) are certified, and so are equilibria at a given chemical potential (pycalphad’s <code>v.MU</code>); since 6 October also at a given activity, and the thermodynamic properties <i class="v">G</i>, <i class="v">S</i>, <i class="v">H</i>, <i class="v">C<sub>p</sub></i> of a phase at fixed composition (pycalphad’s <code>calculate</code>). Next: invariant reactions, equilibrium-level <i class="v">H</i>, <i class="v">S</i>, <i class="v">C<sub>p</sub></i> and interstitial solutions, then ternaries, further sublattice models and order–disorder. <a href="calphad.html#g3">Item-by-item status →</a></p>
+    <h3>G3 — certified CALPHAD against pycalphad <span class="tag n">set 1 Oct 2026</span> <span class="tag p">Partial</span></h3>
+    <p><span data-n="g3.done">21</span> of <span data-n="g3.total">28</span> items done and <span data-n="g3.align">1</span> more agrees with pycalphad. C0 (binary point equilibrium) is complete. By 6 October: certified phase diagrams with a partition certificate per temperature, the Inden–Hillert–Jarl magnetic model, driving forces, the checker reading the TDB file itself, convexity certificates, sublattice phases with one or two mixing sublattices (Laves phases among them), equilibria at a given chemical potential or activity, and <i class="v">G</i>, <i class="v">S</i>, <i class="v">H</i>, <i class="v">C<sub>p</sub></i> of a phase. Since 14 October also eutectic and eutectoid temperatures (CAL-B15, B24), phase diagrams over temperature intervals (CAL-C12) and interstitial phases and magnetic compounds (CAL-C22–C24). Multicomponent systems, further invariant types and order–disorder continue in Stage II (above). <a href="calphad.html#g3">Item-by-item status →</a></p>
   </div>
   <ol class="phases">
-    <li class="phase"><div class="hd"><b>PHASE 0</b><strong>Minimal DFT</strong><span class="tag s">Exit criteria met</span></div><div class="bd">
+    <li class="phase"><div class="hd"><b>PHASE 0</b><strong>Minimal DFT</strong><span class="tag s">Done · 6 Oct</span></div><div class="bd">
       <p>Trust ledger, Lean certificate checkers, trust reports and trace validation are in place; all four benchmark groups pass, including the DFTK cross-check.</p>
       <p><span class="k">Done 5 Oct</span>continuum well-posedness, the a priori plane-wave estimate and linear-mixing convergence reached their target T1 as paper proofs; no published result covers the 1D periodic Hartree kernel directly, and the mixing condition was corrected to α &lt; 2/λ<sub>max</sub> of the dielectric operator.</p>
-      <p><span class="k">Done 6 Oct</span>decision D1 chose Frama-C’s floating-point model: the interval arithmetic is proved correct on the C code (DFT-F01, F02 at T4) and the Lean–Rocq interface claim is withdrawn, so every obligation is at its target. The cutoff-limit claim DFT-C02 (T1, target T3) and the thread-implementation claim DFT-P02 (T0, target T2) are annotations, carried into later phases. DFT-C02 reached T3 on 8 October: the truncation limit E<sub>∞</sub> equals the ground energy of the continuum model, proved in Lean with the continuum model written in Fourier space (its equivalence with the operator model on H¹ is assumption A-DFT-08).</p></div></li>
-    <li class="phase"><div class="hd"><b>PHASE 1</b><strong>DFT extensions</strong><span class="tag f">Partly ahead</span></div><div class="bd">
+      <p><span class="k">Done 6 Oct</span>decision D1 chose Frama-C’s floating-point model: the interval arithmetic is proved correct on the C code (DFT-F01, F02 at T4) and the Lean–Rocq interface claim is withdrawn, so every obligation is at its target. The cutoff-limit claim DFT-C02 was carried into later phases and reached T3 on 8 October: the truncation limit E<sub>∞</sub> equals the ground energy of the continuum model, proved in Lean with the continuum model written in Fourier space (its equivalence with the operator model on H¹ is assumption A-DFT-08).</p></div></li>
+    <li class="phase"><div class="hd"><b>PHASE 1</b><strong>DFT extensions</strong><span class="tag p">Partial</span></div><div class="bd">
       <p>k-point sampling is implemented and certified; the thread-parallel k-point protocol is model-checked and runs are bitwise identical across thread counts. Beyond the original plan: finite-temperature occupations with free-energy, entropy and energy certificates, Anderson mixing, non-self-consistent bands and DOS, and the truncation-error certificate.</p>
       <p><span class="k">LDA</span>Slater exchange and PW92 correlation certified at the Γ point and with k-points (equivalent supercell) with Fermi–Dirac, Gaussian, MV or MP smearing, and since 6 October at zero temperature under a spectral gap.</p>
-      <p><span class="k">Since done</span>3D plane waves with GTH pseudopotentials are certified for Si, AlP and GaP; since 28 October an MPI driver of the 3D point-group LDA problem (showcase S3) is bitwise identical in 25 tested layouts with between 1 and 32 processes and its logs pass trace validation (T0); the exit criterion of 1–64 processes is not yet met.</p></div></li>
-    <li class="phase"><div class="hd"><b>PHASE 2</b><strong>MD and FEM</strong><span class="tag s">Exit criteria met</span></div><div class="bd">
+      <p><span class="k">Since done</span>3D plane waves with GTH pseudopotentials are certified for Si (from 10 Oct), AlP and GaP; since 28 October an MPI driver of the 3D point-group LDA problem (showcase S3) is bitwise identical in 25 tested layouts with between 1 and 32 processes and its logs pass trace validation (DFT-R13–R18).</p>
+      <p><span class="k">Not yet</span>the exit criterion asks for bitwise-identical runs on 1 to 64 processes.</p></div></li>
+    <li class="phase"><div class="hd"><b>PHASE 2</b><strong>MD and FEM</strong><span class="tag s">Done · 1 Oct</span></div><div class="bd">
       <p>Both minimal versions print trust reports. mini-FEM: 1D Poisson (P1) and beams (cubic Hermite), certified against the true solution. mini-MD v0 (1 Oct 2026): a 1D Lennard-Jones chain with velocity Verlet, certified against the true trajectory. Céa’s lemma (FEM-D03) and Verlet symplecticity (MD-D03) are both at T3.</p>
-      <p><span class="k">Not started</span>the TLA+ modules for halo exchange, atom migration, parallel assembly and checkpointing; periodic boxes and thermostats for MD.</p></div></li>
-    <li class="phase"><div class="hd"><b>PHASE 3</b><strong>Trusted kernels</strong><span class="tag n">Not started</span></div><div class="bd">
-      <p>Starting point: the interval-arithmetic kernel, whose floating-point correctness and absence of run-time errors are both proved on the C code with Frama-C/WP (T4, since 6 October); the same method is to be applied to the kernels of this phase.</p></div></li>
-    <li class="phase"><div class="hd"><b>PHASE 4</b><strong>Benchmarking</strong><span class="tag n">Not started</span></div><div class="bd">
-      <p>Δ-gauge, NVE drift and manufactured-solution studies with published trust ledgers.</p></div></li>
+      <p><span class="k">Since done</span>a 3D periodic box for MD (14 Oct, MD-C09–C13) and 2D triangle meshes for FEM (14 Oct, FEM-D10–D18).</p>
+      <p><span class="k">Not started</span>the TLA+ modules for halo exchange, atom migration, parallel assembly and checkpointing; thermostats for MD.</p></div></li>
+    <li class="phase"><div class="hd"><b>PHASE 3</b><strong>Trusted kernels</strong><span class="tag p">Partial</span></div><div class="bd">
+      <p><span class="k">Done 6 Oct</span>the interval-arithmetic kernel of the DFT driver — charge interval, residual bound and inertia count — is proved on the C code with Frama-C/WP: no run-time errors (DFT-F03) and, since 6 October, floating-point correctness under an IEEE 754 model (DFT-F01, F02), all at T4.</p>
+      <p><span class="k">Not yet</span>the three kernels the charter names for this phase: the plane-wave kinetic operator, FEM element-stiffness assembly and one Verlet step.</p></div></li>
+    <li class="phase"><div class="hd"><b>PHASE 4</b><strong>Benchmarking</strong><span class="tag p">Partial</span></div><div class="bd">
+      <p><span class="k">Done</span>manufactured-solution studies for FEM with certified error bounds (<a href="showcases.html#fem-poisson-manufactured">showcase</a> and tutorial); certified NVE energy drift in MD (<code>ENERGY_DRIFT</code>, MD-B03); and established codes run against certified answers under protocols frozen in advance — ABINIT, Quantum ESPRESSO and DFTK (22 Oct, DFT-O25–O27) and pycalphad on published databases (from 4 Oct; headline results below).</p>
+      <p><span class="k">Not yet</span>the Δ-gauge for DFT and radial distribution functions for MD.</p></div></li>
   </ol>
   <p class="note">CALPHAD is not one of the charter’s original phases; it was added as goal G3 on 1 October 2026 and follows the same completion standard as G1 and G2.</p>
+
+  <h4 class="tbl-h">Stage I headline results</h4>
+  <div class="tbl"><table class="feat">
+    <thead><tr><th>Result</th><th>Status</th><th>Date and ledger ids</th></tr></thead>
+    <tbody>
+      <tr><td><b>S1, silicon.</b> The KS-LDA solution certified at the pre-registered settings; the band gap of this discrete model bounded on both sides over the whole Brillouin zone, [0.4146, 0.4856] eV, and compared with experiment (model below observation, grade V1); the results proved to be about the registered problem written in Lean. <a href="showcases.html#dft-si-bz-bands">Showcase →</a></td><td class="st"><span class="tag s">Done</span></td><td>16 Oct · DFT-K29; 22 Oct · DFT-W52–W66, O04; 29 Oct · DFT-K30–K36, K38</td></tr>
+      <tr><td><b>S1, aluminium phosphide.</b> Gap of the discrete model in [1.4071305, 1.4780513] eV over the whole zone, compared with experiment</td><td class="st"><span class="tag s">Done</span></td><td>20 Oct · DFT-O20, W90–W97; 26 Oct · DFT-W300</td></tr>
+      <tr><td><b>S1, gallium phosphide.</b> Gap of the discrete model in [1.4668132, 1.5377628] eV over the whole zone, compared with experiment</td><td class="st"><span class="tag s">Done</span></td><td>23 Oct · DFT-W190, W191, W193; 26 Oct · DFT-W192, O24</td></tr>
+      <tr><td><b>Silicon lattice constant.</b> Every energy minimum of the fixed-basis discrete KS-LDA family lies in [5.354683, 5.358683] Å, assuming the two end-point solutions are ground states; not the converged LDA value and not compared with experiment</td><td class="st"><span class="tag s">Done</span></td><td>22 Oct · DFT-W100–W107</td></tr>
+      <tr><td><b>First result with all three correctnesses.</b> Certified Cohen–Bergstresser bands of Si, Ge and GaAs against photoemission data under a protocol pushed before any number existed, extended to twelve semiconductors. <a href="showcases.html#dft-cb-validation">Showcase →</a></td><td class="st"><span class="tag s">Done</span></td><td>8 Oct · DFT-O01–O03; 17 Oct · DFT-O07–O19, W70–W78</td></tr>
+      <tr><td><b>S2, not the ground state.</b> A machine-checked proof that a converged SCF solution (simple-cubic hydrogen) is not the ground state of the discrete model, by a certified margin of 330 meV; a first in rigour, not a physical discovery. <a href="showcases.html#dft-h-not-ground-state">Showcase →</a></td><td class="st"><span class="tag s">Done</span></td><td>10 Oct · DFT-M20–M26</td></tr>
+      <tr><td><b>S3, parallel correctness.</b> 3D k-point, band and FFT parallelism specified in TLA+ and model-checked; an MPI driver whose runs replay against the specification and give bit-for-bit identical results in every tested layout (1 to 32 processes)</td><td class="st"><span class="tag s">Done</span></td><td>8 Oct · DFT-R08–R12; 28 Oct · DFT-R13–R18</td></tr>
+      <tr><td><b>CALPHAD audits against printed tables.</b> Database models compared with the tables of invariant reactions printed alongside them: the NIST solder database, six published assessments, then every binary database published as supplementary material in the TDBDB index, with a post hoc analysis of how much printed rounding can explain. <a href="./#news">News →</a></td><td class="st"><span class="tag s">Done</span></td><td>20 Oct · CAL-B35; 21 Oct · CAL-B37; 22 Oct · CAL-B39–B43, B48–B51; 29 Oct · CAL-B70–B78</td></tr>
+      <tr><td><b>Near-invariant equilibria.</b> At points registered before any pycalphad call, pycalphad 0.11.2 at default settings returns, in 16 of 52 audited databases, an equilibrium proven not to be the global equilibrium of the model the file defines</td><td class="st"><span class="tag s">Done</span></td><td>26 Oct · CAL-B54–B66</td></tr>
+      <tr><td><b>pycalphad’s 17 databases.</b> Every grid point of 316 binary systems certified against its TDB file. <a href="calphad.html#audit">Details →</a></td><td class="st"><span class="tag s">Done</span></td><td>4 Oct</td></tr>
+      <tr><td><b>DFT code audit.</b> ABINIT, Quantum ESPRESSO and DFTK run on four discrete problems with certified answers, with aligned, default and tutorial settings, then read for derived quantities and by each code’s own tolerance</td><td class="st"><span class="tag s">Done</span></td><td>22 Oct · DFT-O25–O27, W200–W207; 29 Oct · DFT-W316–W320</td></tr>
+      <tr><td><b>GTH/HGH census.</b> Every publicly distributed GTH/HGH pseudopotential file compared exactly across distributions and with the original tables; the GTH-PBE layer certified entry by entry</td><td class="st"><span class="tag s">Done</span></td><td>22 Oct · DFT-O28; 23 Oct · DFT-O29</td></tr>
+      <tr><td><b>FEM in two dimensions.</b> Guaranteed Prager–Synge error bounds on triangle meshes, the whole chain proved in Lean, with polynomial right-hand sides; certified eigenvalues of the square and the L-shaped membrane. <a href="showcases.html#fem-lshape-eigenvalue">Showcase →</a></td><td class="st"><span class="tag s">Done</span></td><td>14 Oct · FEM-D10–D18, D30–D36; 15 Oct · FEM-B12</td></tr>
+      <tr><td><b>MD in three dimensions.</b> Lennard-Jones atoms in a periodic cube: existence, uniqueness and conservation proved, and the true trajectory enclosed. <a href="showcases.html#md-lj3d-box">Showcase →</a></td><td class="st"><span class="tag s">Done</span></td><td>14 Oct · MD-C09–C13</td></tr>
+      <tr><td><b>mini-CSP v0.</b> Lennard-Jones cluster search whose candidates are certified exact local minima, unique up to symmetry. <a href="csp.html">Details →</a></td><td class="st"><span class="tag s">Done</span></td><td>7 Oct · CSP-B01, B02, B04, A01, A02</td></tr>
+      <tr><td><b>Physical validation in the ledger.</b> Validation claims with grades V0–V3 against frozen, hashed experimental data sets, recomputed on every verification run</td><td class="st"><span class="tag s">Done</span></td><td>8 Oct · CAL-O01 first</td></tr>
+      <tr><td><b>Adversarial reviews.</b> Two reviews of the checkers with the attacker in control of the certificate; the forged certificates are replayed on every verification run. <a href="#how">Details →</a></td><td class="st"><span class="tag s">Done</span></td><td>6 Oct; 7 Oct · DFT-I09–I11, FEM-B11, MD-B14, CAL-I06–I08, CSP-B06</td></tr>
+      <tr><td><b>Verification infrastructure.</b> One command, <code>make verify-all</code>, re-checks the repository; statements of the soundness theorems pinned; parallel runs and a quick tier; a content-addressed result cache with sampled fresh re-checks, and a full cold run every night</td><td class="st"><span class="tag s">Done</span></td><td>1 Oct; 3 Oct; 8 Oct; 15 Oct; 22 Oct</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3 class="stage-h" id="after">After Stage II: candidates, not commitments</h3>
+  <ul class="gaps rm-cands">
+    <li><span class="tag m">Candidate</span> A matrix-free DFT checker, assembly and checker, for oxides and perovskites at converged settings</li>
+    <li><span class="tag m">Candidate</span> Hybrid functionals, HSE first (it has no Coulomb singularity)</li>
+    <li><span class="tag m">Candidate</span> Geometry optimisation with certified stationary points</li>
+    <li><span class="tag m">Candidate</span> Whole-zone band bounds (Rules U and B) on general lattices</li>
+    <li><span class="tag m">Candidate</span> Spin-polarised PBE</li>
+    <li><span class="tag m">Candidate</span> ONCV pseudopotentials in UPF format</li>
+    <li><span class="tag m">Candidate</span> Ternary invariant reactions and variable-temperature sections in CALPHAD</li>
+  </ul>
 </section>
 
 <section id="base">
@@ -277,7 +402,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · status snapshot 8 October 2026<span class="updated"> · updated <time datetime="2026-10-31T22:19+08:00">2026-10-31 22:19 UTC+8</time></span></span>
+  <span>Formal in Silico · status snapshot 8 October 2026<span class="updated"> · updated <time datetime="2026-11-01T00:21+08:00">2026-11-01 00:21 UTC+8</time></span></span>
   <span><a href="./">Programme</a> · <a href="showcases.html">Showcases</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="zh/progress.html" hreflang="zh-CN">中文版</a></span>
 </div></footer>
 </body>
