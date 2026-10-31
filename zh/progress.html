@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Formal in Silico · 路线图</title>
+<title>Formal in Silico · 实现进度与路线图</title>
 <meta name="description" content="Formal in Silico 五个领域的实现进度：mini-DFT、mini-FEM、mini-MD、mini-CALPHAD、mini-CSP；可信账本、对齐目标与路线图各阶段。">
 <link rel="alternate" hreflang="en" href="../progress.html">
 <link rel="alternate" hreflang="zh-CN" href="progress.html">
@@ -19,7 +19,7 @@
   <a class="brand" href="./">Formal in Silico</a>
   <nav class="nav" aria-label="站点">
     <a href="./">纲领</a>
-    <a href="progress.html" aria-current="page">路线图</a>
+    <a href="progress.html" aria-current="page">进度</a>
     <a href="showcases.html">成果展示</a>
     <span class="sep" aria-hidden="true"></span>
     <a class="dom" href="dft.html">DFT</a>
@@ -33,8 +33,8 @@
 </div></header>
 
 <div class="hero small"><div class="hero-in">
-  <p class="eyebrow">目标、现状与计划 · 2026-11-01</p>
-  <h1>路线图</h1>
+  <p class="eyebrow">现状与路线图 · 2026-11-01</p>
+  <h1>实现进度</h1>
   <p class="lead">项目在五个领域上分别走到了哪里：多少命题达到了哪一级可信等级，每个领域离它的参照程序还有多远，路线图的哪些阶段已经完成。每个领域有自己的页面，列出逐项状态、交叉校验与缺口。一项功能只有在实现、与参照程序一致、<b>并且</b>输出的每个数都有 Lean 定理保证时，才算<b>完成</b>。</p>
   <figure class="glance" id="glance">
     <div class="gl-top"><div><p class="eyebrow">全局一览 · 2026-10-31</p><h2>三重正确，一本账本，五个领域</h2></div>
@@ -115,13 +115,17 @@
 </div></div>
 
 <div class="wrap">
+<div class="goal" id="roadmap-callout">
+  <h3>路线图</h3>
+  <p>项目已实现和计划中的每个目标：第二段的里程碑与全部 24 个验收任务的现状、第一段的目标与成果、第二段之后的候选，每项标明状态、日期与账本编号。<a href="#phases"><b>查看路线图 →</b></a></p>
+</div>
 <nav class="toc" aria-label="目录">
   <p>目录</p>
   <ol>
     <li><a href="#domains"><span>01</span>五个领域</a></li>
     <li><a href="#ledger"><span>02</span>可信账本</a></li>
     <li><a href="#how"><span>03</span>保证从哪来</a></li>
-    <li><a href="#phases"><span>04</span>目标与路线图</a></li>
+    <li><a href="#phases"><span>04</span><b>路线图</b></a></li>
   </ol>
 </nav>
 <main>
@@ -210,7 +214,7 @@
 
 <section id="phases">
   <p class="sec-no">04</p>
-  <h2>目标与路线图</h2>
+  <h2>路线图：已实现与计划中的目标</h2>
   <div class="prose"><p>纲领已经达到的和计划中的每一个目标，按阶段由近及远排列，截至 2026-11-01。每一项带一个状态标签：</p></div>
   <div class="legend rm-legend">
     <span><span class="tag s">完成</span>注明日期与账本编号</span>
@@ -372,7 +376,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · 现状快照 2026-10-08<span class="updated"> · 更新于 <time datetime="2026-11-01T00:49+08:00">2026-11-01 00:49 UTC+8</time></span></span>
+  <span>Formal in Silico · 现状快照 2026-10-08<span class="updated"> · 更新于 <time datetime="2026-11-01T00:53+08:00">2026-11-01 00:53 UTC+8</time></span></span>
   <span><a href="./">纲领</a> · <a href="showcases.html">成果展示</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="../progress.html" hreflang="en">English</a></span>
 </div></footer>
 </body>
