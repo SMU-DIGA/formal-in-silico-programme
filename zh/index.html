@@ -46,9 +46,9 @@
     <div class="j ph"><span class="k">实验</span><span class="e"><i class="v">y</i><sub>obs</sub> − <i class="v">y</i><sub>model</sub> ∈ [<i class="v">y</i><sub>obs</sub> − hi, <i class="v">y</i><sub>obs</sub> − lo] ± <i class="v">σ</i><sub>exp</sub></span></div>
   </div>
   <div class="stats">
-    <div class="stat"><b data-n="all">1007</b><span>条命题登记在可信账本中</span></div>
-    <div class="stat"><b data-n="all.proved">794</b><span>条已有机器证明（T3 或 T4）</span></div>
-    <div class="stat"><b data-n="all.T4">336</b><span>条达到端到端等级 T4：检查器可靠性、内核安全与内核浮点</span></div>
+    <div class="stat"><b data-n="all">1021</b><span>条命题登记在可信账本中</span></div>
+    <div class="stat"><b data-n="all.proved">807</b><span>条已有机器证明（T3 或 T4）</span></div>
+    <div class="stat"><b data-n="all.T4">341</b><span>条达到端到端等级 T4：检查器可靠性、内核安全与内核浮点</span></div>
     <div class="stat"><b>4</b><span>个参照程序交叉校验：DFTK.jl、scikit-fem、ASE 与 pycalphad</span></div>
   </div>
     <p class="g-cap">证明依赖：账本里的每个命题建立在哪些命题之上，直接从 Lean 证明项读出。点一个节点追踪它的链；各领域页里有只看本领域的同一张图。</p>
@@ -119,6 +119,8 @@
       <li><span class="tag n">DFT</span><b>PBE 的阈值不再破坏不动点论证；S1 的生产证书用三分之一的时间重新检查。</b>Libxc 的梯度下限在网格的每个对称点都会被跨过，而解在这些点上梯度为零；在那里带常数项的界推不动 Newton&ndash;Kantorovich 的收缩。把下限写成取最大值，折点就落在一个 1-Lipschitz 函数里，余项界成为纯比例的，只比解析常数大 1.0&ndash;1.3&nbsp;%；带阈值的 PBE 问题的逐点响应数据，以及它在任意晶格上的对称协变，都已证明（DFT-E120&ndash;E131）。新的三维检查器用 60 CPU 小时、21.5&nbsp;GB 重新检查了 S1 的硅生产证书（原来的检查：196 CPU 小时、93&nbsp;GB）；结论行与第一阶段检查器的逐字节相同，每个能带区间都在原始运行存档的区间内（那次运行早于动能项更紧的舍入）（DFT-P117，T0）。</li>
       <li><span class="tag n">DFT</span><b>无矩阵理论：可以写成证书的 Green 函数界，在整个 Newton&ndash;Kantorovich 球上一致成立。</b>定理&nbsp;7&prime; 只用算出的能带的残差和其余高频部分上的一个算子不等式，界住密度响应界所依赖的 Green 函数范数，不需要完整的本征分解。引理&nbsp;U 证明：在近似解周围的球上每一点，占据投影、能带能量和这个界都成立，常数只由球心的数据算出；所用的能隙假设是为回应审稿意见加进理论的（DFT-F124、F126、F127，T3）。</li>
       <li><span class="tag n">CALPHAD</span><b>TDB 参数写成表达式时的多元证书。</b>含 <code>EXP</code>、<code>LN</code> 与压力 <code>P</code> 的参数（例如气相的 <i>RT</i>&nbsp;ln(10<sup>&minus;5</sup><i>P</i>) 项）现在从 TDB 文件读出，用向外舍入的有理区间界住（证书格式&nbsp;3；格式 1、2 不变）。第一份证书：Al&ndash;Ni（Liu 2016，气相与液相），1273.15&nbsp;K，<i>x</i><sub>Al</sub>&nbsp;=&nbsp;0.24，用的是去掉摩尔体积 <code>V0</code> 行的测试副本（含 <code>V0</code> 的文件检查器仍然拒绝）：液相单相，最小 Gibbs 能在宽 3&times;10<sup>&minus;10</sup>&nbsp;J/mol 且含 pycalphad 的值的区间内，两个化学势，以及气相不出现；检查在一个核上 3&nbsp;s（CAL-K122&ndash;K128）。</li>
+      <li><span class="tag n">DFT</span><b>无矩阵理论：近似本征向量不必正交。</b>证书里的能带现在可以是任何接近正交的一组向量：它们的 Gram 矩阵与单位阵的偏差 &nu; 显式进入每个界，检查器不必用精确算术做正交化。定理&nbsp;6&prime;（由残差得到的密度界）按理论中的陈述证明，不用矩阵求逆；同时证明了不动点半径的闭合与余项界中的 rms 一步。证明过程中发现理论中一处注记少了一项，已改正；该项是 &nu; 的一阶量，没有数字因此改变（DFT-F131&ndash;F134，T3）。无矩阵不动点定理的最后拼装留到第三段。</li>
+      <li><span class="tag n">CALPHAD</span><b>每原子能量没有下界的相被拒绝并给出已证明的原因；摩尔体积带明确的参考压力。</b>有些数据库按原样定义时，某个相的每原子 Gibbs 能在每式量原子数趋于零时无下界地下降（例如全空位端元的 <i>G</i>&nbsp;=&nbsp;0），这时最小值不存在。检查器用 Lean 中证明的判据发现这种情况，默认拒绝并写出相名；按要求则证明限制在 <i>N</i>&nbsp;&ge;&nbsp;<i>N</i><sub>min</sub> 上的问题，并在 <code>PROBLEM</code> 中回显。Ni&ndash;Al（Liu 2016，含 L1<sub>2</sub> 的 9 个相）由此在 <i>x</i><sub>Al</sub>&nbsp;=&nbsp;0.10、0.20、0.24 得到证书，每个 20&ndash;31&nbsp;s，pycalphad 的值都在区间内。摩尔体积（<code>V0</code>）项现在按明确的参考压力读入：101325&nbsp;Pa（pycalphad 的读法，默认）或 100000&nbsp;Pa（1&nbsp;bar）；第一份含此项的证书在 10<sup>8</sup>&nbsp;Pa（CAL-K129&ndash;K138）。</li>
     </ul></li>
     <li><time datetime="2026-10-30">2026-10-30</time><ul>
       <li><span class="tag n">纲领</span><b>第一阶段冻结；第二阶段的目标是让 DFT 与 CALPHAD 能用于研究。</b>论文为止的全部内容固定在标签 <code>stage-1</code>：其命题的陈述与等级不变，以后的工作只通过新命题扩展。第二阶段（到 2027 年 1 月）面向研究者自己带来的问题，以事先固定的验收任务评判：fcc 以外的晶体结构、PBE 泛函、金属与多元 CALPHAD。</li>
@@ -681,7 +683,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · 项目纲领 v0.4 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-10-31T16:49+08:00">2026-10-31 16:49 UTC+8</time></span></span>
+  <span>Formal in Silico · 项目纲领 v0.4 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-10-31T22:49+08:00">2026-10-31 22:49 UTC+8</time></span></span>
   <span><a href="progress.html">实现进度</a> · <a href="showcases.html">成果展示</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="../" hreflang="en">English</a></span>
 </div></footer>
 </body>
