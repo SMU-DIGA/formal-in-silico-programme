@@ -46,9 +46,9 @@
     <div class="j ph"><span class="k">Experiment</span><span class="e"><i class="v">y</i><sub>obs</sub> − <i class="v">y</i><sub>model</sub> ∈ [<i class="v">y</i><sub>obs</sub> − hi, <i class="v">y</i><sub>obs</sub> − lo] ± <i class="v">σ</i><sub>exp</sub></span></div>
   </div>
   <div class="stats">
-    <div class="stat"><b data-n="all">1,021</b><span>claims registered in the trust ledger</span></div>
-    <div class="stat"><b data-n="all.proved">807</b><span>of them machine-proved (tier T3 or T4)</span></div>
-    <div class="stat"><b data-n="all.T4">341</b><span>at the end-to-end tier T4: checker soundness, kernel safety and kernel floating point</span></div>
+    <div class="stat"><b data-n="all">1,030</b><span>claims registered in the trust ledger</span></div>
+    <div class="stat"><b data-n="all.proved">815</b><span>of them machine-proved (tier T3 or T4)</span></div>
+    <div class="stat"><b data-n="all.T4">345</b><span>at the end-to-end tier T4: checker soundness, kernel safety and kernel floating point</span></div>
     <div class="stat"><b>4</b><span>reference codes cross-checked: DFTK.jl, scikit-fem, ASE and pycalphad</span></div>
   </div>
     <p class="g-cap">Proof dependencies: what every claim in the ledger is built on, read from the Lean proof terms. Click a node to follow its chain; each domain page has the same graph for its own claims.</p>
@@ -108,6 +108,7 @@
   <div class="prose"><p>Features added to the five domains, research results, and changes to the paper and this site, newest first. Item-by-item status is on the <a href="progress.html">progress page</a>; every claim cited here is in the trust ledger.</p></div>
   <ol class="news">
     <li><time datetime="2026-11-01">1 Nov 2026</time><ul>
+      <li><span class="tag n">CALPHAD</span><b>Cover certificates for Cr&ndash;Ti over most of 700&ndash;2300&nbsp;K.</b> For Cr&ndash;Ti (COST&nbsp;507), seven checked certificates show that on 1266&nbsp;K of the 1600&nbsp;K range no three-phase equilibrium among the phases considered occurs outside the bracketed invariant reactions. The four reactions inside are bracketed &mdash; a eutectoid BCC_A2 &rarr; C15 + D0<sub>19</sub> in [1010.987,&nbsp;1011.007]&nbsp;K, a eutectoid C14 &rarr; BCC_A2 + C15 in [1099.058,&nbsp;1099.158]&nbsp;K, a peritectoid forming C15 in [1498.649,&nbsp;1498.669]&nbsp;K and the congruent C14/BCC_A2 transformation in [1647.091,&nbsp;1647.111]&nbsp;K &mdash; and pycalphad&rsquo;s temperature lies in each bracket. The ordered B2 phase and three phases the model reader does not support are left out, the remaining 334&nbsp;K are not yet covered, and an equilibrium with two parts of one phase beside a third phase is not excluded (CAL-T113, T115, T116).</li>
       <li><span class="tag n">Site</span><b>A roadmap on the progress page.</b> The <a href="progress.html">progress page</a> now opens with a pointer to its roadmap and keeps the overview, the domains, the ledger and how it works; its trusted-base and research-results sections were removed (the trusted base is described on this page, the research results on the domain pages). <a href="progress.html#phases">The roadmap (§04)</a> lists every goal the programme has reached and every goal it plans, newest stage first, each with a status (done, in progress, partial, planned, candidate), its date and ledger ids: the Stage II milestones and the status of all 24 acceptance tasks, the Stage I goals, phases and headline results, and candidates for after Stage II. Out-of-date status tags were corrected here and in &sect;8 of this page: phases 1, 3 and 4 are partly done, S1 is compared with experiment and S3 has its parallel driver.</li>
     </ul></li>
     <li><time datetime="2026-10-31">31 Oct 2026</time><ul>
@@ -686,7 +687,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · Programme v0.4 · revised as the project evolves<span class="updated"> · updated <time datetime="2026-11-01T00:53+08:00">2026-11-01 00:53 UTC+8</time></span></span>
+  <span>Formal in Silico · Programme v0.4 · revised as the project evolves<span class="updated"> · updated <time datetime="2026-11-01T02:32+08:00">2026-11-01 02:32 UTC+8</time></span></span>
   <span><a href="progress.html">Progress</a> · <a href="showcases.html">Showcases</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="zh/" hreflang="zh-CN">中文版</a></span>
 </div></footer>
 </body>
