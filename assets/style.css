@@ -574,3 +574,18 @@ main .g-stage{height:min(70vh,620px)}
 #roadmap-callout{margin-top:40px;border-left-color:var(--ink)}
 .rm-tasks td:first-child,.rm-tasks th:first-child{min-width:0;width:3.2em;white-space:nowrap}
 .nowidow{text-wrap:pretty}
+
+/* research goal (programme §0): scale chain */
+.goal-q{border-left:3px solid var(--phys);background:var(--surface);padding:14px 18px;margin:0 0 22px;font:500 17px/1.6 var(--serif);color:var(--ink)}
+.scales{display:grid;grid-template-columns:minmax(0,1fr) 34px minmax(0,1fr) 34px minmax(0,1fr);align-items:stretch;gap:0;margin:24px 0 8px}
+.scale{background:var(--surface);border:1px solid var(--rule);border-top:3px solid var(--sc,var(--math));padding:14px 16px;border-radius:2px}
+.scale .lv{font:500 11px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.scale h3{margin:8px 0 6px;font-size:17px}
+.scale p{margin:0 0 .5em;font-size:14.5px;color:var(--ink-2)}
+.scale .now{font-size:13.5px;border-top:1px solid var(--rule-2);padding-top:8px;margin-top:8px;color:var(--muted)}
+.scale.e{--sc:var(--math)} .scale.a{--sc:var(--soft)} .scale.c{--sc:var(--fp)}
+.scale-arr{display:flex;align-items:center;justify-content:center;color:var(--muted);font:400 22px/1 var(--mono)}
+.bridges{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:14px 0 24px}
+.bridges div{border:1px dashed var(--rule);padding:10px 14px;font-size:14px;color:var(--ink-2)}
+.bridges b{display:block;font:500 12px/1.4 var(--mono);color:var(--muted);margin-bottom:4px}
+@media (max-width:760px){.scales{grid-template-columns:minmax(0,1fr)}.scale-arr{transform:rotate(90deg);padding:4px 0}.bridges{grid-template-columns:minmax(0,1fr)}}

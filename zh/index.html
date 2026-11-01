@@ -108,6 +108,7 @@
   <div class="prose"><p>五个领域新增的功能、研究结果，以及论文与本网站的变化，新的在前。逐项状态见<a href="progress.html">进度</a>；这里引用的命题都登记在可信账本中。</p></div>
   <ol class="news">
     <li><time datetime="2026-11-01">2026-11-01</time><ul>
+      <li><span class="tag n">纲领</span><b>长期研究目标：从微观基本规律到宏观物理。</b>纲领页开头新增研究目标（<a href="#goal">&sect;0</a>）：从电子与原子核的基本相互作用出发，以统一且有误差控制的第一性原理框架推导各尺度的有效自由度、演化方程与本构关系，使 DFT、MD 与 FEM 成为同一体系在不同分辨率下相互一致的描述。三重正确性使每个跨尺度映射的数学与软件误差可以证明，物理近似则交由观测检验。目前尚无经过认证的跨尺度映射；第一批三座桥列为<a href="progress.html#stage3">进度页</a>上第三阶段的候选。</li>
       <li><span class="tag n">DFT</span><b>一般晶格上的 LDA 证书。</b>带晶体对称性的零温 LDA 检查器（Slater + PW92，完整的 GTH 赝势，Monkhorst&ndash;Pack <i>k</i> 网格）现在接受晶胞体积是 <i>a</i><sup>3</sup> 的精确有理倍数的任意晶格、任意元素与分数坐标，并自己检查每一个候选对称操作；其可靠性在 Lean 中证明（<code>fis-pw3d-gen 1</code>，<code>lda</code> 模式，DFT-G150&ndash;G190）。与 DFTK&nbsp;0.8 对照了岩盐 NaCl（2&times;2&times;2 <i>k</i> 网格，48 个操作）和一个非立方的测试晶胞：沿 <i>z</i> 拉伸 11/10 的 NaCl（体心四方，16 个操作）；两者中 DFTK 在每个 <i>k</i> 点的本征值、化学势和带隙都落在证书的区间内，挪动 Cl 原子后检查不通过。Lean 中的桥接定理表明一般检查通过即蕴含第一阶段的结论；第一阶段的 Si 证书经两个检查器得到的结果相差约 10<sup>&minus;14</sup> 以内（非局域表的包络方式不同）。六方晶格与有限温度尚未覆盖。</li>
       <li><span class="tag n">CALPHAD</span><b>Cr&ndash;Ti 在 700&ndash;2300&nbsp;K 的大部分温度上有了覆盖证书。</b>对 Cr&ndash;Ti（COST&nbsp;507），7 份检查通过的证书表明：在 1600&nbsp;K 范围中的 1266&nbsp;K 上，除括住的不变反应外，所考虑的相之间没有三相平衡。其中四个反应都有括号：共析 BCC_A2 &rarr; C15 + D0<sub>19</sub> 在 [1010.987,&nbsp;1011.007]&nbsp;K，共析 C14 &rarr; BCC_A2 + C15 在 [1099.058,&nbsp;1099.158]&nbsp;K，生成 C15 的包析在 [1498.649,&nbsp;1498.669]&nbsp;K，C14/BCC_A2 的同成分转变在 [1647.091,&nbsp;1647.111]&nbsp;K；pycalphad 的温度都在括号内。有序的 B2 相与模型读入器不支持的三个相未计入，其余 334&nbsp;K 尚未覆盖，同一相的两部分与第三个相共存的平衡未被排除（CAL-T113、T115、T116）。</li>
       <li><span class="tag n">网站</span><b>进度页改为只列已实现与计划实现的内容。</b>总览卡片之后依次是<a href="progress.html#stage1">第一阶段</a>、<a href="progress.html#stage2">第二阶段</a>与<a href="progress.html#stage3">第三阶段</a>三节；各领域、账本、工作方式、可信基与研究结果各节已移出（结果如何获得保证见<a href="#how">本页 §3</a>，可信基与研究结果见本页和各领域页）。它按阶段（由早到晚）列出项目已实现和计划中的每个目标，每项标明状态（完成、进行中、部分完成、计划中、候选）、日期与账本编号：第一段的目标、阶段与主要成果，第二段的里程碑和全部 24 个验收任务的现状，以及第三段的候选。过时的状态标签已在那里和本页 &sect;8 改正：阶段 1、3、4 部分完成，S1 已与实验比较，S3 已有并行驱动。</li>
@@ -337,6 +338,7 @@
 <nav class="toc" aria-label="目录">
   <p>目录</p>
   <ol>
+    <li><a href="#goal"><span>§0</span>研究目标</a></li>
     <li><a href="#s1"><span>§1</span>动机</a></li>
     <li><a href="#s2"><span>§2</span>三重正确</a></li>
     <li><a href="#s3"><span>§3</span>三重保证的工具</a></li>
@@ -351,6 +353,54 @@
   </ol>
 </nav>
 <main>
+
+<section id="goal">
+  <p class="sec-no">§0 · 研究目标</p>
+  <h2>从微观基本规律到宏观物理：统一电子、原子与连续体尺度的普适框架</h2>
+  <p class="goal-q">能否建立一个具有普遍适用性的第一性原理框架，从电子与原子核的基本相互作用出发，系统推导不同尺度上的有效自由度、演化方程和本构关系，从而在统一的物理基础上预测宏观物性、动力学行为与集体现象？</p>
+  <div class="prose">
+    <p><b>问题定义。</b>给定系统的微观组成、基本相互作用以及初始条件、边界条件和外部驱动，构建一套可计算、物理一致且具有误差控制的跨尺度推导方法。该方法应能够根据目标现象所涉及的时空尺度与精度要求，识别必要的自由度，推导相应的有效理论，并建立不同尺度描述之间的一致映射。</p>
+    <p>这一问题的目标是统一密度泛函理论（DFT）所提供的电子结构描述、分子动力学（MD）所提供的原子运动描述，以及有限元方法（FEM）所求解的连续体模型：使电子尺度的能量与相互作用、原子尺度的结构与动力学，以及宏观尺度的本构关系与场方程，成为同一物理体系在不同分辨率下相互一致的描述。</p>
+    <p><b>普遍适用性</b>体现为：以统一的推导原则处理不同材料体系、平衡与非平衡条件，以及力学、热学、电学等多种物理过程；允许具体有效模型随系统与尺度而变化，同时明确各层描述的适用范围、物理约束，以及误差和不确定性在尺度之间的传播。</p>
+    <p><b>最终目标</b>是建立从微观相互作用到宏观现象的可追溯预测体系，使宏观规律及其参数能够由微观物理系统地产生，并在可承受的计算成本下获得可验证的预测。</p>
+  </div>
+  <div class="scales" role="list" aria-label="三个尺度及其之间的映射">
+    <div class="scale e" role="listitem">
+      <span class="lv">电子 · DFT</span>
+      <h3>能量与相互作用</h3>
+      <p>Kohn&ndash;Sham 基态：总能量、能带结构，以及后续的力与应力。</p>
+      <p class="now">现状：真实三维晶体上由 Lean 检查的 LDA 解（Si、NaCl 及晶胞体积为有理数的任意晶格）；PBE 进行中。</p>
+    </div>
+    <div class="scale-arr" aria-hidden="true">&rarr;</div>
+    <div class="scale a" role="listitem">
+      <span class="lv">原子 · MD（及 CALPHAD）</span>
+      <h3>结构与动力学</h3>
+      <p>原子间势下的轨迹；由此得到的各相的自由能与相平衡。</p>
+      <p class="now">现状：一维 Lennard-Jones 链的轨迹误差界；由 TDB 数据库得到的多组元 CALPHAD 平衡证书。</p>
+    </div>
+    <div class="scale-arr" aria-hidden="true">&rarr;</div>
+    <div class="scale c" role="listitem">
+      <span class="lv">连续体 · FEM</span>
+      <h3>本构关系与场</h3>
+      <p>场方程，其本构关系与系数（弹性、热学、输运）取自下层尺度。</p>
+      <p class="now">现状：一维有限元，误差界针对连续问题的真解。</p>
+    </div>
+  </div>
+  <div class="bridges">
+    <div><b>映射 1 · 电子 &rarr; 原子</b>DFT 的能量、力与应力确定原子间势；在参照集上的拟合残差明确给出，而不是隐去。</div>
+    <div><b>映射 2 · 原子 &rarr; 连续体</b>结构与动力学给出本构关系及其系数，例如弹性常数或热导率。</div>
+    <div><b>映射 3 · 电子 &rarr; 相热力学</b>DFT 的形成能进入 CALPHAD 计算的 Gibbs 能模型，相分数再进入连续体模型。</div>
+  </div>
+  <div class="prose">
+    <p><b>三重正确性在这里的作用。</b>上图的每个箭头都是计算量之间的映射，每个映射都可能以本纲领区分的三种方式出错（&sect;2）。它的<i>数学</i>误差（离散、截断、拟合）和<i>软件</i>误差（算术、并行簿记）可以有界并由证明检查；它的<i>物理</i>误差（泛函、势的形式、本构假设）无法证明，只能用观测检验，并说明适用范围。每个尺度都有经过认证的区间、每个映射传递误差的方式都有证明了的界，前两类误差沿整条链的传播就成为定理而不是估计；与实验仍有的偏差就可以归到某个尺度上某个具名的物理近似。</p>
+    <p><b>现状。</b>各单一尺度的部分已有，成熟度差别很大：DFT 已到真实三维晶体，MD 与 FEM 还是一维，CALPHAD 已到多组元合金。尺度之间的映射还没有一个经过认证。这是长期目标，不在第二阶段的承诺之内；第一步列为<a href="progress.html#stage3">进度页</a>上第三阶段的候选。</p>
+  </div>
+  <ul class="gaps">
+    <li><span class="tag m">候选</span> <strong>第一座桥：DFT 弹性常数进入 FEM 弹性力学。</strong>DFT 认证的应力或能量&ndash;应变曲线给出带区间的弹性常数；经过认证的线弹性有限元解再把这些区间传到位移与应力。需要认证的 DFT 应力和一维以上的 FEM。</li>
+    <li><span class="tag m">候选</span> <strong>DFT 形成能进入 CALPHAD。</strong>认证的形成能给出带区间的端元参数；CALPHAD 检查器再界定相界最多能移动多少。</li>
+    <li><span class="tag m">候选</span> <strong>由 DFT 拟合的原子间势进入 MD。</strong>原子间势拟合到经过认证的 DFT 能量与力，并给出拟合残差；MD 轨迹误差界对该势成立，残差作为映射 1 的模型误差报告。</li>
+  </ul>
+</section>
 
 <section id="s1">
   <p class="sec-no">§1</p>
@@ -701,7 +751,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · 项目纲领 v0.4 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-11-01T13:18+08:00">2026-11-01 13:18 UTC+8</time></span></span>
+  <span>Formal in Silico · 项目纲领 v0.4 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-11-01T21:16+08:00">2026-11-01 21:16 UTC+8</time></span></span>
   <span><a href="progress.html">进度</a> · <a href="showcases.html">成果展示</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="../" hreflang="en">English</a></span>
 </div></footer>
 </body>
