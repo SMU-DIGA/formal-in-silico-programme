@@ -46,9 +46,9 @@
     <div class="j ph"><span class="k">Experiment</span><span class="e"><i class="v">y</i><sub>obs</sub> − <i class="v">y</i><sub>model</sub> ∈ [<i class="v">y</i><sub>obs</sub> − hi, <i class="v">y</i><sub>obs</sub> − lo] ± <i class="v">σ</i><sub>exp</sub></span></div>
   </div>
   <div class="stats">
-    <div class="stat"><b data-n="all">1,030</b><span>claims registered in the trust ledger</span></div>
-    <div class="stat"><b data-n="all.proved">815</b><span>of them machine-proved (tier T3 or T4)</span></div>
-    <div class="stat"><b data-n="all.T4">345</b><span>at the end-to-end tier T4: checker soundness, kernel safety and kernel floating point</span></div>
+    <div class="stat"><b data-n="all">1,066</b><span>claims registered in the trust ledger</span></div>
+    <div class="stat"><b data-n="all.proved">851</b><span>of them machine-proved (tier T3 or T4)</span></div>
+    <div class="stat"><b data-n="all.T4">347</b><span>at the end-to-end tier T4: checker soundness, kernel safety and kernel floating point</span></div>
     <div class="stat"><b>4</b><span>reference codes cross-checked: DFTK.jl, scikit-fem, ASE and pycalphad</span></div>
   </div>
     <p class="g-cap">Proof dependencies: what every claim in the ledger is built on, read from the Lean proof terms. Click a node to follow its chain; each domain page has the same graph for its own claims.</p>
@@ -108,6 +108,7 @@
   <div class="prose"><p>Features added to the five domains, research results, and changes to the paper and this site, newest first. Item-by-item status is on the <a href="progress.html">progress page</a>; every claim cited here is in the trust ledger.</p></div>
   <ol class="news">
     <li><time datetime="2026-11-01">1 Nov 2026</time><ul>
+      <li><span class="tag n">DFT</span><b>LDA certificates on general crystal lattices.</b> The zero-temperature LDA checker with crystal symmetry (Slater + PW92, full GTH pseudopotentials, Monkhorst&ndash;Pack <i>k</i> grids) now takes any lattice whose cell volume is an exact rational multiple of <i>a</i><sup>3</sup>, any species and fractional sites, and checks every candidate symmetry operation itself; its soundness is proved in Lean (<code>fis-pw3d-gen 1</code>, mode <code>lda</code>, DFT-G150&ndash;G190). Checked against DFTK&nbsp;0.8: rock-salt NaCl (2&times;2&times;2 <i>k</i> grid, 48 operations) and a non-cubic test cell, NaCl stretched by 11/10 along <i>z</i> (body-centred tetragonal, 16 operations); in both, DFTK&rsquo;s eigenvalues at every <i>k</i> point, chemical potential and gap lie in the certified intervals, and moving the Cl atom makes the check fail. A Lean bridge shows that an accepted general check implies the Stage&nbsp;I conclusion; Stage&nbsp;I Si certificates give the same results through both checkers to within about 10<sup>&minus;14</sup> (the non-local table is enclosed differently). Hexagonal lattices and finite temperature are not yet covered.</li>
       <li><span class="tag n">CALPHAD</span><b>Cover certificates for Cr&ndash;Ti over most of 700&ndash;2300&nbsp;K.</b> For Cr&ndash;Ti (COST&nbsp;507), seven checked certificates show that on 1266&nbsp;K of the 1600&nbsp;K range no three-phase equilibrium among the phases considered occurs outside the bracketed invariant reactions. The four reactions inside are bracketed &mdash; a eutectoid BCC_A2 &rarr; C15 + D0<sub>19</sub> in [1010.987,&nbsp;1011.007]&nbsp;K, a eutectoid C14 &rarr; BCC_A2 + C15 in [1099.058,&nbsp;1099.158]&nbsp;K, a peritectoid forming C15 in [1498.649,&nbsp;1498.669]&nbsp;K and the congruent C14/BCC_A2 transformation in [1647.091,&nbsp;1647.111]&nbsp;K &mdash; and pycalphad&rsquo;s temperature lies in each bracket. The ordered B2 phase and three phases the model reader does not support are left out, the remaining 334&nbsp;K are not yet covered, and an equilibrium with two parts of one phase beside a third phase is not excluded (CAL-T113, T115, T116).</li>
       <li><span class="tag n">Site</span><b>The progress page now shows what is achieved and what is planned.</b> After the overview card it has three sections, <a href="progress.html#stage1">Stage I</a>, <a href="progress.html#stage2">Stage II</a> and <a href="progress.html#stage3">Stage III</a>; the domain, ledger, how-it-works, trusted-base and research-results sections left it (how a result earns its guarantee is now in <a href="#how">§3 of this page</a>, the trusted base and the research results are on this page and the domain pages). It lists every goal the programme has reached and every goal it plans, oldest stage first, each with a status (done, in progress, partial, planned, candidate), its date and ledger ids: the Stage I goals, phases and headline results, the Stage II milestones and the status of all 24 acceptance tasks, and candidates for Stage III. Out-of-date status tags were corrected here and in &sect;8 of this page: phases 1, 3 and 4 are partly done, S1 is compared with experiment and S3 has its parallel driver.</li>
     </ul></li>
@@ -700,7 +701,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · Programme v0.4 · revised as the project evolves<span class="updated"> · updated <time datetime="2026-11-01T09:14+08:00">2026-11-01 09:14 UTC+8</time></span></span>
+  <span>Formal in Silico · Programme v0.4 · revised as the project evolves<span class="updated"> · updated <time datetime="2026-11-01T13:18+08:00">2026-11-01 13:18 UTC+8</time></span></span>
   <span><a href="progress.html">Progress</a> · <a href="showcases.html">Showcases</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="zh/" hreflang="zh-CN">中文版</a></span>
 </div></footer>
 </body>

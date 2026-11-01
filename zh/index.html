@@ -46,9 +46,9 @@
     <div class="j ph"><span class="k">实验</span><span class="e"><i class="v">y</i><sub>obs</sub> − <i class="v">y</i><sub>model</sub> ∈ [<i class="v">y</i><sub>obs</sub> − hi, <i class="v">y</i><sub>obs</sub> − lo] ± <i class="v">σ</i><sub>exp</sub></span></div>
   </div>
   <div class="stats">
-    <div class="stat"><b data-n="all">1030</b><span>条命题登记在可信账本中</span></div>
-    <div class="stat"><b data-n="all.proved">815</b><span>条已有机器证明（T3 或 T4）</span></div>
-    <div class="stat"><b data-n="all.T4">345</b><span>条达到端到端等级 T4：检查器可靠性、内核安全与内核浮点</span></div>
+    <div class="stat"><b data-n="all">1066</b><span>条命题登记在可信账本中</span></div>
+    <div class="stat"><b data-n="all.proved">851</b><span>条已有机器证明（T3 或 T4）</span></div>
+    <div class="stat"><b data-n="all.T4">347</b><span>条达到端到端等级 T4：检查器可靠性、内核安全与内核浮点</span></div>
     <div class="stat"><b>4</b><span>个参照程序交叉校验：DFTK.jl、scikit-fem、ASE 与 pycalphad</span></div>
   </div>
     <p class="g-cap">证明依赖：账本里的每个命题建立在哪些命题之上，直接从 Lean 证明项读出。点一个节点追踪它的链；各领域页里有只看本领域的同一张图。</p>
@@ -108,6 +108,7 @@
   <div class="prose"><p>五个领域新增的功能、研究结果，以及论文与本网站的变化，新的在前。逐项状态见<a href="progress.html">进度</a>；这里引用的命题都登记在可信账本中。</p></div>
   <ol class="news">
     <li><time datetime="2026-11-01">2026-11-01</time><ul>
+      <li><span class="tag n">DFT</span><b>一般晶格上的 LDA 证书。</b>带晶体对称性的零温 LDA 检查器（Slater + PW92，完整的 GTH 赝势，Monkhorst&ndash;Pack <i>k</i> 网格）现在接受晶胞体积是 <i>a</i><sup>3</sup> 的精确有理倍数的任意晶格、任意元素与分数坐标，并自己检查每一个候选对称操作；其可靠性在 Lean 中证明（<code>fis-pw3d-gen 1</code>，<code>lda</code> 模式，DFT-G150&ndash;G190）。与 DFTK&nbsp;0.8 对照了岩盐 NaCl（2&times;2&times;2 <i>k</i> 网格，48 个操作）和一个非立方的测试晶胞：沿 <i>z</i> 拉伸 11/10 的 NaCl（体心四方，16 个操作）；两者中 DFTK 在每个 <i>k</i> 点的本征值、化学势和带隙都落在证书的区间内，挪动 Cl 原子后检查不通过。Lean 中的桥接定理表明一般检查通过即蕴含第一阶段的结论；第一阶段的 Si 证书经两个检查器得到的结果相差约 10<sup>&minus;14</sup> 以内（非局域表的包络方式不同）。六方晶格与有限温度尚未覆盖。</li>
       <li><span class="tag n">CALPHAD</span><b>Cr&ndash;Ti 在 700&ndash;2300&nbsp;K 的大部分温度上有了覆盖证书。</b>对 Cr&ndash;Ti（COST&nbsp;507），7 份检查通过的证书表明：在 1600&nbsp;K 范围中的 1266&nbsp;K 上，除括住的不变反应外，所考虑的相之间没有三相平衡。其中四个反应都有括号：共析 BCC_A2 &rarr; C15 + D0<sub>19</sub> 在 [1010.987,&nbsp;1011.007]&nbsp;K，共析 C14 &rarr; BCC_A2 + C15 在 [1099.058,&nbsp;1099.158]&nbsp;K，生成 C15 的包析在 [1498.649,&nbsp;1498.669]&nbsp;K，C14/BCC_A2 的同成分转变在 [1647.091,&nbsp;1647.111]&nbsp;K；pycalphad 的温度都在括号内。有序的 B2 相与模型读入器不支持的三个相未计入，其余 334&nbsp;K 尚未覆盖，同一相的两部分与第三个相共存的平衡未被排除（CAL-T113、T115、T116）。</li>
       <li><span class="tag n">网站</span><b>进度页改为只列已实现与计划实现的内容。</b>总览卡片之后依次是<a href="progress.html#stage1">第一阶段</a>、<a href="progress.html#stage2">第二阶段</a>与<a href="progress.html#stage3">第三阶段</a>三节；各领域、账本、工作方式、可信基与研究结果各节已移出（结果如何获得保证见<a href="#how">本页 §3</a>，可信基与研究结果见本页和各领域页）。它按阶段（由早到晚）列出项目已实现和计划中的每个目标，每项标明状态（完成、进行中、部分完成、计划中、候选）、日期与账本编号：第一段的目标、阶段与主要成果，第二段的里程碑和全部 24 个验收任务的现状，以及第三段的候选。过时的状态标签已在那里和本页 &sect;8 改正：阶段 1、3、4 部分完成，S1 已与实验比较，S3 已有并行驱动。</li>
     </ul></li>
@@ -700,7 +701,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · 项目纲领 v0.4 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-11-01T09:14+08:00">2026-11-01 09:14 UTC+8</time></span></span>
+  <span>Formal in Silico · 项目纲领 v0.4 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-11-01T13:18+08:00">2026-11-01 13:18 UTC+8</time></span></span>
   <span><a href="progress.html">进度</a> · <a href="showcases.html">成果展示</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="../" hreflang="en">English</a></span>
 </div></footer>
 </body>
