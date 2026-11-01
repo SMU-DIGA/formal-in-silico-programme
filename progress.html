@@ -35,7 +35,7 @@
 <div class="hero small"><div class="hero-in">
   <p class="eyebrow">Status and roadmap · 1 November 2026</p>
   <h1>Progress</h1>
-  <p class="lead">What the programme has achieved and what it plans, stage by stage: Stage I (reached, frozen on 30 October 2026), Stage II (under way until 29 January 2027: making DFT and CALPHAD usable for research) and Stage III (candidates). Each domain has its own page with the item-by-item status. A feature counts as <b>done</b> only when it is implemented, agrees with the reference code, <i>and</i> every number it outputs is covered by a Lean theorem.</p>
+  <p class="lead">What the programme has achieved and what it plans. Stages I&ndash;III belong to Phase&nbsp;I, certified correctness; Phase&nbsp;II, AI-powered unification, comes last and has not started. Stage by stage: Stage I (reached, frozen on 30 October 2026), Stage II (under way until 29 January 2027: making DFT and CALPHAD usable for research) and Stage III (candidates). Each domain has its own page with the item-by-item status. A feature counts as <b>done</b> only when it is implemented, agrees with the reference code, <i>and</i> every number it outputs is covered by a Lean theorem.</p>
   <figure class="glance" id="glance">
     <div class="gl-top"><div><p class="eyebrow">Programme at a glance · 1 November 2026</p><h2>Triple correctness, one ledger, five domains</h2></div>
       <ul class="gl-nums"><li><b>1066</b>claims in the trust ledger</li><li><b>80%</b>proved by machine</li><li><b>36</b>days since the ledger opened</li><li><b>5</b>domains, each against a reference code</li></ul></div>
@@ -122,6 +122,7 @@
     <li><a href="#stage1"><span>01</span>Stage I</a></li>
     <li><a href="#stage2"><span>02</span>Stage II</a></li>
     <li><a href="#stage3"><span>03</span>Stage III</a></li>
+    <li><a href="#phase2"><span>04</span>Phase II</a></li>
   </ol>
 </nav>
 <main>
@@ -286,7 +287,6 @@
 <section id="stage3">
   <p class="sec-no">03</p>
   <h2>Stage III: candidates after Stage II, not commitments</h2>
-  <div class="prose"><p>The long-term research goal these steps serve is on the programme page: <a href="./#goal">from microscopic laws to macroscopic physics</a>, one error-controlled framework across the electronic, atomic and continuum scales. The last three candidates below are its first cross-scale bridges.</p></div>
   <ul class="gaps rm-cands">
     <li><span class="tag m">Candidate</span> A matrix-free DFT checker, assembly and checker, for oxides and perovskites at converged settings</li>
     <li><span class="tag m">Candidate</span> Hybrid functionals, HSE first (it has no Coulomb singularity)</li>
@@ -295,9 +295,17 @@
     <li><span class="tag m">Candidate</span> Spin-polarised PBE</li>
     <li><span class="tag m">Candidate</span> ONCV pseudopotentials in UPF format</li>
     <li><span class="tag m">Candidate</span> Ternary invariant reactions and variable-temperature sections in CALPHAD</li>
-    <li><span class="tag m">Candidate</span> DFT elastic constants with intervals carried into a certified FEM elasticity solution (research goal, first bridge)</li>
-    <li><span class="tag m">Candidate</span> DFT formation energies as CALPHAD end-member parameters with intervals, bounding how far phase boundaries move (research goal)</li>
-    <li><span class="tag m">Candidate</span> An interatomic potential fitted to certified DFT energies and forces, with its fit residual stated, feeding MD trajectory bounds (research goal)</li>
+  </ul>
+</section>
+
+<section id="phase2">
+  <p class="sec-no">04</p>
+  <h2>Phase II: AI-powered unification (not started)</h2>
+  <div class="prose"><p>Everything above is Phase&nbsp;I, certified correctness. Phase&nbsp;II pursues the research goal on the programme page, <a href="./#goal">from microscopic laws to macroscopic physics</a>: electrons, atoms and continuum as consistent descriptions of one system, with AI deriving the effective models and Phase&nbsp;I&rsquo;s checkers deciding which hold. It begins only when the programme has actually produced something new along that path. First candidate steps, cross-scale bridges:</p></div>
+  <ul class="gaps rm-cands">
+    <li><span class="tag m">Candidate</span> DFT elastic constants with intervals carried into a certified FEM elasticity solution (the first bridge)</li>
+    <li><span class="tag m">Candidate</span> DFT formation energies as CALPHAD end-member parameters with intervals, bounding how far phase boundaries move</li>
+    <li><span class="tag m">Candidate</span> An interatomic potential fitted to certified DFT energies and forces, with its fit residual stated, feeding MD trajectory bounds</li>
   </ul>
 </section>
 
@@ -305,7 +313,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · achieved and planned<span class="updated"> · updated <time datetime="2026-11-01T21:16+08:00">2026-11-01 21:16 UTC+8</time></span></span>
+  <span>Formal in Silico · achieved and planned<span class="updated"> · updated <time datetime="2026-11-01T22:34+08:00">2026-11-01 22:34 UTC+8</time></span></span>
   <span><a href="./">Programme</a> · <a href="showcases.html">Showcases</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="zh/progress.html" hreflang="zh-CN">中文版</a></span>
 </div></footer>
 </body>

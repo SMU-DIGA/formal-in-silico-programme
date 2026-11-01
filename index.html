@@ -108,7 +108,7 @@
   <div class="prose"><p>Features added to the five domains, research results, and changes to the paper and this site, newest first. Item-by-item status is on the <a href="progress.html">progress page</a>; every claim cited here is in the trust ledger.</p></div>
   <ol class="news">
     <li><time datetime="2026-11-01">1 Nov 2026</time><ul>
-      <li><span class="tag n">Programme</span><b>A long-term research goal: from microscopic laws to macroscopic physics.</b> The programme page opens with a research goal (<a href="#goal">&sect;0</a>): one first-principles, error-controlled framework that derives effective degrees of freedom, evolution equations and constitutive relations from the interactions of electrons and nuclei, so that DFT, MD and FEM become consistent descriptions of one system at different resolutions. Triple correctness makes the mathematical and software errors of every cross-scale map provable and leaves the physical approximations to be tested against observation. No cross-scale map is certified yet; three first bridges are Stage&nbsp;III candidates on the <a href="progress.html#stage3">progress page</a>.</li>
+      <li><span class="tag n">Programme</span><b>Two goals: certified correctness (Phase&nbsp;I), then AI-powered unification (Phase&nbsp;II).</b> The programme page now opens with its two goals (<a href="#goal">&sect;0</a>). Phase&nbsp;I is triple correctness; all work so far, Stages&nbsp;I&ndash;III included, belongs to it. Phase&nbsp;II pursues a research goal: one first-principles, error-controlled framework from the interactions of electrons and nuclei to macroscopic physics, in which DFT, MD and FEM become consistent descriptions of one system at different resolutions, with AI deriving the effective models. Phase&nbsp;I comes first because AI can only be given as much of that work as can be checked. Phase&nbsp;II begins when something new has actually been produced; its first candidate steps, three cross-scale bridges, are on the <a href="progress.html#phase2">progress page</a>.</li>
       <li><span class="tag n">DFT</span><b>LDA certificates on general crystal lattices.</b> The zero-temperature LDA checker with crystal symmetry (Slater + PW92, full GTH pseudopotentials, Monkhorst&ndash;Pack <i>k</i> grids) now takes any lattice whose cell volume is an exact rational multiple of <i>a</i><sup>3</sup>, any species and fractional sites, and checks every candidate symmetry operation itself; its soundness is proved in Lean (<code>fis-pw3d-gen 1</code>, mode <code>lda</code>, DFT-G150&ndash;G190). Checked against DFTK&nbsp;0.8: rock-salt NaCl (2&times;2&times;2 <i>k</i> grid, 48 operations) and a non-cubic test cell, NaCl stretched by 11/10 along <i>z</i> (body-centred tetragonal, 16 operations); in both, DFTK&rsquo;s eigenvalues at every <i>k</i> point, chemical potential and gap lie in the certified intervals, and moving the Cl atom makes the check fail. A Lean bridge shows that an accepted general check implies the Stage&nbsp;I conclusion; Stage&nbsp;I Si certificates give the same results through both checkers to within about 10<sup>&minus;14</sup> (the non-local table is enclosed differently). Hexagonal lattices and finite temperature are not yet covered.</li>
       <li><span class="tag n">CALPHAD</span><b>Cover certificates for Cr&ndash;Ti over most of 700&ndash;2300&nbsp;K.</b> For Cr&ndash;Ti (COST&nbsp;507), seven checked certificates show that on 1266&nbsp;K of the 1600&nbsp;K range no three-phase equilibrium among the phases considered occurs outside the bracketed invariant reactions. The four reactions inside are bracketed &mdash; a eutectoid BCC_A2 &rarr; C15 + D0<sub>19</sub> in [1010.987,&nbsp;1011.007]&nbsp;K, a eutectoid C14 &rarr; BCC_A2 + C15 in [1099.058,&nbsp;1099.158]&nbsp;K, a peritectoid forming C15 in [1498.649,&nbsp;1498.669]&nbsp;K and the congruent C14/BCC_A2 transformation in [1647.091,&nbsp;1647.111]&nbsp;K &mdash; and pycalphad&rsquo;s temperature lies in each bracket. The ordered B2 phase and three phases the model reader does not support are left out, the remaining 334&nbsp;K are not yet covered, and an equilibrium with two parts of one phase beside a third phase is not excluded (CAL-T113, T115, T116).</li>
       <li><span class="tag n">Site</span><b>The progress page now shows what is achieved and what is planned.</b> After the overview card it has three sections, <a href="progress.html#stage1">Stage I</a>, <a href="progress.html#stage2">Stage II</a> and <a href="progress.html#stage3">Stage III</a>; the domain, ledger, how-it-works, trusted-base and research-results sections left it (how a result earns its guarantee is now in <a href="#how">§3 of this page</a>, the trusted base and the research results are on this page and the domain pages). It lists every goal the programme has reached and every goal it plans, oldest stage first, each with a status (done, in progress, partial, planned, candidate), its date and ledger ids: the Stage I goals, phases and headline results, the Stage II milestones and the status of all 24 acceptance tasks, and candidates for Stage III. Out-of-date status tags were corrected here and in &sect;8 of this page: phases 1, 3 and 4 are partly done, S1 is compared with experiment and S3 has its parallel driver.</li>
@@ -338,7 +338,7 @@
 <nav class="toc" aria-label="Contents">
   <p>Contents</p>
   <ol>
-    <li><a href="#goal"><span>00</span>Research goal</a></li>
+    <li><a href="#goal"><span>00</span>Two goals</a></li>
     <li><a href="#s1"><span>01</span>Motivation</a></li>
     <li><a href="#s2"><span>02</span>Triple correctness</a></li>
     <li><a href="#s3"><span>03</span>Three kinds of evidence</a></li>
@@ -355,8 +355,28 @@
 <main>
 
 <section id="goal">
-  <p class="sec-no">§0 · Research goal</p>
-  <h2>From microscopic laws to macroscopic physics: one framework across the electronic, atomic and continuum scales</h2>
+  <p class="sec-no">§0 · Two goals</p>
+  <h2>Two goals: certified correctness first, then AI-powered unification</h2>
+  <div class="prose">
+    <p>The programme pursues two goals, one after the other. <b>Phase&nbsp;I, certified correctness:</b> a number produced by simulation is correct physically, mathematically and as software, or its error is bounded and checked by a proof (&sect;1&ndash;&sect;11 of this page). <b>Phase&nbsp;II, AI-powered unification:</b> one framework from the interactions of electrons and nuclei to macroscopic physics, with AI doing as much of the derivation as possible (the research goal below).</p>
+    <p>The order is deliberate. To bring in AI as far as possible &mdash; to let it propose effective theories, cross-scale maps, interatomic potentials and constitutive laws &mdash; its output has to be checkable: an AI-produced step is a candidate until a checker accepts it, and a refusal says why. Phase&nbsp;I&rsquo;s certificates are what make that possible, so the more of the chain is certified, the more of it can be handed to AI without losing trust.</p>
+    <p>Everything done so far is Phase&nbsp;I: Stage&nbsp;I (reached, frozen on 30&nbsp;October&nbsp;2026), Stage&nbsp;II (under way until 29&nbsp;January&nbsp;2027) and the Stage&nbsp;III candidates on the <a href="progress.html">progress page</a>. Phase&nbsp;II begins only when the programme has actually produced something new along that path, not before.</p>
+  </div>
+  <div class="cards">
+    <div class="card">
+      <span class="yr">Phase I · under way</span>
+      <h3>Certified correctness</h3>
+      <p>Triple correctness for DFT, FEM, MD, CALPHAD and CSP: Lean-checked certificates, verified software, comparison with experiment where the first two are bounded.</p>
+      <p class="lesson">Stage I reached; Stage II making DFT and CALPHAD usable for research.</p>
+    </div>
+    <div class="card">
+      <span class="yr">Phase II · not started</span>
+      <h3>AI-powered unification</h3>
+      <p>Electrons, atoms and continuum as consistent descriptions of one system, with AI deriving the effective models and Phase&nbsp;I&rsquo;s checkers deciding which of them hold.</p>
+      <p class="lesson">Starts when something new has actually been produced; first candidates below.</p>
+    </div>
+  </div>
+  <h3 id="goal-research">Research goal of Phase II: from microscopic laws to macroscopic physics, one framework across the electronic, atomic and continuum scales</h3>
   <p class="goal-q">Can we build a first-principles framework of general validity that starts from the basic interactions of electrons and nuclei, systematically derives the effective degrees of freedom, evolution equations and constitutive relations at each scale, and so predicts macroscopic properties, dynamics and collective phenomena on one consistent physical footing?</p>
   <div class="prose">
     <p><b>The problem.</b> Given a system&rsquo;s microscopic composition, its basic interactions, and its initial conditions, boundary conditions and external driving, construct a cross-scale derivation that is computable, physically consistent and error-controlled. According to the space and time scales and the accuracy the target phenomenon requires, it should identify the degrees of freedom that matter, derive the corresponding effective theory, and establish consistent maps between the descriptions at different scales.</p>
@@ -392,13 +412,13 @@
     <div><b>Map 3 · electrons &rarr; phase thermodynamics</b>Formation energies from DFT enter the Gibbs-energy models that CALPHAD evaluates, and phase fractions enter continuum models.</div>
   </div>
   <div class="prose">
-    <p><b>What triple correctness adds.</b> Each arrow above is a map between computed quantities, and each such map can fail in the three ways this programme separates (&sect;2). Its <i>mathematical</i> error (discretisation, truncation, fitting) and its <i>software</i> error (arithmetic, parallel bookkeeping) can be bounded and checked by a proof; its <i>physical</i> error (the functional, the form of the potential, the constitutive ansatz) cannot be proved and is tested against observation, with its range of validity stated. With a certified interval at every scale and a proved bound on how each map propagates it, the propagation of the first two kinds of error through the whole chain becomes a theorem rather than an estimate, and a remaining disagreement with experiment can be attributed to a named physical approximation at a named scale.</p>
-    <p><b>Where we stand.</b> The single-scale pieces exist at very different maturity: DFT on real 3D crystals, MD and FEM in one dimension, CALPHAD for multicomponent alloys. No map between scales is certified yet. This is a long-term goal; it is not among the commitments of Stage&nbsp;II, and its first steps are listed as Stage&nbsp;III candidates on the <a href="progress.html#stage3">progress page</a>.</p>
+    <p><b>What Phase&nbsp;I gives Phase&nbsp;II.</b> Each arrow above is a map between computed quantities, and each such map can fail in the three ways this programme separates (&sect;2). Its <i>mathematical</i> error (discretisation, truncation, fitting) and its <i>software</i> error (arithmetic, parallel bookkeeping) can be bounded and checked by a proof; its <i>physical</i> error (the functional, the form of the potential, the constitutive ansatz) cannot be proved and is tested against observation, with its range of validity stated. With a certified interval at every scale and a proved bound on how each map propagates it, the propagation of the first two kinds of error through the whole chain becomes a theorem rather than an estimate, and a remaining disagreement with experiment can be attributed to a named physical approximation at a named scale.</p>
+    <p><b>Where we stand.</b> The single-scale pieces exist at very different maturity: DFT on real 3D crystals, MD and FEM in one dimension, CALPHAD for multicomponent alloys. No map between scales is certified yet. This is the goal of Phase&nbsp;II, not a commitment of Stage&nbsp;II; its first candidate steps are listed under Phase&nbsp;II on the <a href="progress.html#phase2">progress page</a>.</p>
   </div>
   <ul class="gaps">
-    <li><span class="tag m">Candidate</span> <strong>First bridge: DFT elastic constants into FEM elasticity.</strong> Certified stresses or energy&ndash;strain curves from DFT give elastic constants with intervals; a certified linear-elastic FEM solution then carries those intervals to displacements and stresses. Needs certified DFT stresses and FEM beyond one dimension.</li>
-    <li><span class="tag m">Candidate</span> <strong>DFT formation energies into CALPHAD.</strong> Certified formation energies fix end-member parameters with intervals; the CALPHAD checker then bounds how far a phase boundary can move.</li>
-    <li><span class="tag m">Candidate</span> <strong>A DFT-fitted interatomic potential into MD.</strong> A potential fitted to certified DFT energies and forces, with its fit residual stated; MD trajectory bounds then hold for that potential, and the residual is reported as the model error of map&nbsp;1.</li>
+    <li><span class="tag m">Phase II candidate</span> <strong>First bridge: DFT elastic constants into FEM elasticity.</strong> Certified stresses or energy&ndash;strain curves from DFT give elastic constants with intervals; a certified linear-elastic FEM solution then carries those intervals to displacements and stresses. Needs certified DFT stresses and FEM beyond one dimension.</li>
+    <li><span class="tag m">Phase II candidate</span> <strong>DFT formation energies into CALPHAD.</strong> Certified formation energies fix end-member parameters with intervals; the CALPHAD checker then bounds how far a phase boundary can move.</li>
+    <li><span class="tag m">Phase II candidate</span> <strong>A DFT-fitted interatomic potential into MD.</strong> A potential fitted to certified DFT energies and forces, with its fit residual stated; MD trajectory bounds then hold for that potential, and the residual is reported as the model error of map&nbsp;1.</li>
   </ul>
 </section>
 
@@ -618,6 +638,7 @@
 <section id="s8">
   <p class="sec-no">§8</p>
   <h2>Roadmap</h2>
+  <div class="prose"><p>This roadmap, and its phases&nbsp;0&ndash;4, are steps inside Phase&nbsp;I (certified correctness; see <a href="#goal">&sect;0</a>).</p></div>
   <div class="goal">
     <h3>Current goal — a 3D showcase of triple correctness <span class="tag n">set 8 Oct 2026</span></h3>
     <p>Extend DFT to three-dimensional real materials and give, on the same systems, evidence for all three correctnesses: mathematical (existence and uniqueness of the SCF solution, rigorous intervals for energies and band gaps, where possible for the continuous problem), software (TLA+ specifications and trace validation of the parallel protocols, proved checkers) and physical (systematic validation against experimental band gaps, lattice constants and magnetic moments, with a certified exchange–correlation model error). The three showcases and where they stand on 17 October 2026:</p>
@@ -751,7 +772,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · Programme v0.4 · revised as the project evolves<span class="updated"> · updated <time datetime="2026-11-01T21:16+08:00">2026-11-01 21:16 UTC+8</time></span></span>
+  <span>Formal in Silico · Programme v0.4 · revised as the project evolves<span class="updated"> · updated <time datetime="2026-11-01T22:34+08:00">2026-11-01 22:34 UTC+8</time></span></span>
   <span><a href="progress.html">Progress</a> · <a href="showcases.html">Showcases</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="zh/" hreflang="zh-CN">中文版</a></span>
 </div></footer>
 </body>
