@@ -35,7 +35,7 @@
 <div class="hero small"><div class="hero-in">
   <p class="eyebrow">现状与路线图 · 2026-11-01</p>
   <h1>实现进度</h1>
-  <p class="lead">项目在五个领域上分别走到了哪里：多少命题达到了哪一级可信等级，每个领域离它的参照程序还有多远，路线图的哪些阶段已经完成。每个领域有自己的页面，列出逐项状态、交叉校验与缺口。一项功能只有在实现、与参照程序一致、<b>并且</b>输出的每个数都有 Lean 定理保证时，才算<b>完成</b>。</p>
+  <p class="lead">项目已经实现的和计划实现的，按阶段列出：第一阶段（已完成，2026-10-30 冻结）、第二阶段（进行中，至 2027-01-29：让 DFT 与 CALPHAD 能用于科研）、第三阶段（候选）。每个领域有自己的页面，列出逐项状态。一项功能只有在实现、与参照程序一致、<b>并且</b>输出的每个数都有 Lean 定理保证时，才算<b>完成</b>。</p>
   <figure class="glance" id="glance">
     <div class="gl-top"><div><p class="eyebrow">全局一览 · 2026-11-01</p><h2>三重正确，一本账本，五个领域</h2></div>
       <ul class="gl-nums"><li><b>1030</b>条命题登记在可信账本中</li><li><b>79%</b>已有机器证明</li><li><b>36</b>天，自账本建立起</li><li><b>5</b>个领域，各有参照程序</li></ul></div>
@@ -119,104 +119,14 @@
 <nav class="toc" aria-label="目录">
   <p>目录</p>
   <ol>
-    <li><a href="#domains"><span>01</span>五个领域</a></li>
-    <li><a href="#ledger"><span>02</span>可信账本</a></li>
-    <li><a href="#how"><span>03</span>保证从哪来</a></li>
-    <li><a href="#phases"><span>04</span><b>路线图</b></a></li>
+    <li><a href="#stage1"><span>01</span>第一阶段</a></li>
+    <li><a href="#stage2"><span>02</span>第二阶段</a></li>
+    <li><a href="#stage3"><span>03</span>第三阶段</a></li>
   </ol>
 </nav>
 <main>
-<div class="goal" id="roadmap-callout">
-  <h3>路线图</h3>
-  <p>项目已实现和计划中的每个目标：第二段的里程碑与全部 24 个验收任务的现状、第一段的目标与成果、第二段之后的候选，每项标明状态、日期与账本编号。<a href="#phases"><b>查看路线图 →</b></a></p>
-</div>
-
-<section id="domains">
-  <p class="sec-no">01</p>
-  <h2>五个领域，同一个标准</h2>
-  <div class="prose"><p>每个领域都按同一模式进行：不受信任的 C 驱动负责计算，Lean 检查器用精确有理数重新检查它的证书，一个成熟的程序在同一问题上作独立参照。点进各领域查看完整状态。</p></div>
-  <div class="domains">
-    <a class="domain m" href="dft.html">
-      <span class="ref">目标 G1 · 参照 DFTK.jl 0.8.0</span>
-      <h3>mini-DFT</h3>
-      <p>一维周期约化 Hartree–Fock，平面波离散：基态、有限温度、展宽、k 点、能带与态密度、LDA 交换关联、共线自旋 LSDA、精确交换、力——证书现在与命名的外势绑定。</p>
-      <div class="kv"><b data-n="DFT">764</b><span>条命题，T4 <span data-n="DFT.T4">251</span> 条，T3 <span data-n="DFT.T3">349</span> 条</span><b><span data-n="g1.done">10</span> / <span data-n="g1.total">46</span></b><span>项 DFTK 对齐功能完成，另有 2 项已一致</span><b>≤ 5×10⁻¹⁵</b><span>与 DFTK 的能量差</span></div>
-      <span class="go">查看 mini-DFT →</span>
-    </a>
-    <a class="domain s" href="fem.html">
-      <span class="ref">目标 G2 · 参照 scikit-fem 12.0.2</span>
-      <h3>mini-FEM</h3>
-      <p>一维 Poisson 方程的 P1 线性元与梁方程的三次 Hermite 元，证书针对连续问题的真解。</p>
-      <div class="kv"><b data-n="FEM">56</b><span>条命题，T4 <span data-n="FEM.T4">14</span> 条，T3 <span data-n="FEM.T3">37</span> 条</span><b><span data-n="g2.done">17</span> / <span data-n="g2.total">27</span></b><span>项 scikit-fem 对齐功能完成，另有 1 项已一致，均为一维</span><b>≤ 3×10⁻¹⁵</b><span>真解节点区间的宽度</span></div>
-      <span class="go">查看 mini-FEM →</span>
-    </a>
-    <a class="domain f" href="md.html">
-      <span class="ref">版本 v0 · 参照 ASE 3.29</span>
-      <h3>mini-MD <span class="tag f">新</span></h3>
-      <p>一维 Lennard-Jones 原子链加 Velocity Verlet。每一步与真轨道的距离、守恒量与 Verlet 的结构性质都有证书。</p>
-      <div class="kv"><b data-n="MD">60</b><span>条命题，T4 <span data-n="MD.T4">26</span> 条，T3 <span data-n="MD.T3">31</span> 条</span><b>0.99</b><span>真实局部误差 ÷ 证书的界</span><b>≤ 5×10⁻¹⁴</b><span>与 ASE 的轨道差</span></div>
-      <span class="go">查看 mini-MD →</span>
-    </a>
-    <a class="domain b" href="calphad.html">
-      <span class="ref">目标 G3 · 参照 pycalphad 0.11.1</span>
-      <h3>mini-CALPHAD <span class="tag p">新</span></h3>
-      <p>二元相平衡、磁性相、相图与“没有混溶隙”，数据来自 TDB 数据库，现在由检查器自己读取。证书针对真正的全局平衡，而不只是求解器找到的那一个。</p>
-      <div class="kv"><b data-n="CAL">139</b><span>条命题，T4 <span data-n="CAL.T4">51</span> 条，T3 <span data-n="CAL.T3">48</span> 条</span><b><span data-n="g3.done">21</span> / <span data-n="g3.total">28</span></b><span>项 pycalphad 对齐功能完成（C0 全部，C1 8 项中 6 项，C2 6 项中 4 项）</span><b>29 / 29</b><span>个 pycalphad 平衡落在 Lean 区间内</span></div>
-      <span class="go">查看 mini-CALPHAD →</span>
-    </a>
-    <a class="domain m" href="csp.html">
-      <span class="ref">版本 v0 · 2026-10-07 起 · 参照剑桥团簇数据库、ASE</span>
-      <h3>mini-CSP <span class="tag n">新</span></h3>
-      <p>Lennard-Jones 团簇的结构搜索。搜索器不可信；每个候选被证明是精确的局部极小（模转动、反射与平移唯一），候选之间的同一与不同也有证书。<code>BEST</code> 只是这次搜索中最低的已认证极小，不是全局最优的结论。</p>
-      <div class="kv"><b data-n="CSP">11</b><span>条命题，T4 <span data-n="CSP.T4">3</span> 条，T3 <span data-n="CSP.T3">5</span> 条</span><b>11 / 11</b><span>LJ₃…LJ₁₃ 的最低能量与剑桥团簇数据库一致</span><b>≤ 7×10⁻¹⁵</b><span>与 ASE 的能量差</span></div>
-      <span class="go">查看 mini-CSP →</span>
-    </a>
-  </div>
-</section>
-
-<section id="ledger">
-  <p class="sec-no">02</p>
-  <h2>可信账本</h2>
-  <div class="prose"><p>项目的每一条命题都登记了等级、证据和所依赖的假设；运行报告的每一行都引用其中一条。等级的定义见<a href="./#s5">纲领页</a>，每条命题只标它实际达到的等级。</p></div>
-  <div class="sbar big" data-bar="all" role="img" aria-label="1030 条命题：T4 345 条，T3 470 条，T2 6 条，T1 31 条，T0 177 条，1 条尚未达到">
-    <i class="sw-t4" style="flex:345"></i><i class="sw-t3" style="flex:470"></i><i class="sw-t2" style="flex:6"></i><i class="sw-t1" style="flex:31"></i><i class="sw-t0" style="flex:177"></i><i class="sw-no" style="flex:1"></i>
-  </div>
-  <div class="legend" data-legend="all">
-    <span><i class="sw-t4"></i>T4 端到端 · 345</span>
-    <span><i class="sw-t3"></i>T3 机器证明 · 470</span>
-    <span><i class="sw-t2"></i>T2 模型检验 · 6</span>
-    <span><i class="sw-t1"></i>T1 纸面证明 · 31</span>
-    <span><i class="sw-t0"></i>T0 测试 · 177</span>
-    <span><i class="sw-no"></i>尚未达到 · 1</span>
-  </div>
-  <div class="rows">
-    <div class="row"><div><a href="dft.html#ledger">mini-DFT</a><div class="cap">基础 · 能量 · 自由能 · 展宽 · k 点 · 截断 · 问题绑定 · 密度 · 能带 · LDA · 共线自旋 · 用户外势 · 力 · 精确交换 · 连续极限 · 三维平面波 · 三维并行协议</div></div><span class="n" data-n="DFT">764</span><div class="barcell"><div class="sbar" data-bar="DFT"><i class="sw-t4" style="flex:251"></i><i class="sw-t3" style="flex:349"></i><i class="sw-t2" style="flex:6"></i><i class="sw-t1" style="flex:14"></i><i class="sw-t0" style="flex:143"></i><i class="sw-no" style="flex:1"></i></div></div></div>
-    <div class="row"><div><a href="fem.html#claims">mini-FEM</a><div class="cap">Poisson · 两端 Neumann · 梁 · 右端项 Taylor 模型 · 本征值</div></div><span class="n" data-n="FEM">56</span><div class="barcell"><div class="sbar" data-bar="FEM"><i class="sw-t4" style="flex:14"></i><i class="sw-t3" style="flex:37"></i><i class="sw-t0" style="flex:5"></i></div></div></div>
-    <div class="row"><div><a href="md.html#claims">mini-MD</a><div class="cap">守恒律 · 解的存在唯一 · Verlet 结构 · 管道定理 · 检查器</div></div><span class="n" data-n="MD">60</span><div class="barcell"><div class="sbar" data-bar="MD"><i class="sw-t4" style="flex:26"></i><i class="sw-t3" style="flex:31"></i><i class="sw-t0" style="flex:3"></i></div></div></div>
-    <div class="row"><div><a href="calphad.html#claims">mini-CALPHAD</a><div class="cap">混合项下界 · 平衡 · 存在性 · 磁性 · 凸性 · 亚点阵相 · 化学势与活度条件 · 相图的区域划分 · 热力学性质 · TDB 读法 · 检查器</div></div><span class="n" data-n="CAL">139</span><div class="barcell"><div class="sbar" data-bar="CAL"><i class="sw-t4" style="flex:51"></i><i class="sw-t3" style="flex:48"></i><i class="sw-t1" style="flex:17"></i><i class="sw-t0" style="flex:23"></i></div></div></div>
-    <div class="row"><div><a href="csp.html#claims">mini-CSP</a><div class="cap">LJ 团簇能量 · 强凸球定理 · Eckart 规范 · 检查器 · PSO 稳定区域与随机补充（理想化）</div></div><span class="n" data-n="CSP">11</span><div class="barcell"><div class="sbar" data-bar="CSP"><i class="sw-t4" style="flex:3"></i><i class="sw-t3" style="flex:5"></i><i class="sw-t0" style="flex:3"></i></div></div></div>
-  </div>
-  <p class="note">T4 命题是各个证书检查器的可靠性定理（检查器全程用精确有理数，不涉及浮点）与 Frama-C/WP 对 C 可信内核的证明：无运行时错误，以及 10 月 6 日起在 IEEE 754 模型下区间算术的浮点正确性（DFT-F01、F02）。mini-DFT 有 4 条命题是纸面证明（T1，见 <a href="dft.html#ledger">DFT 页</a>），都已达目标，其中 10 月 8 日新增的一条是三维并行协议推广到任意进程数（DFT-R12）；另有一条原为纸面证明（截断极限等于连续模型的能量，DFT-C02）10 月 8 日起有机器证明（T3，Fourier 空间的连续模型与 H¹ 上算子模型的等价是假设 A-DFT-08）。Lean 与 Rocq 的接口命题 DFT-I01 于 10 月 6 日随 Rocq 计划一并撤销（决定 D1）。31 条 T0 命题中，一条是 DFT 线程实现（目标 T2）；三条是三维平面波检查器的交叉校验（DFT-W10–W12：与 DFTK 一致、空晶格的精确能级、正对照）；两条是用户外势的读入与验证（DFT-V23、V24：检查器自己重读文件，与 TDB 读入一样是未经验证的 I/O）；十条是 10 月 7 日可靠性复审查出并修复的检查器输入输出代码——问题回显、输入门、输出转义与 TDB 的 SHA-256（DFT-I05–I08、FEM-B06、B07、MD-B09、CAL-I03–I05）；九条是 10 月 7 日第二轮对抗式复审修复的检查器外壳代码——统一的退出码、自旋向下 k 点的输入门、LSDA 能带回显、完整的相表与精确的 CALPHAD 首行（DFT-I09–I11、FEM-B11、MD-B14、CAL-I06–I08、CSP-B06）；三条是 Hartree–Fock 的驱动、DFTK 不动点检查、问题回显与已知答案（DFT-H10–H12）；一条是 CAL-I01，即 Lean 对 TDB 文件读法的定义，它是规格而不是定理，只能对照；两条属于 mini-CSP：搜索器的已知答案（CSP-T01）与尚未写成的带证明的粒子群内核（CSP-P01，目标 T4）。</p>
-</section>
-
-<section id="how">
-  <p class="sec-no">03</p>
-  <h2>一个结果的保证从哪里来</h2>
-  <div class="prose"><p>求解器从不被信任：它只负责提出候选，由经过证明的检查器裁决。这样我们既能用 LAPACK 和高效的浮点代码，又能把每个输出写成一条定理。四个领域走的是同样的四步。</p></div>
-  <div class="pipe">
-    <div class="step u"><span class="who">不受信任 · T0</span><h4>求解器</h4><p>C 驱动运行 SCF 循环、FEM 组装、Verlet 积分或平衡搜索，最后写出证书。</p></div>
-    <div class="step c"><span class="who">数据</span><h4>证书</h4><p>浮点数按它本来的精确二进制有理数读入。证书里的任何内容都不被假定为正确。</p></div>
-    <div class="step v"><span class="who">经过证明 · Lean</span><h4>检查器</h4><p>用精确有理数重新检查一切。可靠性是 Lean 定理；证书有错只会让检查失败或区间变宽。</p></div>
-    <div class="step o"><span class="who">有保证</span><h4>严格结论</h4><p>可证明包含真实量的区间：FEM 连续问题的真解、MD 的真轨道、CALPHAD 的全局平衡。</p></div>
-  </div>
-  <div class="prose"><p>与此同时，DFT 的 SCF 控制器写成 TLA+ 规范并经 TLC 检验（只有残差足够小、能隙打开、证书通过时才能报告“收敛”），每次运行都可以输出轨迹，按这份规范逐步重放检查。</p></div>
-  <div class="prose"><p>10 月 6 日对检查器做了一次对抗式复审：攻击者控制证书（与驱动），不控制检查器与命令行。修复了七处缺陷：含 Unicode 换行或制表符的相名，会让读取输出的脚本切出伪造的行与字段；巨大的十进制与二进指数让检查器卡死；有 k 点没通过或权重之和不是 1 时仍输出态密度；k 点没通过后能带编号错位；问题回显（展宽、泛函、网格）没有全部与命令行对照。可靠性定理的陈述都没有改变。另记录了六处较弱的地方，例如 <code>--tdb</code> 证书可以省略相（它们列为不支持），次要检查失败时退出码不变；这两处现已修复。10 月 7 日的第二轮复审覆盖此后新增的入口（共线自旋、用户外势、<code>fis multiplicity</code>、<code>certify-csp</code> 与 <code>fis</code> 本身），没有发现错误的可靠性定理，又修复了八处：五个检查器统一的退出码（0 接受，1 拒绝，2 无法解析，3 次要检查未通过）、<code>--tdb</code> 证书须列出完整的相表、CALPHAD 首行精确匹配、自旋向下 k 点行的输入门、<code>fis multiplicity</code> 用高斯外势的球、对用户输入文件计算哈希、LSDA 能带回显、<code>fis</code> 忽略以结论命名的驱动行。<code>make verify-all</code> 每次重放 307 份伪造证书。</p></div>
-</section>
-
-<section id="phases">
-  <p class="sec-no">04</p>
-  <h2>路线图：已实现与计划中的目标</h2>
-  <div class="prose"><p>纲领已经达到的和计划中的每一个目标，按阶段由近及远排列，截至 2026-11-01。每一项带一个状态标签：</p></div>
+<div id="phases">
+  <div class="prose"><p>已经达到的和计划中的每一个目标，按阶段由早到晚排列，截至 2026-11-01。每一项带一个状态标签：</p></div>
   <div class="legend rm-legend">
     <span><span class="tag s">完成</span>注明日期与账本编号</span>
     <span><span class="tag f">进行中</span>正在做</span>
@@ -224,8 +134,78 @@
     <span><span class="tag p">部分完成</span>写明覆盖了什么、还缺什么</span>
     <span><span class="tag m">候选</span>第二阶段之后，不是承诺</span>
   </div>
+</div>
 
-  <h3 class="stage-h" id="stage2">第二阶段（2026-10-30 至 2027-01-29）：让 DFT 与 CALPHAD 能用于科研</h3>
+<section id="stage1">
+  <p class="sec-no">01</p>
+  <h2>第一阶段（2026 年 9–10 月）：已完成，2026-10-30 冻结于标签 <code>stage-1</code></h2>
+  <div class="prose"><p>第一阶段在有证书的离散问题上建立了机器检查的三重正确，并用它审计了广泛使用的 DFT 程序与 CALPHAD 数据库。这一阶段的论断保持原有的陈述、等级与指纹；此后的工作只通过新的论断来扩展它们。下面先列三个目标与纲领的五个阶段，再列主要结果；同一离散问题有多个精确 Kohn–Sham 解的证明见 <a href="dft.html#multiple">DFT 页</a>。</p></div>
+  <div class="goal">
+    <h3>G1：mini-DFT 与 DFTK 功能对齐 <span class="tag n">2026-09-29 设定</span> <span class="tag p">部分完成</span></h3>
+    <p><span data-n="g1.total">46</span> 项中完成 <span data-n="g1.done">10</span> 项，另有 <span data-n="g1.align">2</span> 项与 DFTK 一致。一维中各种展宽（Fermi–Dirac、Gaussian、Marzari–Vanderbilt 与任意阶 Methfessel–Paxton）、LDA 与共线自旋（LSDA，含 PW92 关联）已经完成：有限温度与零温、Γ 点与 Monkhorst–Pack k 点的 SCF 解证书，连同能带与态密度，全部按命名的外势绑定（至 10 月 8 日）。高斯格点上的力与闭壳层 Hartree–Fock 部分完成（10 月 8 日；Hartree–Fock 的能量区间尚无证书）。10 月 16 日起对齐清单也纳入三维工作：真实的 Si、AlP、GaP，GTH 赝势加 LDA（主要结果见下）。<a href="dft.html#g1">逐项状态 →</a></p>
+  </div>
+  <div class="goal">
+    <h3>G2：带形式化证明的有限元，对照 scikit-fem <span class="tag n">2026-09-30 设定</span> <span class="tag p">部分完成</span></h3>
+    <p><span data-n="g2.total">27</span> 项中完成 <span data-n="g2.done">17</span> 项，另有 <span data-n="g2.align">1</span> 项与 scikit-fem 一致。一维已在 F0 中全部完成：P1 单元的 Poisson 与三次 Hermite 单元的梁，证书针对真解，两端 Neumann（10 月 5 日），离散本征值有证书（10 月 6 日）。10 月 14 日起二维也有保证的误差界（见下）。<a href="fem.html#g2">逐项状态 →</a></p>
+  </div>
+  <div class="goal">
+    <h3>G3：带形式化证明的 CALPHAD，对照 pycalphad <span class="tag n">2026-10-01 设定</span> <span class="tag p">部分完成</span></h3>
+    <p><span data-n="g3.total">28</span> 项中完成 <span data-n="g3.done">21</span> 项，另有 <span data-n="g3.align">1</span> 项与 pycalphad 一致。C0（二元点平衡）全部完成。到 10 月 6 日：带证书的相图（每个温度一份区域划分证书）、Inden–Hillert–Jarl 磁性模型、驱动力、检查器自己读 TDB 文件、凸性证书、一个或两个混合亚点阵的亚点阵相（包括 Laves 相）、给定化学势或活度的平衡，以及相的 <i class="v">G</i>、<i class="v">S</i>、<i class="v">H</i>、<i class="v">C<sub>p</sub></i>。10 月 14 日起又有共晶与共析温度（CAL-B15、B24）、温度区间上的相图（CAL-C12）以及间隙相与磁性化合物（CAL-C22–C24）。多元体系、更多类型的不变反应与有序–无序在<a href="#stage2">第二阶段</a>继续。<a href="calphad.html#g3">逐项状态 →</a></p>
+  </div>
+  <ol class="phases">
+    <li class="phase"><div class="hd"><b>阶段 0</b><strong>最小 DFT</strong><span class="tag s">完成 · 10-06</span></div><div class="bd">
+      <p>可信账本、Lean 证书检查器、可信报告、trace validation 已建立；四组基准全部通过，包括与 DFTK.jl 的交叉校验。</p>
+      <p><span class="k">10 月 5 日完成</span>连续适定性、平面波先验误差估计、线性混合收敛以纸面证明达到目标 T1；文献中没有直接覆盖一维周期 Hartree 核的结果，线性混合的条件订正为 α &lt; 2/λ<sub>max</sub>（介电算子的最大本征值）。</p>
+      <p><span class="k">10 月 6 日完成</span>决定 D1 选定 Frama-C 的浮点模型：区间算术对 C 代码证明正确（DFT-F01、F02 达到 T4），Lean 与 Rocq 的接口命题撤销，义务清单的每一项都达到目标。截断极限一条 DFT-C02 转入后续阶段，于 10 月 8 日达到 T3：截断极限 E<sub>∞</sub> 等于连续模型的基态能量，在 Lean 中证明，连续模型写在 Fourier 空间（它与 H¹ 上算子模型的等价是假设 A-DFT-08）。</p></div></li>
+    <li class="phase"><div class="hd"><b>阶段 1</b><strong>DFT 扩展</strong><span class="tag p">部分完成</span></div><div class="bd">
+      <p>k 点采样已实现并有证书；k 点的线程并行协议经模型检验，不同线程数的结果逐位一致。原计划之外还完成了有限温度占据及其自由能、熵与能量证书，Anderson 混合，非自洽能带与态密度，截断误差证书。</p>
+      <p><span class="k">LDA</span>Slater 交换与 PW92 关联在 Γ 点与 k 点（等价超胞）加 Fermi–Dirac、Gaussian、MV 或 MP 展宽已有证书，10 月 6 日起零温（能隙条件下）也有证书。</p>
+      <p><span class="k">后来完成</span>三维平面波与 GTH 赝势已对 Si（10 月 10 日起）、AlP、GaP 有证书；10 月 28 日起三维点群 LDA 问题有 MPI 驱动（成果展示 S3），在测试的 25 种布局（1 到 32 个进程之间）中逐位一致，日志通过 trace validation（DFT-R13–R18）。</p>
+      <p><span class="k">尚未达到</span>出口标准要求 1 到 64 个进程的运行逐位一致。</p></div></li>
+    <li class="phase"><div class="hd"><b>阶段 2</b><strong>MD 与 FEM</strong><span class="tag s">完成 · 10-01</span></div><div class="bd">
+      <p>两个最小版本都输出可信报告。mini-FEM：一维 Poisson（P1）与梁（三次 Hermite），证书针对真解。mini-MD v0（2026-10-01）：一维 Lennard-Jones 原子链加 Velocity Verlet，证书针对真轨道。Céa 引理（FEM-D03）与 Verlet 辛性（MD-D03）都达到 T3。</p>
+      <p><span class="k">后来完成</span>MD 的三维周期盒子（10 月 14 日，MD-C09–C13）与 FEM 的二维三角形网格（10 月 14 日，FEM-D10–D18）。</p>
+      <p><span class="k">未开始</span>halo 交换、原子迁移、并行组装、检查点的 TLA+ 模块；MD 的恒温器。</p></div></li>
+    <li class="phase"><div class="hd"><b>阶段 3</b><strong>可信内核</strong><span class="tag p">部分完成</span></div><div class="bd">
+      <p><span class="k">10 月 6 日完成</span>DFT 驱动的区间算术内核——电荷区间、残差界与惯性计数——已用 Frama-C/WP 对 C 代码证明：无运行时错误（DFT-F03），以及 10 月 6 日起在 IEEE 754 模型下的浮点正确性（DFT-F01、F02），都是 T4。</p>
+      <p><span class="k">尚未完成</span>纲领为本阶段点名的三个内核：平面波动能算子、FEM 单元刚度组装、Verlet 单步。</p></div></li>
+    <li class="phase"><div class="hd"><b>阶段 4</b><strong>对标</strong><span class="tag p">部分完成</span></div><div class="bd">
+      <p><span class="k">已完成</span>FEM 的制造解研究，带有证书的误差界（<a href="showcases.html#fem-poisson-manufactured">成果展示</a>与教程）；MD 的 NVE 能量漂移有证书（<code>ENERGY_DRIFT</code>，MD-B03）；在事先冻结的协议下让通用程序对照有证书的答案运行——ABINIT、Quantum ESPRESSO 与 DFTK（10 月 22 日，DFT-O25–O27），以及 pycalphad 在已发表数据库上的运行（10 月 4 日起；主要结果见下）。</p>
+      <p><span class="k">尚未完成</span>DFT 的 Δ 量规与 MD 的径向分布函数。</p></div></li>
+  </ol>
+  <p class="note">CALPHAD 不在纲领原有的阶段之中；它在 2026-10-01 作为目标 G3 加入，完成标准与 G1、G2 相同。</p>
+
+  <h4 class="tbl-h">第一阶段的主要结果</h4>
+  <div class="tbl"><table class="feat">
+    <thead><tr><th>结果</th><th>状态</th><th>日期与账本编号</th></tr></thead>
+    <tbody>
+      <tr><td><b>S1，硅。</b>在预登记的设定下 KS-LDA 解有证书；这个离散模型的带隙在整个 Brillouin 区上被两侧界定在 [0.4146, 0.4856] eV，并与实验比较（模型低于观测，V1 级）；这些结果已证明针对的就是用 Lean 写下的登记问题本身。<a href="showcases.html#dft-si-bz-bands">成果展示 →</a></td><td class="st"><span class="tag s">完成</span></td><td>10-16 · DFT-K29；10-22 · DFT-W52–W66、O04；10-29 · DFT-K30–K36、K38</td></tr>
+      <tr><td><b>S1，磷化铝。</b>离散模型在全区上的带隙落在 [1.4071305, 1.4780513] eV，并与实验比较</td><td class="st"><span class="tag s">完成</span></td><td>10-20 · DFT-O20、W90–W97；10-26 · DFT-W300</td></tr>
+      <tr><td><b>S1，磷化镓。</b>离散模型在全区上的带隙落在 [1.4668132, 1.5377628] eV，并与实验比较</td><td class="st"><span class="tag s">完成</span></td><td>10-23 · DFT-W190、W191、W193；10-26 · DFT-W192、O24</td></tr>
+      <tr><td><b>硅的晶格常数。</b>固定基组的离散 KS-LDA 族的每个能量极小点都在 [5.354683, 5.358683] Å 内，前提是两个端点的解是基态；这不是收敛的 LDA 值，也没有与实验比较</td><td class="st"><span class="tag s">完成</span></td><td>10-22 · DFT-W100–W107</td></tr>
+      <tr><td><b>第一个三重正确的结果。</b>Si、Ge、GaAs 的 Cohen–Bergstresser 能带证书对照光电子能谱数据，比较协议在任何数字出现之前推送；后来扩展到十二种半导体。<a href="showcases.html#dft-cb-validation">成果展示 →</a></td><td class="st"><span class="tag s">完成</span></td><td>10-08 · DFT-O01–O03；10-17 · DFT-O07–O19、W70–W78</td></tr>
+      <tr><td><b>S2，不是基态。</b>机器检查的证明：一个已收敛的 SCF 解（简单立方氢）不是离散模型的基态，有证书的差距为 330 meV；这是严格性上的第一次，不是物理发现。<a href="showcases.html#dft-h-not-ground-state">成果展示 →</a></td><td class="st"><span class="tag s">完成</span></td><td>10-10 · DFT-M20–M26</td></tr>
+      <tr><td><b>S3，并行正确。</b>三维的 k 点、能带与 FFT 并行用 TLA+ 写成规格并经模型检验；MPI 驱动的运行按规格重放，在每一种测试过的布局（1 到 32 个进程）中结果逐位相同</td><td class="st"><span class="tag s">完成</span></td><td>10-08 · DFT-R08–R12；10-28 · DFT-R13–R18</td></tr>
+      <tr><td><b>CALPHAD 数据库与所印表格的对照审计。</b>把数据库的模型与随之发表的不变反应表对照：NIST 焊料数据库、六篇已发表的评估，然后是 TDBDB 索引中作为补充材料发表的全部二元数据库，并在事后分析所印数字的舍入能解释多少。<a href="./#news">新闻 →</a></td><td class="st"><span class="tag s">完成</span></td><td>10-20 · CAL-B35；10-21 · CAL-B37；10-22 · CAL-B39–B43、B48–B51；10-29 · CAL-B70–B78</td></tr>
+      <tr><td><b>不变反应附近的平衡。</b>在调用 pycalphad 之前登记的点上，pycalphad 0.11.2 按默认设定在 52 个被审计数据库中的 16 个里返回的平衡，被证明不是文件所定义模型的全局平衡</td><td class="st"><span class="tag s">完成</span></td><td>10-26 · CAL-B54–B66</td></tr>
+      <tr><td><b>pycalphad 自带的 17 个数据库。</b>316 个二元体系的每个网格点都有与 TDB 文件绑定的证书。<a href="calphad.html#audit">详情 →</a></td><td class="st"><span class="tag s">完成</span></td><td>10-04</td></tr>
+      <tr><td><b>DFT 程序审计。</b>ABINIT、Quantum ESPRESSO 与 DFTK 在四个答案有证书的离散问题上运行，分别用对齐的、默认的与教程的设定，再按派生量、按各程序自己的容差解读</td><td class="st"><span class="tag s">完成</span></td><td>10-22 · DFT-O25–O27、W200–W207；10-29 · DFT-W316–W320</td></tr>
+      <tr><td><b>GTH/HGH 普查。</b>公开发布的每一个 GTH/HGH 赝势文件在各发布之间、与原始论文的表之间逐项精确比较；GTH-PBE 一层逐项有证书</td><td class="st"><span class="tag s">完成</span></td><td>10-22 · DFT-O28；10-23 · DFT-O29</td></tr>
+      <tr><td><b>二维 FEM。</b>三角形网格上保证的 Prager–Synge 误差界，整条链在 Lean 中证明，右端可以是多项式；正方形与 L 形膜的本征值有证书。<a href="showcases.html#fem-lshape-eigenvalue">成果展示 →</a></td><td class="st"><span class="tag s">完成</span></td><td>10-14 · FEM-D10–D18、D30–D36；10-15 · FEM-B12</td></tr>
+      <tr><td><b>三维 MD。</b>周期立方体中的 Lennard-Jones 原子：解的存在、唯一与守恒有证明，真轨道被区间包住。<a href="showcases.html#md-lj3d-box">成果展示 →</a></td><td class="st"><span class="tag s">完成</span></td><td>10-14 · MD-C09–C13</td></tr>
+      <tr><td><b>mini-CSP v0。</b>Lennard-Jones 团簇的结构搜索，候选结构被证明是精确的局部极小，在对称意义下唯一。<a href="csp.html">详情 →</a></td><td class="st"><span class="tag s">完成</span></td><td>10-07 · CSP-B01、B02、B04、A01、A02</td></tr>
+      <tr><td><b>物理确认进入账本。</b>确认类论断按 V0–V3 分级，对照冻结并带哈希的实验数据集，每次验证运行都重新计算</td><td class="st"><span class="tag s">完成</span></td><td>10-08 · 第一条为 CAL-O01</td></tr>
+      <tr><td><b>对抗式复审。</b>两轮复审，攻击者控制证书；伪造的证书在每次验证运行中重放。<a href="./#how">详情 →</a></td><td class="st"><span class="tag s">完成</span></td><td>10-06；10-07 · DFT-I09–I11、FEM-B11、MD-B14、CAL-I06–I08、CSP-B06</td></tr>
+      <tr><td><b>验证基础设施。</b>一条命令 <code>make verify-all</code> 重新检查整个仓库；可靠性定理的陈述有指纹；并行运行与快速档；按内容寻址的结果缓存，抽样从头重检，每晚一次完整的冷运行</td><td class="st"><span class="tag s">完成</span></td><td>10-01；10-03；10-08；10-15；10-22</td></tr>
+    </tbody>
+  </table></div>
+
+  
+</section>
+
+<section id="stage2">
+  <p class="sec-no">02</p>
+  <h2>第二阶段（2026-10-30 至 2027-01-29）：让 DFT 与 CALPHAD 能用于科研</h2>
   <div class="prose"><p>研究者带来自己的问题——DFT 里是自己的晶体结构、赝势与设定，CALPHAD 里是自己的数据库与条件——在一台工作站上、在限定时间内，得到所述离散问题的 Lean 检查过的证书，或者一条说清原因的拒绝。FEM、MD、CSP 维持现状。进展对照 24 个验收任务衡量；这些任务连同输入文件与哈希于 2026-10-30 冻结，早于第二阶段的任何开发。</p>
   <p class="note">验收任务在本阶段结束时正式评定：由一个全新的代理只读公开文档逐项执行。因此这里的“完成”指这项能力已经具备并经过检查，不表示验收运行已经通过。</p></div>
 
@@ -299,69 +279,12 @@
     </tbody>
   </table></div>
 
-  <h3 class="stage-h" id="stage1">第一阶段（2026 年 9 月至 10 月，2026-10-30 冻结于标签 <code>stage-1</code>）</h3>
-  <div class="prose"><p>第一阶段在有证书的离散问题上建立了机器检查的三重正确，并用它审计了广泛使用的 DFT 程序与 CALPHAD 数据库。这一阶段的论断保持原有的陈述、等级与指纹；此后的工作只通过新的论断来扩展它们。下面先列三个目标与纲领的五个阶段，再列主要结果；同一离散问题有多个精确 Kohn–Sham 解的证明见 <a href="dft.html#multiple">DFT 页</a>。</p></div>
-  <div class="goal">
-    <h3>G1：mini-DFT 与 DFTK 功能对齐 <span class="tag n">2026-09-29 设定</span> <span class="tag p">部分完成</span></h3>
-    <p><span data-n="g1.total">46</span> 项中完成 <span data-n="g1.done">10</span> 项，另有 <span data-n="g1.align">2</span> 项与 DFTK 一致。一维中各种展宽（Fermi–Dirac、Gaussian、Marzari–Vanderbilt 与任意阶 Methfessel–Paxton）、LDA 与共线自旋（LSDA，含 PW92 关联）已经完成：有限温度与零温、Γ 点与 Monkhorst–Pack k 点的 SCF 解证书，连同能带与态密度，全部按命名的外势绑定（至 10 月 8 日）。高斯格点上的力与闭壳层 Hartree–Fock 部分完成（10 月 8 日；Hartree–Fock 的能量区间尚无证书）。10 月 16 日起对齐清单也纳入三维工作：真实的 Si、AlP、GaP，GTH 赝势加 LDA（主要结果见下）。<a href="dft.html#g1">逐项状态 →</a></p>
-  </div>
-  <div class="goal">
-    <h3>G2：带形式化证明的有限元，对照 scikit-fem <span class="tag n">2026-09-30 设定</span> <span class="tag p">部分完成</span></h3>
-    <p><span data-n="g2.total">27</span> 项中完成 <span data-n="g2.done">17</span> 项，另有 <span data-n="g2.align">1</span> 项与 scikit-fem 一致。一维已在 F0 中全部完成：P1 单元的 Poisson 与三次 Hermite 单元的梁，证书针对真解，两端 Neumann（10 月 5 日），离散本征值有证书（10 月 6 日）。10 月 14 日起二维也有保证的误差界（见下）。<a href="fem.html#g2">逐项状态 →</a></p>
-  </div>
-  <div class="goal">
-    <h3>G3：带形式化证明的 CALPHAD，对照 pycalphad <span class="tag n">2026-10-01 设定</span> <span class="tag p">部分完成</span></h3>
-    <p><span data-n="g3.total">28</span> 项中完成 <span data-n="g3.done">21</span> 项，另有 <span data-n="g3.align">1</span> 项与 pycalphad 一致。C0（二元点平衡）全部完成。到 10 月 6 日：带证书的相图（每个温度一份区域划分证书）、Inden–Hillert–Jarl 磁性模型、驱动力、检查器自己读 TDB 文件、凸性证书、一个或两个混合亚点阵的亚点阵相（包括 Laves 相）、给定化学势或活度的平衡，以及相的 <i class="v">G</i>、<i class="v">S</i>、<i class="v">H</i>、<i class="v">C<sub>p</sub></i>。10 月 14 日起又有共晶与共析温度（CAL-B15、B24）、温度区间上的相图（CAL-C12）以及间隙相与磁性化合物（CAL-C22–C24）。多元体系、更多类型的不变反应与有序–无序在第二阶段继续（见上）。<a href="calphad.html#g3">逐项状态 →</a></p>
-  </div>
-  <ol class="phases">
-    <li class="phase"><div class="hd"><b>阶段 0</b><strong>最小 DFT</strong><span class="tag s">完成 · 10-06</span></div><div class="bd">
-      <p>可信账本、Lean 证书检查器、可信报告、trace validation 已建立；四组基准全部通过，包括与 DFTK.jl 的交叉校验。</p>
-      <p><span class="k">10 月 5 日完成</span>连续适定性、平面波先验误差估计、线性混合收敛以纸面证明达到目标 T1；文献中没有直接覆盖一维周期 Hartree 核的结果，线性混合的条件订正为 α &lt; 2/λ<sub>max</sub>（介电算子的最大本征值）。</p>
-      <p><span class="k">10 月 6 日完成</span>决定 D1 选定 Frama-C 的浮点模型：区间算术对 C 代码证明正确（DFT-F01、F02 达到 T4），Lean 与 Rocq 的接口命题撤销，义务清单的每一项都达到目标。截断极限一条 DFT-C02 转入后续阶段，于 10 月 8 日达到 T3：截断极限 E<sub>∞</sub> 等于连续模型的基态能量，在 Lean 中证明，连续模型写在 Fourier 空间（它与 H¹ 上算子模型的等价是假设 A-DFT-08）。</p></div></li>
-    <li class="phase"><div class="hd"><b>阶段 1</b><strong>DFT 扩展</strong><span class="tag p">部分完成</span></div><div class="bd">
-      <p>k 点采样已实现并有证书；k 点的线程并行协议经模型检验，不同线程数的结果逐位一致。原计划之外还完成了有限温度占据及其自由能、熵与能量证书，Anderson 混合，非自洽能带与态密度，截断误差证书。</p>
-      <p><span class="k">LDA</span>Slater 交换与 PW92 关联在 Γ 点与 k 点（等价超胞）加 Fermi–Dirac、Gaussian、MV 或 MP 展宽已有证书，10 月 6 日起零温（能隙条件下）也有证书。</p>
-      <p><span class="k">后来完成</span>三维平面波与 GTH 赝势已对 Si（10 月 10 日起）、AlP、GaP 有证书；10 月 28 日起三维点群 LDA 问题有 MPI 驱动（成果展示 S3），在测试的 25 种布局（1 到 32 个进程之间）中逐位一致，日志通过 trace validation（DFT-R13–R18）。</p>
-      <p><span class="k">尚未达到</span>出口标准要求 1 到 64 个进程的运行逐位一致。</p></div></li>
-    <li class="phase"><div class="hd"><b>阶段 2</b><strong>MD 与 FEM</strong><span class="tag s">完成 · 10-01</span></div><div class="bd">
-      <p>两个最小版本都输出可信报告。mini-FEM：一维 Poisson（P1）与梁（三次 Hermite），证书针对真解。mini-MD v0（2026-10-01）：一维 Lennard-Jones 原子链加 Velocity Verlet，证书针对真轨道。Céa 引理（FEM-D03）与 Verlet 辛性（MD-D03）都达到 T3。</p>
-      <p><span class="k">后来完成</span>MD 的三维周期盒子（10 月 14 日，MD-C09–C13）与 FEM 的二维三角形网格（10 月 14 日，FEM-D10–D18）。</p>
-      <p><span class="k">未开始</span>halo 交换、原子迁移、并行组装、检查点的 TLA+ 模块；MD 的恒温器。</p></div></li>
-    <li class="phase"><div class="hd"><b>阶段 3</b><strong>可信内核</strong><span class="tag p">部分完成</span></div><div class="bd">
-      <p><span class="k">10 月 6 日完成</span>DFT 驱动的区间算术内核——电荷区间、残差界与惯性计数——已用 Frama-C/WP 对 C 代码证明：无运行时错误（DFT-F03），以及 10 月 6 日起在 IEEE 754 模型下的浮点正确性（DFT-F01、F02），都是 T4。</p>
-      <p><span class="k">尚未完成</span>纲领为本阶段点名的三个内核：平面波动能算子、FEM 单元刚度组装、Verlet 单步。</p></div></li>
-    <li class="phase"><div class="hd"><b>阶段 4</b><strong>对标</strong><span class="tag p">部分完成</span></div><div class="bd">
-      <p><span class="k">已完成</span>FEM 的制造解研究，带有证书的误差界（<a href="showcases.html#fem-poisson-manufactured">成果展示</a>与教程）；MD 的 NVE 能量漂移有证书（<code>ENERGY_DRIFT</code>，MD-B03）；在事先冻结的协议下让通用程序对照有证书的答案运行——ABINIT、Quantum ESPRESSO 与 DFTK（10 月 22 日，DFT-O25–O27），以及 pycalphad 在已发表数据库上的运行（10 月 4 日起；主要结果见下）。</p>
-      <p><span class="k">尚未完成</span>DFT 的 Δ 量规与 MD 的径向分布函数。</p></div></li>
-  </ol>
-  <p class="note">CALPHAD 不在纲领原有的阶段之中；它在 2026-10-01 作为目标 G3 加入，完成标准与 G1、G2 相同。</p>
+  
+</section>
 
-  <h4 class="tbl-h">第一阶段的主要结果</h4>
-  <div class="tbl"><table class="feat">
-    <thead><tr><th>结果</th><th>状态</th><th>日期与账本编号</th></tr></thead>
-    <tbody>
-      <tr><td><b>S1，硅。</b>在预登记的设定下 KS-LDA 解有证书；这个离散模型的带隙在整个 Brillouin 区上被两侧界定在 [0.4146, 0.4856] eV，并与实验比较（模型低于观测，V1 级）；这些结果已证明针对的就是用 Lean 写下的登记问题本身。<a href="showcases.html#dft-si-bz-bands">成果展示 →</a></td><td class="st"><span class="tag s">完成</span></td><td>10-16 · DFT-K29；10-22 · DFT-W52–W66、O04；10-29 · DFT-K30–K36、K38</td></tr>
-      <tr><td><b>S1，磷化铝。</b>离散模型在全区上的带隙落在 [1.4071305, 1.4780513] eV，并与实验比较</td><td class="st"><span class="tag s">完成</span></td><td>10-20 · DFT-O20、W90–W97；10-26 · DFT-W300</td></tr>
-      <tr><td><b>S1，磷化镓。</b>离散模型在全区上的带隙落在 [1.4668132, 1.5377628] eV，并与实验比较</td><td class="st"><span class="tag s">完成</span></td><td>10-23 · DFT-W190、W191、W193；10-26 · DFT-W192、O24</td></tr>
-      <tr><td><b>硅的晶格常数。</b>固定基组的离散 KS-LDA 族的每个能量极小点都在 [5.354683, 5.358683] Å 内，前提是两个端点的解是基态；这不是收敛的 LDA 值，也没有与实验比较</td><td class="st"><span class="tag s">完成</span></td><td>10-22 · DFT-W100–W107</td></tr>
-      <tr><td><b>第一个三重正确的结果。</b>Si、Ge、GaAs 的 Cohen–Bergstresser 能带证书对照光电子能谱数据，比较协议在任何数字出现之前推送；后来扩展到十二种半导体。<a href="showcases.html#dft-cb-validation">成果展示 →</a></td><td class="st"><span class="tag s">完成</span></td><td>10-08 · DFT-O01–O03；10-17 · DFT-O07–O19、W70–W78</td></tr>
-      <tr><td><b>S2，不是基态。</b>机器检查的证明：一个已收敛的 SCF 解（简单立方氢）不是离散模型的基态，有证书的差距为 330 meV；这是严格性上的第一次，不是物理发现。<a href="showcases.html#dft-h-not-ground-state">成果展示 →</a></td><td class="st"><span class="tag s">完成</span></td><td>10-10 · DFT-M20–M26</td></tr>
-      <tr><td><b>S3，并行正确。</b>三维的 k 点、能带与 FFT 并行用 TLA+ 写成规格并经模型检验；MPI 驱动的运行按规格重放，在每一种测试过的布局（1 到 32 个进程）中结果逐位相同</td><td class="st"><span class="tag s">完成</span></td><td>10-08 · DFT-R08–R12；10-28 · DFT-R13–R18</td></tr>
-      <tr><td><b>CALPHAD 数据库与所印表格的对照审计。</b>把数据库的模型与随之发表的不变反应表对照：NIST 焊料数据库、六篇已发表的评估，然后是 TDBDB 索引中作为补充材料发表的全部二元数据库，并在事后分析所印数字的舍入能解释多少。<a href="./#news">新闻 →</a></td><td class="st"><span class="tag s">完成</span></td><td>10-20 · CAL-B35；10-21 · CAL-B37；10-22 · CAL-B39–B43、B48–B51；10-29 · CAL-B70–B78</td></tr>
-      <tr><td><b>不变反应附近的平衡。</b>在调用 pycalphad 之前登记的点上，pycalphad 0.11.2 按默认设定在 52 个被审计数据库中的 16 个里返回的平衡，被证明不是文件所定义模型的全局平衡</td><td class="st"><span class="tag s">完成</span></td><td>10-26 · CAL-B54–B66</td></tr>
-      <tr><td><b>pycalphad 自带的 17 个数据库。</b>316 个二元体系的每个网格点都有与 TDB 文件绑定的证书。<a href="calphad.html#audit">详情 →</a></td><td class="st"><span class="tag s">完成</span></td><td>10-04</td></tr>
-      <tr><td><b>DFT 程序审计。</b>ABINIT、Quantum ESPRESSO 与 DFTK 在四个答案有证书的离散问题上运行，分别用对齐的、默认的与教程的设定，再按派生量、按各程序自己的容差解读</td><td class="st"><span class="tag s">完成</span></td><td>10-22 · DFT-O25–O27、W200–W207；10-29 · DFT-W316–W320</td></tr>
-      <tr><td><b>GTH/HGH 普查。</b>公开发布的每一个 GTH/HGH 赝势文件在各发布之间、与原始论文的表之间逐项精确比较；GTH-PBE 一层逐项有证书</td><td class="st"><span class="tag s">完成</span></td><td>10-22 · DFT-O28；10-23 · DFT-O29</td></tr>
-      <tr><td><b>二维 FEM。</b>三角形网格上保证的 Prager–Synge 误差界，整条链在 Lean 中证明，右端可以是多项式；正方形与 L 形膜的本征值有证书。<a href="showcases.html#fem-lshape-eigenvalue">成果展示 →</a></td><td class="st"><span class="tag s">完成</span></td><td>10-14 · FEM-D10–D18、D30–D36；10-15 · FEM-B12</td></tr>
-      <tr><td><b>三维 MD。</b>周期立方体中的 Lennard-Jones 原子：解的存在、唯一与守恒有证明，真轨道被区间包住。<a href="showcases.html#md-lj3d-box">成果展示 →</a></td><td class="st"><span class="tag s">完成</span></td><td>10-14 · MD-C09–C13</td></tr>
-      <tr><td><b>mini-CSP v0。</b>Lennard-Jones 团簇的结构搜索，候选结构被证明是精确的局部极小，在对称意义下唯一。<a href="csp.html">详情 →</a></td><td class="st"><span class="tag s">完成</span></td><td>10-07 · CSP-B01、B02、B04、A01、A02</td></tr>
-      <tr><td><b>物理确认进入账本。</b>确认类论断按 V0–V3 分级，对照冻结并带哈希的实验数据集，每次验证运行都重新计算</td><td class="st"><span class="tag s">完成</span></td><td>10-08 · 第一条为 CAL-O01</td></tr>
-      <tr><td><b>对抗式复审。</b>两轮复审，攻击者控制证书；伪造的证书在每次验证运行中重放。<a href="#how">详情 →</a></td><td class="st"><span class="tag s">完成</span></td><td>10-06；10-07 · DFT-I09–I11、FEM-B11、MD-B14、CAL-I06–I08、CSP-B06</td></tr>
-      <tr><td><b>验证基础设施。</b>一条命令 <code>make verify-all</code> 重新检查整个仓库；可靠性定理的陈述有指纹；并行运行与快速档；按内容寻址的结果缓存，抽样从头重检，每晚一次完整的冷运行</td><td class="st"><span class="tag s">完成</span></td><td>10-01；10-03；10-08；10-15；10-22</td></tr>
-    </tbody>
-  </table></div>
-
-  <h3 class="stage-h" id="after">第二阶段之后：候选方向，不是承诺</h3>
+<section id="stage3">
+  <p class="sec-no">03</p>
+  <h2>第三阶段：第二阶段之后的候选，不是承诺</h2>
   <ul class="gaps rm-cands">
     <li><span class="tag m">候选</span> 免矩阵的 DFT 检查器（组装与检查器），用于收敛设定下的氧化物与钙钛矿</li>
     <li><span class="tag m">候选</span> 杂化泛函，先做 HSE（它没有 Coulomb 奇点）</li>
@@ -377,7 +300,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · 现状快照 2026-10-08<span class="updated"> · 更新于 <time datetime="2026-11-01T09:07+08:00">2026-11-01 09:07 UTC+8</time></span></span>
+  <span>Formal in Silico · 已实现与计划实现<span class="updated"> · 更新于 <time datetime="2026-11-01T09:13+08:00">2026-11-01 09:13 UTC+8</time></span></span>
   <span><a href="./">纲领</a> · <a href="showcases.html">成果展示</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="../progress.html" hreflang="en">English</a></span>
 </div></footer>
 </body>

@@ -109,7 +109,7 @@
   <ol class="news">
     <li><time datetime="2026-11-01">2026-11-01</time><ul>
       <li><span class="tag n">CALPHAD</span><b>Cr&ndash;Ti 在 700&ndash;2300&nbsp;K 的大部分温度上有了覆盖证书。</b>对 Cr&ndash;Ti（COST&nbsp;507），7 份检查通过的证书表明：在 1600&nbsp;K 范围中的 1266&nbsp;K 上，除括住的不变反应外，所考虑的相之间没有三相平衡。其中四个反应都有括号：共析 BCC_A2 &rarr; C15 + D0<sub>19</sub> 在 [1010.987,&nbsp;1011.007]&nbsp;K，共析 C14 &rarr; BCC_A2 + C15 在 [1099.058,&nbsp;1099.158]&nbsp;K，生成 C15 的包析在 [1498.649,&nbsp;1498.669]&nbsp;K，C14/BCC_A2 的同成分转变在 [1647.091,&nbsp;1647.111]&nbsp;K；pycalphad 的温度都在括号内。有序的 B2 相与模型读入器不支持的三个相未计入，其余 334&nbsp;K 尚未覆盖，同一相的两部分与第三个相共存的平衡未被排除（CAL-T113、T115、T116）。</li>
-      <li><span class="tag n">网站</span><b>进度页上有了路线图。</b><a href="progress.html">进度页</a>开头新增了路线图的入口，保留全局一览、各领域、账本与工作方式；可信基与研究结果两节已删去（可信基见本页，研究结果见各领域页）。<a href="progress.html#phases">路线图（第 04 节）</a>按阶段（最新的在前）列出项目已实现和计划中的每个目标，每项标明状态（完成、进行中、部分完成、计划中、候选）、日期与账本编号：第二段的里程碑和全部 24 个验收任务的现状、第一段的目标、阶段与主要成果，以及第二段之后的候选。过时的状态标签已在那里和本页 &sect;8 改正：阶段 1、3、4 部分完成，S1 已与实验比较，S3 已有并行驱动。</li>
+      <li><span class="tag n">网站</span><b>进度页改为只列已实现与计划实现的内容。</b>总览卡片之后依次是<a href="progress.html#stage1">第一阶段</a>、<a href="progress.html#stage2">第二阶段</a>与<a href="progress.html#stage3">第三阶段</a>三节；各领域、账本、工作方式、可信基与研究结果各节已移出（结果如何获得保证见<a href="#how">本页 §3</a>，可信基与研究结果见本页和各领域页）。它按阶段（由早到晚）列出项目已实现和计划中的每个目标，每项标明状态（完成、进行中、部分完成、计划中、候选）、日期与账本编号：第一段的目标、阶段与主要成果，第二段的里程碑和全部 24 个验收任务的现状，以及第三段的候选。过时的状态标签已在那里和本页 &sect;8 改正：阶段 1、3、4 部分完成，S1 已与实验比较，S3 已有并行驱动。</li>
     </ul></li>
     <li><time datetime="2026-10-31">2026-10-31</time><ul>
       <li><span class="tag n">CALPHAD</span><b>各类二元不变反应的证书，含 Laves 相。</b>一个证书现在覆盖共晶型、包晶型反应与同成分转变，允许两个混合亚点阵的相（Laves C14/C15、D0<sub>19</sub>）与磁性溶体；第一阶段的共晶证书被证明是特例（CAL-T100&ndash;T107）。认证的温度区间：Mg&ndash;Zn 包晶 L&nbsp;+&nbsp;Mg<sub>2</sub>Zn<sub>3</sub>&nbsp;&rarr;&nbsp;Mg<sub>12</sub>Zn<sub>13</sub> 在 [618.643,&nbsp;618.663]&nbsp;K，MgZn<sub>2</sub> 的同成分熔化在 [857.443,&nbsp;857.463]&nbsp;K，以及 Cr&ndash;Ti 中含 Laves 相与磁性 bcc 的三个反应；pycalphad 的温度都在区间内。这些体系去掉了有序 B2 相；区间内只有这一次相变，与第一阶段一样仍未证明。</li>
@@ -254,20 +254,20 @@
       <li><span class="tag n">DFT</span>共线自旋完成：加自旋插值 PW92 关联时，检查器现在也认证 Γ 点与 k 点的零温、能量与自由能、每个自旋的能带与态密度以及命名高斯外势，DFTK 处处在区间内，DFTK 对标表的共线自旋一项完成（DFT-X48–X58）。<a href="dft.html#lsda">详情 →</a></li>
       <li><span class="tag n">DFT</span>精确交换：<code>--xc hf</code> 求解有限温度 Γ 点的闭壳层 Hartree–Fock，检查器证明 HF SCF 方程在证书附近恰有一个解并界住其化学势（DFT-H01–H08）；DFTK 自己的 HF SCF 在这些一维体系上不收敛，所以与 DFTK 的比较是 Fock 矩阵与能量分项的不动点检查（DFT-H11），HF 的能量区间尚无证书。<a href="dft.html#hf">详情 →</a></li>
       <li><span class="tag n">DFT</span>截断极限 <i class="v">E</i><sub>∞</sub> 在 Lean 中被证明等于写在 Fourier 空间的连续模型的基态能量，<code>LIMIT_OK</code> 因此也界住连续能量（DFT-C02 升为 T3，C03–C09）；它与 <i class="v">H</i>¹ 上算子模型的等价记为假设 A-DFT-08。<a href="dft.html#gaps">详情 →</a></li>
-      <li><span class="tag n">检查</span>对 10 月 6 日以来新增入口的第二轮对抗式复审没有发现错误的可靠性定理，修复了八处较弱的地方，其中有五个检查器统一的退出码（次要检查未通过时为 3）、<code>--tdb</code> 证书的完整相表与自旋向下 k 点行的输入门（DFT-I09–I11、FEM-B11、MD-B14、CAL-I06–I08、CSP-B06）；现在每次运行重放 307 份伪造证书。<a href="progress.html#how">详情 →</a></li>
+      <li><span class="tag n">检查</span>对 10 月 6 日以来新增入口的第二轮对抗式复审没有发现错误的可靠性定理，修复了八处较弱的地方，其中有五个检查器统一的退出码（次要检查未通过时为 3）、<code>--tdb</code> 证书的完整相表与自旋向下 k 点行的输入门（DFT-I09–I11、FEM-B11、MD-B14、CAL-I06–I08、CSP-B06）；现在每次运行重放 307 份伪造证书。<a href="#how">详情 →</a></li>
       <li><span class="tag n">检查</span>模糊测试在 CALPHAD 驱动的相图模式中发现一处越界写（<code>map_chord</code>，不在可信链内），已修复，出错的输入成为每次模糊测试都跑的固定回归用例。</li>
       <li><span class="tag n">论文</span>论文稿补上了 10 月 7 日与 8 日的工作；账本现有 298 条命题，其中 265 条有机器证明。</li>
     </ul></li>
     <li><time datetime="2026-10-07">2026-10-07</time><ul>
       <li><span class="tag n">网站</span>mini-CSP 有了自己的领域页面，导航栏加上 <b>CSP</b> 标签：LJ₁₃ 上检查器的完整输出、局部极小与去重证书如何工作、粒子群与随机补充的定理、全部十条命题，以及 LJ₃…LJ₁₃ 认证最低能量与剑桥团簇数据库的对照（<a href="csp.html">mini-CSP</a>）。</li>
-      <li><span class="tag n">检查</span>对四个检查器的可靠性复审查出的漏洞已全部修复：MD 检查器曾接受原子重合、没有步数或 σ = 0 的证书（Lean 的 0⁻¹ = 0 使它们看起来无害），从 TDB 文件读入的 CALPHAD 相名可以注入伪造的输出行，若干问题数据没有回显。现在 MD 的这些条件属于已验证的检查；每个检查器都以精确的 <code>PROBLEM</code> 行回显完整的问题、严格解析并转义名字；可信 C 内核的 ACSL 契约登记了指纹；<code>verify_all</code> 留下运行记录并报告跳过的用例（MD-B06–B09，CAL-B08、B12、I03–I05，FEM-B06、B07、B10，DFT-I05–I08）。<a href="progress.html#ledger">详情 →</a></li>
+      <li><span class="tag n">检查</span>对四个检查器的可靠性复审查出的漏洞已全部修复：MD 检查器曾接受原子重合、没有步数或 σ = 0 的证书（Lean 的 0⁻¹ = 0 使它们看起来无害），从 TDB 文件读入的 CALPHAD 相名可以注入伪造的输出行，若干问题数据没有回显。现在 MD 的这些条件属于已验证的检查；每个检查器都以精确的 <code>PROBLEM</code> 行回显完整的问题、严格解析并转义名字；可信 C 内核的 ACSL 契约登记了指纹；<code>verify_all</code> 留下运行记录并报告跳过的用例（MD-B06–B09，CAL-B08、B12、I03–I05，FEM-B06、B07、B10，DFT-I05–I08）。<a href="#s5">详情 →</a></li>
       <li><span class="tag n">DFT</span><code>SCF_OK</code>、<code>LDA_OK</code>、<code>LSDA_OK</code> 现在证明的是 SCF 解本身在证书的球内唯一（Γ 点与 k 点），而不只是辅助映射的零点唯一：每个 SCF 解都是这个映射的零点（DFT-T32–T38）。<a href="dft.html#outputs">详情 →</a></li>
       <li><span class="tag n">DFT</span>共线自旋扩展：Monkhorst–Pack k 点上的 LSDA（<code>--nk</code>，DFT-X35–X37）与 Γ 点的零温 LSDA（磁化为精确整数，公共能隙有证书，<code>fis-lsda0</code>，DFT-X40–X42）已端到端检查；SCF 解处 LSDA 能量与自由能的界有了机器证明（DFT-X45、X46，T3）；打印能量区间的检查器是同一天第二轮加上的（DFT-X47），DFTK 的值都在它打印的区间内。（10 月 9 日订正措辞：原文暗示 X45、X46 已经打印区间。）<a href="dft.html#lsda">详情 →</a></li>
       <li><span class="tag n">DFT</span>共线自旋第二轮：Monkhorst–Pack k 点上的零温 LSDA，每个原胞的磁化是精确有理数（自由电子三个 k 点时为 4/3），全部 k 点、两个自旋共用一个有证书的能隙（DFT-X43、X44）；有限温度 LSDA 解在 Γ 点与 k 点的每个自旋的能带、态密度与总态密度（DFT-S09–S11、X38）；LSDA 能量与自由能的区间有证书，k 点为每个原胞（DFT-X47），Γ 点的命名高斯外势也有（DFT-V15–V17）。DFTK 的磁化、能带、态密度、能量与自由能都落在区间内。<a href="dft.html#lsda">详情 →</a></li>
       <li><span class="tag n">DFT</span>有限温度的完整 LSDA：自旋插值的 PW92 关联（<code>--spin collinear --xc lda</code>，DFTK 的 <code>Xc([:lda_x, :lda_c_pw])</code>）在 Γ 点与 k 点有证书。它的 Jacobian 把两个自旋耦合在一起，一致常数松约 100 倍，所以通用的 LSDA 检查器在每个格点的小方块上界住它（DFT-X29–X34）；DFTK 的磁化与费米能级在区间内。PW92 时检查器只证明 SCF 解、磁化与费米能级：它明确写出能量没有证书，并拒绝要求能带的证书。DFTK 对标表的共线自旋一项在有限温度已基本完成。<a href="dft.html#lsda">详情 →</a></li>
       <li><span class="tag n">DFT</span>用户自己的外势：<code>--pot file</code> 读精确有理的 Fourier 系数，<code>--pot sites</code> 读周期化的高斯格点；检查器自己重读输入，二进系数精确绑定，其余给出精确算出的偏差，命名外势下的结论对用户的外势成立，DFTK 的值都在区间内（DFT-V18–V24）。<a href="dft.html#binding">详情 →</a></li>
       <li><span class="tag n">DFT</span>力，第一阶段：rHF 在任意温度下的 Hellmann–Feynman 定理（带显式二阶余项）与平移下总力为零有了机器证明；力区间的检查器已证明，但还没有接入 <code>certify</code>；<code>--forces</code> 输出高斯势阱上的浮点力，与有限差分相差 7×10⁻¹⁰（DFT-N01–N04）。<a href="dft.html#forces">详情 →</a></li>
-      <li><span class="tag n">工具</span>易用性：驱动输出机器可读的 <code>STATUS</code>、<code>FLOAT</code>、<code>HINT</code> 行，<code>fis</code> 只读这些行，不再解析中文报告；SCF 不收敛时报告给出要追加的选项；<code>fis multiplicity</code> 证明一个 SCF 问题有多个精确解；支撑输出行的另外 10 个检查器定理登记了陈述指纹。<a href="progress.html#how">详情 →</a></li>
+      <li><span class="tag n">工具</span>易用性：驱动输出机器可读的 <code>STATUS</code>、<code>FLOAT</code>、<code>HINT</code> 行，<code>fis</code> 只读这些行，不再解析中文报告；SCF 不收敛时报告给出要追加的选项；<code>fis multiplicity</code> 证明一个 SCF 问题有多个精确解；支撑输出行的另外 10 个检查器定理登记了陈述指纹。<a href="#how">详情 →</a></li>
       <li><span class="tag n">CSP</span>第五个领域 mini-CSP 从 Lennard-Jones 团簇开始：不可信的搜索器（随机生成、BFGS 与 Newton 弛豫、粒子群更新、指纹去重）提出候选，新的检查器 <code>certify-csp</code> 证明每个候选是精确的局部极小（模转动、反射与平移唯一）并给出能量区间，还证明候选之间相同或不同（CSP-B01、B02、B04）。LJ₃…LJ₁₃ 最低的已认证能量区间都含剑桥团簇数据库的值；<code>BEST</code> 只是这次搜索中最低的已认证极小，不是全局最优的结论。在理想化假设下，Lean 还证明了粒子群的稳定区域，以及随机补充以趋于 1 的概率到达全局极小的邻域（CSP-A01、A02）。搜索代码本身还没有证明；计划见 <code>docs/plan-mini-csp.md</code>。</li>
 </ul></li>
     <li><time datetime="2026-10-06">2026-10-06</time><ul>
@@ -279,7 +279,7 @@
       <li><span class="tag n">DFT</span>高斯外势：SCF 解（rHF 与 LDA）、零温的谱、能带与态密度、熵与能量的结论，经由一条已证明的扰动估计，现在对<i>命名</i>外势成立，而不只是对证书中舍入后的系数（DFT-V10–V14）。<a href="dft.html#binding">详情 →</a></li>
       <li><span class="tag n">CALPHAD</span>活度给定的平衡，<code>--acr B=a --ref 相</code>：检查器自己把 μ<sub>B</sub> = G<sub>ref</sub>(1) + RT ln a 算成有理区间，一份证书覆盖整个区间（CAL-C10、B06）。pycalphad 对齐计划中的活度一项完成。<a href="calphad.html#certified">详情 →</a></li>
       <li><span class="tag n">FEM</span>一维 Laplace 算子的 P1 本征值（<code>--eigs n</code>，两端 Dirichlet、Neumann 或 Robin）：检查器在有理移位处用精确的 LDLᵀ 与矩阵束 <i class="v">K</i>x = λ<i class="v">M</i>x 的 Sylvester 惯性定理计数，给出每个离散本征值的区间，相对宽度约 2×10⁻¹⁵（FEM-D08、D09、B05）。<a href="fem.html#g2">详情 →</a></li>
-      <li><span class="tag n">检查</span>对检查器做了一次对抗式复审（攻击者控制证书）：修复七处缺陷（伪造的名字注入输出行、巨大指数让检查器卡死、k 点不全时仍输出态密度、回显未全部核对），另记录六处较弱的地方。<code>verify_all</code> 新增一步，每次重放这些伪造证书。<a href="progress.html#how">详情 →</a></li>
+      <li><span class="tag n">检查</span>对检查器做了一次对抗式复审（攻击者控制证书）：修复七处缺陷（伪造的名字注入输出行、巨大指数让检查器卡死、k 点不全时仍输出态密度、回显未全部核对），另记录六处较弱的地方。<code>verify_all</code> 新增一步，每次重放这些伪造证书。<a href="#how">详情 →</a></li>
       <li><span class="tag n">论文</span>论文稿补上了 10 月 5 日与 6 日的工作；账本现有 187 条命题，其中 179 条有机器证明。</li>
     </ul></li>
     <li><time datetime="2026-10-05">2026-10-05</time><ul>
@@ -480,6 +480,19 @@
       <p>IEEE 754 加法不满足结合律。浮点结果不直接进入结论：大型求解器的输出交给经过证明的检查器，检查器要么全程用精确有理数，要么用向外舍入的区间算术，所以需要信任的浮点性质缩小到“就近舍入的结果是最近的 double”。</p>
       <p class="tool">全局归约采用确定性的求和顺序，使结果不随进程数或线程数变化。舍入模型写进规范，与离散误差、代数误差放在同一个误差预算里。</p>
     </div>
+  </div>
+
+  <div id="how">
+  <h3>一个结果如何获得保证</h3>
+  <div class="prose"><p>求解器从不被信任：它只负责提出候选，由经过证明的检查器裁决。这样我们既能用 LAPACK 和高效的浮点代码，又能把每个输出写成一条定理。四个领域走的是同样的四步。</p></div>
+  <div class="pipe">
+    <div class="step u"><span class="who">不受信任 · T0</span><h4>求解器</h4><p>C 驱动运行 SCF 循环、FEM 组装、Verlet 积分或平衡搜索，最后写出证书。</p></div>
+    <div class="step c"><span class="who">数据</span><h4>证书</h4><p>浮点数按它本来的精确二进制有理数读入。证书里的任何内容都不被假定为正确。</p></div>
+    <div class="step v"><span class="who">经过证明 · Lean</span><h4>检查器</h4><p>用精确有理数重新检查一切。可靠性是 Lean 定理；证书有错只会让检查失败或区间变宽。</p></div>
+    <div class="step o"><span class="who">有保证</span><h4>严格结论</h4><p>可证明包含真实量的区间：FEM 连续问题的真解、MD 的真轨道、CALPHAD 的全局平衡。</p></div>
+  </div>
+  <div class="prose"><p>与此同时，DFT 的 SCF 控制器写成 TLA+ 规范并经 TLC 检验（只有残差足够小、能隙打开、证书通过时才能报告“收敛”），每次运行都可以输出轨迹，按这份规范逐步重放检查。</p></div>
+  <div class="prose"><p>10 月 6 日对检查器做了一次对抗式复审：攻击者控制证书（与驱动），不控制检查器与命令行。修复了七处缺陷：含 Unicode 换行或制表符的相名，会让读取输出的脚本切出伪造的行与字段；巨大的十进制与二进指数让检查器卡死；有 k 点没通过或权重之和不是 1 时仍输出态密度；k 点没通过后能带编号错位；问题回显（展宽、泛函、网格）没有全部与命令行对照。可靠性定理的陈述都没有改变。另记录了六处较弱的地方，例如 <code>--tdb</code> 证书可以省略相（它们列为不支持），次要检查失败时退出码不变；这两处现已修复。10 月 7 日的第二轮复审覆盖此后新增的入口（共线自旋、用户外势、<code>fis multiplicity</code>、<code>certify-csp</code> 与 <code>fis</code> 本身），没有发现错误的可靠性定理，又修复了八处：五个检查器统一的退出码（0 接受，1 拒绝，2 无法解析，3 次要检查未通过）、<code>--tdb</code> 证书须列出完整的相表、CALPHAD 首行精确匹配、自旋向下 k 点行的输入门、<code>fis multiplicity</code> 用高斯外势的球、对用户输入文件计算哈希、LSDA 能带回显、<code>fis</code> 忽略以结论命名的驱动行。<code>make verify-all</code> 每次重放 307 份伪造证书。</p></div>
   </div>
 </section>
 
@@ -687,7 +700,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · 项目纲领 v0.4 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-11-01T02:32+08:00">2026-11-01 02:32 UTC+8</time></span></span>
+  <span>Formal in Silico · 项目纲领 v0.4 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-11-01T09:13+08:00">2026-11-01 09:13 UTC+8</time></span></span>
   <span><a href="progress.html">进度</a> · <a href="showcases.html">成果展示</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="../" hreflang="en">English</a></span>
 </div></footer>
 </body>

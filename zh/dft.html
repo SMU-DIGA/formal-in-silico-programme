@@ -370,7 +370,7 @@
     <li><strong>有限温度的离散误差</strong>目前只有零温的证书。</li>
     <li><strong>截断极限等于连续模型的能量</strong>10 月 8 日起有机器证明（DFT-C02，T3，另有 C03–C09）：Γ 点零温，外势系数绝对可和、<i class="v">N</i><sub>pair</sub> ≤ 2<i class="v">K</i> + 1 时，<i class="v">E</i><sub>∞</sub> = inf<sub><i class="v">K</i>′ ≥ <i class="v">K</i></sub> <i class="v">E</i><sub><i class="v">K</i>′</sub> 等于写在 Fourier 空间的连续模型的基态能量。尚缺：该模型与 <i class="v">H</i>¹ 上密度矩阵算子的等价（假设 A-DFT-08，只有纸面论证）、命名高斯外势与格点外势的可和性衔接、有限温度与 k 点；DFT-C01、D06 仍是纸面证明。</li>
     <li><strong>零温以外的密度、本征值、能带与态密度</strong>零温 Γ 点的运行全部有证书；能带与态密度另外覆盖有限温度的 SCF 解证书，10 月 6 日起也覆盖 k 点运行（rHF 任意展宽、LDA、零温 rHF；DFT-S06–S08）。尚缺：零温 LDA 的 k 点、命名高斯外势的 k 点与有限温度变分证书（Fermi–Dirac 或 Gaussian 不加 <code>--scf-cert</code>）的能带与态密度；区界 X 点与 DFTK 的比较（需要在那里取相同的离散）；以及有限温度下的密度、本征值与能量分项。</li>
-    <li><strong>证书中写的其余问题数据</strong>10 月 4 日起外势由检查器按 Lean 中的定义核对（A-DFT-05，见<a href="#binding">上文</a>）。其余问题数据——周期长度、截断、电子数、温度、展宽、交换关联、网格点数、k 点个数——本身就是问题：检查器回显它们的精确值但无法重算，只有 <code>make verify-all</code> 把它们与命令行对照（T0）；10 月 7 日起能带与态密度的 k 点、权重与展宽也回显（DFT-I05），表头、未知键、重复的标量键与非 ASCII 字符在检查前拒绝（DFT-I06、I07）。10 月 5 日起没有 <code>pot</code> 行的证书被拒绝；高斯外势的零温 LDA 与能量分项仍关于证书中的系数（与命名外势相差约 10⁻¹⁵ 以内）。10 月 6 日起 <code>make verify-all</code> 对照全部回显（含展宽、泛函与网格点数），检查器对名字与数的解析也做了防御（对抗式复审，见<a href="progress.html#how">实现进度</a>）；态密度只在 k 点完整、权重之和为 1 时输出。</li>
+    <li><strong>证书中写的其余问题数据</strong>10 月 4 日起外势由检查器按 Lean 中的定义核对（A-DFT-05，见<a href="#binding">上文</a>）。其余问题数据——周期长度、截断、电子数、温度、展宽、交换关联、网格点数、k 点个数——本身就是问题：检查器回显它们的精确值但无法重算，只有 <code>make verify-all</code> 把它们与命令行对照（T0）；10 月 7 日起能带与态密度的 k 点、权重与展宽也回显（DFT-I05），表头、未知键、重复的标量键与非 ASCII 字符在检查前拒绝（DFT-I06、I07）。10 月 5 日起没有 <code>pot</code> 行的证书被拒绝；高斯外势的零温 LDA 与能量分项仍关于证书中的系数（与命名外势相差约 10⁻¹⁵ 以内）。10 月 6 日起 <code>make verify-all</code> 对照全部回显（含展宽、泛函与网格点数），检查器对名字与数的解析也做了防御（对抗式复审，见<a href="./#how">实现进度</a>）；态密度只在 k 点完整、权重之和为 1 时输出。</li>
     <li><strong>ACSL 与 Lean 陈述的对应</strong>10 月 6 日起区间算术对 C 代码证明；它的 ACSL 契约与 Lean 定理说的是同一件事，靠人工对照（A-DFT-07），证明还假设 <code>nextafter</code> 的契约与 <code>INFINITY</code> 的取值（A-DFT-06）。</li>
   </ul>
 </section>
@@ -379,7 +379,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · 现状快照 2026-10-08<span class="updated"> · 更新于 <time datetime="2026-11-01T01:25+08:00">2026-11-01 01:25 UTC+8</time></span></span>
+  <span>Formal in Silico · 现状快照 2026-10-08<span class="updated"> · 更新于 <time datetime="2026-11-01T09:13+08:00">2026-11-01 09:13 UTC+8</time></span></span>
   <span><a href="./">纲领</a> · <a href="progress.html">进度</a> · <a href="showcases.html">成果展示</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="../dft.html" hreflang="en">English</a></span>
 </div></footer>
 </body>
