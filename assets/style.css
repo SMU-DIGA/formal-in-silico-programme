@@ -573,3 +573,4 @@ main .g-stage{height:min(70vh,620px)}
 .hero .g-sec{margin-bottom:28px}
 #roadmap-callout{margin-top:40px;border-left-color:var(--ink)}
 .rm-tasks td:first-child,.rm-tasks th:first-child{min-width:0;width:3.2em;white-space:nowrap}
+.nowidow{text-wrap:pretty}
