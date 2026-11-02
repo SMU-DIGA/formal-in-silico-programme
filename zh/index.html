@@ -46,9 +46,9 @@
     <div class="j ph"><span class="k">实验</span><span class="e"><i class="v">y</i><sub>obs</sub> − <i class="v">y</i><sub>model</sub> ∈ [<i class="v">y</i><sub>obs</sub> − hi, <i class="v">y</i><sub>obs</sub> − lo] ± <i class="v">σ</i><sub>exp</sub></span></div>
   </div>
   <div class="stats">
-    <div class="stat"><b data-n="all">1132</b><span>条命题登记在可信账本中</span></div>
-    <div class="stat"><b data-n="all.proved">906</b><span>条已有机器证明（T3 或 T4）</span></div>
-    <div class="stat"><b data-n="all.T4">354</b><span>条达到端到端等级 T4：检查器可靠性、内核安全与内核浮点</span></div>
+    <div class="stat"><b data-n="all">1144</b><span>条命题登记在可信账本中</span></div>
+    <div class="stat"><b data-n="all.proved">917</b><span>条已有机器证明（T3 或 T4）</span></div>
+    <div class="stat"><b data-n="all.T4">358</b><span>条达到端到端等级 T4：检查器可靠性、内核安全与内核浮点</span></div>
     <div class="stat"><b>4</b><span>个参照程序交叉校验：DFTK.jl、scikit-fem、ASE 与 pycalphad</span></div>
   </div>
     <p class="g-cap">证明依赖：账本里的每个命题建立在哪些命题之上，直接从 Lean 证明项读出。点一个节点追踪它的链；各领域页里有只看本领域的同一张图。</p>
@@ -107,6 +107,9 @@
   <h2>动态</h2>
   <div class="prose"><p>五个领域新增的功能、研究结果，以及论文与本网站的变化，新的在前。逐项状态见<a href="progress.html">进度</a>；这里引用的命题都登记在可信账本中。</p></div>
   <ol class="news">
+    <li><time datetime="2026-11-03">2026-11-03</time><ul>
+      <li><span class="tag n">CALPHAD</span><b>Ni–Al 的有序与无序已有证书（任务 C3）。</b>带新行 <code>fast 1</code> 的点证书还给出每个稳定相的位置分数区间，并只根据证书的区间判定 L1<sub>2</sub> 状态是有序（γ′）还是无序（γ）（CAL-D105–D109）。在任务 C3（Liu 2016 Al–Ni，1273.15 K，限制 <i class="v">N</i> ≥ 1/100 的问题，10 个相中的 9 个）上：<i class="v">x</i><sub>Al</sub> = 0.10 的唯一 L12_FCC 状态无序，0.20 有序与无序两个状态共存，0.24 的状态有序；pycalphad 0.11.2 的平衡位置分数都在证书的盒子内。已证明有序–无序相就是复合能模型，因此现有检查器对这种模型的包络同样适用于它（CAL-D105、D106）。<i class="v">x</i><sub>Al</sub> = 0.40 尚无证书：BCC_B2 的搜索在某个位置分数趋于零处停滞，那里需要一个新的已证明的界。任务 C2（Cr–Fe–Ni，Choi 等 2019，1073.15 K）的点 <i class="v">x</i><sub>Cr</sub> = 0.2、<i class="v">x</i><sub>Fe</sub> = 0.4（含磁性的 FCC_A1）在把容差设在浮点精度之内后 7.7 s 出证书；更紧的磁性界已证明，但还没有检查器使用（CAL-D110、D111）。</li>
+    </ul></li>
     <li><time datetime="2026-11-02">2026-11-02</time><ul>
       <li><span class="tag n">DFT</span><b>三维 PBE、六方晶胞、D3 阶梯与金属检查器的接口。</b>一般晶格上的稠密 PBE 检查器（<code>fis-pw3d-pbeu 1</code>，Libxc 的阈值属于问题定义）已证明可靠，能带与能隙区间端到端（DFT-E132–E146）；Si（2×2×2 <i>k</i> 网格，小截断）上 DFTK 的 PBE 本征值、化学势与能隙都在证书的区间内。晶胞体积为无理数的晶格（如六方晶格）与逐轴的密度网格现在走第二条已证明的路径（DFT-G250–G256）：纤锌矿 GaN 在小设定下与 DFTK 0.8 一致，Ga 用的是大芯赝势（3 个价电子）而不是任务卡的半芯赝势，所以这是已知答案，不是任务 D4。任务 D3：岩盐 MgO 在任务卡的 8×8×8 <i>k</i> 网格、9.50 Ha 下出了证书（88 分钟，19.5 CPU 小时），NaCl 在 3.56 Ha 下出了证书，DFTK 的解在每个结果之内（DFT-G200–G203）；在任务卡自己的截断（MgO 28 Ha、NaCl 15 Ha）下，估计需要 500–2100 CPU 小时与约 50 GB，超出本阶段的预算，因此以这些数字为理由拒绝。金属方面，Fermi–Dirac 检查器将依赖的模型层的界已作为一个接口证明（DFT-C113–C130）。</li>
       <li><span class="tag n">CALPHAD</span><b>多元平衡：已证明的相的量，以及 Al–Cu–Mg 截面的第一遍。</b>点证书现在还给出文件所定义模型的每个平衡中每个相的量的界，并指出哪些相不存在（CAL-S100–S105）。在任务 C1（COST 507 Al–Cu–Mg，673.15 K）的 40 点样本上，用最佳优先搜索与交换探针，24 点出证书、16 点未决（到时限，或窗口不能分开）、0 点拒绝；pycalphad 0.11.2 在它有输出的全部 30 点上一致。在 <i class="v">x</i><sub>Cu</sub> = 0.30、<i class="v">x</i><sub>Mg</sub> = 0.55，LAVES_C15（量在 [0.674, 0.678] 内）与 HCP_A3 在每个平衡中都存在（CAL-S106–S109）。</li>
@@ -780,7 +783,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · 项目纲领 v0.5 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-11-02T21:59+08:00">2026-11-02 21:59 UTC+8</time></span></span>
+  <span>Formal in Silico · 项目纲领 v0.5 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-11-03T02:03+08:00">2026-11-03 02:03 UTC+8</time></span></span>
   <span><a href="progress.html">进度</a> · <a href="showcases.html">成果展示</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="../" hreflang="en">English</a></span>
 </div></footer>
 </body>
