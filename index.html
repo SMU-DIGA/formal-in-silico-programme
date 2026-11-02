@@ -46,8 +46,8 @@
     <div class="j ph"><span class="k">Experiment</span><span class="e"><i class="v">y</i><sub>obs</sub> − <i class="v">y</i><sub>model</sub> ∈ [<i class="v">y</i><sub>obs</sub> − hi, <i class="v">y</i><sub>obs</sub> − lo] ± <i class="v">σ</i><sub>exp</sub></span></div>
   </div>
   <div class="stats">
-    <div class="stat"><b data-n="all">1,066</b><span>claims registered in the trust ledger</span></div>
-    <div class="stat"><b data-n="all.proved">851</b><span>of them machine-proved (tier T3 or T4)</span></div>
+    <div class="stat"><b data-n="all">1,079</b><span>claims registered in the trust ledger</span></div>
+    <div class="stat"><b data-n="all.proved">858</b><span>of them machine-proved (tier T3 or T4)</span></div>
     <div class="stat"><b data-n="all.T4">347</b><span>at the end-to-end tier T4: checker soundness, kernel safety and kernel floating point</span></div>
     <div class="stat"><b>4</b><span>reference codes cross-checked: DFTK.jl, scikit-fem, ASE and pycalphad</span></div>
   </div>
@@ -108,6 +108,8 @@
   <div class="prose"><p>Features added to the five domains, research results, and changes to the paper and this site, newest first. Item-by-item status is on the <a href="progress.html">progress page</a>; every claim cited here is in the trust ledger.</p></div>
   <ol class="news">
     <li><time datetime="2026-11-02">2 Nov 2026</time><ul>
+      <li><span class="tag n">DFT</span><b>Metals: design, measured feasibility and the proved foundations of Fermi&ndash;Dirac certificates.</b> For acceptance task D7 (fcc Al and Cu, LDA with Fermi&ndash;Dirac smearing at <i>k</i><sub>B</sub><i>T</i>&nbsp;=&nbsp;0.01&nbsp;Ha) a float prototype agrees with DFTK&nbsp;0.8 to 10<sup>&minus;13</sup> on small problems; at the card&rsquo;s settings Al closes with margin (contraction 0.50) and Cu at 38&nbsp;Ha needs the dense route, while Cu at 105&nbsp;Ha (about 1&nbsp;TB) will be refused with reasons (DFT-C100&ndash;C105, measurements). Proved in Lean: the tight bound |<i>f</i>&Prime;|&nbsp;&le;&nbsp;&radic;3/18 for the Fermi&ndash;Dirac function and the divided-difference bounds a metal needs (no gap assumed); self-consistency with a rational electron count (Al and Cu have 3/2 and 11/2 electron pairs per cell), with the integer case shown to be a special case; and existence and uniqueness of the Fermi&ndash;Dirac self-consistent solution in a certified ball (DFT-C106&ndash;C112). No checker uses them yet.</li>
+      <li><span class="tag n">Platform</span><b>A shared checker core with plug-ins, so that new physics no longer needs a copy of a whole proof chain.</b> Each new kind of physics has so far been added by copying a checker chain (the general-lattice chain is 87% identical to Stage&nbsp;I, the hexagonal one 93% identical to it). The new design (<code>docs/architecture-lib.md</code>) keeps the mathematics, which is already generic, in one core and adds occupation (zero temperature, Fermi&ndash;Dirac), exchange&ndash;correlation (LDA, PBE) and, in CALPHAD, model terms as plug-ins with their own proofs; frozen checkers keep their results. Estimated cost of a feature such as Fermi&ndash;Dirac on hexagonal cells drops from 10&ndash;14 to 1&ndash;2 agent-days. A Python library layer with adapters for DFTK and pycalphad, which certifies results users have already computed, is being built.</li>
       <li><span class="tag n">Platform</span><b>Every checker wrapped in JSON, prebuilt binaries, a container, and two first-hour tutorials.</b> <code>fis check</code> now recognises every certificate format, the Stage&nbsp;II checkers included, and returns versioned JSON with defined exit codes, parsed from the checkers&rsquo; unchanged output. A script builds the 12 checker binaries into a bundle with SHA-256 sums and the Lean toolchain and Mathlib revisions; <code>fis doctor</code> re-hashes it, and a container recipe installs from it (built and tested locally, not yet published). Everything <code>fis</code> prints is in English. Two tutorials, rock-salt NaCl from a structure file to a checked certificate and one Ag&ndash;Cu&ndash;Sn equilibrium point from a TDB file, are run step by step by the full verification, which now also runs the repository&rsquo;s 56 unit tests.</li>
     </ul></li>
     <li><time datetime="2026-11-01">1 Nov 2026</time><ul>
@@ -775,7 +777,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · Programme v0.5 · revised as the project evolves<span class="updated"> · updated <time datetime="2026-11-02T09:32+08:00">2026-11-02 09:32 UTC+8</time></span></span>
+  <span>Formal in Silico · Programme v0.5 · revised as the project evolves<span class="updated"> · updated <time datetime="2026-11-02T13:18+08:00">2026-11-02 13:18 UTC+8</time></span></span>
   <span><a href="progress.html">Progress</a> · <a href="showcases.html">Showcases</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="zh/" hreflang="zh-CN">中文版</a></span>
 </div></footer>
 </body>
