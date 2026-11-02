@@ -272,10 +272,10 @@
   <div class="tbl"><table class="feat">
     <thead><tr><th>项目</th><th>状态</th><th>说明</th></tr></thead>
     <tbody>
-      <tr><td>消息与规格全部改为英文</td><td class="st"><span class="tag f">进行中</span></td><td>用户文档（README、可信说明、三维使用指南、JSON 约定）已是英文；驱动的消息仍先中文后英文，DFT 与 CALPHAD 的规格仍有一部分是中文。M2</td></tr>
-      <tr><td>安装</td><td class="st"><span class="tag p">部分完成</span></td><td>安装脚本先检查全部依赖（10-30）；预编译的检查器二进制与容器计划在 M3</td></tr>
-      <tr><td>JSON 输出约定</td><td class="st"><span class="tag p">部分完成</span></td><td><code>fis</code> 各命令的 JSON 结构与退出码有版本号，并由测试核对（10-30）；第二阶段新增的检查器还没有接入</td></tr>
-      <tr><td>研究者指南与教程</td><td class="st"><span class="tag p">部分完成</span></td><td>面向 DFTK 与 pycalphad 用户的指南、良好做法与故障排查（10-30），以及第一阶段的四个教程笔记本；第二阶段功能的约十二个教程计划在 M3</td></tr>
+      <tr><td>消息与规格全部改为英文</td><td class="st"><span class="tag f">进行中</span></td><td><code>fis</code> 打印的全部内容、所有 <code>--help</code> 与拒绝说明已是英文（11-02）；C 驱动的失败消息仍先中文后英文，设 <code>FIS_LANG=en</code> 时只有英文（<code>fis</code> 与容器默认如此）；DFT 与 CALPHAD 的规格仍有一部分是中文。M2</td></tr>
+      <tr><td>安装</td><td class="st"><span class="tag p">部分完成</span></td><td>安装脚本先检查全部依赖（10-30）；12 个预编译检查器的二进制包，附 SHA-256 与 Lean 工具链、Mathlib 版本记录，由 <code>fis doctor</code> 核对；容器配方由该包构建并测试（11-02）。尚未发布；从源码构建容器与 Apptainer 镜像未测试</td></tr>
+      <tr><td>JSON 输出约定</td><td class="st"><span class="tag p">部分完成</span></td><td><code>fis</code> 各命令的 JSON 结构与退出码有版本号（10-30）；11-02 起 <code>fis check</code> 接入全部证书格式，含第二阶段的检查器（通用晶格 DFT、CALPHAD 格式 1–4、不变反应与覆盖、FEM、MD），解析检查器不变的输出；由完整验证测试</td></tr>
+      <tr><td>研究者指南与教程</td><td class="st"><span class="tag p">部分完成</span></td><td>面向 DFTK 与 pycalphad 用户的指南、良好做法与故障排查（10-30），第一阶段的四个教程笔记本，以及两篇“第一小时”教程（岩盐 NaCl：从结构文件到检查通过的证书；由 TDB 文件算一个 Ag–Cu–Sn 平衡点），完整验证逐步运行它们（11-02）；更多第二阶段教程计划在 M3</td></tr>
       <tr><td>读入 CIF 与 POSCAR 文件</td><td class="st"><span class="tag s">完成</span></td><td><code>fis dft prepare</code> 把结构文件变成精确有理的问题，并打印有理化使格子与原子移动了多少（10-30，DFT-G117，测试级）；供 D3 使用</td></tr>
       <tr><td>图上画出有证书的误差条（<code>fis plot</code>）</td><td class="st"><span class="tag n">计划</span></td><td>M3</td></tr>
     </tbody>
@@ -313,7 +313,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · 已实现与计划实现<span class="updated"> · 更新于 <time datetime="2026-11-01T22:35+08:00">2026-11-01 22:35 UTC+8</time></span></span>
+  <span>Formal in Silico · 已实现与计划实现<span class="updated"> · 更新于 <time datetime="2026-11-02T09:32+08:00">2026-11-02 09:32 UTC+8</time></span></span>
   <span><a href="./">纲领</a> · <a href="showcases.html">成果展示</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="../progress.html" hreflang="en">English</a></span>
 </div></footer>
 </body>

@@ -107,6 +107,9 @@
   <h2>动态</h2>
   <div class="prose"><p>五个领域新增的功能、研究结果，以及论文与本网站的变化，新的在前。逐项状态见<a href="progress.html">进度</a>；这里引用的命题都登记在可信账本中。</p></div>
   <ol class="news">
+    <li><time datetime="2026-11-02">2026-11-02</time><ul>
+      <li><span class="tag n">平台</span><b>全部检查器接入 JSON，预编译二进制、容器与两篇“第一小时”教程。</b><code>fis check</code> 现在识别全部证书格式（含第二阶段的检查器），由检查器不变的输出解析出带版本号的 JSON 与确定的退出码。一个脚本把 12 个检查器打成二进制包，附 SHA-256 与 Lean 工具链、Mathlib 版本；<code>fis doctor</code> 重新核对哈希，容器配方由该包安装（已在本地构建并测试，尚未发布）。<code>fis</code> 打印的全部内容是英文。两篇教程（岩盐 NaCl：从结构文件到检查通过的证书；由 TDB 文件算一个 Ag–Cu–Sn 平衡点）由完整验证逐步运行，完整验证现在也运行仓库的 56 个单元测试。</li>
+    </ul></li>
     <li><time datetime="2026-11-01">2026-11-01</time><ul>
       <li><span class="tag n">纲领</span><b>纲领 v0.5：两个目标，认证的正确性（第一期），然后是由 AI 驱动的统一（第二期）。</b>纲领页开头新增项目的两个目标（<a href="#goal">&sect;0</a>）。第一期是三重正确性，到目前为止的全部工作（包括第一至第三阶段）都属于它。第二期追求一个研究目标：从电子与原子核的相互作用出发，以统一且有误差控制的第一性原理框架通向宏观物理，使 DFT、MD 与 FEM 成为同一体系在不同分辨率下相互一致的描述，有效模型由 AI 推导。先做第一期，是因为能交给 AI 的工作只能和能检查的部分一样多。真正做出新的东西之后才进入第二期；第一批候选步骤（三座跨尺度桥梁）见<a href="progress.html#phase2">进度页</a>。</li>
       <li><span class="tag n">DFT</span><b>一般晶格上的 LDA 证书。</b>带晶体对称性的零温 LDA 检查器（Slater + PW92，完整的 GTH 赝势，Monkhorst&ndash;Pack <i>k</i> 网格）现在接受晶胞体积是 <i>a</i><sup>3</sup> 的精确有理倍数的任意晶格、任意元素与分数坐标，并自己检查每一个候选对称操作；其可靠性在 Lean 中证明（<code>fis-pw3d-gen 1</code>，<code>lda</code> 模式，DFT-G150&ndash;G190）。与 DFTK&nbsp;0.8 对照了岩盐 NaCl（2&times;2&times;2 <i>k</i> 网格，48 个操作）和一个非立方的测试晶胞：沿 <i>z</i> 拉伸 11/10 的 NaCl（体心四方，16 个操作）；两者中 DFTK 在每个 <i>k</i> 点的本征值、化学势和带隙都落在证书的区间内，挪动 Cl 原子后检查不通过。Lean 中的桥接定理表明一般检查通过即蕴含第一阶段的结论；第一阶段的 Si 证书经两个检查器得到的结果相差约 10<sup>&minus;14</sup> 以内（非局域表的包络方式不同）。六方晶格与有限温度尚未覆盖。</li>
@@ -772,7 +775,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · 项目纲领 v0.5 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-11-01T22:48+08:00">2026-11-01 22:48 UTC+8</time></span></span>
+  <span>Formal in Silico · 项目纲领 v0.5 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-11-02T09:32+08:00">2026-11-02 09:32 UTC+8</time></span></span>
   <span><a href="progress.html">进度</a> · <a href="showcases.html">成果展示</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="../" hreflang="en">English</a></span>
 </div></footer>
 </body>

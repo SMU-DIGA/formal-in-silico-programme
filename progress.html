@@ -272,10 +272,10 @@
   <div class="tbl"><table class="feat">
     <thead><tr><th>Item</th><th>Status</th><th>Note</th></tr></thead>
     <tbody>
-      <tr><td>Messages and specifications all in English</td><td class="st"><span class="tag f">In progress</span></td><td>The user documentation (README, trust document, 3D usage guide, JSON contract) is in English; driver messages are still printed in Chinese and English, and the DFT and CALPHAD specifications are partly in Chinese. M2</td></tr>
-      <tr><td>Installation</td><td class="st"><span class="tag p">Partial</span></td><td>An install script that checks every dependency first (30 Oct); prebuilt checker binaries and a container are planned for M3</td></tr>
-      <tr><td>JSON output contract</td><td class="st"><span class="tag p">Partial</span></td><td>Versioned JSON shapes and exit codes for the <code>fis</code> commands, checked by tests (30 Oct); the new Stage II checkers are not wrapped yet</td></tr>
-      <tr><td>Researcher guides and tutorials</td><td class="st"><span class="tag p">Partial</span></td><td>Guides for users coming from DFTK and from pycalphad, good practices and troubleshooting (30 Oct), and the four tutorial notebooks of Stage I; about twelve tutorials for the Stage II features are planned for M3</td></tr>
+      <tr><td>Messages and specifications all in English</td><td class="st"><span class="tag f">In progress</span></td><td>Everything <code>fis</code> prints, every <code>--help</code> and every refusal explanation is in English (2 Nov); the C drivers print failure messages in Chinese and English unless <code>FIS_LANG=en</code>, which <code>fis</code> and the container set; the DFT and CALPHAD specifications are still partly in Chinese. M2</td></tr>
+      <tr><td>Installation</td><td class="st"><span class="tag p">Partial</span></td><td>An install script that checks every dependency first (30 Oct); a bundle of the 12 prebuilt checker binaries with SHA-256 sums and the Lean toolchain and Mathlib revisions recorded, checked by <code>fis doctor</code>, and a container recipe built and tested from the bundle (2 Nov). Not yet published; the from-source container build and the Apptainer image are untested</td></tr>
+      <tr><td>JSON output contract</td><td class="st"><span class="tag p">Partial</span></td><td>Versioned JSON shapes and exit codes for the <code>fis</code> commands (30 Oct); since 2 Nov <code>fis check</code> wraps every certificate format, the Stage II checkers included (general-lattice DFT, CALPHAD formats 1&ndash;4, invariants and covers, FEM, MD), parsing the checkers&rsquo; unchanged output; tested in the full verification</td></tr>
+      <tr><td>Researcher guides and tutorials</td><td class="st"><span class="tag p">Partial</span></td><td>Guides for users coming from DFTK and from pycalphad, good practices and troubleshooting (30 Oct), the four tutorial notebooks of Stage I, and two &ldquo;first hour&rdquo; tutorials (rock-salt NaCl from a structure file to a checked certificate; one Ag&ndash;Cu&ndash;Sn equilibrium point from a TDB file) that the full verification runs step by step (2 Nov); more Stage II tutorials are planned for M3</td></tr>
       <tr><td>Reading CIF and POSCAR files</td><td class="st"><span class="tag s">Done</span></td><td><code>fis dft prepare</code> turns a structure file into an exact rational problem and prints how far the rationalisation moved the lattice and the atoms (30 Oct, DFT-G117, tested); it feeds D3</td></tr>
       <tr><td>Certified error bars in plots (<code>fis plot</code>)</td><td class="st"><span class="tag n">Planned</span></td><td>M3</td></tr>
     </tbody>
@@ -313,7 +313,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · achieved and planned<span class="updated"> · updated <time datetime="2026-11-01T22:35+08:00">2026-11-01 22:35 UTC+8</time></span></span>
+  <span>Formal in Silico · achieved and planned<span class="updated"> · updated <time datetime="2026-11-02T09:32+08:00">2026-11-02 09:32 UTC+8</time></span></span>
   <span><a href="./">Programme</a> · <a href="showcases.html">Showcases</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="zh/progress.html" hreflang="zh-CN">中文版</a></span>
 </div></footer>
 </body>
