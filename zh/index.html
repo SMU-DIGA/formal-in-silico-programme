@@ -46,9 +46,9 @@
     <div class="j ph"><span class="k">实验</span><span class="e"><i class="v">y</i><sub>obs</sub> − <i class="v">y</i><sub>model</sub> ∈ [<i class="v">y</i><sub>obs</sub> − hi, <i class="v">y</i><sub>obs</sub> − lo] ± <i class="v">σ</i><sub>exp</sub></span></div>
   </div>
   <div class="stats">
-    <div class="stat"><b data-n="all">1079</b><span>条命题登记在可信账本中</span></div>
-    <div class="stat"><b data-n="all.proved">858</b><span>条已有机器证明（T3 或 T4）</span></div>
-    <div class="stat"><b data-n="all.T4">347</b><span>条达到端到端等级 T4：检查器可靠性、内核安全与内核浮点</span></div>
+    <div class="stat"><b data-n="all">1132</b><span>条命题登记在可信账本中</span></div>
+    <div class="stat"><b data-n="all.proved">906</b><span>条已有机器证明（T3 或 T4）</span></div>
+    <div class="stat"><b data-n="all.T4">354</b><span>条达到端到端等级 T4：检查器可靠性、内核安全与内核浮点</span></div>
     <div class="stat"><b>4</b><span>个参照程序交叉校验：DFTK.jl、scikit-fem、ASE 与 pycalphad</span></div>
   </div>
     <p class="g-cap">证明依赖：账本里的每个命题建立在哪些命题之上，直接从 Lean 证明项读出。点一个节点追踪它的链；各领域页里有只看本领域的同一张图。</p>
@@ -108,6 +108,9 @@
   <div class="prose"><p>五个领域新增的功能、研究结果，以及论文与本网站的变化，新的在前。逐项状态见<a href="progress.html">进度</a>；这里引用的命题都登记在可信账本中。</p></div>
   <ol class="news">
     <li><time datetime="2026-11-02">2026-11-02</time><ul>
+      <li><span class="tag n">DFT</span><b>三维 PBE、六方晶胞、D3 阶梯与金属检查器的接口。</b>一般晶格上的稠密 PBE 检查器（<code>fis-pw3d-pbeu 1</code>，Libxc 的阈值属于问题定义）已证明可靠，能带与能隙区间端到端（DFT-E132–E146）；Si（2×2×2 <i>k</i> 网格，小截断）上 DFTK 的 PBE 本征值、化学势与能隙都在证书的区间内。晶胞体积为无理数的晶格（如六方晶格）与逐轴的密度网格现在走第二条已证明的路径（DFT-G250–G256）：纤锌矿 GaN 在小设定下与 DFTK 0.8 一致，Ga 用的是大芯赝势（3 个价电子）而不是任务卡的半芯赝势，所以这是已知答案，不是任务 D4。任务 D3：岩盐 MgO 在任务卡的 8×8×8 <i>k</i> 网格、9.50 Ha 下出了证书（88 分钟，19.5 CPU 小时），NaCl 在 3.56 Ha 下出了证书，DFTK 的解在每个结果之内（DFT-G200–G203）；在任务卡自己的截断（MgO 28 Ha、NaCl 15 Ha）下，估计需要 500–2100 CPU 小时与约 50 GB，超出本阶段的预算，因此以这些数字为理由拒绝。金属方面，Fermi–Dirac 检查器将依赖的模型层的界已作为一个接口证明（DFT-C113–C130）。</li>
+      <li><span class="tag n">CALPHAD</span><b>多元平衡：已证明的相的量，以及 Al–Cu–Mg 截面的第一遍。</b>点证书现在还给出文件所定义模型的每个平衡中每个相的量的界，并指出哪些相不存在（CAL-S100–S105）。在任务 C1（COST 507 Al–Cu–Mg，673.15 K）的 40 点样本上，用最佳优先搜索与交换探针，24 点出证书、16 点未决（到时限，或窗口不能分开）、0 点拒绝；pycalphad 0.11.2 在它有输出的全部 30 点上一致。在 <i class="v">x</i><sub>Cu</sub> = 0.30、<i class="v">x</i><sub>Mg</sub> = 0.55，LAVES_C15（量在 [0.674, 0.678] 内）与 HCP_A3 在每个平衡中都存在（CAL-S106–S109）。</li>
+      <li><span class="tag n">平台</span><b>带 DFTK 与 pycalphad 适配器的 Python API。</b><code>fis.Problem</code>、<code>fis.estimate</code>、<code>fis.certify</code> 与 <code>fis.check</code> 返回带类型的 <code>Result</code>：判定、保证等级、每个证书区间与拒绝的理由。适配器读取用户已经算好的 DFTK 结果或 pycalphad 平衡，只把它当作起点，并报告用户的哪些数字落在证书区间内；判定只由检查器做出（<code>docs/python-api.md</code>，23 个测试，由完整验证运行）。</li>
       <li><span class="tag n">DFT</span><b>金属：设计、实测可行性与 Fermi–Dirac 证书的已证明基础。</b>针对验收任务 D7（fcc Al 与 Cu，LDA 加 <i>k</i><sub>B</sub><i>T</i> = 0.01 Ha 的 Fermi–Dirac 展宽），浮点原型在小问题上与 DFTK 0.8 符合到 10<sup>−13</sup>；在任务卡的设定下 Al 有余量地闭合（压缩系数 0.50），38 Ha 的 Cu 需要稠密路线，105 Ha 的 Cu（约 1 TB）将有理由地拒绝（DFT-C100–C105，测量）。在 Lean 中证明：Fermi–Dirac 函数的紧界 |<i>f</i>″| ≤ √3/18 与金属所需的差商界（不假设能隙）；有理电子数的自洽（Al 与 Cu 每个胞有 3/2 与 11/2 个电子对），并证明整数情形是其特例；认证球内 Fermi–Dirac 自洽解的存在与唯一（DFT-C106–C112）。尚无检查器使用它们。</li>
       <li><span class="tag n">平台</span><b>带插件的共享检查器核心：新的物理不再需要复制整条证明链。</b>到目前为止每加一类物理都复制一条检查器链（通用晶格链与第一阶段 87% 相同，六方链与它 93% 相同）。新设计（<code>docs/architecture-lib.md</code>）把本来就通用的数学放在一个核心里，把占据（零温、Fermi–Dirac）、交换关联（LDA、PBE）以及 CALPHAD 的模型项做成各自带证明的插件；已冻结的检查器保留其结果。像“六方晶格上的 Fermi–Dirac”这样的功能，估计成本由 10–14 降到 1–2 个 agent-天。一个 Python 库层正在构建，带 DFTK 与 pycalphad 的适配器，为用户已经算出的结果出证书。</li>
       <li><span class="tag n">平台</span><b>全部检查器接入 JSON，预编译二进制、容器与两篇“第一小时”教程。</b><code>fis check</code> 现在识别全部证书格式（含第二阶段的检查器），由检查器不变的输出解析出带版本号的 JSON 与确定的退出码。一个脚本把 12 个检查器打成二进制包，附 SHA-256 与 Lean 工具链、Mathlib 版本；<code>fis doctor</code> 重新核对哈希，容器配方由该包安装（已在本地构建并测试，尚未发布）。<code>fis</code> 打印的全部内容是英文。两篇教程（岩盐 NaCl：从结构文件到检查通过的证书；由 TDB 文件算一个 Ag–Cu–Sn 平衡点）由完整验证逐步运行，完整验证现在也运行仓库的 56 个单元测试。</li>
@@ -777,7 +780,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · 项目纲领 v0.5 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-11-02T13:18+08:00">2026-11-02 13:18 UTC+8</time></span></span>
+  <span>Formal in Silico · 项目纲领 v0.5 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-11-02T21:59+08:00">2026-11-02 21:59 UTC+8</time></span></span>
   <span><a href="progress.html">进度</a> · <a href="showcases.html">成果展示</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="../" hreflang="en">English</a></span>
 </div></footer>
 </body>
