@@ -46,9 +46,9 @@
     <div class="j ph"><span class="k">Experiment</span><span class="e"><i class="v">y</i><sub>obs</sub> − <i class="v">y</i><sub>model</sub> ∈ [<i class="v">y</i><sub>obs</sub> − hi, <i class="v">y</i><sub>obs</sub> − lo] ± <i class="v">σ</i><sub>exp</sub></span></div>
   </div>
   <div class="stats">
-    <div class="stat"><b data-n="all">1,144</b><span>claims registered in the trust ledger</span></div>
-    <div class="stat"><b data-n="all.proved">917</b><span>of them machine-proved (tier T3 or T4)</span></div>
-    <div class="stat"><b data-n="all.T4">358</b><span>at the end-to-end tier T4: checker soundness, kernel safety and kernel floating point</span></div>
+    <div class="stat"><b data-n="all">1,150</b><span>claims registered in the trust ledger</span></div>
+    <div class="stat"><b data-n="all.proved">922</b><span>of them machine-proved (tier T3 or T4)</span></div>
+    <div class="stat"><b data-n="all.T4">359</b><span>at the end-to-end tier T4: checker soundness, kernel safety and kernel floating point</span></div>
     <div class="stat"><b>4</b><span>reference codes cross-checked: DFTK.jl, scikit-fem, ASE and pycalphad</span></div>
   </div>
     <p class="g-cap">Proof dependencies: what every claim in the ledger is built on, read from the Lean proof terms. Click a node to follow its chain; each domain page has the same graph for its own claims.</p>
@@ -109,6 +109,7 @@
   <ol class="news">
     <li><time datetime="2026-11-03">3 Nov 2026</time><ul>
       <li><span class="tag n">CALPHAD</span><b>Order versus disorder certified on Ni&ndash;Al (task C3).</b> Point certificates with the new line <code>fast 1</code> also enclose the site fractions of every stable phase and name an L1<sub>2</sub> state ordered (&gamma;&prime;) or disordered (&gamma;) from the certified enclosure alone (CAL-D105&ndash;D109). On task C3 (Liu 2016 Al&ndash;Ni at 1273.15&nbsp;K, problem restricted to <i class="v">N</i>&nbsp;&ge;&nbsp;1/100, 9 of the 10 phases): at <i class="v">x</i><sub>Al</sub>&nbsp;=&nbsp;0.10 the single L12_FCC state is disordered, at 0.20 an ordered and a disordered state coexist, and at 0.24 the state is ordered; pycalphad&nbsp;0.11.2&rsquo;s equilibrium site fractions lie inside every certified box. The order&ndash;disorder phase is proved to be a compound-energy model, so the existing checker&rsquo;s enclosure of that model applies to it (CAL-D105, D106). <i class="v">x</i><sub>Al</sub>&nbsp;=&nbsp;0.40 is not yet certified, because the BCC_B2 search stalls where a site fraction approaches zero and needs a new proved bound there. For task C2 (Cr&ndash;Fe&ndash;Ni, Choi et al. 2019, 1073.15&nbsp;K) the point <i class="v">x</i><sub>Cr</sub>&nbsp;=&nbsp;0.2, <i class="v">x</i><sub>Fe</sub>&nbsp;=&nbsp;0.4 with magnetic FCC_A1 certifies in 7.7&nbsp;s once the tolerance is set within float accuracy; a tighter magnetic bound is proved but not yet used (CAL-D110, D111).</li>
+      <li><span class="tag n">DFT</span><b>First step of the shared checker core.</b> The general-lattice checker chain is copied once into a plug-in core, with an occupation plug-in whose first instance is zero temperature (DFT-G300&ndash;G304). On the parity case, rock-salt NaCl, a certificate checked through the core gives byte-identical output to the frozen path, and a tampered twin is refused (DFT-G305). The next step makes the chain read the plug-in, so that metals (Fermi&ndash;Dirac) become its second instance.</li>
     </ul></li>
     <li><time datetime="2026-11-02">2 Nov 2026</time><ul>
       <li><span class="tag n">DFT</span><b>PBE in three dimensions, hexagonal cells, the D3 ladder, and the metal checker&rsquo;s interface.</b> A dense PBE checker on general lattices (<code>fis-pw3d-pbeu 1</code>, Libxc&rsquo;s thresholds part of the problem) is proved sound, with band and gap intervals end to end (DFT-E132&ndash;E146); for Si (2&times;2&times;2 <i>k</i> grid, small cut-off) DFTK&rsquo;s PBE eigenvalues, chemical potential and gap lie in the certified intervals. Lattices with an irrational cell volume, such as hexagonal ones, and per-axis density grids now go through a second proved path (DFT-G250&ndash;G256): wurtzite GaN agrees with DFTK&nbsp;0.8 at small settings, with a large-core Ga pseudopotential (3 valence electrons) in place of the task card&rsquo;s semicore one, so it is a known answer, not task D4. For task D3, rock-salt MgO is certified on the card&rsquo;s 8&times;8&times;8 <i>k</i> grid at 9.50&nbsp;Ha (88&nbsp;min, 19.5 CPU-hours) and NaCl at 3.56&nbsp;Ha, with DFTK&rsquo;s solution inside every result (DFT-G200&ndash;G203); at the card&rsquo;s own cut-offs (MgO 28&nbsp;Ha, NaCl 15&nbsp;Ha) the estimated 500&ndash;2100 CPU-hours and about 50&nbsp;GB exceed the stage&rsquo;s budget, so those runs are refused with these numbers. For metals, the model-level bounds that the Fermi&ndash;Dirac checker will rely on are proved as one interface (DFT-C113&ndash;C130).</li>
@@ -783,7 +784,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · Programme v0.5 · revised as the project evolves<span class="updated"> · updated <time datetime="2026-11-03T02:03+08:00">2026-11-03 02:03 UTC+8</time></span></span>
+  <span>Formal in Silico · Programme v0.5 · revised as the project evolves<span class="updated"> · updated <time datetime="2026-11-03T08:03+08:00">2026-11-03 08:03 UTC+8</time></span></span>
   <span><a href="progress.html">Progress</a> · <a href="showcases.html">Showcases</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="zh/" hreflang="zh-CN">中文版</a></span>
 </div></footer>
 </body>
