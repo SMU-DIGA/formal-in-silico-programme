@@ -46,8 +46,8 @@
     <div class="j ph"><span class="k">实验</span><span class="e"><i class="v">y</i><sub>obs</sub> − <i class="v">y</i><sub>model</sub> ∈ [<i class="v">y</i><sub>obs</sub> − hi, <i class="v">y</i><sub>obs</sub> − lo] ± <i class="v">σ</i><sub>exp</sub></span></div>
   </div>
   <div class="stats">
-    <div class="stat"><b data-n="all">1172</b><span>条命题登记在可信账本中</span></div>
-    <div class="stat"><b data-n="all.proved">944</b><span>条已有机器证明（T3 或 T4）</span></div>
+    <div class="stat"><b data-n="all">1195</b><span>条命题登记在可信账本中</span></div>
+    <div class="stat"><b data-n="all.proved">964</b><span>条已有机器证明（T3 或 T4）</span></div>
     <div class="stat"><b data-n="all.T4">360</b><span>条达到端到端等级 T4：检查器可靠性、内核安全与内核浮点</span></div>
     <div class="stat"><b>4</b><span>个参照程序交叉校验：DFTK.jl、scikit-fem、ASE 与 pycalphad</span></div>
   </div>
@@ -107,6 +107,10 @@
   <h2>动态</h2>
   <div class="prose"><p>五个领域新增的功能、研究结果，以及论文与本网站的变化，新的在前。逐项状态见<a href="progress.html">进度</a>；这里引用的命题都登记在可信账本中。</p></div>
   <ol class="news">
+    <li><time datetime="2026-11-04">2026-11-04</time><ul>
+      <li><span class="tag n">DFT</span><b>检查器核心改为读取占据插件。</b>核心的方程把电子数 <i class="v">N</i> 当作有理数，规范取自注册的占据插件，因此零温检查不再要求每个晶胞的价电子数为偶数（DFT-G308–G324）。主要的可靠性定理改用 <i class="v">N</i> 陈述；第一阶段的原有陈述逐字保留为偶数情形下已证明的推论，并且也登记了指纹（DFT-G325）。点群检查链的零温检验同样经由插件的闸门，并证明与原来的检验相同（DFT-G326、G327）。在对照案例岩盐 NaCl 上，经核心检查的证书输出仍逐字节相同。</li>
+      <li><span class="tag n">平台</span><b>第一批跨尺度约定落到代码里。</b>核心的结论现在是具名命题，即其他尺度导入时使用的形式（约定 1，DFT-G328–G330）；声明行的每个数值字段都有登记的单位（约定 4，DFT-G313）；证书格式中预留了导入声明的一节（DFT-G312）。目前还没有任何金属得到证书：下一步是证明 Fermi–Dirac 插件的可靠性。</li>
+    </ul></li>
     <li><time datetime="2026-11-03">2026-11-03</time><ul>
       <li><span class="tag n">CALPHAD</span><b>Ni–Al 的有序与无序已有证书（任务 C3）。</b>带新行 <code>fast 1</code> 的点证书还给出每个稳定相的位置分数区间，并只根据证书的区间判定 L1<sub>2</sub> 状态是有序（γ′）还是无序（γ）（CAL-D105–D109）。在任务 C3（Liu 2016 Al–Ni，1273.15 K，限制 <i class="v">N</i> ≥ 1/100 的问题，10 个相中的 9 个）上：<i class="v">x</i><sub>Al</sub> = 0.10 的唯一 L12_FCC 状态无序，0.20 有序与无序两个状态共存，0.24 的状态有序；pycalphad 0.11.2 的平衡位置分数都在证书的盒子内。已证明有序–无序相就是复合能模型，因此现有检查器对这种模型的包络同样适用于它（CAL-D105、D106）。<i class="v">x</i><sub>Al</sub> = 0.40 尚无证书：BCC_B2 的搜索在某个位置分数趋于零处停滞，那里需要一个新的已证明的界。任务 C2（Cr–Fe–Ni，Choi 等 2019，1073.15 K）的点 <i class="v">x</i><sub>Cr</sub> = 0.2、<i class="v">x</i><sub>Fe</sub> = 0.4（含磁性的 FCC_A1）在把容差设在浮点精度之内后 7.7 s 出证书；更紧的磁性界已证明，但还没有检查器使用（CAL-D110、D111）。</li>
       <li><span class="tag n">DFT</span><b>共享检查器核心的第一步。</b>一般晶格的检查链复制一次成为插件核心，带一个占据插件，其第一个实例是零温（DFT-G300–G304）。在对照案例岩盐 NaCl 上，经核心检查的证书与冻结路径的输出逐字节相同，篡改的孪生证书被拒绝（DFT-G305）。下一步让检查链读取插件，使金属（Fermi–Dirac）成为第二个实例。</li>
@@ -788,7 +792,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · 项目纲领 v0.5 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-11-03T21:28+08:00">2026-11-03 21:28 UTC+8</time></span></span>
+  <span>Formal in Silico · 项目纲领 v0.5 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-11-04T03:31+08:00">2026-11-04 03:31 UTC+8</time></span></span>
   <span><a href="progress.html">进度</a> · <a href="showcases.html">成果展示</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="../" hreflang="en">English</a></span>
 </div></footer>
 </body>
