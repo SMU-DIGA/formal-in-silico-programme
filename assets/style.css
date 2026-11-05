@@ -589,3 +589,11 @@ main .g-stage{height:min(70vh,620px)}
 .bridges div{border:1px dashed var(--rule);padding:10px 14px;font-size:14px;color:var(--ink-2)}
 .bridges b{display:block;font:500 12px/1.4 var(--mono);color:var(--muted);margin-bottom:4px}
 @media (max-width:760px){.scales{grid-template-columns:minmax(0,1fr)}.scale-arr{transform:rotate(90deg);padding:4px 0}.bridges{grid-template-columns:minmax(0,1fr)}}
+
+/* narrow screens: wide tables scroll inside themselves, long numbers wrap */
+@media (max-width:700px){
+  main table{display:block;max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
+  main b,main code,main td,main th,main i{white-space:normal !important}
+  main pre,main pre *{white-space:pre !important;overflow-wrap:normal}
+  main li,main p,main dd,main b,main i,main code,main td,main th{overflow-wrap:anywhere}
+}
