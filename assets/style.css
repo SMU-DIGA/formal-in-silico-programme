@@ -598,8 +598,17 @@ main .g-stage{height:min(70vh,620px)}
   main li,main p,main dd,main b,main i,main code,main td,main th{overflow-wrap:anywhere}
 }
 
-/* paper icon, top right of the programme hero */
+/* paper link, right of the programme title, centred on it */
+.hero-title{display:flex;align-items:center;justify-content:space-between;gap:24px;
+  margin:calc(clamp(42px,8vw,88px)*.28) 0 calc(clamp(42px,8vw,88px)*.2)}
+.hero-title h1{margin:0}
 .hero-in{position:relative}
-.paper-icon{position:absolute;top:clamp(36px,6vw,72px);right:24px;color:var(--ink-2);line-height:0;transition:color .15s,transform .15s}
-.paper-icon:hover{color:var(--ink);transform:translateY(-2px)}
-@media (max-width:480px){.paper-icon{right:16px}.paper-icon svg{width:34px;height:43px}}
+.paper-icon{flex:none;display:flex;flex-direction:column;align-items:center;gap:8px;text-decoration:none;
+  color:var(--muted);padding:12px 14px 10px;margin-right:-14px;border-radius:12px;transition:color .15s,background-color .15s}
+.paper-icon svg{display:block;transition:transform .15s}
+.paper-icon span{font:500 11px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase}
+.paper-icon:hover,.paper-icon:focus-visible{color:var(--ink);background:var(--soft-bg)}
+.paper-icon:hover svg{transform:translateY(-2px)}
+@media (max-width:640px){.hero-title{display:block}
+  .paper-icon{position:absolute;top:calc(clamp(44px,7vw,80px) - 6px);right:10px;margin:0;flex-direction:row;gap:6px;padding:4px 6px;border-radius:8px}
+  .paper-icon svg{width:15px;height:19px}}

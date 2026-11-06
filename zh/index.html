@@ -35,9 +35,11 @@
 </div></header>
 
 <div class="hero"><div class="hero-in">
-  <a class="paper-icon" href="../assets/paper.pdf" title="阅读论文：Machine-Checked Triple Correctness of Scientific Simulations（PDF，英文）" aria-label="阅读论文：Machine-Checked Triple Correctness of Scientific Simulations（PDF，英文）"><svg viewBox="0 0 48 60" width="44" height="55" aria-hidden="true"><path d="M4 2h28l12 12v42a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z" fill="var(--surface)" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/><path d="M32 2v12h12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/><path d="M10 26h24M10 33h28M10 40h20" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".55"/><text x="24" y="53" text-anchor="middle" font-family="var(--mono)" font-size="9" font-weight="600" fill="currentColor">PDF</text></svg></a>
   <p class="eyebrow">项目纲领 · v0.5 · 2026-11-01</p>
+  <div class="hero-title">
   <h1>Formal in Silico</h1>
+  <a class="paper-icon" href="../assets/paper.pdf" title="阅读论文：Machine-Checked Triple Correctness of Scientific Simulations（PDF，英文）" aria-label="阅读论文：Machine-Checked Triple Correctness of Scientific Simulations（PDF，英文）"><svg viewBox="0 0 48 60" width="40" height="50" aria-hidden="true"><path d="M4 2h28l12 12v42a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z" fill="var(--surface)" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/><path d="M32 2v12h12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/><path d="M10 26h24M10 33h28M10 40h20" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".55"/><text x="24" y="53" text-anchor="middle" font-family="var(--mono)" font-size="9" font-weight="600" fill="currentColor">PDF</text></svg><span>论文</span></a>
+  </div>
   <p class="sub">计算机模拟的三重正确：物理、数学、软件</p>
   <p class="lead">材料设计、药物筛选、结构安全评估越来越依赖计算机模拟给出的数字。这些数字从方程出发，经过离散化、迭代算法和并行程序，最后落在 IEEE 754 浮点数上。一个模拟结果要可信，必须同时满足三重正确：<b>物理上正确</b>（模型描述了真实世界），<b>数学上正确</b>（求解的确实是模型的方程，误差有界），<b>软件上正确</b>（程序忠实地执行了算法，浮点误差有界）。今天这三者分别靠实验对比、数值经验和软件测试来担保，而且彼此纠缠：结果与实验不符时，说不清错在模型、离散还是代码。据我们所知，本项目第一个对同一个计算同时建立三者：数学正确与软件正确由机器检查的证明给出（Lean；TLA+、Frama-C 与经过证明的检查器），物理正确由预先登记、可追溯的实验观测确认，全部记在同一份账本里。数学与软件的误差被严格界定之后，与实验的偏差就只剩模型本身与测量的不确定度，模型误差得到严格的界，而不是在假定数值已经收敛之后估计。</p>
   <div class="judgments" aria-label="四类判断">
