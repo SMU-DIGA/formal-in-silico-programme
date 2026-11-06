@@ -33,9 +33,29 @@
 </div></header>
 
 <div class="hero small"><div class="hero-in">
-  <p class="eyebrow">Status and roadmap · 1 November 2026</p>
+  <p class="eyebrow">Status and roadmap · 6 November 2026</p>
   <h1>Progress</h1>
   <p class="lead">What the programme has achieved and what it plans. Stages I&ndash;III belong to Phase&nbsp;I, certified correctness; Phase&nbsp;II, AI-powered unification, comes last and has not started. Stage by stage: Stage I (reached, frozen on 30 October 2026), Stage II (under way until 29 January 2027: making DFT and CALPHAD usable for research) and Stage III (candidates). Each domain has its own page with the item-by-item status. A feature counts as <b>done</b> only when it is implemented, agrees with the reference code, <i>and</i> every number it outputs is covered by a Lean theorem.</p>
+  <figure class="where" id="where">
+    <p class="eyebrow">Where we are · 6 November 2026</p>
+    <div class="wh-scroll"><div class="wh" role="img" aria-label="Timeline: Stage I reached on 30 October 2026; today, 6 November, is early in Stage II, before milestone M1 on 29 November; Stage II ends on 29 January 2027, then Stage III and Phase II.">
+      <div class="wh-phases"><span style="left:0;width:87%">Phase I · certified correctness</span><span class="p2" style="left:87%;width:13%">Phase II</span></div>
+      <div class="wh-today" style="left:23.23%"><span>Today · 6 Nov</span></div>
+      <div class="wh-track">
+        <div class="ws done" style="left:0;width:19.16%"><b>Stage I</b><small>27 Sep – 30 Oct · reached</small></div>
+        <div class="ws now" style="left:19.16%;width:52.84%;--f:7.7%"><i class="ws-fill" style="width:7.7%"></i><b>Stage II</b><small>DFT and CALPHAD usable for research · to 29 Jan</small></div>
+        <div class="ws next" style="left:72%;width:15%"><b>Stage III</b><small>candidates</small></div>
+        <div class="ws later" style="left:87%;width:13%"><b>Phase II</b><small>not started</small></div>
+      </div>
+      <div class="wh-ms"><span class="wm ok" style="left:19.16%"><b>M0 ✓</b>30 Oct</span><span class="wm" style="left:36.58%"><b>M1</b>29 Nov</span><span class="wm" style="left:52.84%"><b>M2</b>27 Dec</span><span class="wm" style="left:69.1%"><b>M3</b>24 Jan</span></div>
+    </div></div>
+    <div class="wh-tasks"><p class="gl-h"><a href="#stage2">Stage II acceptance tasks</a></p>
+      <div class="wh-row"><span class="wh-lab">DFT</span><ol class="wh-cells"><li class="wt f" title="D1 · Si, C, Ge (diamond), PBE · in progress">D1</li><li class="wt n" title="D2 · GaAs, AlP (zinc blende), PBE · planned">D2</li><li class="wt f" title="D3 · MgO, NaCl (rock salt), LDA · in progress">D3</li><li class="wt n" title="D4 · GaN, ZnO (wurtzite), LDA · planned">D4</li><li class="wt n" title="D5 · SrTiO₃ (cubic perovskite), LDA · planned">D5</li><li class="wt n" title="D6 · TiO₂ (rutile), LDA · planned">D6</li><li class="wt f" title="D7 · Al, Cu (fcc metals), LDA with Fermi–Dirac smearing · in progress">D7</li><li class="wt n" title="D8 · Fe (bcc, ferromagnetic), collinear LSDA · planned">D8</li><li class="wt p" title="D9 · Si: equilibrium lattice constant, PBE · partial">D9</li><li class="wt n" title="D10 · A researcher’s DFTK script (AlAs, LDA) · planned">D10</li><li class="wt n" title="D11 · A researcher’s ABINIT input (GaAs, HGH) · planned">D11</li><li class="wt n" title="D12 · Convergence table (GaAs, LDA) · planned">D12</li></ol><span class="wh-cnt">3 in progress · 1 partial · 8 planned</span></div>
+      <div class="wh-row"><span class="wh-lab">CALPHAD</span><ol class="wh-cells"><li class="wt f" title="C1 · Al–Cu–Mg isothermal section · in progress">C1</li><li class="wt p" title="C2 · Cr–Fe–Ni isothermal section, magnetic phases · partial">C2</li><li class="wt p" title="C3 · Ni–Al γ/γ′ (L1₂ order–disorder) · partial">C3</li><li class="wt n" title="C4 · Ni–Al–Cr isothermal section, Ni-rich half · planned">C4</li><li class="wt n" title="C5 · Cu–Zn complete binary diagram with B2 ordering · planned">C5</li><li class="wt p" title="C6 · Cr–Ti invariant reactions with Laves phases · partial">C6</li><li class="wt p" title="C7 · Mg–Zn peritectic · partial">C7</li><li class="wt p" title="C8 · Mg–Zn congruent melting of MgZn₂ · partial">C8</li><li class="wt n" title="C9 · Certified complete Al–Si diagram · planned">C9</li><li class="wt n" title="C10 · An assessor’s self-check of a new ESPEI assessment (Cu–Mg) · planned">C10</li><li class="wt n" title="C11 · A verdict inside a pycalphad script (Cr–Ti) · planned">C11</li><li class="wt n" title="C12 · Quaternary point equilibrium (Ag–Bi–Cu–Sn solder) · planned">C12</li></ol><span class="wh-cnt">1 in progress · 5 partial · 6 planned</span></div>
+      <p class="wh-leg"><span><i class="wt s"></i>done</span><span><i class="wt f"></i>in progress</span><span><i class="wt p"></i>partial</span><span><i class="wt n"></i>planned</span></p>
+    </div>
+    <figcaption>Time runs left to right on a common scale up to the end of Stage II; Stage III and Phase II are not scheduled. The 24 acceptance tasks are judged formally at the end of Stage II; their status here is the one in the table below.</figcaption>
+  </figure>
   <figure class="glance" id="glance">
     <div class="gl-top"><div><p class="eyebrow">Programme at a glance · 6 November 2026</p><h2>Triple correctness, one ledger, five domains</h2></div>
       <ul class="gl-nums"><li><b>1278</b>claims in the trust ledger</li><li><b>81%</b>proved by machine</li><li><b>41</b>days since the ledger opened</li><li><b>5</b>domains, each against a reference code</li></ul></div>

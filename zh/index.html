@@ -111,6 +111,7 @@
   <div class="prose"><p>五个领域新增的功能、研究结果，以及论文与本网站的变化，新的在前。逐项状态见<a href="progress.html">进度</a>；这里引用的命题都登记在可信账本中。</p></div>
   <ol class="news">
     <li><time datetime="2026-11-06">2026-11-06</time><ul>
+      <li><span class="tag n">网站</span><b>一张图看当前位置。</b><a href="progress.html#where">进度页</a>开头新增一条从第一阶段到第二期的时间线，标出今天，并列出第二阶段 24 个验收任务的状态。</li>
       <li><span class="tag n">论文</span><b>论文已放到本页。</b><a href="../assets/paper.pdf">《Machine-Checked Triple Correctness of Scientific Simulations》（PDF，英文）</a>，即 2026-10-29 的 Stage&nbsp;I 版本，现在可以在这里阅读；动态列表只保留最近三个日期。</li>
       <li><span class="tag n">CALPHAD</span><b>Al–Cu–Mg 等温截面：40 个抽样点已认证 39 个。</b>针对靠近成分单纯形顶点的点，新增一条搜索路径，并证明了熵项的切点下界（CAL-D118–D124）：第一遍留下未决的 16 个抽样点中认证了 15 个，其中包括全部 6 个因盒预算用尽而停下的点；每个点仍带有已证明的相量，并与 pycalphad 0.11.2 一致（最大的 Gibbs 能区间宽 1.2×10<sup>−6</sup> J/mol）。还有一个点 <i class="v">x</i><sub>Cu</sub> = <i class="v">x</i><sub>Mg</sub> = 1/4 停在时限上。完整的 741 点截面预计约 72 CPU 小时（原先至少 176），尚未运行。</li>
       <li><span class="tag n">MD</span><b>静态 fcc 晶体：弛豫离子与参数盒。</b>带截断的 Lennard–Jones 证书现在还覆盖弛豫离子这一步（MD-A23、MD-B43、MD-C37）；新的盒段证明：对给定盒内的每一组 ε、σ 与截断半径，能量极小点唯一，晶格常数、能量与 C<sub>11</sub>、C<sub>12</sub>、C<sub>44</sub> 都落在输出的区间内（MD-A24、MD-B44）。对氩，三个参数的相对半宽取 10<sup>−3</sup> 时，C<sub>11</sub> 在 4.078–4.110 GPa；检查用时不到一秒，两个盒角上的独立高精度求和落在每个区间内。弛豫离子的极小点是局部的，极小与弛豫两行仍是点陈述。</li>

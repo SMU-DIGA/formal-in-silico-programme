@@ -611,3 +611,51 @@ main .g-stage{height:min(70vh,620px)}
 @media (max-width:640px){.hero-title{display:block}
   .paper-icon{position:absolute;top:calc(clamp(44px,7vw,80px) - 6px);right:10px;margin:0;flex-direction:row;gap:6px;padding:4px 6px;border-radius:8px}
   .paper-icon svg{width:18px;height:23px}}
+
+/* "Where we are" figure on the progress page */
+.where{margin:28px 0 36px;padding:22px 24px 18px;background:var(--surface);border:1px solid var(--rule);border-radius:10px;box-shadow:var(--shadow)}
+.where .eyebrow{margin-bottom:6px}
+.wh-scroll{overflow-x:auto;margin:0 -6px;padding:0 6px}
+.wh{position:relative;min-width:720px;height:150px;margin-top:4px}
+.wh-phases{position:absolute;left:0;right:0;top:0;height:22px}
+.wh-phases span{position:absolute;top:0;font:500 11px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);
+  border-bottom:1px solid var(--rule);padding-bottom:6px;box-sizing:border-box}
+.wh-phases span.p2{padding-left:8px;border-left:1px dashed var(--rule)}
+.wh-track{position:absolute;left:0;right:0;top:44px;height:56px}
+.ws{position:absolute;top:0;bottom:0;box-sizing:border-box;padding:9px 10px;border-radius:6px;overflow:hidden;
+  display:flex;flex-direction:column;justify-content:center;gap:3px;border:2px solid var(--surface)}
+.ws b{font:600 14px/1.1 var(--sans);color:var(--ink);position:relative;white-space:nowrap}
+.ws small{font-size:11.5px;line-height:1.2;color:var(--ink-2);position:relative;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ws.done{background:var(--soft-bg);box-shadow:inset 0 -3px 0 var(--soft)}
+.ws.now{background:var(--fp-bg)}
+.ws.now .ws-fill{position:absolute;left:0;top:0;bottom:0;background:var(--fp);opacity:.28}
+.ws.now{box-shadow:inset 0 -3px 0 var(--fp)}
+.ws.now b,.ws.now small{margin-left:calc(var(--f,0%) + 4px)}
+.ws.next,.ws.later{background:transparent;border:1.5px dashed var(--rule);border-radius:8px}
+.ws.next b,.ws.later b{color:var(--ink-2)}
+.ws.next small,.ws.later small{color:var(--muted)}
+.wh-today{position:absolute;top:26px;bottom:44px;width:0;border-left:2px solid var(--ink);z-index:2}
+.wh-today span{position:absolute;top:-2px;left:6px;font:600 11px/1 var(--mono);color:var(--ink);white-space:nowrap;background:var(--surface);padding:2px 4px;border-radius:3px}
+.wh-ms{position:absolute;left:0;right:0;top:106px;height:40px}
+.wm{position:absolute;top:0;transform:translateX(-50%);text-align:center;font-size:11px;line-height:1.3;color:var(--muted);white-space:nowrap;padding-top:8px}
+.wm::before{content:"";position:absolute;top:-8px;left:50%;height:12px;border-left:1.5px solid var(--muted)}
+.wm b{display:block;font:600 11px/1.2 var(--mono);color:var(--ink-2)}
+.wm.ok b{color:var(--soft)}
+.wh-tasks{margin-top:14px;padding-top:14px;border-top:1px solid var(--rule-2)}
+.wh-tasks .gl-h{margin:0 0 10px}
+.wh-tasks .gl-h a{color:inherit;text-decoration:none;border-bottom:1px solid var(--rule)}
+.wh-row{display:flex;align-items:center;gap:12px;margin:6px 0;flex-wrap:wrap}
+.wh-lab{width:68px;font:600 12px/1 var(--mono);color:var(--ink-2)}
+.wh-cells{display:flex;gap:4px;list-style:none;margin:0;padding:0;flex-wrap:wrap}
+.wt{width:34px;height:26px;display:inline-flex;align-items:center;justify-content:center;border-radius:4px;box-sizing:border-box;
+  font:500 10.5px/1 var(--mono);color:var(--ink-2);cursor:default;position:relative}
+.wt.s{background:var(--soft);color:var(--surface)}
+.wt.f{background:var(--fp-bg);box-shadow:inset 0 0 0 2px var(--fp);color:var(--ink);font-weight:600}
+.wt.p{background:linear-gradient(to top,var(--t2-bg) 0 50%,transparent 50%);box-shadow:inset 0 0 0 1.5px var(--t2)}
+.wt.n{box-shadow:inset 0 0 0 1.5px var(--none)}
+.wh-cnt{font-size:12.5px;color:var(--muted)}
+.wh-leg{display:flex;gap:16px;flex-wrap:wrap;margin:12px 0 0;font-size:12px;color:var(--muted)}
+.wh-leg span{display:inline-flex;align-items:center;gap:6px}
+.wh-leg .wt{width:16px;height:12px;border-radius:2px}
+.where figcaption{margin-top:12px;font-size:12.5px;color:var(--muted);line-height:1.5}
+@media (max-width:480px){.where{padding:16px 14px 14px}.wh-lab{width:auto}}

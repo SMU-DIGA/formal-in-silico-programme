@@ -33,9 +33,29 @@
 </div></header>
 
 <div class="hero small"><div class="hero-in">
-  <p class="eyebrow">现状与路线图 · 2026-11-01</p>
+  <p class="eyebrow">现状与路线图 · 2026-11-06</p>
   <h1>实现进度</h1>
   <p class="lead">项目已经实现的和计划实现的。第一至第三阶段都属于第一期（认证的正确性）；第二期（由 AI 驱动的统一）列在最后，尚未开始。按阶段列出：第一阶段（已完成，2026-10-30 冻结）、第二阶段（进行中，至 2027-01-29：让 DFT 与 CALPHAD 能用于科研）、第三阶段（候选）。每个领域有自己的页面，列出逐项状态。一项功能只有在实现、与参照程序一致、<b>并且</b>输出的每个数都有 Lean 定理保证时，才算<b>完成</b>。</p>
+  <figure class="where" id="where">
+    <p class="eyebrow">当前位置 · 2026-11-06</p>
+    <div class="wh-scroll"><div class="wh" role="img" aria-label="时间线：第一阶段于 2026-10-30 达成；今天 11-06 处在第二阶段初期，在 11-29 的 M1 之前；第二阶段到 2027-01-29 结束，之后是第三阶段和第二期。">
+      <div class="wh-phases"><span style="left:0;width:87%">第一期 · 认证的正确性</span><span class="p2" style="left:87%;width:13%">第二期</span></div>
+      <div class="wh-today" style="left:23.23%"><span>今天 · 11-06</span></div>
+      <div class="wh-track">
+        <div class="ws done" style="left:0;width:19.16%"><b>第一阶段</b><small>09-27 – 10-30 · 已达成</small></div>
+        <div class="ws now" style="left:19.16%;width:52.84%;--f:7.7%"><i class="ws-fill" style="width:7.7%"></i><b>第二阶段</b><small>DFT 与 CALPHAD 做到科研能用 · 至 01-29</small></div>
+        <div class="ws next" style="left:72%;width:15%"><b>第三阶段</b><small>候选</small></div>
+        <div class="ws later" style="left:87%;width:13%"><b>第二期</b><small>尚未开始</small></div>
+      </div>
+      <div class="wh-ms"><span class="wm ok" style="left:19.16%"><b>M0 ✓</b>10-30</span><span class="wm" style="left:36.58%"><b>M1</b>11-29</span><span class="wm" style="left:52.84%"><b>M2</b>12-27</span><span class="wm" style="left:69.1%"><b>M3</b>01-24</span></div>
+    </div></div>
+    <div class="wh-tasks"><p class="gl-h"><a href="#stage2">第二阶段验收任务</a></p>
+      <div class="wh-row"><span class="wh-lab">DFT</span><ol class="wh-cells"><li class="wt f" title="D1 · Si、C、Ge（金刚石），PBE · 进行中">D1</li><li class="wt n" title="D2 · GaAs、AlP（闪锌矿），PBE · 计划">D2</li><li class="wt f" title="D3 · MgO、NaCl（岩盐），LDA · 进行中">D3</li><li class="wt n" title="D4 · GaN、ZnO（纤锌矿），LDA · 计划">D4</li><li class="wt n" title="D5 · SrTiO₃（立方钙钛矿），LDA · 计划">D5</li><li class="wt n" title="D6 · TiO₂（金红石），LDA · 计划">D6</li><li class="wt f" title="D7 · Al、Cu（fcc 金属），LDA 加 Fermi–Dirac 展宽 · 进行中">D7</li><li class="wt n" title="D8 · Fe（bcc，铁磁），共线 LSDA · 计划">D8</li><li class="wt p" title="D9 · Si 的平衡晶格常数，PBE · 部分完成">D9</li><li class="wt n" title="D10 · 研究者的 DFTK 脚本（AlAs，LDA） · 计划">D10</li><li class="wt n" title="D11 · 研究者的 ABINIT 输入（GaAs，HGH） · 计划">D11</li><li class="wt n" title="D12 · 收敛研究表（GaAs，LDA） · 计划">D12</li></ol><span class="wh-cnt">3 进行中 · 1 部分完成 · 8 计划</span></div>
+      <div class="wh-row"><span class="wh-lab">CALPHAD</span><ol class="wh-cells"><li class="wt f" title="C1 · Al–Cu–Mg 等温截面 · 进行中">C1</li><li class="wt p" title="C2 · Cr–Fe–Ni 等温截面，含磁性相 · 部分完成">C2</li><li class="wt p" title="C3 · Ni–Al 的 γ/γ′（L1₂ 有序–无序） · 部分完成">C3</li><li class="wt n" title="C4 · Ni–Al–Cr 等温截面（富 Ni 一半） · 计划">C4</li><li class="wt n" title="C5 · Cu–Zn 完整二元相图，含 B2 有序 · 计划">C5</li><li class="wt p" title="C6 · Cr–Ti 含 Laves 相的不变反应 · 部分完成">C6</li><li class="wt p" title="C7 · Mg–Zn 包晶 · 部分完成">C7</li><li class="wt p" title="C8 · Mg–Zn 中 MgZn₂ 的同成分熔化 · 部分完成">C8</li><li class="wt n" title="C9 · 有证书的完整 Al–Si 相图 · 计划">C9</li><li class="wt n" title="C10 · 评估者对一份新的 ESPEI 评估做自检（Cu–Mg） · 计划">C10</li><li class="wt n" title="C11 · 在 pycalphad 脚本里原地给出判定（Cr–Ti） · 计划">C11</li><li class="wt n" title="C12 · 四元点平衡（Ag–Bi–Cu–Sn 焊料） · 计划">C12</li></ol><span class="wh-cnt">1 进行中 · 5 部分完成 · 6 计划</span></div>
+      <p class="wh-leg"><span><i class="wt s"></i>完成</span><span><i class="wt f"></i>进行中</span><span><i class="wt p"></i>部分完成</span><span><i class="wt n"></i>计划</span></p>
+    </div>
+    <figcaption>时间从左到右，到第二阶段结束为止按同一比例；第三阶段和第二期尚未排期。24 个验收任务在第二阶段结束时正式评判；这里的状态与下方表格一致。</figcaption>
+  </figure>
   <figure class="glance" id="glance">
     <div class="gl-top"><div><p class="eyebrow">全局一览 · 2026-11-06</p><h2>三重正确，一本账本，五个领域</h2></div>
       <ul class="gl-nums"><li><b>1278</b>条命题登记在可信账本中</li><li><b>81%</b>已有机器证明</li><li><b>41</b>天，自账本建立起</li><li><b>5</b>个领域，各有参照程序</li></ul></div>
