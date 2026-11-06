@@ -604,11 +604,10 @@ main .g-stage{height:min(70vh,620px)}
 .hero-title h1{margin:0}
 .hero-in{position:relative}
 .paper-icon{flex:none;display:flex;flex-direction:column;align-items:center;gap:8px;text-decoration:none;
-  color:var(--muted);padding:12px 14px 10px;border-radius:12px;transition:color .15s,background-color .15s}
+  color:var(--muted);padding:10px;border-radius:12px;transition:color .15s,background-color .15s}
 .paper-icon svg{display:block;transition:transform .15s}
-.paper-icon span{font:500 11px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase}
 .paper-icon:hover,.paper-icon:focus-visible{color:var(--ink);background:var(--soft-bg)}
 .paper-icon:hover svg{transform:translateY(-2px)}
 @media (max-width:640px){.hero-title{display:block}
   .paper-icon{position:absolute;top:calc(clamp(44px,7vw,80px) - 6px);right:10px;margin:0;flex-direction:row;gap:6px;padding:4px 6px;border-radius:8px}
-  .paper-icon svg{width:15px;height:19px}}
+  .paper-icon svg{width:18px;height:23px}}
