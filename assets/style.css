@@ -604,12 +604,13 @@ main .g-stage{height:min(70vh,620px)}
 .hero-title h1{margin:0}
 .hero-in{position:relative}
 .paper-icon{flex:none;display:flex;flex-direction:column;align-items:center;gap:8px;text-decoration:none;
-  color:var(--muted);padding:10px;border-radius:12px;transition:color .15s,background-color .15s}
+  color:var(--math);background:var(--math-bg);border:2px solid var(--math);padding:10px 12px;border-radius:12px;
+  box-shadow:0 1px 2px rgba(19,29,26,.06);transition:color .15s,background-color .15s,box-shadow .15s}
 .paper-icon svg{display:block;transition:transform .15s}
-.paper-icon:hover,.paper-icon:focus-visible{color:var(--ink);background:var(--soft-bg)}
+.paper-icon:hover,.paper-icon:focus-visible{background:var(--surface);box-shadow:var(--shadow)}
 .paper-icon:hover svg{transform:translateY(-2px)}
 @media (max-width:640px){.hero-title{display:block}
-  .paper-icon{position:absolute;top:calc(clamp(44px,7vw,80px) - 6px);right:10px;margin:0;flex-direction:row;gap:6px;padding:4px 6px;border-radius:8px}
+  .paper-icon{position:absolute;top:calc(clamp(44px,7vw,80px) - 6px);right:10px;margin:0;flex-direction:row;gap:6px;padding:5px 7px;border-radius:8px;border-width:1.5px}
   .paper-icon svg{width:18px;height:23px}}
 
 /* "Where we are" figure on the progress page */
