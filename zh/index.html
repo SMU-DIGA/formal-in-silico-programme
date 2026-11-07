@@ -110,6 +110,11 @@
   <h2>动态</h2>
   <div class="prose"><p>五个领域新增的功能、研究结果，以及论文与本网站的变化，新的在前。逐项状态见<a href="progress.html">进度</a>；这里引用的命题都登记在可信账本中。</p></div>
   <ol class="news">
+    <li><time datetime="2026-11-07">2026-11-07</time><ul>
+      <li><span class="tag n">DFT</span><b>验收任务 D1 在卡片要求的 8×8×8 k 网格上：Si、C、Ge 的 PBE。</b>全部 512 个 k 点，不做对称约化：检查器对三种晶体都给出接受，带隙区间宽度不超过 3×10<sup>−11</sup>&nbsp;Ha，DFTK 对同一离散问题的解落在区间内（DFT-E153–E155，端到端）。编译代码的两处修复去掉了平方级的开销，现在每种晶体在 16 核上用 53 分钟。</li>
+      <li><span class="tag n">DFT</span><b>金属能量检查器有了证明。</b>Mermin 能量检查器的可靠性定理已证明：检查器接受时，所认证的 Fermi–Dirac 解存在，且其自由能落在输出的区间内（DFT-G363–G364）。</li>
+      <li><span class="tag n">平台</span><b>每个推送版本的验证更快。</b>集成改为带抽查的热验证：输入不变的检查结果直接复用，并随机抽取十分之一重新运行、逐字节比对；带重型用例的冷验证改为每周一次，以及每次投稿之前。子进程的线程池现在按分配到的核数设置。</li>
+    </ul></li>
     <li><time datetime="2026-11-06">2026-11-06</time><ul>
       <li><span class="tag n">网站</span><b>一张图看当前位置。</b><a href="progress.html#where">进度页</a>开头新增一条从第一阶段到第二期的时间线，标出今天，并列出第二阶段 24 个验收任务的状态。</li>
       <li><span class="tag n">论文</span><b>论文已放到本页。</b><a href="../assets/paper.pdf">《Machine-Checked Triple Correctness of Scientific Simulations》（PDF，英文）</a>，即 2026-10-29 的 Stage&nbsp;I 版本，现在可以在这里阅读；动态列表只保留最近三个日期。</li>
@@ -125,14 +130,6 @@
       <li><span class="tag n">MD</span><b>MD 验收任务冻结；第一个静态结果。</b>12 张 MD 验收卡在补齐参考文献（读原文或独立重算）之后冻结（一处笔误以勘误更正）。第一个静态检查给出 fcc 晶格和 A<sub>6</sub>、A<sub>12</sub> 以及 Lennard-Jones 平衡晶格常数与结合能的证书，区间宽约 10<sup>−14</sup>，用时 5 秒；参数 ε、σ 可以是从其他尺度传来的区间（MD-C30–C33、MD-A20、MD-B40）。</li>
       <li><span class="tag n">DFT</span><b>检查器核心改为读取占据插件。</b>核心的方程把电子数 <i class="v">N</i> 当作有理数，规范取自注册的占据插件，因此零温检查不再要求每个晶胞的价电子数为偶数（DFT-G308–G324）。主要的可靠性定理改用 <i class="v">N</i> 陈述；第一阶段的原有陈述逐字保留为偶数情形下已证明的推论，并且也登记了指纹（DFT-G325）。点群检查链的零温检验同样经由插件的闸门，并证明与原来的检验相同（DFT-G326、G327）。在对照案例岩盐 NaCl 上，经核心检查的证书输出仍逐字节相同。</li>
       <li><span class="tag n">平台</span><b>第一批跨尺度约定落到代码里。</b>核心的结论现在是具名命题，即其他尺度导入时使用的形式（约定 1，DFT-G328–G330）；声明行的每个数值字段都有登记的单位（约定 4，DFT-G313）；证书格式中预留了导入声明的一节（DFT-G312）。同一天稍后，在此基础上的 Fermi–Dirac 插件给出了第一个金属证书（见上）。</li>
-    </ul></li>
-    <li><time datetime="2026-11-03">2026-11-03</time><ul>
-      <li><span class="tag n">CALPHAD</span><b>Ni–Al 的有序与无序已有证书（任务 C3）。</b>带新行 <code>fast 1</code> 的点证书还给出每个稳定相的位置分数区间，并只根据证书的区间判定 L1<sub>2</sub> 状态是有序（γ′）还是无序（γ）（CAL-D105–D109）。在任务 C3（Liu 2016 Al–Ni，1273.15 K，限制 <i class="v">N</i> ≥ 1/100 的问题，10 个相中的 9 个）上：<i class="v">x</i><sub>Al</sub> = 0.10 的唯一 L12_FCC 状态无序，0.20 有序与无序两个状态共存，0.24 的状态有序；pycalphad 0.11.2 的平衡位置分数都在证书的盒子内。已证明有序–无序相就是复合能模型，因此现有检查器对这种模型的包络同样适用于它（CAL-D105、D106）。<i class="v">x</i><sub>Al</sub> = 0.40 尚无证书：BCC_B2 的搜索在某个位置分数趋于零处停滞，那里需要一个新的已证明的界。任务 C2（Cr–Fe–Ni，Choi 等 2019，1073.15 K）的点 <i class="v">x</i><sub>Cr</sub> = 0.2、<i class="v">x</i><sub>Fe</sub> = 0.4（含磁性的 FCC_A1）在把容差设在浮点精度之内后 7.7 s 出证书；更紧的磁性界已证明，但还没有检查器使用（CAL-D110、D111）。</li>
-      <li><span class="tag n">DFT</span><b>共享检查器核心的第一步。</b>一般晶格的检查链复制一次成为插件核心，带一个占据插件，其第一个实例是零温（DFT-G300–G304）。在对照案例岩盐 NaCl 上，经核心检查的证书与冻结路径的输出逐字节相同，篡改的孪生证书被拒绝（DFT-G305）。下一步让检查链读取插件，使金属（Fermi–Dirac）成为第二个实例。</li>
-      <li><span class="tag n">DFT</span><b>共享检查器核心改为接受金属问题。</b>核心的问题类型改为金属问题（每胞价电子数不限奇偶），整条检查链经同一个映射读到绝缘体的描述，所以已有引理原样适用；核心的 26 个可靠性定理在新类型上重新证明，一般晶格的证书经核心检查的结果与以前完全相同（DFT-G306、G307）。核心拆成更小的模块后，最长的编译路径从 56 个模块 15823 s 缩短到 32 个模块 6460 s。Fermi–Dirac 占据插件正在接入检查链；目前还没有金属得到证书。</li>
-      <li><span class="tag n">CALPHAD</span><b>CALPHAD 点检查共用一个已证明的核心。</b>五种点证书检查的可靠性现在都由同一个语义核心推出，模型项与定义域作为插件（CAL-U100–U114）；格式 4 的默认路径运行这个核心，已证明其输出与原检查器相同，在全部验证用例上逐字节一致（CAL-U115–U118）。一次检查现在可以对参数在一个盒子里的整族模型证明结论，这是接收其他尺度传来的区间参数的第一步（CAL-U111、U119）。</li>
-      <li><span class="tag n">平台</span><b>每个推送的版本做一次冷验证。</b>每个集成版本在推送前完整验证一次：不读结果缓存，并包含最重的用例；各条线只检查自己改动的部分，夜间运行跳过已有这种记录的版本（<code>docs/TRUST.md</code>）。第一次这样的运行在今天的版本上 18 步全部通过。</li>
-      <li><span class="tag n">纲领</span><b>Stage II 的 FEM 与 MD 设计。</b>认证有限元（12 个任务，从 Poisson 到弹性与周期两相胞）与分子动力学（12 个任务，先做静态性质，不声称长时间逐点轨迹）的设计文档与验收任务草案在 <code>docs/stage2/</code>；参考值经独立核对，需要的地方已更正。任务在冻结前都是草案（MD 约 11 月 10 日，FEM 不晚于 12 月 14 日）。</li>
     </ul></li>
   </ol>
 </section>
@@ -576,7 +573,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · 项目纲领 v0.5 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-11-06T01:34+08:00">2026-11-06 01:34 UTC+8</time></span></span>
+  <span>Formal in Silico · 项目纲领 v0.5 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-11-07T16:03+08:00">2026-11-07 16:03 UTC+8</time></span></span>
   <span><a href="progress.html">进度</a> · <a href="showcases.html">成果展示</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="../" hreflang="en">English</a></span>
 </div></footer>
 </body>
