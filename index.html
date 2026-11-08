@@ -475,20 +475,20 @@
     <div class="card">
       <span class="yr">1991 · FEM</span>
       <h3>The Sleipner A platform sinks</h3>
-      <p>The concrete base of the Sleipner A platform in the North Sea failed during a ballast test and sank. The investigation found that poorly shaped elements in the linear-elastic finite-element analysis underestimated the shear stress in the tricell walls by about 47%, so the reinforcement was insufficient. The program ran normally and reported no error.</p>
-      <p class="lesson">Lesson: mesh quality and discretisation error should be checkable preconditions, not a matter of engineering judgement.</p>
+      <p>Poorly shaped finite elements underestimated the shear stress in the tricell walls by about 47%; the concrete base failed in a ballast test and sank. The program reported no error.</p>
+      <p class="lesson">Lesson: mesh quality and discretisation error must be checked, not judged.</p>
     </div>
     <div class="card">
       <span class="yr">2016 · DFT</span>
       <h3>The Δ-gauge and reproducibility</h3>
-      <p>Lejaeghere et al. compared the PBE equations of state of 71 elemental crystals across 15 solid-state codes and 40 pseudopotential or basis-set schemes. Recent methods agree well; older schemes deviate noticeably, and the source of each difference could only be located by item-by-item comparison.</p>
-      <p class="lesson">Lesson: results depend on many implicit numerical settings. Those settings belong in the specification, tied to an error estimate.</p>
+      <p>Lejaeghere et al. compared 40 DFT methods on 71 elemental crystals. Differences could only be traced by item-by-item comparison.</p>
+      <p class="lesson">Lesson: hidden numerical settings belong in the specification, with an error bound.</p>
     </div>
     <div class="card">
       <span class="yr">Since 1983 · DFT</span>
       <h3>The band-gap problem</h3>
-      <p>Kohn–Sham band gaps from LDA and GGA systematically underestimate measured gaps: about 0.5 eV for silicon against an experimental 1.17 eV, and germanium comes out almost gapless in LDA. Perdew and Levy, and Sham and Schlüter, showed in 1983 that the cause is the derivative discontinuity of the exchange–correlation potential, not the numerics: carry the computation to any precision and the discrepancy stays.</p>
-      <p class="lesson">Lesson: the numerics can be entirely correct and the conclusion still wrong. Physics correctness can only be tested by observation, and only when the mathematical and software errors are rigorously bounded can a discrepancy with experiment be pinned on the model itself.</p>
+      <p>LDA gives silicon a gap of about 0.5 eV against a measured 1.17 eV. The cause is the model, not the numerics: no amount of precision removes it.</p>
+      <p class="lesson">Lesson: only with maths and software errors bounded can a gap with experiment be blamed on the model.</p>
     </div>
   </div>
   <div class="prose">
@@ -815,7 +815,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · Programme v0.5 · revised as the project evolves<span class="updated"> · updated <time datetime="2026-11-08T19:30+08:00">2026-11-08 19:30 UTC+8</time></span></span>
+  <span>Formal in Silico · Programme v0.5 · revised as the project evolves<span class="updated"> · updated <time datetime="2026-11-08T19:31+08:00">2026-11-08 19:31 UTC+8</time></span></span>
   <span><a href="progress.html">Progress</a> · <a href="showcases.html">Showcases</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="zh/" hreflang="zh-CN">中文版</a></span>
 </div></footer>
 </body>

@@ -475,20 +475,20 @@
     <div class="card">
       <span class="yr">1991 · FEM</span>
       <h3>Sleipner A 平台沉没</h3>
-      <p>北海 Sleipner A 平台的混凝土基座在注水试验中破坏并沉没。事后调查指出，有限元线弹性分析中的单元形状不佳，使三格室壁的剪应力被低估约 47%，配筋因此不足。程序正常运行，没有报错。</p>
-      <p class="lesson">教训：网格质量和离散误差应当是可检查的前提条件，而不是工程师的经验判断。</p>
+      <p>单元形状不佳使有限元分析把三格室壁的剪应力低估约 47%，混凝土基座在注水试验中破坏沉没。程序没有报错。</p>
+      <p class="lesson">教训：网格质量与离散误差应当可检查，而非凭经验。</p>
     </div>
     <div class="card">
       <span class="yr">2016 · DFT</span>
       <h3>Δ 量规与可复现性</h3>
-      <p>Lejaeghere 等人比较了 15 个固体计算代码、40 种赝势或基组方案对 71 种单质晶体的 PBE 状态方程。较新的方法之间吻合良好，较早的方案存在明显偏差，而差异的来源只能靠逐项对比去定位。</p>
-      <p class="lesson">教训：结果依赖大量隐式的数值设置。这些设置应当写进规范，并与误差估计绑定。</p>
+      <p>Lejaeghere 等人在 71 种单质晶体上比较了 40 种 DFT 方案，差异来源只能逐项对比去定位。</p>
+      <p class="lesson">教训：隐式的数值设置应写进规范，并附误差界。</p>
     </div>
     <div class="card">
       <span class="yr">1983 起 · DFT</span>
       <h3>带隙问题</h3>
-      <p>LDA 与 GGA 的 Kohn–Sham 带隙系统性地低估实验带隙：硅约 0.5 eV，实验约 1.17 eV；锗在 LDA 中几乎没有带隙。Perdew 与 Levy、Sham 与 Schlüter 在 1983 年指出，原因在于交换关联势的导数不连续，与数值无关：把计算做到任意精确，偏差仍然在。</p>
-      <p class="lesson">教训：数值可以完全正确，而结论仍然是错的。物理上的正确只能由观测来检验；而只有当数学与软件的误差被严格界定时，与实验的偏差才能确定地归到模型本身。</p>
+      <p>LDA 给出硅的带隙约 0.5 eV，实验为 1.17 eV。原因在模型而非数值：算得再精确，偏差仍在。</p>
+      <p class="lesson">教训：只有数学与软件误差被严格界定，与实验的偏差才能归到模型本身。</p>
     </div>
   </div>
   <div class="prose">
@@ -815,7 +815,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · 项目纲领 v0.5 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-11-08T19:30+08:00">2026-11-08 19:30 UTC+8</time></span></span>
+  <span>Formal in Silico · 项目纲领 v0.5 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-11-08T19:31+08:00">2026-11-08 19:31 UTC+8</time></span></span>
   <span><a href="progress.html">进度</a> · <a href="showcases.html">成果展示</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="../" hreflang="en">English</a></span>
 </div></footer>
 </body>
