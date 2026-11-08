@@ -223,7 +223,7 @@
       <tr><td><b>mini-CSP v0。</b>Lennard-Jones 团簇的结构搜索，候选结构被证明是精确的局部极小，在对称意义下唯一。<a href="csp.html">详情 →</a></td><td class="st"><span class="tag s">完成</span></td><td>10-07 · CSP-B01、B02、B04、A01、A02</td></tr>
       <tr><td><b>物理确认进入账本。</b>确认类论断按 V0–V3 分级，对照冻结并带哈希的实验数据集，每次验证运行都重新计算</td><td class="st"><span class="tag s">完成</span></td><td>10-08 · 第一条为 CAL-O01</td></tr>
       <tr><td><b>对抗式复审。</b>两轮复审，攻击者控制证书；伪造的证书在每次验证运行中重放。<a href="./#how">详情 →</a></td><td class="st"><span class="tag s">完成</span></td><td>10-06；10-07 · DFT-I09–I11、FEM-B11、MD-B14、CAL-I06–I08、CSP-B06</td></tr>
-      <tr><td><b>验证基础设施。</b>一条命令 <code>make verify-all</code> 重新检查整个仓库；可靠性定理的陈述有指纹；并行运行与快速档；按内容寻址的结果缓存，抽样从头重检，每晚一次完整的冷运行</td><td class="st"><span class="tag s">完成</span></td><td>10-01；10-03；10-08；10-15；10-22</td></tr>
+      <tr><td><b>验证基础设施。</b>一条命令 <code>make verify-all</code> 重新检查整个仓库；可靠性定理的陈述有指纹；并行运行与快速档；按内容寻址的结果缓存，抽样从头重检。每个推送的版本都要通过带抽查的热验证（复用检查结果，随机抽十分之一重新运行、逐字节比对）；连同重型用例的完整冷验证每周一次，每次投稿前也做，第一次每周冷验证于 11-08 通过（18 个步骤全部通过，16 核上用 13.4 小时）。从 11-15 起，每周的冷验证用 32 个核，前一晚先构建好 Lean，最长的用例最先开始</td><td class="st"><span class="tag s">完成</span></td><td>10-01；10-03；10-08；10-15；10-22；11-07；11-08</td></tr>
     </tbody>
   </table></div>
 
@@ -251,13 +251,13 @@
   <div class="tbl"><table class="feat rm-tasks">
     <thead><tr><th>任务</th><th>体系</th><th>状态</th><th>说明</th></tr></thead>
     <tbody>
-      <tr><td>D1</td><td>Si、C、Ge（金刚石），PBE</td><td class="st"><span class="tag f">进行中</span></td><td>PBE 的数学部分已完成，包括 Libxc 的阈值及其按比例的余项界（DFT-E100–E131，10-30 至 10-31）；一般晶格上的稠密三维 PBE 检查器已证明可靠，含能带与能隙区间，小截断下 Si 与 DFTK 一致（11-02，DFT-E132–E146）。11-04：C 与 Ge 也在粗截断下出了证书，三种材料的 DFTK 解都在每个区间之内（DFT-E147–E150）；在任务卡的截断下有理由地拒绝：估计需要 5.7–7.3 万 CPU 小时与 3.4–4 TB 内存（DFT-E151）。M2 只承诺粗截断</td></tr>
+      <tr><td>D1</td><td>Si、C、Ge（金刚石），PBE</td><td class="st"><span class="tag f">进行中</span></td><td>PBE 的数学部分已完成，包括 Libxc 的阈值及其按比例的余项界（DFT-E100–E131，10-30 至 10-31）；一般晶格上的稠密三维 PBE 检查器已证明可靠，含能带与能隙区间，小截断下 Si 与 DFTK 一致（11-02，DFT-E132–E146）。11-04：C 与 Ge 也在粗截断下出了证书，三种材料的 DFTK 解都在每个区间之内（DFT-E147–E150）；在任务卡的截断下有理由地拒绝：估计需要 5.7–7.3 万 CPU 小时与 3.4–4 TB 内存（DFT-E151）。11-07 在任务卡的 8×8×8 k 网格上也完成了（全部 512 个 k 点，不做对称约化）：Si、C、Ge 在 <i class="v">Q</i>&nbsp;=&nbsp;17/2 下端到端出了证书，带隙区间宽度不超过 3×10<sup>−11</sup>&nbsp;Ha，DFTK 的解在区间内，每种晶体在 16 核上用 53 分钟（DFT-E153–E155）。M2 只承诺粗截断</td></tr>
       <tr><td>D2</td><td>GaAs、AlP（闪锌矿），PBE</td><td class="st"><span class="tag n">计划</span></td><td>M2</td></tr>
       <tr><td>D3</td><td>MgO、NaCl（岩盐），LDA</td><td class="st"><span class="tag f">进行中</span></td><td>10-31 完成了第一批从一般晶格描述出发的端到端证书：NaCl，约化 Hartree–Fock 加完整的 GTH 赝势，Γ 点，小截断（DFT-G125、G138）。一般晶格上的 LDA 检查器已完成（11-01，DFT-G150–G190）：小截断下（2×2×2 k 网格）NaCl 的 LDA 与 DFTK 一致。在任务卡的 8×8×8 k 网格上，MgO 在 9.50 Ha、NaCl 在 3.56 Ha 下出了证书，DFTK 的解在每个结果之内（11-02，DFT-G200–G203）；在任务卡的截断（MgO 28 Ha、NaCl 15 Ha）下估计需要 500–2100 CPU 小时与约 50 GB，超出预算，因此有理由地拒绝。M1</td></tr>
       <tr><td>D4</td><td>GaN、ZnO（纤锌矿），LDA</td><td class="st"><span class="tag n">计划</span></td><td>稠密检查器在任务限定的 64 GB 内到不了收敛截断。本阶段预期的结果：收敛设定下给出说明理由的拒绝；会尝试降低的设定。六方晶胞现在可以出证书（11-02，DFT-G250–G256）：纤锌矿 GaN 在小设定下与 DFTK 一致，Ga 用大芯赝势而不是任务卡的半芯赝势（已知答案，不是本任务）。免矩阵路线的理论在本阶段证明，是此后的路径</td></tr>
       <tr><td>D5</td><td>SrTiO₃（立方钙钛矿），LDA</td><td class="st"><span class="tag n">计划</span></td><td>同 D4。用任务卡的赝势、小截断（2×2×2，4.53 Ha）时浮点预检通过，驱动的能隙与 DFTK 一致；检查一小时内未完成（11-02，DFT-G204，没有证书）</td></tr>
       <tr><td>D6</td><td>TiO₂（金红石），LDA</td><td class="st"><span class="tag n">计划</span></td><td>同 D4</td></tr>
-      <tr><td>D7</td><td>Al、Cu（fcc 金属），LDA 加 Fermi–Dirac 展宽</td><td class="st"><span class="tag f">进行中</span></td><td>M2。设计与实测可行性已完成（目标 P：Al 与 38 Ha 的 Cu 出证书，105 Ha 的 Cu 有理由地拒绝）；数学基础已证明（11-02，DFT-C106–C112），检查器所依赖的模型层的界也已作为一个接口证明（11-02，DFT-C113–C130）；共享检查器核心已建立（11-03，DFT-G300–G305：一般晶格的检查链复制为插件核心，零温是第一个占据插件，输出与冻结路径逐字节相同）；检查链已改为读取插件，电子数为有理数，奇数电子数也能通过零温检查（11-04，DFT-G308–G330）；同一天出了第一个金属证书：小截断下带 Fermi–Dirac 展宽的 fcc Al，费米能级的区间约 10<sup>−7</sup> Ha，DFTK 的值与每条能带都在区间内（11-04，DFT-G331–G344）；下一步是更紧的 Fermi–Dirac 常数与任务的设定</td></tr>
+      <tr><td>D7</td><td>Al、Cu（fcc 金属），LDA 加 Fermi–Dirac 展宽</td><td class="st"><span class="tag f">进行中</span></td><td>M2。设计与实测可行性已完成（目标 P：Al 与 38 Ha 的 Cu 出证书，105 Ha 的 Cu 有理由地拒绝）；数学基础已证明（11-02，DFT-C106–C112），检查器所依赖的模型层的界也已作为一个接口证明（11-02，DFT-C113–C130）；共享检查器核心已建立（11-03，DFT-G300–G305：一般晶格的检查链复制为插件核心，零温是第一个占据插件，输出与冻结路径逐字节相同）；检查链已改为读取插件，电子数为有理数，奇数电子数也能通过零温检查（11-04，DFT-G308–G330）；同一天出了第一个金属证书：小截断下带 Fermi–Dirac 展宽的 fcc Al，费米能级的区间约 10<sup>−7</sup> Ha，DFTK 的值与每条能带都在区间内（11-04，DFT-G331–G344）；更紧的占据标签使铝的费米能级区间窄了约十倍（11-06，DFT-G345–G352），Mermin 自由能恒等式已证明，并给出能带熵项的包络（11-06，DFT-G353–G361）；一个独立的能量检查器对 2×2×2 的 Al 输出自由能区间，宽 1.7×10<sup>−9</sup>&nbsp;Ha，DFTK 的值在其内，它的可靠性已证明（11-07，DFT-G362–G364）；下一步是任务的设定</td></tr>
       <tr><td>D8</td><td>Fe（bcc，铁磁），共线 LSDA</td><td class="st"><span class="tag n">计划</span></td><td>M3</td></tr>
       <tr><td>D9</td><td>Si 的平衡晶格常数，PBE</td><td class="st"><span class="tag p">部分完成</span></td><td>LDA 版的括号在第一阶段完成（DFT-W100–W107，10-22）；PBE 版在计划中</td></tr>
       <tr><td>D10</td><td>研究者的 DFTK 脚本（AlAs，LDA）</td><td class="st"><span class="tag n">计划</span></td><td>M3</td></tr>
@@ -340,7 +340,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · 已实现与计划实现<span class="updated"> · 更新于 <time datetime="2026-11-07T16:07+08:00">2026-11-07 16:07 UTC+8</time></span></span>
+  <span>Formal in Silico · 已实现与计划实现<span class="updated"> · 更新于 <time datetime="2026-11-08T17:10+08:00">2026-11-08 17:10 UTC+8</time></span></span>
   <span><a href="./">纲领</a> · <a href="showcases.html">成果展示</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="../progress.html" hreflang="en">English</a></span>
 </div></footer>
 </body>
