@@ -158,6 +158,7 @@ h4{font:600 15.5px/1.5 var(--sans);margin:0 0 4px}
 .news-more summary{cursor:pointer;font:500 13px/1.6 var(--mono);color:var(--muted);padding:10px 0}
 .news-more summary:hover,.news-more[open] summary{color:var(--ink)}
 .news-more .news{margin-top:6px}
+.news code{overflow-wrap:anywhere}
 @media (max-width:560px){.news>li{grid-template-columns:minmax(0,1fr);gap:4px}}
 
 /* ---------- cards ---------- */

@@ -34,7 +34,7 @@ The programme page (`index.html`, `zh/index.html`) has a News band (`#news`)
 between the hero and the numbered sections: one dated entry per feature, research result, or paper and site change,
 newest first, with the claim IDs it rests on. Add an entry in both languages
 whenever a ledger claim, parity item or showcase is added; entries older than
-the three most recent days go inside the "Earlier" `<details>` block.
+the three most recent days go inside the "Earlier" `<details>` block (never delete old entries; update the date range in its summary).
 
 Numbers taken from the trust ledger and the parity trackers are never typed by hand.
 They are marked in the HTML (`data-n="KEY"` on an element holding one number,
