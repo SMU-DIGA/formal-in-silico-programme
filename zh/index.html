@@ -110,6 +110,9 @@
   <h2>动态</h2>
   <div class="prose"><p>五个领域新增的功能、研究结果，以及论文与本网站的变化，新的在前。逐项状态见<a href="progress.html">进度</a>；这里引用的命题都登记在可信账本中。</p></div>
   <ol class="news">
+    <li><time datetime="2026-11-08">2026-11-08</time><ul>
+      <li><span class="tag n">平台</span><b>第一次每周冷验证通过。</b>11 月 7 日推送的版本不用任何缓存结果、连同重型用例从头重新检查：18 个步骤全部通过，其中 311 个证书被接受，353 个篡改过的证书被发现，27 个负对照被拒绝；Si、C、Ge 在 8&times;8&times;8 k 网格上的 PBE 证书及其篡改版也在其中。这次运行在 16 个核上用了 13.4 小时。</li>
+    </ul></li>
     <li><time datetime="2026-11-07">2026-11-07</time><ul>
       <li><span class="tag n">DFT</span><b>验收任务 D1 在卡片要求的 8×8×8 k 网格上：Si、C、Ge 的 PBE。</b>全部 512 个 k 点，不做对称约化：检查器对三种晶体都给出接受，带隙区间宽度不超过 3×10<sup>−11</sup>&nbsp;Ha，DFTK 对同一离散问题的解落在区间内（DFT-E153–E155，端到端）。编译代码的两处修复去掉了平方级的开销，现在每种晶体在 16 核上用 53 分钟。</li>
       <li><span class="tag n">DFT</span><b>金属能量检查器有了证明。</b>Mermin 能量检查器的可靠性定理已证明：检查器接受时，所认证的 Fermi–Dirac 解存在，且其自由能落在输出的区间内（DFT-G363–G364）。</li>
@@ -121,15 +124,6 @@
       <li><span class="tag n">CALPHAD</span><b>Al–Cu–Mg 等温截面：40 个抽样点已认证 39 个。</b>针对靠近成分单纯形顶点的点，新增一条搜索路径，并证明了熵项的切点下界（CAL-D118–D124）：第一遍留下未决的 16 个抽样点中认证了 15 个，其中包括全部 6 个因盒预算用尽而停下的点；每个点仍带有已证明的相量，并与 pycalphad 0.11.2 一致（最大的 Gibbs 能区间宽 1.2×10<sup>−6</sup> J/mol）。还有一个点 <i class="v">x</i><sub>Cu</sub> = <i class="v">x</i><sub>Mg</sub> = 1/4 停在时限上。完整的 741 点截面预计约 72 CPU 小时（原先至少 176），尚未运行。</li>
       <li><span class="tag n">MD</span><b>静态 fcc 晶体：弛豫离子与参数盒。</b>带截断的 Lennard–Jones 证书现在还覆盖弛豫离子这一步（MD-A23、MD-B43、MD-C37）；新的盒段证明：对给定盒内的每一组 ε、σ 与截断半径，能量极小点唯一，晶格常数、能量与 C<sub>11</sub>、C<sub>12</sub>、C<sub>44</sub> 都落在输出的区间内（MD-A24、MD-B44）。对氩，三个参数的相对半宽取 10<sup>−3</sup> 时，C<sub>11</sub> 在 4.078–4.110 GPa；检查用时不到一秒，两个盒角上的独立高精度求和落在每个区间内。弛豫离子的极小点是局部的，极小与弛豫两行仍是点陈述。</li>
       <li><span class="tag n">DFT</span><b>金属：自由能恒等式，以及尚无证明的检查器。</b>在检查器核心的模型上证明了 Fermi–Dirac 解处的 Mermin 自由能恒等式，并给出能带熵项的包络（DFT-G353–G361）；更紧的占据标签 <code>occ fdt</code> 使铝的费米能级区间窄了约十倍（DFT-G345–G352）。一个独立的能量检查器对 2×2×2 的 Al 输出自由能区间（宽 1.7×10<sup>−9</sup> Ha，DFTK 的值在其内），但它的可靠性定理尚未证明，所以那一行还不是结果（DFT-G362）。</li>
-    </ul></li>
-    <li><time datetime="2026-11-04">2026-11-04</time><ul>
-      <li><span class="tag n">DFT</span><b>第一个有证书的金属：铝。</b>检查器核心的 Fermi–Dirac 占据插件已证明可靠，金属的结论写成具名命题（DFT-G331–G338）；新的证书格式在一般晶格数据上、对任意电子数运行核心的检查（DFT-G339）。对 fcc 铝（LDA，GTH 赝势，小截断，展宽温度 0.01 Ha），在 2×2×2 与 4×4×4 k 网格上，费米能级被包在约 10<sup>−7</sup> Ha 宽的区间内，DFTK 的费米能级与它的全部能带都落在证书的区间内；每一条能带行都有已证明的定理（DFT-G340–G344）。改动电子数、温度或中心的证书被拒绝。铝与铜在任务截断下的证书仍在后面。</li>
-      <li><span class="tag n">DFT</span><b>C 与 Ge 的 PBE 证书。</b>在粗截断下，金刚石结构的 C 与 Ge 像 Si 一样有了 PBE 证书，能隙区间宽 10<sup>−11</sup>–10<sup>−10</sup> Ha，DFTK 的解在每个区间之内（DFT-E147–E150）。在任务卡的截断下，稠密检查有理由地拒绝，附实测原因与代价估计：5.7–7.3 万 CPU 小时、3.4–4 TB，远超任务的预算（DFT-E151）；<code>fis dft estimate</code> 现在也估计 PBE（DFT-E152）。</li>
-      <li><span class="tag n">CALPHAD</span><b>证书格式 5：更快的搜索进入已证明的核心。</b>第一遍的最佳优先搜索，以及交换检查用的探测状态，现在都在已证明的 CALPHAD 核心里运行（CAL-U120–U133）。新证书默认用格式 5；格式 4 的证书检查结果与以前逐字节相同。多数驱动力的下界变紧，有序–无序路径快 19–30%；pycalphad 的值落在每个改变了的区间内。</li>
-      <li><span class="tag n">CALPHAD</span><b>任务 C3 的四个成分都有了证书。</b>Ni–Al 有序–无序任务的最后一个未决点 <i class="v">x</i><sub>Al</sub> = 0.40 出了证书：BCC_B2 单相、有序（B2），有序参数在 [0.798, 0.801] 内，pycalphad 的平衡在每个区间之内。为此证明了位置分数趋于零处构型熵的新下界（CAL-D112–D117）；这是一个需显式开启的选项，已有的证书检查结果不变。</li>
-      <li><span class="tag n">MD</span><b>MD 验收任务冻结；第一个静态结果。</b>12 张 MD 验收卡在补齐参考文献（读原文或独立重算）之后冻结（一处笔误以勘误更正）。第一个静态检查给出 fcc 晶格和 A<sub>6</sub>、A<sub>12</sub> 以及 Lennard-Jones 平衡晶格常数与结合能的证书，区间宽约 10<sup>−14</sup>，用时 5 秒；参数 ε、σ 可以是从其他尺度传来的区间（MD-C30–C33、MD-A20、MD-B40）。</li>
-      <li><span class="tag n">DFT</span><b>检查器核心改为读取占据插件。</b>核心的方程把电子数 <i class="v">N</i> 当作有理数，规范取自注册的占据插件，因此零温检查不再要求每个晶胞的价电子数为偶数（DFT-G308–G324）。主要的可靠性定理改用 <i class="v">N</i> 陈述；第一阶段的原有陈述逐字保留为偶数情形下已证明的推论，并且也登记了指纹（DFT-G325）。点群检查链的零温检验同样经由插件的闸门，并证明与原来的检验相同（DFT-G326、G327）。在对照案例岩盐 NaCl 上，经核心检查的证书输出仍逐字节相同。</li>
-      <li><span class="tag n">平台</span><b>第一批跨尺度约定落到代码里。</b>核心的结论现在是具名命题，即其他尺度导入时使用的形式（约定 1，DFT-G328–G330）；声明行的每个数值字段都有登记的单位（约定 4，DFT-G313）；证书格式中预留了导入声明的一节（DFT-G312）。同一天稍后，在此基础上的 Fermi–Dirac 插件给出了第一个金属证书（见上）。</li>
     </ul></li>
   </ol>
 </section>
@@ -573,7 +567,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · 项目纲领 v0.5 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-11-07T16:03+08:00">2026-11-07 16:03 UTC+8</time></span></span>
+  <span>Formal in Silico · 项目纲领 v0.5 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-11-08T16:26+08:00">2026-11-08 16:26 UTC+8</time></span></span>
   <span><a href="progress.html">进度</a> · <a href="showcases.html">成果展示</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="../" hreflang="en">English</a></span>
 </div></footer>
 </body>
