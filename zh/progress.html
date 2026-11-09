@@ -38,7 +38,7 @@
   <p class="lead">项目已经实现的和计划实现的。第一至第三阶段都属于第一期（认证的正确性）；第二期（由 AI 驱动的统一）列在最后，尚未开始。按阶段列出：第一阶段（已完成，2026-10-30 冻结）、第二阶段（进行中，至 2027-01-29：让 DFT 与 CALPHAD 能用于科研）、第三阶段（候选）。每个领域有自己的页面，列出逐项状态。一项功能只有在实现、与参照程序一致、<b>并且</b>输出的每个数都有 Lean 定理保证时，才算<b>完成</b>。</p>
   <figure class="where" id="where">
     <p class="eyebrow">截至 2026-11-09 的进度</p>
-    <div class="wh-scroll"><div class="wh" role="img" aria-label="时间线：第一阶段于 2026-10-30 达成；截至 11-09，工作处在第二阶段初期，在 11-29 的 M1 之前；第二阶段到 2027-01-29 结束，之后是第三阶段和第二期。">
+    <div class="wh-scroll"><div class="wh" role="img" aria-label="时间线：第一阶段于 2026-10-30 达成；截至 11-09，工作处在第二阶段初期，M1 已于 11-09 达成，下一个是 12-27 的 M2；第二阶段到 2027-01-29 结束，之后是第三阶段和第二期。">
       <div class="wh-phases"><span style="left:0;width:87%">第一期 · 认证的正确性</span><span class="p2" style="left:87%;width:13%">第二期</span></div>
       <div class="wh-today" style="left:24.97%"><span>截至 11-09</span></div>
       <div class="wh-track">
@@ -47,7 +47,7 @@
         <div class="ws next" style="left:72%;width:15%"><b>第三阶段</b><small>候选</small></div>
         <div class="ws later" style="left:87%;width:13%"><b>第二期</b><small>尚未开始</small></div>
       </div>
-      <div class="wh-ms"><span class="wm ok" style="left:19.16%"><b>M0 ✓</b>10-30</span><span class="wm" style="left:36.58%"><b>M1</b>11-29</span><span class="wm" style="left:52.84%"><b>M2</b>12-27</span><span class="wm" style="left:69.1%"><b>M3</b>01-24</span></div>
+      <div class="wh-ms"><span class="wm ok" style="left:19.16%"><b>M0 ✓</b>10-30</span><span class="wm ok" style="left:36.58%"><b>M1 ✓</b>11-29</span><span class="wm" style="left:52.84%"><b>M2</b>12-27</span><span class="wm" style="left:69.1%"><b>M3</b>01-24</span></div>
     </div></div>
     <div class="wh-tasks"><p class="gl-h"><a href="#stage2">第二阶段验收任务</a></p>
       <div class="wh-row"><span class="wh-lab">DFT</span><ol class="wh-cells"><li class="wt f" title="D1 · Si、C、Ge（金刚石），PBE · 进行中">D1</li><li class="wt n" title="D2 · GaAs、AlP（闪锌矿），PBE · 计划">D2</li><li class="wt f" title="D3 · MgO、NaCl（岩盐），LDA · 进行中">D3</li><li class="wt n" title="D4 · GaN、ZnO（纤锌矿），LDA · 计划">D4</li><li class="wt n" title="D5 · SrTiO₃（立方钙钛矿），LDA · 计划">D5</li><li class="wt n" title="D6 · TiO₂（金红石），LDA · 计划">D6</li><li class="wt f" title="D7 · Al、Cu（fcc 金属），LDA 加 Fermi–Dirac 展宽 · 进行中">D7</li><li class="wt n" title="D8 · Fe（bcc，铁磁），共线 LSDA · 计划">D8</li><li class="wt p" title="D9 · Si 的平衡晶格常数，PBE · 部分完成">D9</li><li class="wt n" title="D10 · 研究者的 DFTK 脚本（AlAs，LDA） · 计划">D10</li><li class="wt n" title="D11 · 研究者的 ABINIT 输入（GaAs，HGH） · 计划">D11</li><li class="wt n" title="D12 · 收敛研究表（GaAs，LDA） · 计划">D12</li></ol><span class="wh-cnt">3 进行中 · 1 部分完成 · 8 计划</span></div>
@@ -243,7 +243,7 @@
     <thead><tr><th>里程碑</th><th>状态</th><th>内容</th></tr></thead>
     <tbody>
       <tr><td>M0 · 10-30</td><td class="st"><span class="tag s">完成</span></td><td>验收任务冻结；三维检查器的代价剖面；一般晶格、PBE 与多元 CALPHAD 三份设计（均为 10-30）</td></tr>
-      <tr><td>M1 · 11-29</td><td class="st"><span class="tag f">进行中</span></td><td>任意晶体结构的 LDA 证书（11-01 对晶胞体积为有理数的晶格完成，DFT-G150–G190；六方晶格与逐轴网格的零温情形 11-02 完成，DFT-G250–G256）；三元点平衡（10-31 已完成，CAL-K110、K111）</td></tr>
+      <tr><td>M1 · 11-29</td><td class="st"><span class="tag s">完成 · 11-09</span></td><td>任意晶体结构的 LDA 证书（11-01 对晶胞体积为有理数的晶格完成，DFT-G150–G190；六方晶格与逐轴网格的零温情形 11-02 完成，DFT-G250–G256）；三元点平衡（10-31 已完成，CAL-K110、K111）</td></tr>
       <tr><td>M2 · 12-27</td><td class="st"><span class="tag n">计划</span></td><td>PBE 证书（Si、C）与金属证书（Al、Cu）；三元等温截面；有序–无序模型；pycalphad 接口；中期代理试用</td></tr>
       <tr><td>M3 · 01-24</td><td class="st"><span class="tag n">计划</span></td><td>共线自旋；DFTK 与 ABINIT 输入的转换；有证书的二元相图；数据库自检；四元点平衡；预编译二进制；教程；验收任务全部运行</td></tr>
     </tbody>
@@ -342,7 +342,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · 已实现与计划实现<span class="updated"> · 更新于 <time datetime="2026-11-09T13:14+08:00">2026-11-09 13:14 UTC+8</time></span></span>
+  <span>Formal in Silico · 已实现与计划实现<span class="updated"> · 更新于 <time datetime="2026-11-09T15:22+08:00">2026-11-09 15:22 UTC+8</time></span></span>
   <span><a href="./">纲领</a> · <a href="showcases.html">成果展示</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="../progress.html" hreflang="en">English</a></span>
 </div></footer>
 </body>

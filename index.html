@@ -111,6 +111,7 @@
   <div class="prose"><p>Features added to the five domains, research results, and changes to the paper and this site, newest first. Item-by-item status is on the <a href="progress.html">progress page</a>; every claim cited here is in the trust ledger.</p></div>
   <ol class="news">
     <li><time datetime="2026-11-09">9 Nov 2026</time><ul>
+      <li><span class="tag n">Platform</span><b>Milestone M1 reached, ahead of its 29&nbsp;November date.</b> LDA certificates for any crystal structure and certified ternary point equilibria are in place. This milestone does not cover the acceptance tasks: D3 and C1 are not yet scored. An independent review of C1 recomputed its counts from the raw outputs; pycalphad finds the same stable phases at all 732 points it can compare.</li>
       <li><span class="tag n">CALPHAD</span><b>Task C1: the full Al&ndash;Cu&ndash;Mg section at 673.15&nbsp;K, but over the time limit.</b> On the full 741-point grid of the COST&nbsp;507 database, 734 points have an equilibrium certificate against 45 of the card&rsquo;s 46 phases (the tool refuses ALCE_AMORPHOUS, and no statement covers it); 7 are undecided (0.94&nbsp;%, the card allows 5&nbsp;%) and none is refused. Of the 7, one has a certificate that leaves LAVES_C36 undecided and six reached the 1&nbsp;h checker limit without a result, which we count as undecided. pycalphad disagrees nowhere it returns a number (CAL-D126, D127). The coverage meets the card, but the run took 18.7&nbsp;h on 8 cores against the card&rsquo;s limit of 1&nbsp;h on 32 cores, so the task is not yet scored.</li>
       <li><span class="tag n">DFT</span><b>Task D3: still below the card&rsquo;s reduced setting.</b> MgO at 9.50&nbsp;Ha and NaCl at 3.56&nbsp;Ha on the 8&times;8&times;8 k grid are certified, but the card&rsquo;s reduced setting is 28 and 15&nbsp;Ha (its task setting 125 and 35&nbsp;Ha), so the task does not yet count as partial. At the reduced setting the check is refused: extrapolating from measured phases gives about 1,200&ndash;4,100 CPU-hours and at least 50&nbsp;GB for MgO, against a budget of 768 CPU-hours (DFT-E156). A compiled-code speed-up, proved equal to the verified density sum, gives line-for-line identical output and trims the column phase by about 10&nbsp;% in a clean MgO comparison (DFT-G365, G366).</li>
     </ul></li>
@@ -819,7 +820,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · Programme v0.5 · revised as the project evolves<span class="updated"> · updated <time datetime="2026-11-09T13:14+08:00">2026-11-09 13:14 UTC+8</time></span></span>
+  <span>Formal in Silico · Programme v0.5 · revised as the project evolves<span class="updated"> · updated <time datetime="2026-11-09T15:22+08:00">2026-11-09 15:22 UTC+8</time></span></span>
   <span><a href="progress.html">Progress</a> · <a href="showcases.html">Showcases</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="zh/" hreflang="zh-CN">中文版</a></span>
 </div></footer>
 </body>

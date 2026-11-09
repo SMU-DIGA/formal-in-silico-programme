@@ -38,7 +38,7 @@
   <p class="lead">What the programme has achieved and what it plans. Stages I&ndash;III belong to Phase&nbsp;I, certified correctness; Phase&nbsp;II, AI-powered unification, comes last and has not started. Stage by stage: Stage I (reached, frozen on 30 October 2026), Stage II (under way until 29 January 2027: making DFT and CALPHAD usable for research) and Stage III (candidates). Each domain has its own page with the item-by-item status. A feature counts as <b>done</b> only when it is implemented, agrees with the reference code, <i>and</i> every number it outputs is covered by a Lean theorem.</p>
   <figure class="where" id="where">
     <p class="eyebrow">Progress as of 9 November 2026</p>
-    <div class="wh-scroll"><div class="wh" role="img" aria-label="Timeline: Stage I reached on 30 October 2026; as of 9 November, the work is early in Stage II, before milestone M1 on 29 November; Stage II ends on 29 January 2027, then Stage III and Phase II.">
+    <div class="wh-scroll"><div class="wh" role="img" aria-label="Timeline: Stage I reached on 30 October 2026; as of 9 November, the work is early in Stage II, with milestone M1 reached on 9 November and M2 next on 27 December; Stage II ends on 29 January 2027, then Stage III and Phase II.">
       <div class="wh-phases"><span style="left:0;width:87%">Phase I · certified correctness</span><span class="p2" style="left:87%;width:13%">Phase II</span></div>
       <div class="wh-today" style="left:24.97%"><span>As of 9 Nov</span></div>
       <div class="wh-track">
@@ -47,7 +47,7 @@
         <div class="ws next" style="left:72%;width:15%"><b>Stage III</b><small>candidates</small></div>
         <div class="ws later" style="left:87%;width:13%"><b>Phase II</b><small>not started</small></div>
       </div>
-      <div class="wh-ms"><span class="wm ok" style="left:19.16%"><b>M0 ✓</b>30 Oct</span><span class="wm" style="left:36.58%"><b>M1</b>29 Nov</span><span class="wm" style="left:52.84%"><b>M2</b>27 Dec</span><span class="wm" style="left:69.1%"><b>M3</b>24 Jan</span></div>
+      <div class="wh-ms"><span class="wm ok" style="left:19.16%"><b>M0 ✓</b>30 Oct</span><span class="wm ok" style="left:36.58%"><b>M1 ✓</b>29 Nov</span><span class="wm" style="left:52.84%"><b>M2</b>27 Dec</span><span class="wm" style="left:69.1%"><b>M3</b>24 Jan</span></div>
     </div></div>
     <div class="wh-tasks"><p class="gl-h"><a href="#stage2">Stage II acceptance tasks</a></p>
       <div class="wh-row"><span class="wh-lab">DFT</span><ol class="wh-cells"><li class="wt f" title="D1 · Si, C, Ge (diamond), PBE · in progress">D1</li><li class="wt n" title="D2 · GaAs, AlP (zinc blende), PBE · planned">D2</li><li class="wt f" title="D3 · MgO, NaCl (rock salt), LDA · in progress">D3</li><li class="wt n" title="D4 · GaN, ZnO (wurtzite), LDA · planned">D4</li><li class="wt n" title="D5 · SrTiO₃ (cubic perovskite), LDA · planned">D5</li><li class="wt n" title="D6 · TiO₂ (rutile), LDA · planned">D6</li><li class="wt f" title="D7 · Al, Cu (fcc metals), LDA with Fermi–Dirac smearing · in progress">D7</li><li class="wt n" title="D8 · Fe (bcc, ferromagnetic), collinear LSDA · planned">D8</li><li class="wt p" title="D9 · Si: equilibrium lattice constant, PBE · partial">D9</li><li class="wt n" title="D10 · A researcher’s DFTK script (AlAs, LDA) · planned">D10</li><li class="wt n" title="D11 · A researcher’s ABINIT input (GaAs, HGH) · planned">D11</li><li class="wt n" title="D12 · Convergence table (GaAs, LDA) · planned">D12</li></ol><span class="wh-cnt">3 in progress · 1 partial · 8 planned</span></div>
@@ -243,7 +243,7 @@
     <thead><tr><th>Milestone</th><th>Status</th><th>Contents</th></tr></thead>
     <tbody>
       <tr><td>M0 · 30 Oct</td><td class="st"><span class="tag s">Done</span></td><td>Acceptance tasks frozen; cost profile of the 3D checker; designs for general lattices, PBE and multicomponent CALPHAD (all 30 Oct)</td></tr>
-      <tr><td>M1 · 29 Nov</td><td class="st"><span class="tag f">In progress</span></td><td>LDA certificate for any crystal structure (done 1 Nov for lattices with a rational cell volume, DFT-G150–G190; hexagonal lattices and per-axis grids at zero temperature 2 Nov, DFT-G250–G256); ternary point equilibrium (done 31 Oct, CAL-K110, K111)</td></tr>
+      <tr><td>M1 · 29 Nov</td><td class="st"><span class="tag s">Done · 9 Nov</span></td><td>LDA certificate for any crystal structure (done 1 Nov for lattices with a rational cell volume, DFT-G150–G190; hexagonal lattices and per-axis grids at zero temperature 2 Nov, DFT-G250–G256); ternary point equilibrium (done 31 Oct, CAL-K110, K111)</td></tr>
       <tr><td>M2 · 27 Dec</td><td class="st"><span class="tag n">Planned</span></td><td>PBE certificates (Si, C) and metal certificates (Al, Cu); ternary isothermal sections; order–disorder models; pycalphad interface; mid-stage agent trial</td></tr>
       <tr><td>M3 · 24 Jan</td><td class="st"><span class="tag n">Planned</span></td><td>Collinear spin; conversion of DFTK and ABINIT inputs; certified binary phase diagram; database self-check; quaternary point equilibrium; prebuilt binaries; tutorials; full acceptance run</td></tr>
     </tbody>
@@ -342,7 +342,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · achieved and planned<span class="updated"> · updated <time datetime="2026-11-09T13:14+08:00">2026-11-09 13:14 UTC+8</time></span></span>
+  <span>Formal in Silico · achieved and planned<span class="updated"> · updated <time datetime="2026-11-09T15:22+08:00">2026-11-09 15:22 UTC+8</time></span></span>
   <span><a href="./">Programme</a> · <a href="showcases.html">Showcases</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="zh/progress.html" hreflang="zh-CN">中文版</a></span>
 </div></footer>
 </body>
