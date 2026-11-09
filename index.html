@@ -49,8 +49,8 @@
     <div class="j ph"><span class="k">Experiment</span><span class="e"><i class="v">y</i><sub>obs</sub> − <i class="v">y</i><sub>model</sub> ∈ [<i class="v">y</i><sub>obs</sub> − hi, <i class="v">y</i><sub>obs</sub> − lo] ± <i class="v">σ</i><sub>exp</sub></span></div>
   </div>
   <div class="stats">
-    <div class="stat"><b data-n="all">1,283</b><span>claims registered in the trust ledger</span></div>
-    <div class="stat"><b data-n="all.proved">1,042</b><span>of them machine-proved (tier T3 or T4)</span></div>
+    <div class="stat"><b data-n="all">1,288</b><span>claims registered in the trust ledger</span></div>
+    <div class="stat"><b data-n="all.proved">1,044</b><span>of them machine-proved (tier T3 or T4)</span></div>
     <div class="stat"><b data-n="all.T4">383</b><span>at the end-to-end tier T4: checker soundness, kernel safety and kernel floating point</span></div>
     <div class="stat"><b>4</b><span>reference codes cross-checked: DFTK.jl, scikit-fem, ASE and pycalphad</span></div>
   </div>
@@ -110,6 +110,10 @@
   <h2>News</h2>
   <div class="prose"><p>Features added to the five domains, research results, and changes to the paper and this site, newest first. Item-by-item status is on the <a href="progress.html">progress page</a>; every claim cited here is in the trust ledger.</p></div>
   <ol class="news">
+    <li><time datetime="2026-11-09">9 Nov 2026</time><ul>
+      <li><span class="tag n">CALPHAD</span><b>Task C1 complete: the Al&ndash;Cu&ndash;Mg section at 673.15&nbsp;K.</b> On the full 741-point grid of the COST&nbsp;507 database, 734 points have an equilibrium certificate against all 46 phases; 7 are undecided (0.94&nbsp;%, the card allows 5&nbsp;%) and none is refused. Of the 7, one has a certificate that leaves LAVES_C36 undecided and six reached the 1&nbsp;h checker limit without a result, which we count as undecided. pycalphad disagrees nowhere it returns a number (CAL-D126, D127).</li>
+      <li><span class="tag n">DFT</span><b>Task D3 closed at reduced cut-offs.</b> MgO at 9.50&nbsp;Ha and NaCl at 3.56&nbsp;Ha on the 8&times;8&times;8 k grid remain the delivered results. The card&rsquo;s cut-offs are refused with a measured estimate of about 1,200&ndash;4,100 CPU-hours and at least 50&nbsp;GB (DFT-E156). A compiled-code speed-up, proved equal to the verified density sum, gives line-for-line identical output and trims the column phase by about 10&nbsp;% in a clean MgO comparison (DFT-G365, G366).</li>
+    </ul></li>
     <li><time datetime="2026-11-08">8 Nov 2026</time><ul>
       <li><span class="tag n">Platform</span><b>The first weekly cold run passes.</b> The version pushed on 7&nbsp;November was checked again from scratch, with no cached result and with the heavy cases: all 18 steps pass, among them 311 certificates accepted, 353 tampered certificates caught and 27 negative controls rejected, the 8&times;8&times;8 PBE certificates of Si, C and Ge and their tampered copies included. The run took 13.4&nbsp;h on 16 cores.</li>
     </ul></li>
@@ -118,6 +122,9 @@
       <li><span class="tag n">DFT</span><b>The metal energy checker now has its proof.</b> The soundness theorem of the Mermin energy checker is proved: when it accepts, the certified Fermi&ndash;Dirac solution exists and its free energy lies in the printed interval (DFT-G363&ndash;G364).</li>
       <li><span class="tag n">Platform</span><b>A faster gate for each pushed version.</b> Integration is now checked by a warm, audited run: unchanged checker results are reused and a random tenth of them is re-run and compared byte for byte; the cold run with the heavy cases moves to once a week and before every submission. Child processes now size their thread pools to the cores they are given.</li>
     </ul></li>
+  </ol>
+  <details class="news-more"><summary>Earlier: 27 September – 6 November 2026</summary>
+  <ol class="news">
     <li><time datetime="2026-11-06">6 Nov 2026</time><ul>
       <li><span class="tag n">Site</span><b>Where we are, in one picture.</b> The <a href="progress.html#where">progress page</a> opens with a timeline from Stage&nbsp;I to Phase&nbsp;II with the date the progress refers to marked, and the status of the 24 Stage&nbsp;II acceptance tasks.</li>
       <li><span class="tag n">Paper</span><b>The paper is on this page.</b> <a href="assets/paper.pdf"><i>Machine-Checked Triple Correctness of Scientific Simulations</i> (PDF)</a>, the Stage&nbsp;I version of 29 October 2026, can now be read here; the news list shows the last three dates, with older ones folded below.</li>
@@ -125,9 +132,6 @@
       <li><span class="tag n">MD</span><b>Static fcc crystal: relaxed ions and parameter boxes.</b> The cut-off Lennard&ndash;Jones certificate now also covers a relaxed-ion step (MD-A23, MD-B43, MD-C37), and a new box section proves, for every &epsilon;, &sigma; and cut-off radius in a stated box, a unique energy minimum with the lattice constant, energy and C<sub>11</sub>, C<sub>12</sub>, C<sub>44</sub> inside printed intervals (MD-A24, MD-B44). For argon with a relative half-width of 10<sup>&minus;3</sup> on all three parameters, C<sub>11</sub> lies in 4.078&ndash;4.110&nbsp;GPa; the check takes under a second, and an independent high-precision sum at two corners falls inside every interval. The relaxed-ion minimum is local, and the minimum and relaxation lines remain point statements.</li>
       <li><span class="tag n">DFT</span><b>Metals: the free-energy identity, and a checker still without its proof.</b> The Mermin free-energy identity at a Fermi&ndash;Dirac solution is proved for the checker core&rsquo;s model, with enclosures of the band entropy term (DFT-G353&ndash;G361), and a tighter occupation tag <code>occ fdt</code> narrows the Fermi-level interval of aluminium about ten-fold (DFT-G345&ndash;G352). A separate energy checker prints an interval for the free energy of Al on 2&times;2&times;2 (1.7&times;10<sup>&minus;9</sup>&nbsp;Ha wide, DFTK&rsquo;s value inside), but its soundness theorem is not yet proved, so that line is not a result (DFT-G362).</li>
     </ul></li>
-  </ol>
-  <details class="news-more"><summary>Earlier: 27 September – 4 November 2026</summary>
-  <ol class="news">
     <li><time datetime="2026-11-04">4 Nov 2026</time><ul>
       <li><span class="tag n">DFT</span><b>First certified metal: aluminium.</b> The Fermi&ndash;Dirac occupation plug-in of the checker core is proved sound, with the metal&rsquo;s conclusion as a named claim (DFT-G331&ndash;G338), and a new certificate format runs the core&rsquo;s check on general-lattice data with any number of electrons (DFT-G339). For fcc aluminium (LDA, GTH pseudopotential, small cut-off, smearing temperature 0.01&nbsp;Ha), the Fermi level is enclosed in an interval about 10<sup>&minus;7</sup>&nbsp;Ha wide on 2&times;2&times;2 and 4&times;4&times;4 k meshes, and DFTK&rsquo;s Fermi level and all of its bands lie inside the certified intervals; each band line rests on a proved theorem (DFT-G340&ndash;G344). Certificates with a changed electron count, temperature or centre are refused. The task&rsquo;s cut-off for Al and copper is still ahead.</li>
       <li><span class="tag n">DFT</span><b>PBE certificates for C and Ge.</b> At coarse cut-offs, diamond C and Ge now have PBE certificates like Si, with gap intervals 10<sup>&minus;11</sup>&ndash;10<sup>&minus;10</sup>&nbsp;Ha wide and DFTK&rsquo;s solution inside every interval (DFT-E147&ndash;E150). At the task card&rsquo;s cut-offs the dense check is refused with a measured reason and a cost estimate of 57,000&ndash;73,000 CPU-hours and 3.4&ndash;4 TB, far beyond the task&rsquo;s budget (DFT-E151); <code>fis dft estimate</code> now covers PBE (DFT-E152).</li>
@@ -815,7 +819,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · Programme v0.5 · revised as the project evolves<span class="updated"> · updated <time datetime="2026-11-08T19:31+08:00">2026-11-08 19:31 UTC+8</time></span></span>
+  <span>Formal in Silico · Programme v0.5 · revised as the project evolves<span class="updated"> · updated <time datetime="2026-11-09T09:59+08:00">2026-11-09 09:59 UTC+8</time></span></span>
   <span><a href="progress.html">Progress</a> · <a href="showcases.html">Showcases</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="zh/" hreflang="zh-CN">中文版</a></span>
 </div></footer>
 </body>

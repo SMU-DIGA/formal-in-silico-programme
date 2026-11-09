@@ -49,8 +49,8 @@
     <div class="j ph"><span class="k">实验</span><span class="e"><i class="v">y</i><sub>obs</sub> − <i class="v">y</i><sub>model</sub> ∈ [<i class="v">y</i><sub>obs</sub> − hi, <i class="v">y</i><sub>obs</sub> − lo] ± <i class="v">σ</i><sub>exp</sub></span></div>
   </div>
   <div class="stats">
-    <div class="stat"><b data-n="all">1283</b><span>条命题登记在可信账本中</span></div>
-    <div class="stat"><b data-n="all.proved">1042</b><span>条已有机器证明（T3 或 T4）</span></div>
+    <div class="stat"><b data-n="all">1288</b><span>条命题登记在可信账本中</span></div>
+    <div class="stat"><b data-n="all.proved">1044</b><span>条已有机器证明（T3 或 T4）</span></div>
     <div class="stat"><b data-n="all.T4">383</b><span>条达到端到端等级 T4：检查器可靠性、内核安全与内核浮点</span></div>
     <div class="stat"><b>4</b><span>个参照程序交叉校验：DFTK.jl、scikit-fem、ASE 与 pycalphad</span></div>
   </div>
@@ -110,6 +110,10 @@
   <h2>动态</h2>
   <div class="prose"><p>五个领域新增的功能、研究结果，以及论文与本网站的变化，新的在前。逐项状态见<a href="progress.html">进度</a>；这里引用的命题都登记在可信账本中。</p></div>
   <ol class="news">
+    <li><time datetime="2026-11-09">2026-11-09</time><ul>
+      <li><span class="tag n">CALPHAD</span><b>验收任务 C1 完成：Al–Cu–Mg 在 673.15&nbsp;K 的等温截面。</b>在 COST&nbsp;507 数据库的完整 741 点网格上，734 个点对全部 46 个相给出平衡证书；7 个点未判定（0.94%，任务卡允许 5%），没有拒绝。这 7 个点中，1 个的证书未能判定 LAVES_C36，6 个撞到检查器 1 小时时限、没有结果，我们把它们计为未判定。pycalphad 只要给出数值，就没有不一致（CAL-D126、D127）。</li>
+      <li><span class="tag n">DFT</span><b>验收任务 D3 以降低的截断收尾。</b>交付结果仍是 8×8×8 k 网格上 MgO 9.50&nbsp;Ha、NaCl 3.56&nbsp;Ha 的证书。任务卡的截断被拒绝，实测估算约需 1200–4100 CPU 小时、至少 50&nbsp;GB（DFT-E156）。一处编译代码提速已证明与经验证的密度求和相等，输出逐行相同；在干净的 MgO 对比中，列阶段快了约 10%（DFT-G365、G366）。</li>
+    </ul></li>
     <li><time datetime="2026-11-08">2026-11-08</time><ul>
       <li><span class="tag n">平台</span><b>第一次每周冷验证通过。</b>11 月 7 日推送的版本不用任何缓存结果、连同重型用例从头重新检查：18 个步骤全部通过，其中 311 个证书被接受，353 个篡改过的证书被发现，27 个负对照被拒绝；Si、C、Ge 在 8&times;8&times;8 k 网格上的 PBE 证书及其篡改版也在其中。这次运行在 16 个核上用了 13.4 小时。</li>
     </ul></li>
@@ -118,6 +122,9 @@
       <li><span class="tag n">DFT</span><b>金属能量检查器有了证明。</b>Mermin 能量检查器的可靠性定理已证明：检查器接受时，所认证的 Fermi–Dirac 解存在，且其自由能落在输出的区间内（DFT-G363–G364）。</li>
       <li><span class="tag n">平台</span><b>每个推送版本的验证更快。</b>集成改为带抽查的热验证：输入不变的检查结果直接复用，并随机抽取十分之一重新运行、逐字节比对；带重型用例的冷验证改为每周一次，以及每次投稿之前。子进程的线程池现在按分配到的核数设置。</li>
     </ul></li>
+  </ol>
+  <details class="news-more"><summary>更早：2026-09-27 至 11-06</summary>
+  <ol class="news">
     <li><time datetime="2026-11-06">2026-11-06</time><ul>
       <li><span class="tag n">网站</span><b>一张图看当前位置。</b><a href="progress.html#where">进度页</a>开头新增一条从第一阶段到第二期的时间线，标出进度截至的日期，并列出第二阶段 24 个验收任务的状态。</li>
       <li><span class="tag n">论文</span><b>论文已放到本页。</b><a href="../assets/paper.pdf">《Machine-Checked Triple Correctness of Scientific Simulations》（PDF，英文）</a>，即 2026-10-29 的 Stage&nbsp;I 版本，现在可以在这里阅读；动态列表只显示最近三个日期，更早的折叠在下面。</li>
@@ -125,9 +132,6 @@
       <li><span class="tag n">MD</span><b>静态 fcc 晶体：弛豫离子与参数盒。</b>带截断的 Lennard–Jones 证书现在还覆盖弛豫离子这一步（MD-A23、MD-B43、MD-C37）；新的盒段证明：对给定盒内的每一组 ε、σ 与截断半径，能量极小点唯一，晶格常数、能量与 C<sub>11</sub>、C<sub>12</sub>、C<sub>44</sub> 都落在输出的区间内（MD-A24、MD-B44）。对氩，三个参数的相对半宽取 10<sup>−3</sup> 时，C<sub>11</sub> 在 4.078–4.110 GPa；检查用时不到一秒，两个盒角上的独立高精度求和落在每个区间内。弛豫离子的极小点是局部的，极小与弛豫两行仍是点陈述。</li>
       <li><span class="tag n">DFT</span><b>金属：自由能恒等式，以及尚无证明的检查器。</b>在检查器核心的模型上证明了 Fermi–Dirac 解处的 Mermin 自由能恒等式，并给出能带熵项的包络（DFT-G353–G361）；更紧的占据标签 <code>occ fdt</code> 使铝的费米能级区间窄了约十倍（DFT-G345–G352）。一个独立的能量检查器对 2×2×2 的 Al 输出自由能区间（宽 1.7×10<sup>−9</sup> Ha，DFTK 的值在其内），但它的可靠性定理尚未证明，所以那一行还不是结果（DFT-G362）。</li>
     </ul></li>
-  </ol>
-  <details class="news-more"><summary>更早：2026-09-27 至 11-04</summary>
-  <ol class="news">
     <li><time datetime="2026-11-04">2026-11-04</time><ul>
       <li><span class="tag n">DFT</span><b>第一个有证书的金属：铝。</b>检查器核心的 Fermi–Dirac 占据插件已证明可靠，金属的结论写成具名命题（DFT-G331–G338）；新的证书格式在一般晶格数据上、对任意电子数运行核心的检查（DFT-G339）。对 fcc 铝（LDA，GTH 赝势，小截断，展宽温度 0.01 Ha），在 2×2×2 与 4×4×4 k 网格上，费米能级被包在约 10<sup>−7</sup> Ha 宽的区间内，DFTK 的费米能级与它的全部能带都落在证书的区间内；每一条能带行都有已证明的定理（DFT-G340–G344）。改动电子数、温度或中心的证书被拒绝。铝与铜在任务截断下的证书仍在后面。</li>
       <li><span class="tag n">DFT</span><b>C 与 Ge 的 PBE 证书。</b>在粗截断下，金刚石结构的 C 与 Ge 像 Si 一样有了 PBE 证书，能隙区间宽 10<sup>−11</sup>–10<sup>−10</sup> Ha，DFTK 的解在每个区间之内（DFT-E147–E150）。在任务卡的截断下，稠密检查有理由地拒绝，附实测原因与代价估计：5.7–7.3 万 CPU 小时、3.4–4 TB，远超任务的预算（DFT-E151）；<code>fis dft estimate</code> 现在也估计 PBE（DFT-E152）。</li>
@@ -815,7 +819,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · 项目纲领 v0.5 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-11-08T19:31+08:00">2026-11-08 19:31 UTC+8</time></span></span>
+  <span>Formal in Silico · 项目纲领 v0.5 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-11-09T09:59+08:00">2026-11-09 09:59 UTC+8</time></span></span>
   <span><a href="progress.html">进度</a> · <a href="showcases.html">成果展示</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="../" hreflang="en">English</a></span>
 </div></footer>
 </body>
