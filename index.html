@@ -49,8 +49,8 @@
     <div class="j ph"><span class="k">Experiment</span><span class="e"><i class="v">y</i><sub>obs</sub> − <i class="v">y</i><sub>model</sub> ∈ [<i class="v">y</i><sub>obs</sub> − hi, <i class="v">y</i><sub>obs</sub> − lo] ± <i class="v">σ</i><sub>exp</sub></span></div>
   </div>
   <div class="stats">
-    <div class="stat"><b data-n="all">1,288</b><span>claims registered in the trust ledger</span></div>
-    <div class="stat"><b data-n="all.proved">1,044</b><span>of them machine-proved (tier T3 or T4)</span></div>
+    <div class="stat"><b data-n="all">1,401</b><span>claims registered in the trust ledger</span></div>
+    <div class="stat"><b data-n="all.proved">1,143</b><span>of them machine-proved (tier T3 or T4)</span></div>
     <div class="stat"><b data-n="all.T4">383</b><span>at the end-to-end tier T4: checker soundness, kernel safety and kernel floating point</span></div>
     <div class="stat"><b>4</b><span>reference codes cross-checked: DFTK.jl, scikit-fem, ASE and pycalphad</span></div>
   </div>
@@ -110,6 +110,10 @@
   <h2>News</h2>
   <div class="prose"><p>Features added to the five domains, research results, and changes to the paper and this site, newest first. Item-by-item status is on the <a href="progress.html">progress page</a>; every claim cited here is in the trust ledger.</p></div>
   <ol class="news">
+    <li><time datetime="2026-11-11">11 Nov 2026</time><ul>
+      <li><span class="tag n">DFT</span><b>Task D7: the first certified Fermi&ndash;Dirac metals on the general-lattice route.</b> A metal checker on the route with point-group reduction of the k points certifies fcc Al and bcc Li (LDA, Fermi&ndash;Dirac smearing at <i class="v">T</i>&nbsp;=&nbsp;0.01&nbsp;Ha, 2&times;2&times;2 k grid, small cut-offs). For both, DFTK&rsquo;s chemical potential and Mermin free energy for the same discrete problem lie inside the certified intervals, and tampered certificates (changed electron count, doubled temperature, moved centre, altered symmetry operation) are refused (DFT-G400&ndash;G480, E170, E171). The task&rsquo;s own settings have not been run.</li>
+      <li><span class="tag n">DFT</span><b>Task D3: MgO at the card&rsquo;s reduced cut-off, on a 2&times;2&times;2 k grid only.</b> At 28&nbsp;Ha (about 900 plane waves per k point) the checker accepts the MgO certificate (DFT-E160). Streaming the Gram phase and running the final phase in parallel cut the checker&rsquo;s peak memory from 59 to 39&nbsp;GiB and its wall time from 4.5 to 4.1&nbsp;h on 16 cores, with line-for-line identical output (DFT-G367&ndash;G387, E161&ndash;E165). D3 is still not covered: the card&rsquo;s 8&times;8&times;8 runs are deferred.</li>
+    </ul></li>
     <li><time datetime="2026-11-09">9 Nov 2026</time><ul>
       <li><span class="tag n">Platform</span><b>Milestone M1 reached, ahead of its 29&nbsp;November date.</b> LDA certificates for any crystal structure and certified ternary point equilibria are in place. This milestone does not cover the acceptance tasks: D3 and C1 are not yet scored. An independent review of C1 recomputed its counts from the raw outputs; pycalphad finds the same stable phases at all 732 points it can compare.</li>
       <li><span class="tag n">CALPHAD</span><b>Task C1: the full Al&ndash;Cu&ndash;Mg section at 673.15&nbsp;K, but over the time limit.</b> On the full 741-point grid of the COST&nbsp;507 database, 734 points have an equilibrium certificate against 45 of the card&rsquo;s 46 phases (the tool refuses ALCE_AMORPHOUS, and no statement covers it); 7 are undecided (0.94&nbsp;%, the card allows 5&nbsp;%) and none is refused. Of the 7, one has a certificate that leaves LAVES_C36 undecided and six reached the 1&nbsp;h checker limit without a result, which we count as undecided. pycalphad disagrees nowhere it returns a number (CAL-D126, D127). The coverage meets the card, but the run took 18.7&nbsp;h on 8 cores against the card&rsquo;s limit of 1&nbsp;h on 32 cores, so the task is not yet scored.</li>
@@ -118,14 +122,14 @@
     <li><time datetime="2026-11-08">8 Nov 2026</time><ul>
       <li><span class="tag n">Platform</span><b>The first weekly cold run passes.</b> The version pushed on 7&nbsp;November was checked again from scratch, with no cached result and with the heavy cases: all 18 steps pass, among them 311 certificates accepted, 353 tampered certificates caught and 27 negative controls rejected, the 8&times;8&times;8 PBE certificates of Si, C and Ge and their tampered copies included. The run took 13.4&nbsp;h on 16 cores.</li>
     </ul></li>
+  </ol>
+  <details class="news-more"><summary>Earlier: 27 September – 7 November 2026</summary>
+  <ol class="news">
     <li><time datetime="2026-11-07">7 Nov 2026</time><ul>
       <li><span class="tag n">DFT</span><b>Task D1 on the card&rsquo;s 8&times;8&times;8 k grid: Si, C and Ge with PBE.</b> All 512 k points, no symmetry reduction: the checker accepts each crystal with a band-gap interval at most 3&times;10<sup>&minus;11</sup>&nbsp;Ha wide, and DFTK&rsquo;s solution of the same discrete problem lies inside (DFT-E153&ndash;E155, end to end). Two fixes to the compiled code removed a quadratic cost; each crystal now takes 53 minutes on 16 cores.</li>
       <li><span class="tag n">DFT</span><b>The metal energy checker now has its proof.</b> The soundness theorem of the Mermin energy checker is proved: when it accepts, the certified Fermi&ndash;Dirac solution exists and its free energy lies in the printed interval (DFT-G363&ndash;G364).</li>
       <li><span class="tag n">Platform</span><b>A faster gate for each pushed version.</b> Integration is now checked by a warm, audited run: unchanged checker results are reused and a random tenth of them is re-run and compared byte for byte; the cold run with the heavy cases moves to once a week and before every submission. Child processes now size their thread pools to the cores they are given.</li>
     </ul></li>
-  </ol>
-  <details class="news-more"><summary>Earlier: 27 September – 6 November 2026</summary>
-  <ol class="news">
     <li><time datetime="2026-11-06">6 Nov 2026</time><ul>
       <li><span class="tag n">Site</span><b>Where we are, in one picture.</b> The <a href="progress.html#where">progress page</a> opens with a timeline from Stage&nbsp;I to Phase&nbsp;II with the date the progress refers to marked, and the status of the 24 Stage&nbsp;II acceptance tasks.</li>
       <li><span class="tag n">Paper</span><b>The paper is on this page.</b> <a href="assets/paper.pdf"><i>Machine-Checked Triple Correctness of Scientific Simulations</i> (PDF)</a>, the Stage&nbsp;I version of 29 October 2026, can now be read here; the news list shows the last three dates, with older ones folded below.</li>
@@ -820,7 +824,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · Programme v0.5 · revised as the project evolves<span class="updated"> · updated <time datetime="2026-11-09T15:22+08:00">2026-11-09 15:22 UTC+8</time></span></span>
+  <span>Formal in Silico · Programme v0.5 · revised as the project evolves<span class="updated"> · updated <time datetime="2026-11-11T03:53+08:00">2026-11-11 03:53 UTC+8</time></span></span>
   <span><a href="progress.html">Progress</a> · <a href="showcases.html">Showcases</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="zh/" hreflang="zh-CN">中文版</a></span>
 </div></footer>
 </body>

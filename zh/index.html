@@ -49,8 +49,8 @@
     <div class="j ph"><span class="k">实验</span><span class="e"><i class="v">y</i><sub>obs</sub> − <i class="v">y</i><sub>model</sub> ∈ [<i class="v">y</i><sub>obs</sub> − hi, <i class="v">y</i><sub>obs</sub> − lo] ± <i class="v">σ</i><sub>exp</sub></span></div>
   </div>
   <div class="stats">
-    <div class="stat"><b data-n="all">1288</b><span>条命题登记在可信账本中</span></div>
-    <div class="stat"><b data-n="all.proved">1044</b><span>条已有机器证明（T3 或 T4）</span></div>
+    <div class="stat"><b data-n="all">1401</b><span>条命题登记在可信账本中</span></div>
+    <div class="stat"><b data-n="all.proved">1143</b><span>条已有机器证明（T3 或 T4）</span></div>
     <div class="stat"><b data-n="all.T4">383</b><span>条达到端到端等级 T4：检查器可靠性、内核安全与内核浮点</span></div>
     <div class="stat"><b>4</b><span>个参照程序交叉校验：DFTK.jl、scikit-fem、ASE 与 pycalphad</span></div>
   </div>
@@ -110,6 +110,10 @@
   <h2>动态</h2>
   <div class="prose"><p>五个领域新增的功能、研究结果，以及论文与本网站的变化，新的在前。逐项状态见<a href="progress.html">进度</a>；这里引用的命题都登记在可信账本中。</p></div>
   <ol class="news">
+    <li><time datetime="2026-11-11">2026-11-11</time><ul>
+      <li><span class="tag n">DFT</span><b>验收任务 D7：一般格子路线上第一批有证书的 Fermi–Dirac 金属。</b>在对 k 点做点群约化的路线上，新的金属检查器为 fcc Al 和 bcc Li 给出证书（LDA，Fermi–Dirac 展宽 <i class="v">T</i>&nbsp;=&nbsp;0.01&nbsp;Ha，2×2×2 k 网格，小截断）。两者 DFTK 对同一离散问题的化学势与 Mermin 自由能都落在认证区间内；篡改过的证书（改电子数、温度加倍、移动中心、改动对称操作）都被拒绝（DFT-G400–G480、E170、E171）。任务卡本身的设置还没有运行。</li>
+      <li><span class="tag n">DFT</span><b>验收任务 D3：MgO 在任务卡的降低截断下，只在 2×2×2 k 网格上。</b>在 28&nbsp;Ha（每个 k 点约 900 个平面波）下，检查器接受 MgO 的证书（DFT-E160）。Gram 阶段改为流式、最后阶段并行之后，检查器的峰值内存从 59 降到 39&nbsp;GiB，16 核上的墙时从 4.5 降到 4.1 小时，输出逐行相同（DFT-G367–G387、E161–E165）。D3 仍未覆盖：任务卡的 8×8×8 运行已推迟。</li>
+    </ul></li>
     <li><time datetime="2026-11-09">2026-11-09</time><ul>
       <li><span class="tag n">平台</span><b>里程碑 M1 达成，早于计划的 11 月 29 日。</b>任意晶体结构的 LDA 证书与三元点平衡证书已经具备。这个里程碑不包括验收任务的打分：D3 与 C1 尚未达标或尚未打分。对 C1 的一次独立审查从原始输出重新计数；在 pycalphad 能比较的全部 732 个点上，稳定相集合都相同。</li>
       <li><span class="tag n">CALPHAD</span><b>验收任务 C1：Al–Cu–Mg 在 673.15&nbsp;K 的完整等温截面，但超过了时间限制。</b>在 COST&nbsp;507 数据库的完整 741 点网格上，734 个点对任务卡 46 个相中的 45 个给出平衡证书（工具拒绝 ALCE_AMORPHOUS，这个相不在任何陈述之内）；7 个点未判定（0.94%，任务卡允许 5%），没有拒绝。这 7 个点中，1 个的证书未能判定 LAVES_C36，6 个撞到检查器 1 小时时限、没有结果，我们把它们计为未判定。pycalphad 只要给出数值，就没有不一致（CAL-D126、D127）。覆盖率达到了任务卡的要求，但运行在 8 核上用了 18.7 小时，任务卡的限制是 32 核 1 小时，所以这个任务尚未正式打分。</li>
@@ -118,14 +122,14 @@
     <li><time datetime="2026-11-08">2026-11-08</time><ul>
       <li><span class="tag n">平台</span><b>第一次每周冷验证通过。</b>11 月 7 日推送的版本不用任何缓存结果、连同重型用例从头重新检查：18 个步骤全部通过，其中 311 个证书被接受，353 个篡改过的证书被发现，27 个负对照被拒绝；Si、C、Ge 在 8&times;8&times;8 k 网格上的 PBE 证书及其篡改版也在其中。这次运行在 16 个核上用了 13.4 小时。</li>
     </ul></li>
+  </ol>
+  <details class="news-more"><summary>更早：2026-09-27 至 11-07</summary>
+  <ol class="news">
     <li><time datetime="2026-11-07">2026-11-07</time><ul>
       <li><span class="tag n">DFT</span><b>验收任务 D1 在卡片要求的 8×8×8 k 网格上：Si、C、Ge 的 PBE。</b>全部 512 个 k 点，不做对称约化：检查器对三种晶体都给出接受，带隙区间宽度不超过 3×10<sup>−11</sup>&nbsp;Ha，DFTK 对同一离散问题的解落在区间内（DFT-E153–E155，端到端）。编译代码的两处修复去掉了平方级的开销，现在每种晶体在 16 核上用 53 分钟。</li>
       <li><span class="tag n">DFT</span><b>金属能量检查器有了证明。</b>Mermin 能量检查器的可靠性定理已证明：检查器接受时，所认证的 Fermi–Dirac 解存在，且其自由能落在输出的区间内（DFT-G363–G364）。</li>
       <li><span class="tag n">平台</span><b>每个推送版本的验证更快。</b>集成改为带抽查的热验证：输入不变的检查结果直接复用，并随机抽取十分之一重新运行、逐字节比对；带重型用例的冷验证改为每周一次，以及每次投稿之前。子进程的线程池现在按分配到的核数设置。</li>
     </ul></li>
-  </ol>
-  <details class="news-more"><summary>更早：2026-09-27 至 11-06</summary>
-  <ol class="news">
     <li><time datetime="2026-11-06">2026-11-06</time><ul>
       <li><span class="tag n">网站</span><b>一张图看当前位置。</b><a href="progress.html#where">进度页</a>开头新增一条从第一阶段到第二期的时间线，标出进度截至的日期，并列出第二阶段 24 个验收任务的状态。</li>
       <li><span class="tag n">论文</span><b>论文已放到本页。</b><a href="../assets/paper.pdf">《Machine-Checked Triple Correctness of Scientific Simulations》（PDF，英文）</a>，即 2026-10-29 的 Stage&nbsp;I 版本，现在可以在这里阅读；动态列表只显示最近三个日期，更早的折叠在下面。</li>
@@ -820,7 +824,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · 项目纲领 v0.5 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-11-09T15:22+08:00">2026-11-09 15:22 UTC+8</time></span></span>
+  <span>Formal in Silico · 项目纲领 v0.5 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-11-11T03:53+08:00">2026-11-11 03:53 UTC+8</time></span></span>
   <span><a href="progress.html">进度</a> · <a href="showcases.html">成果展示</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="../" hreflang="en">English</a></span>
 </div></footer>
 </body>
