@@ -49,9 +49,9 @@
     <div class="j ph"><span class="k">Experiment</span><span class="e"><i class="v">y</i><sub>obs</sub> − <i class="v">y</i><sub>model</sub> ∈ [<i class="v">y</i><sub>obs</sub> − hi, <i class="v">y</i><sub>obs</sub> − lo] ± <i class="v">σ</i><sub>exp</sub></span></div>
   </div>
   <div class="stats">
-    <div class="stat"><b data-n="all">1,401</b><span>claims registered in the trust ledger</span></div>
-    <div class="stat"><b data-n="all.proved">1,143</b><span>of them machine-proved (tier T3 or T4)</span></div>
-    <div class="stat"><b data-n="all.T4">383</b><span>at the end-to-end tier T4: checker soundness, kernel safety and kernel floating point</span></div>
+    <div class="stat"><b data-n="all">1,411</b><span>claims registered in the trust ledger</span></div>
+    <div class="stat"><b data-n="all.proved">1,147</b><span>of them machine-proved (tier T3 or T4)</span></div>
+    <div class="stat"><b data-n="all.T4">387</b><span>at the end-to-end tier T4: checker soundness, kernel safety and kernel floating point</span></div>
     <div class="stat"><b>4</b><span>reference codes cross-checked: DFTK.jl, scikit-fem, ASE and pycalphad</span></div>
   </div>
     <p class="g-cap">Proof dependencies: what every claim in the ledger is built on, read from the Lean proof terms. Click a node to follow its chain; each domain page has the same graph for its own claims.</p>
@@ -113,6 +113,10 @@
     <li><time datetime="2026-11-11">11 Nov 2026</time><ul>
       <li><span class="tag n">DFT</span><b>Task D7: the first certified Fermi&ndash;Dirac metals on the general-lattice route.</b> A metal checker on the route with point-group reduction of the k points certifies fcc Al and bcc Li (LDA, Fermi&ndash;Dirac smearing at <i class="v">T</i>&nbsp;=&nbsp;0.01&nbsp;Ha, 2&times;2&times;2 k grid, small cut-offs). For both, DFTK&rsquo;s chemical potential and Mermin free energy for the same discrete problem lie inside the certified intervals, and tampered certificates (changed electron count, doubled temperature, moved centre, altered symmetry operation) are refused (DFT-G400&ndash;G480, E170, E171). The task&rsquo;s own settings have not been run.</li>
       <li><span class="tag n">DFT</span><b>Task D3: MgO at the card&rsquo;s reduced cut-off, on a 2&times;2&times;2 k grid only.</b> At 28&nbsp;Ha (about 900 plane waves per k point) the checker accepts the MgO certificate (DFT-E160). Streaming the Gram phase and running the final phase in parallel cut the checker&rsquo;s peak memory from 59 to 39&nbsp;GiB and its wall time from 4.5 to 4.1&nbsp;h on 16 cores, with line-for-line identical output (DFT-G367&ndash;G387, E161&ndash;E165). D3 is still not covered: the card&rsquo;s 8&times;8&times;8 runs are deferred.</li>
+      <li><span class="tag n">CALPHAD</span><b>Task C11: verdicts inside a pycalphad script.</b> Four added lines give each grid point of a pycalphad <code>equilibrium</code> call a verdict: certified, shown not to be the global minimum, or undecided with a reason. On the card&rsquo;s 3&times;4 Cr&ndash;Ti grid: 8 certified, 3 not global (pycalphad&rsquo;s state is at least 4,499 to 9,819&nbsp;J/mol above the certified minimum), and 1 undecided because pycalphad returned NaN at that point (CAL-K140, K141). The verdicts are about the model without the gas phase, which the checker does not yet read; the floating-point comparison itself is not proved.</li>
+      <li><span class="tag n">CALPHAD</span><b>Task C12: a quaternary solder point certified at 450&nbsp;K.</b> Ag&ndash;Bi&ndash;Cu&ndash;Sn with all 14 phases of the NIST solder database: at 450&nbsp;K every equilibrium has BCT_A5, EPSILON and CU6SN5_L, with the card&rsquo;s widths, and pycalphad&rsquo;s amounts lie inside. At 520&nbsp;K single-phase liquid is certified, but its composition window is not yet within the card&rsquo;s 0.005; the larger run that may close it awaits approval (CAL-K142).</li>
+      <li><span class="tag n">CALPHAD</span><b>Task C5: Cu&ndash;Zn at 700&nbsp;K is certified ordered &beta;&prime;.</b> At <i class="v">x</i><sub>Zn</sub>&nbsp;=&nbsp;0.48 with all 8 phases of the original database, the only stable phase is BCC_B2, and its order parameter |&eta;| lies in [0.3685, 0.4016], so the phase is ordered; pycalphad&rsquo;s energy and site fractions lie inside (CAL-K143). The 101-temperature scan of the card is designed, not run.</li>
+      <li><span class="tag n">DFT</span><b>Tasks D10 and D11: DFTK scripts and ABINIT inputs converted to the certified problem.</b> Two converters read a DFTK 0.8 script or an ABINIT 10 input and give the exact discrete problem, refusing with the field named what they cannot convert; each certificate&rsquo;s echo is compared field by field with the converted problem. Small AlAs (from the D10 script) and GaAs (from an ABINIT input) cases are certified at a coarse cut-off of 1.5&nbsp;Ha (DFT-G500&ndash;G504). The D11 card input is refused with its reasons (pspcod&nbsp;3 pseudopotentials, the Teter Pad&eacute; LDA, four k-grid shifts), an outcome the card allows. The card settings have not been run: they need more memory than this wave allows, and the total energy has no certified interval in this mode yet (DFT-E180).</li>
     </ul></li>
     <li><time datetime="2026-11-09">9 Nov 2026</time><ul>
       <li><span class="tag n">Platform</span><b>Milestone M1 reached, ahead of its 29&nbsp;November date.</b> LDA certificates for any crystal structure and certified ternary point equilibria are in place. This milestone does not cover the acceptance tasks: D3 and C1 are not yet scored. An independent review of C1 recomputed its counts from the raw outputs; pycalphad finds the same stable phases at all 732 points it can compare.</li>
@@ -824,7 +828,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · Programme v0.5 · revised as the project evolves<span class="updated"> · updated <time datetime="2026-11-11T03:53+08:00">2026-11-11 03:53 UTC+8</time></span></span>
+  <span>Formal in Silico · Programme v0.5 · revised as the project evolves<span class="updated"> · updated <time datetime="2026-11-11T11:07+08:00">2026-11-11 11:07 UTC+8</time></span></span>
   <span><a href="progress.html">Progress</a> · <a href="showcases.html">Showcases</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="zh/" hreflang="zh-CN">中文版</a></span>
 </div></footer>
 </body>
