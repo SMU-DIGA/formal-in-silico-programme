@@ -49,9 +49,9 @@
     <div class="j ph"><span class="k">实验</span><span class="e"><i class="v">y</i><sub>obs</sub> − <i class="v">y</i><sub>model</sub> ∈ [<i class="v">y</i><sub>obs</sub> − hi, <i class="v">y</i><sub>obs</sub> − lo] ± <i class="v">σ</i><sub>exp</sub></span></div>
   </div>
   <div class="stats">
-    <div class="stat"><b data-n="all">1411</b><span>条命题登记在可信账本中</span></div>
-    <div class="stat"><b data-n="all.proved">1147</b><span>条已有机器证明（T3 或 T4）</span></div>
-    <div class="stat"><b data-n="all.T4">387</b><span>条达到端到端等级 T4：检查器可靠性、内核安全与内核浮点</span></div>
+    <div class="stat"><b data-n="all">1421</b><span>条命题登记在可信账本中</span></div>
+    <div class="stat"><b data-n="all.proved">1154</b><span>条已有机器证明（T3 或 T4）</span></div>
+    <div class="stat"><b data-n="all.T4">392</b><span>条达到端到端等级 T4：检查器可靠性、内核安全与内核浮点</span></div>
     <div class="stat"><b>4</b><span>个参照程序交叉校验：DFTK.jl、scikit-fem、ASE 与 pycalphad</span></div>
   </div>
     <p class="g-cap">证明依赖：账本里的每个命题建立在哪些命题之上，直接从 Lean 证明项读出。点一个节点追踪它的链；各领域页里有只看本领域的同一张图。</p>
@@ -111,6 +111,8 @@
   <div class="prose"><p>五个领域新增的功能、研究结果，以及论文与本网站的变化，新的在前。逐项状态见<a href="progress.html">进度</a>；这里引用的命题都登记在可信账本中。</p></div>
   <ol class="news">
     <li><time datetime="2026-11-11">2026-11-11</time><ul>
+      <li><span class="tag n">CALPHAD</span><b>验收任务 C5：Cu&ndash;Zn 在 101 个温度中的 97 个得到相图行证书。</b>新的行证书在 Lean 中检查，覆盖一个二元系在一个温度下的全部成分范围，对文件所定义的模型可靠（CAL-T120&ndash;T122）。任务卡的运行（400&ndash;1400&nbsp;K，步长 10&nbsp;K）中，97 个温度得到证书，每一个温度上 pycalphad 的答案都在窗口内；其中 75 个温度的每条相界宽度都达到任务卡的 0.005。未完成：410&nbsp;K 驱动在纯 Zn 附近失败；710&ndash;730&nbsp;K 检查器到达 10 分钟上限；22 个有证书的温度宽于 0.005（1360&nbsp;K 漏掉了纯 Cu 一侧很窄的 FCC&nbsp;+&nbsp;液相区）；运行用了 1 小时 52 分，超过任务卡的 1 小时，因此不计分（CAL-K150&ndash;K152）。</li>
+      <li><span class="tag n">CALPHAD</span><b>验收任务 C12：520&nbsp;K 的窗口达到任务卡要求。</b>粗盒子的原因：驱动选的参考态条件数差，检查器的细分预算在窗口被分细之前就用完了。改选条件更好的参考态后，液相窗口最宽 0.0023（任务卡 0.005），检查用时 82&nbsp;s；450&nbsp;K 不变，两个温度都达到任务卡的宽度。检查器没有改动；pycalphad 接口现在缺省采用这种选择（CAL-K170&ndash;K172）。未完成：此前一个 Cr&ndash;Fe&ndash;Ni 点上 BCC_B2 的粗盒子尾部与参考态的选择无关，需要改检查器，目前只是提议（CAL-K173）。</li>
       <li><span class="tag n">DFT</span><b>验收任务 D7：一般格子路线上第一批有证书的 Fermi–Dirac 金属。</b>在对 k 点做点群约化的路线上，新的金属检查器为 fcc Al 和 bcc Li 给出证书（LDA，Fermi–Dirac 展宽 <i class="v">T</i>&nbsp;=&nbsp;0.01&nbsp;Ha，2×2×2 k 网格，小截断）。两者 DFTK 对同一离散问题的化学势与 Mermin 自由能都落在认证区间内；篡改过的证书（改电子数、温度加倍、移动中心、改动对称操作）都被拒绝（DFT-G400–G480、E170、E171）。任务卡本身的设置还没有运行。</li>
       <li><span class="tag n">DFT</span><b>验收任务 D3：MgO 在任务卡的降低截断下，只在 2×2×2 k 网格上。</b>在 28&nbsp;Ha（每个 k 点约 900 个平面波）下，检查器接受 MgO 的证书（DFT-E160）。Gram 阶段改为流式、最后阶段并行之后，检查器的峰值内存从 59 降到 39&nbsp;GiB，16 核上的墙时从 4.5 降到 4.1 小时，输出逐行相同（DFT-G367–G387、E161–E165）。D3 仍未覆盖：任务卡的 8×8×8 运行已推迟。</li>
       <li><span class="tag n">CALPHAD</span><b>验收任务 C11：在 pycalphad 脚本里原地给出判定。</b>在脚本里加 4 行，pycalphad <code>equilibrium</code> 的每个网格点都得到一个判定：certified、被证明不是全局最小、或未判定并写出原因。任务卡的 3&times;4 Cr&ndash;Ti 网格上：8 个 certified，3 个不是全局最小（pycalphad 的状态比认证最小值至少高 4499 到 9819&nbsp;J/mol），1 个未判定，因为 pycalphad 在该点返回 NaN（CAL-K140、K141）。判定都关于去掉气相的模型（检查器还不读气相）；浮点比较本身没有证明。</li>
@@ -828,7 +830,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · 项目纲领 v0.5 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-11-11T13:13+08:00">2026-11-11 13:13 UTC+8</time></span></span>
+  <span>Formal in Silico · 项目纲领 v0.5 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-11-11T20:18+08:00">2026-11-11 20:18 UTC+8</time></span></span>
   <span><a href="progress.html">进度</a> · <a href="showcases.html">成果展示</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="../" hreflang="en">English</a></span>
 </div></footer>
 </body>
