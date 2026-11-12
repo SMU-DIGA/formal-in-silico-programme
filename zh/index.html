@@ -49,9 +49,9 @@
     <div class="j ph"><span class="k">实验</span><span class="e"><i class="v">y</i><sub>obs</sub> − <i class="v">y</i><sub>model</sub> ∈ [<i class="v">y</i><sub>obs</sub> − hi, <i class="v">y</i><sub>obs</sub> − lo] ± <i class="v">σ</i><sub>exp</sub></span></div>
   </div>
   <div class="stats">
-    <div class="stat"><b data-n="all">1433</b><span>条命题登记在可信账本中</span></div>
-    <div class="stat"><b data-n="all.proved">1163</b><span>条已有机器证明（T3 或 T4）</span></div>
-    <div class="stat"><b data-n="all.T4">399</b><span>条达到端到端等级 T4：检查器可靠性、内核安全与内核浮点</span></div>
+    <div class="stat"><b data-n="all">1444</b><span>条命题登记在可信账本中</span></div>
+    <div class="stat"><b data-n="all.proved">1168</b><span>条已有机器证明（T3 或 T4）</span></div>
+    <div class="stat"><b data-n="all.T4">404</b><span>条达到端到端等级 T4：检查器可靠性、内核安全与内核浮点</span></div>
     <div class="stat"><b>4</b><span>个参照程序交叉校验：DFTK.jl、scikit-fem、ASE 与 pycalphad</span></div>
   </div>
     <p class="g-cap">证明依赖：账本里的每个命题建立在哪些命题之上，直接从 Lean 证明项读出。点一个节点追踪它的链；各领域页里有只看本领域的同一张图。</p>
@@ -114,6 +114,8 @@
       <li><span class="tag n">CALPHAD</span><b>验收任务 C5：证书表明 pycalphad 在 710&ndash;730&nbsp;K 的平衡不是全局最小。</b>在 Cu&ndash;Zn 的 &beta;/&beta;&prime; 有序化温度附近，pycalphad 0.11.2 的缺省设置停在无序 BCC_B2，漏掉了有序的 &beta;&prime; 态。从有序态出发的点证书在全部 57 个点上被接受（710、720、730&nbsp;K 的 <i class="v">x</i><sub>Zn</sub>&nbsp;=&nbsp;0.40&ndash;0.56，以及 700、740&nbsp;K 的 6 个对照点）。pycalphad 的状态高于已证最小值的：710&nbsp;K 17 个成分中 15 个（最多 6.75&nbsp;J/mol），720&nbsp;K 17 个中 17 个（最多 2.85），730&nbsp;K 17 个中 10 个（最多 0.60）；6 个对照点全部得到证书。被证明的是该数据库模型在每个点的最小 Gibbs 能（去掉单独的无序 BCC 条目：它就是两个亚点阵相等的 BCC_B2）；pycalphad 的能量按它自己报告的数值取用，这一浮点比较本身没有证明。结论只针对这个数据库和 pycalphad 0.11.2 的缺省设置（CAL-K157、K159）。我们的驱动改用有序起始格点后，任务卡运行中超时的 700&ndash;740&nbsp;K 各行都得到证书，宽度在 0.005 以内；pycalphad 缺省设置的答案在 710&nbsp;K（273 个相态）和 720&nbsp;K（86 个）落在证书窗口之外（CAL-K158）。</li>
       <li><span class="tag n">CALPHAD</span><b>验收任务 C5：任务卡运行中的驱动失败在小算例上修好。</b>410&nbsp;K 在纯 Zn 附近的失败来自 pycalphad 状态 10<sup>&minus;16</sup> 的舍入，驱动现在加入纯端态。1360&nbsp;K 并没有窄的 FCC&nbsp;+&nbsp;液相区（pycalphad 在整个范围都是液相，更正 11 月 11 日的条目）；0.05 的宽度来自第一个格子里 FCC 未被排除，驱动现在会二分这类格子。420&ndash;670、840、960&nbsp;K 超过 0.005 的宽度通过更细的证书设置与细分窄相区解决。逐个运行，410、420、490、560、650、840、960、1360&nbsp;K 全部得到证书，pycalphad 的答案都在窗口内，每个宽度都在 0.005 以内（CAL-K153&ndash;K156）。检查器没有改动。</li>
       <li><span class="tag n">CALPHAD</span><b>更快的相图行检查器。</b>新的检查器入口对共用同一条公切线的所有格子只做一次第二遍计算，其可靠性在 Lean 中证明（CAL-T123&ndash;T125，套件用例 T126）。在任务卡 6 个温度的证书上，输出逐行相同，检查器 CPU 时间少 2.8 倍（CAL-K161）。未完成：C5 仍不计分；任务卡的 101 个温度没有重跑，留到最终验收运行。</li>
+      <li><span class="tag n">DFT</span><b>验收任务 D2：GaAs 与 AlP 在任务卡的 8×8×8 k 网格、粗截断下得到证书。</b>D1 的稠密 PBE 检查器直接支持两种原子，Lean、检查器与驱动都没有改动（DFT-E200）。闪锌矿 GaAs 与 AlP 在 <i class="v">Q</i>&nbsp;=&nbsp;17/2、全部 512 个 k 点、不做对称约化时，检查器接受，带隙区间为 [0.078322888675, 0.078322888687]&nbsp;Ha（GaAs）与 [0.076266778151, 0.076266778163]&nbsp;Ha（AlP），各在 32 核上约 50 分钟；DFTK 对同一离散问题的解在每个区间之内，2×2×2 与 3×3×3 网格上也是如此（DFT-E201&ndash;E203、E206&ndash;E207）。还不是“部分完成”：截断仍低于任务卡的约化设置。在约化设置处稠密检查有理由地拒绝，估计需要约 6 万 CPU 小时与 3&nbsp;TB 以上内存（DFT-E205）；要做到需要把 PBE 放到分裂、点群路线上，并有 PBE 版的 Rule&nbsp;U，与 D1 相同。</li>
+      <li><span class="tag n">CALPHAD</span><b>验收任务 C4：截面驱动已就绪，还没有点得到证书。</b>Ni&ndash;Al&ndash;Cr 截面（Liu 2016 数据库，1273.15&nbsp;K，富 Ni 一半，190 个点）有了驱动任务、任务卡的相列表与 pycalphad 相图（CAL-D130）。检查器支持任务卡 19 个相中的 18 个（不含气相），所以此任务最多计 P。在覆盖相图各区域的 10 个小算例上，驱动在每个点都写出证书，但检查器在全部 10 个点都达到 10 分钟上限（CAL-D131）；另一次 32 个点、每点 55 分钟上限的运行，32 个点也都未判定。代价在有序 L1<sub>2</sub> 与 B2 相的第一遍（CAL-D132）：现有检查器无法达到任务卡“32 核 1 小时”的要求。加速这一遍的工作正在进行。</li>
     </ul></li>
     <li><time datetime="2026-11-11">2026-11-11</time><ul>
       <li><span class="tag n">CALPHAD</span><b>验收任务 C5：Cu&ndash;Zn 在 101 个温度中的 97 个得到相图行证书。</b>新的行证书在 Lean 中检查，覆盖一个二元系在一个温度下的全部成分范围，对文件所定义的模型可靠（CAL-T120&ndash;T122）。任务卡的运行（400&ndash;1400&nbsp;K，步长 10&nbsp;K）中，97 个温度得到证书，每一个温度上 pycalphad 的答案都在窗口内；其中 75 个温度的每条相界宽度都达到任务卡的 0.005。未完成：410&nbsp;K 驱动在纯 Zn 附近失败；710&ndash;730&nbsp;K 检查器到达 10 分钟上限；22 个有证书的温度宽于 0.005（1360&nbsp;K 漏掉了纯 Cu 一侧很窄的 FCC&nbsp;+&nbsp;液相区）；运行用了 1 小时 52 分，超过任务卡的 1 小时，因此不计分（CAL-K150&ndash;K152）。</li>
@@ -835,7 +837,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · 项目纲领 v0.5 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-11-12T02:21+08:00">2026-11-12 02:21 UTC+8</time></span></span>
+  <span>Formal in Silico · 项目纲领 v0.5 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-11-12T11:54+08:00">2026-11-12 11:54 UTC+8</time></span></span>
   <span><a href="progress.html">进度</a> · <a href="showcases.html">成果展示</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="../" hreflang="en">English</a></span>
 </div></footer>
 </body>
