@@ -49,9 +49,9 @@
     <div class="j ph"><span class="k">实验</span><span class="e"><i class="v">y</i><sub>obs</sub> − <i class="v">y</i><sub>model</sub> ∈ [<i class="v">y</i><sub>obs</sub> − hi, <i class="v">y</i><sub>obs</sub> − lo] ± <i class="v">σ</i><sub>exp</sub></span></div>
   </div>
   <div class="stats">
-    <div class="stat"><b data-n="all">1493</b><span>条命题登记在可信账本中</span></div>
-    <div class="stat"><b data-n="all.proved">1192</b><span>条已有机器证明（T3 或 T4）</span></div>
-    <div class="stat"><b data-n="all.T4">417</b><span>条达到端到端等级 T4：检查器可靠性、内核安全与内核浮点</span></div>
+    <div class="stat"><b data-n="all">1520</b><span>条命题登记在可信账本中</span></div>
+    <div class="stat"><b data-n="all.proved">1200</b><span>条已有机器证明（T3 或 T4）</span></div>
+    <div class="stat"><b data-n="all.T4">423</b><span>条达到端到端等级 T4：检查器可靠性、内核安全与内核浮点</span></div>
     <div class="stat"><b>4</b><span>个参照程序交叉校验：DFTK.jl、scikit-fem、ASE 与 pycalphad</span></div>
   </div>
     <p class="g-cap">证明依赖：账本里的每个命题建立在哪些命题之上，直接从 Lean 证明项读出。点一个节点追踪它的链；各领域页里有只看本领域的同一张图。</p>
@@ -110,6 +110,12 @@
   <h2>动态</h2>
   <div class="prose"><p>五个领域新增的功能、研究结果，以及论文与本网站的变化，新的在前。逐项状态见<a href="progress.html">进度</a>；这里引用的命题都登记在可信账本中。</p></div>
   <ol class="news">
+    <li><time datetime="2026-11-13">2026-11-13</time><ul>
+      <li><span class="tag n">DFT</span><b>验收任务 D7（Al 与 Cu）计为 R（有理由地拒绝）。</b>在 Al 的任务卡设置（20&nbsp;Ha，12×12×12 k 网格）下，检查器的 Newton–Kantorovich 界需要 4<i class="v">a</i>η<sub>T</sub>&nbsp;≤&nbsp;<i class="v">b</i><sup>2</sup>&nbsp;≈&nbsp;0.051。在卡片截断、2×2×2 网格上的预检给出 823，计划中各项改进的最好有效投影约 0.117。这些是浮点估计，不是证书。任务卡 38&nbsp;Ha 的 Cu 遇到同一障碍（DFT-E285–E289）。账本中此前一个浮点闸门判为 GO；独立复核发现它忽略了闭合条件中的 <i class="v">b</i><sup>2</sup>，另有其他错误，现已更正为 NO-GO（DFT-E281–E283 的注明日期的更正）。</li>
+      <li><span class="tag n">DFT</span><b>适用于任意晶格、逐原子电荷的认证 Ewald（离子–离子）能。</b>新的检查器入口对任意晶格、每个原子各有电荷的晶体给出 Ewald 能的区间；它的可靠性已在 Lean 中证明，并证明了第一阶段的 fcc Ewald 能是它的特例（DFT-G530–G532）。fcc Al 与闪锌矿 GaAs 的区间宽度不超过 1.7×10<sup>−11</sup>&nbsp;Ha，都含 30 位的参考值（G533、G534）。</li>
+      <li><span class="tag n">DFT</span><b>验收任务 D12：一般晶格路线上认证的零温能量步。</b>检查器的新选项 <code>--energy</code> 给出认证解的电子 LDA 能量的区间，可靠性已证明（DFT-G571–G573）。在五个 GaAs 小算例上区间宽度不超过 5.4×10<sup>−10</sup>&nbsp;Ha，有 DFTK 参考值的四例中 DFTK 的值都在区间内（E293）。这个能量不含离子–离子项：还没有与上面的 Ewald 区间合成。</li>
+      <li><span class="tag n">DFT</span><b>验收任务 D12：收敛表的第一个认证点。</b>GaAs 在任务卡的 10&nbsp;Ha、4×4×4 k 网格上，检查器接受：SCF 解被包住，零温占据有定义，网格能隙在 [0.016315585, 0.016315589]&nbsp;Ha 内（DFT-E295）。这是表格的一个点，不是收敛的答案，也还没有 [E]；P 需要任务卡 12 个点中至少 6 个。检查用了 73.5 CPU 小时与 19&nbsp;GiB，是代价模型估计的 1.35 倍与 2.1 倍，模型已重新标定（E294）。</li>
+    </ul></li>
     <li><time datetime="2026-11-12">2026-11-12</time><ul>
       <li><span class="tag n">CALPHAD</span><b>验收任务 C5：任务卡的全部运行得到证书——两项在我们自己的运行中都达到 C 级。</b>Cu&ndash;Zn（Liang 2015）、全部 8 个相、400&ndash;1400&nbsp;K 的全部 101 个温度：每一行都得到证书，101 个温度上 pycalphad 的答案都在窗口内（0 个在外，共 73489 个相态），每条相界宽度都在任务卡的 0.005 以内（最大 0.0036）；32 核上 48 分 21 秒，在任务卡的 1 小时之内（CAL-K222）。用的是修好的驱动，以及让最重的相先跑的行检查器入口；该入口与更快的行检查器结论相同，已在 Lean 中证明（CAL-T170&ndash;T174）。加上 11 月 11 日 700&nbsp;K 的 [EQ] 证书（CAL-K143），这是第二阶段第一个两项都达到 C 级的 CALPHAD 任务。未完成：验收任务由协议下的代理用户评分，评分还没做，因此 C5 显示为“部分完成”。</li>
       <li><span class="tag n">CALPHAD</span><b>验收任务 C9：Al&ndash;Si 的 P 级内容完整。</b>共晶 LIQUID&nbsp;&rarr;&nbsp;FCC_A1&nbsp;+&nbsp;DIAMOND_A4（COST&nbsp;507）有不变反应证书 [850.1471, 850.1521]&nbsp;K，pycalphad 的 850.1498&nbsp;K 与三相成分都在其中（CAL-T150）。500&ndash;1800&nbsp;K 每 10&nbsp;K 的相图行证书在全部 131 个温度上得到；每个温度上 pycalphad 的答案都在窗口内，每个宽度都在 0.005 以内。运行在 32 核上用 18 分 45 秒（CAL-K200&ndash;K202）。最多计 P，因为相集小于任务卡的 26 个：行检查器拒绝 ALCE_AMORPHOUS 并给出理由，所以用 25 个相；不变反应证书读入 21 个。未完成：C 级需要的温度区间 [TB] 证书和“JSON 加图”的产物；代理评分。</li>
@@ -132,14 +138,14 @@
       <li><span class="tag n">CALPHAD</span><b>验收任务 C5：Cu&ndash;Zn 在 700&nbsp;K 被证明是有序的 &beta;&prime;。</b>在 <i class="v">x</i><sub>Zn</sub>&nbsp;=&nbsp;0.48、原数据库的全部 8 个相下，唯一的稳定相是 BCC_B2，其序参量 |&eta;| 在 [0.3685, 0.4016] 内，所以是有序相；pycalphad 的能量与位置分数都在区间内（CAL-K143）。任务卡 101 个温度的扫描只有设计，没有运行。</li>
       <li><span class="tag n">DFT</span><b>验收任务 D10、D11：DFTK 脚本与 ABINIT 输入转换成被认证的问题。</b>两个转换器读入 DFTK 0.8 脚本或 ABINIT 10 输入，给出精确的离散问题，不能转换的内容被拒绝并写出字段名；每个证书的回显都与转换出的问题逐项比较。AlAs（来自 D10 脚本）与 GaAs（来自一个 ABINIT 输入）的小例子在 1.5&nbsp;Ha 的粗截断下得到证书（DFT-G500&ndash;G504）。D11 任务卡的输入被拒绝并写出原因（pspcod&nbsp;3 赝势、Teter Pad&eacute; LDA、四个 k 网格平移），这是任务卡允许的结果。任务卡的设置还没有运行：所需内存超出本轮允许的范围，而且这一模式下总能量还没有认证区间（DFT-E180）。</li>
     </ul></li>
+  </ol>
+  <details class="news-more"><summary>更早：2026-09-27 至 11-09</summary>
+  <ol class="news">
     <li><time datetime="2026-11-09">2026-11-09</time><ul>
       <li><span class="tag n">平台</span><b>里程碑 M1 达成，早于计划的 11 月 29 日。</b>任意晶体结构的 LDA 证书与三元点平衡证书已经具备。这个里程碑不包括验收任务的打分：D3 与 C1 尚未达标或尚未打分。对 C1 的一次独立审查从原始输出重新计数；在 pycalphad 能比较的全部 732 个点上，稳定相集合都相同。</li>
       <li><span class="tag n">CALPHAD</span><b>验收任务 C1：Al–Cu–Mg 在 673.15&nbsp;K 的完整等温截面，但超过了时间限制。</b>在 COST&nbsp;507 数据库的完整 741 点网格上，734 个点对任务卡 46 个相中的 45 个给出平衡证书（工具拒绝 ALCE_AMORPHOUS，这个相不在任何陈述之内）；7 个点未判定（0.94%，任务卡允许 5%），没有拒绝。这 7 个点中，1 个的证书未能判定 LAVES_C36，6 个撞到检查器 1 小时时限、没有结果，我们把它们计为未判定。pycalphad 只要给出数值，就没有不一致（CAL-D126、D127）。覆盖率达到了任务卡的要求，但运行在 8 核上用了 18.7 小时，任务卡的限制是 32 核 1 小时，所以这个任务尚未正式打分。</li>
       <li><span class="tag n">DFT</span><b>验收任务 D3：仍低于任务卡的降低设置。</b>8×8×8 k 网格上 MgO 9.50&nbsp;Ha、NaCl 3.56&nbsp;Ha 已有证书，但任务卡的降低设置是 28 与 15&nbsp;Ha（任务设置是 125 与 35&nbsp;Ha），所以这个任务还不算部分完成。在降低设置下检查被拒绝：由实测阶段外推，MgO 约需 1200–4100 CPU 小时、至少 50&nbsp;GB，而预算是 768 CPU 小时（DFT-E156）。一处编译代码提速已证明与经验证的密度求和相等，输出逐行相同；在干净的 MgO 对比中，列阶段快了约 10%（DFT-G365、G366）。</li>
     </ul></li>
-  </ol>
-  <details class="news-more"><summary>更早：2026-09-27 至 11-08</summary>
-  <ol class="news">
     <li><time datetime="2026-11-08">2026-11-08</time><ul>
       <li><span class="tag n">平台</span><b>第一次每周冷验证通过。</b>11 月 7 日推送的版本不用任何缓存结果、连同重型用例从头重新检查：18 个步骤全部通过，其中 311 个证书被接受，353 个篡改过的证书被发现，27 个负对照被拒绝；Si、C、Ge 在 8&times;8&times;8 k 网格上的 PBE 证书及其篡改版也在其中。这次运行在 16 个核上用了 13.4 小时。</li>
     </ul></li>
@@ -842,7 +848,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · 项目纲领 v0.5 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-11-12T16:31+08:00">2026-11-12 16:31 UTC+8</time></span></span>
+  <span>Formal in Silico · 项目纲领 v0.5 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-11-13T23:37+08:00">2026-11-13 23:37 UTC+8</time></span></span>
   <span><a href="progress.html">进度</a> · <a href="showcases.html">成果展示</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="../" hreflang="en">English</a></span>
 </div></footer>
 </body>
