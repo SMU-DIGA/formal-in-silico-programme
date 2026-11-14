@@ -49,9 +49,9 @@
     <div class="j ph"><span class="k">实验</span><span class="e"><i class="v">y</i><sub>obs</sub> − <i class="v">y</i><sub>model</sub> ∈ [<i class="v">y</i><sub>obs</sub> − hi, <i class="v">y</i><sub>obs</sub> − lo] ± <i class="v">σ</i><sub>exp</sub></span></div>
   </div>
   <div class="stats">
-    <div class="stat"><b data-n="all">1549</b><span>条命题登记在可信账本中</span></div>
-    <div class="stat"><b data-n="all.proved">1201</b><span>条已有机器证明（T3 或 T4）</span></div>
-    <div class="stat"><b data-n="all.T4">424</b><span>条达到端到端等级 T4：检查器可靠性、内核安全与内核浮点</span></div>
+    <div class="stat"><b data-n="all">1551</b><span>条命题登记在可信账本中</span></div>
+    <div class="stat"><b data-n="all.proved">1203</b><span>条已有机器证明（T3 或 T4）</span></div>
+    <div class="stat"><b data-n="all.T4">426</b><span>条达到端到端等级 T4：检查器可靠性、内核安全与内核浮点</span></div>
     <div class="stat"><b>4</b><span>个参照程序交叉校验：DFTK.jl、scikit-fem、ASE 与 pycalphad</span></div>
   </div>
     <p class="g-cap">证明依赖：账本里的每个命题建立在哪些命题之上，直接从 Lean 证明项读出。点一个节点追踪它的链；各领域页里有只看本领域的同一张图。</p>
@@ -114,6 +114,7 @@
       <li><span class="tag n">纲领</span><b>对 24 个验收任务按任务卡规则做了评分审查，并更正了进度页。</b>我们按每个任务卡的规则（资源、结果类别、拒绝上限），像代理用户在 M3 那样逐项评分，凡<a href="progress.html#stage2">进度页</a>说得多于或少于任务卡允许的地方都已更正。D9 不算部分完成：已有的是 LDA 括号（DFT-W100–W107），任务卡要求的是 PBE。D11 是有理由的拒绝（DFT-G501），不是部分完成；得到证书的小输入（G504）是另一个问题。C2 不算部分完成：7.7&nbsp;s 的那个点只用了 FCC_A1，用任务卡的 9 个相，一个点约要 2,000&nbsp;s。C8 尚不算部分完成：任务卡的 P 还要求 LAVES_C14 直到 900&nbsp;K 都不出现（已认证到 860.46&nbsp;K，CAL-D104）。C7 原先说少了：它的全部任务卡条目在我们自己的运行中都已达到（CAL-D104），尚未由代理用户评定。D1、D2、D7 与 C4 是<i>计划</i>为 R，而不是已计为 R：R 只在 M3 评定，且需要工具本身在用掉 10% 预算之前拒绝，并在 TRUST.md 的“目前做不到”中列出这项限制。C1 最多计 P（46 相中的 45 相），其运行约用 56 CPU 小时，任务卡的预算是 32 核·小时（CAL-D126）。拒绝上限作了澄清而没有放宽：超出上限的拒绝不算通过，门槛仍要求 DFT 6 个、CALPHAD 8 个任务有证书。展望：DFT 门槛要求 D3、D4、D5、D6、D10、D12 六个全部达到 P，而今天按实测或估计，没有一个能放进 24&nbsp;小时的预算；小规模探测正在运行，以判断这个门槛是否可达。CALPHAD 门槛今天可达，但没有余量；正在做的有：C4 的工具拒绝、C8 与 C10、任务卡运行的文档化命令，以及代理用户的预演。本条不声称新的结果。</li>
       <li><span class="tag n">DFT</span><b>探针判定 DFT 门槛：在 acceptance-v1 下不可达；计划的拒绝现在经用户命令得到。</b>DFT 门槛要求 D3、D4、D5、D6、D10、D12 六项全部达到 P，每项在 24&nbsp;h、64&nbsp;GB、32 核之内。在任务卡约化设置下的小探针（2×2×2 网格上的浮点预检与校准过的代价模型；是测量，不是结果）表明没有一项装得下：D4 两种材料至少要 2,100 CPU 小时，D5、D6 各至少 25&nbsp;h，最接近的 D10 也超出预算 1.2–1.3 倍（DFT-E300–E307）。据此用户决定：DFT 门槛在 acceptance-v1 下不可达（E310）；每个任务仍按任务卡去做或拒绝。计划的拒绝现在经写进文档的用户命令得到（<code>fis dft run</code>，docs/usage-pw3d.md 第 9 节），都在预算的 10% 之内：D1、D2 由代价估计在 1–5&nbsp;分钟后拒绝（E316、E317），D7-Al 由新的 Fermi–Dirac 运行前闸门在 24&nbsp;分钟后拒绝（E315、G621），D7-Cu 由代价估计在 6&nbsp;s 内拒绝（E319），D11 的 ABINIT 输入由转换器在 0.1&nbsp;s 内拒绝（E318）；<code>--ecut</code> 现在直接接受以 hartree 计的截断（G620）。D11 会是第四个 DFT R，不算通过。这些 R 在 M3 评定，此前不算。</li>
       <li><span class="tag n">CALPHAD</span><b>C4 与 C2 由工具拒绝；C8 与 C10 的任务卡条目在我们自己的运行中全部满足。</b>新命令 <code>fis calphad section</code> 在任何检查器运行之前估计三元截面的代价，装不进预算时拒绝：C4 约 5&nbsp;s 被拒（有序–无序相，预测半数点需 ≥&nbsp;9,797&nbsp;s；CAL-K230、D150、D151），C2 约 1&nbsp;s 被拒（没有无序部分的磁性有序相，预测 ≥&nbsp;21,993&nbsp;s；K231、D152、D153），两项都列入 TRUST.md“目前做不到”。C8：一条命令证明 MgZn<sub>2</sub> 的同成分熔化在 [857.4433, 857.4633]&nbsp;K 内，用全部 11 个相，并证明 LAVES_C14 直到 900.46&nbsp;K 不出现在任何平衡中，用时 6.5&nbsp;分钟（T180）。C10：<code>fis calphad selfcheck</code> 判定了评估者表格的全部三行；第 1、3 行一致，第 2 行与表格相差 4.46&nbsp;K；每个成分窗口都不超过 0.005（T181–T184）。用户指南把每个 C 任务卡对应到一条命令（docs/usage-calphad.md；<code>fis calphad row</code>，K232；点命令的选项，K233）。这些是我们自己的运行；代理用户评分在 M3。C3 与 C9 各有一个窗口略超 0.005（0.00518、0.0055），需要更窄的重算。</li>
+      <li><span class="tag n">CALPHAD</span><b>C3 与 C9 以更窄的窗口重跑：所有成分窗口都在 0.005 以内。</b>C3（Ni&ndash;Al，1273.15&nbsp;K，任务卡的全部四个点）：用文档中的点命令、更细的窗口分辨率重跑，最大窗口 0.0032（原 0.00518），Gibbs 能区间宽约 10<sup>&minus;8</sup>&nbsp;J/mol，有序判定不变（CAL-T185）。C9（Al&ndash;Si 共晶）：温度区间 [850.1486, 850.1506]&nbsp;K，液相窗口 0.0032（原 0.0055），pycalphad 落在其中（CAL-T186）。按任务卡规则严格衡量，在我们自己的运行中 12 个 CALPHAD 任务有 11 个可通过（C：C5、C7、C8、C10、C12；P：C3、C6、C9、C11；计划 R：C2、C4），比门槛多一个（<a href="progress.html#grades">C、P、R 的含义</a>）；这些是我们自己的运行，到 M3 由代理用户评分。</li>
     </ul></li>
     <li><time datetime="2026-11-13">2026-11-13</time><ul>
       <li><span class="tag n">DFT</span><b>验收任务 D7（Al 与 Cu）计为 R（有理由地拒绝）。</b>在 Al 的任务卡设置（20&nbsp;Ha，12×12×12 k 网格）下，检查器的 Newton–Kantorovich 界需要 4<i class="v">a</i>η<sub>T</sub>&nbsp;≤&nbsp;<i class="v">b</i><sup>2</sup>&nbsp;≈&nbsp;0.051。在卡片截断、2×2×2 网格上的预检给出 823，计划中各项改进的最好有效投影约 0.117。这些是浮点估计，不是证书。任务卡 38&nbsp;Ha 的 Cu 遇到同一障碍（DFT-E285–E289）。账本中此前一个浮点闸门判为 GO；独立复核发现它忽略了闭合条件中的 <i class="v">b</i><sup>2</sup>，另有其他错误，现已更正为 NO-GO（DFT-E281–E283 的注明日期的更正）。</li>
@@ -853,7 +854,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · 项目纲领 v0.5 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-11-14T13:09+08:00">2026-11-14 13:09 UTC+8</time></span></span>
+  <span>Formal in Silico · 项目纲领 v0.5 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-11-14T14:53+08:00">2026-11-14 14:53 UTC+8</time></span></span>
   <span><a href="progress.html">进度</a> · <a href="showcases.html">成果展示</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="../" hreflang="en">English</a></span>
 </div></footer>
 </body>
