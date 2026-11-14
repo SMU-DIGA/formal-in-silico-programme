@@ -110,6 +110,9 @@
   <h2>动态</h2>
   <div class="prose"><p>五个领域新增的功能、研究结果，以及论文与本网站的变化，新的在前。逐项状态见<a href="progress.html">进度</a>；这里引用的命题都登记在可信账本中。</p></div>
   <ol class="news">
+    <li><time datetime="2026-11-14">2026-11-14</time><ul>
+      <li><span class="tag n">纲领</span><b>对 24 个验收任务按任务卡规则做了评分审查，并更正了进度页。</b>我们按每个任务卡的规则（资源、结果类别、拒绝上限），像代理用户在 M3 那样逐项评分，凡<a href="progress.html#stage2">进度页</a>说得多于或少于任务卡允许的地方都已更正。D9 不算部分完成：已有的是 LDA 括号（DFT-W100–W107），任务卡要求的是 PBE。D11 是有理由的拒绝（DFT-G501），不是部分完成；得到证书的小输入（G504）是另一个问题。C2 不算部分完成：7.7&nbsp;s 的那个点只用了 FCC_A1，用任务卡的 9 个相，一个点约要 2,000&nbsp;s。C8 尚不算部分完成：任务卡的 P 还要求 LAVES_C14 直到 900&nbsp;K 都不出现（已认证到 860.46&nbsp;K，CAL-D104）。C7 原先说少了：它的全部任务卡条目在我们自己的运行中都已达到（CAL-D104），尚未由代理用户评定。D1、D2、D7 与 C4 是<i>计划</i>为 R，而不是已计为 R：R 只在 M3 评定，且需要工具本身在用掉 10% 预算之前拒绝，并在 TRUST.md 的“目前做不到”中列出这项限制。C1 最多计 P（46 相中的 45 相），其运行约用 56 CPU 小时，任务卡的预算是 32 核·小时（CAL-D126）。拒绝上限作了澄清而没有放宽：超出上限的拒绝不算通过，门槛仍要求 DFT 6 个、CALPHAD 8 个任务有证书。展望：DFT 门槛要求 D3、D4、D5、D6、D10、D12 六个全部达到 P，而今天按实测或估计，没有一个能放进 24&nbsp;小时的预算；小规模探测正在运行，以判断这个门槛是否可达。CALPHAD 门槛今天可达，但没有余量；正在做的有：C4 的工具拒绝、C8 与 C10、任务卡运行的文档化命令，以及代理用户的预演。本条不声称新的结果。</li>
+    </ul></li>
     <li><time datetime="2026-11-13">2026-11-13</time><ul>
       <li><span class="tag n">DFT</span><b>验收任务 D7（Al 与 Cu）计为 R（有理由地拒绝）。</b>在 Al 的任务卡设置（20&nbsp;Ha，12×12×12 k 网格）下，检查器的 Newton–Kantorovich 界需要 4<i class="v">a</i>η<sub>T</sub>&nbsp;≤&nbsp;<i class="v">b</i><sup>2</sup>&nbsp;≈&nbsp;0.051。在卡片截断、2×2×2 网格上的预检给出 823，计划中各项改进的最好有效投影约 0.117。这些是浮点估计，不是证书。任务卡 38&nbsp;Ha 的 Cu 遇到同一障碍（DFT-E285–E289）。账本中此前一个浮点闸门判为 GO；独立复核发现它忽略了闭合条件中的 <i class="v">b</i><sup>2</sup>，另有其他错误，现已更正为 NO-GO（DFT-E281–E283 的注明日期的更正）。</li>
       <li><span class="tag n">DFT</span><b>适用于任意晶格、逐原子电荷的认证 Ewald（离子–离子）能。</b>新的检查器入口对任意晶格、每个原子各有电荷的晶体给出 Ewald 能的区间；它的可靠性已在 Lean 中证明，并证明了第一阶段的 fcc Ewald 能是它的特例（DFT-G530–G532）。fcc Al 与闪锌矿 GaAs 的区间宽度不超过 1.7×10<sup>−11</sup>&nbsp;Ha，都含 30 位的参考值（G533、G534）。</li>
@@ -128,6 +131,9 @@
       <li><span class="tag n">DFT</span><b>验收任务 D2：GaAs 与 AlP 在任务卡的 8×8×8 k 网格、粗截断下得到证书。</b>D1 的稠密 PBE 检查器直接支持两种原子，Lean、检查器与驱动都没有改动（DFT-E200）。闪锌矿 GaAs 与 AlP 在 <i class="v">Q</i>&nbsp;=&nbsp;17/2、全部 512 个 k 点、不做对称约化时，检查器接受，带隙区间为 [0.078322888675, 0.078322888687]&nbsp;Ha（GaAs）与 [0.076266778151, 0.076266778163]&nbsp;Ha（AlP），各在 32 核上约 50 分钟；DFTK 对同一离散问题的解在每个区间之内，2×2×2 与 3×3×3 网格上也是如此（DFT-E201&ndash;E203、E206&ndash;E207）。还不是“部分完成”：截断仍低于任务卡的约化设置。在约化设置处稠密检查有理由地拒绝，估计需要约 6 万 CPU 小时与 3&nbsp;TB 以上内存（DFT-E205）；要做到需要把 PBE 放到分裂、点群路线上，并有 PBE 版的 Rule&nbsp;U，与 D1 相同。</li>
       <li><span class="tag n">CALPHAD</span><b>验收任务 C4：截面驱动已就绪，还没有点得到证书。</b>Ni&ndash;Al&ndash;Cr 截面（Liu 2016 数据库，1273.15&nbsp;K，富 Ni 一半，190 个点）有了驱动任务、任务卡的相列表与 pycalphad 相图（CAL-D130）。检查器支持任务卡 19 个相中的 18 个（不含气相），所以此任务最多计 P。在覆盖相图各区域的 10 个小算例上，驱动在每个点都写出证书，但检查器在全部 10 个点都达到 10 分钟上限（CAL-D131）；另一次 32 个点、每点 55 分钟上限的运行，32 个点也都未判定。代价在有序 L1<sub>2</sub> 与 B2 相的第一遍（CAL-D132）：现有检查器无法达到任务卡“32 核 1 小时”的要求。加速这一遍的工作正在进行。<i>同日稍后更正：加速已经试过，达不到任务卡；C4 按任务卡有理由地拒绝（CAL-D133，见上）。</i></li>
     </ul></li>
+  </ol>
+  <details class="news-more"><summary>更早：2026-09-27 至 11-11</summary>
+  <ol class="news">
     <li><time datetime="2026-11-11">2026-11-11</time><ul>
       <li><span class="tag n">CALPHAD</span><b>验收任务 C5：Cu&ndash;Zn 在 101 个温度中的 97 个得到相图行证书。</b>新的行证书在 Lean 中检查，覆盖一个二元系在一个温度下的全部成分范围，对文件所定义的模型可靠（CAL-T120&ndash;T122）。任务卡的运行（400&ndash;1400&nbsp;K，步长 10&nbsp;K）中，97 个温度得到证书，每一个温度上 pycalphad 的答案都在窗口内；其中 75 个温度的每条相界宽度都达到任务卡的 0.005。未完成：410&nbsp;K 驱动在纯 Zn 附近失败；710&ndash;730&nbsp;K 检查器到达 10 分钟上限；22 个有证书的温度宽于 0.005（1360&nbsp;K 漏掉了纯 Cu 一侧很窄的 FCC&nbsp;+&nbsp;液相区）；运行用了 1 小时 52 分，超过任务卡的 1 小时，因此不计分（CAL-K150&ndash;K152）。</li>
       <li><span class="tag n">CALPHAD</span><b>验收任务 C12：520&nbsp;K 的窗口达到任务卡要求。</b>粗盒子的原因：驱动选的参考态条件数差，检查器的细分预算在窗口被分细之前就用完了。改选条件更好的参考态后，液相窗口最宽 0.0023（任务卡 0.005），检查用时 82&nbsp;s；450&nbsp;K 不变，两个温度都达到任务卡的宽度。检查器没有改动；pycalphad 接口现在缺省采用这种选择（CAL-K170&ndash;K172）。未完成：此前一个 Cr&ndash;Fe&ndash;Ni 点上 BCC_B2 的粗盒子尾部与参考态的选择无关，需要改检查器，目前只是提议（CAL-K173）。</li>
@@ -138,9 +144,6 @@
       <li><span class="tag n">CALPHAD</span><b>验收任务 C5：Cu&ndash;Zn 在 700&nbsp;K 被证明是有序的 &beta;&prime;。</b>在 <i class="v">x</i><sub>Zn</sub>&nbsp;=&nbsp;0.48、原数据库的全部 8 个相下，唯一的稳定相是 BCC_B2，其序参量 |&eta;| 在 [0.3685, 0.4016] 内，所以是有序相；pycalphad 的能量与位置分数都在区间内（CAL-K143）。任务卡 101 个温度的扫描只有设计，没有运行。</li>
       <li><span class="tag n">DFT</span><b>验收任务 D10、D11：DFTK 脚本与 ABINIT 输入转换成被认证的问题。</b>两个转换器读入 DFTK 0.8 脚本或 ABINIT 10 输入，给出精确的离散问题，不能转换的内容被拒绝并写出字段名；每个证书的回显都与转换出的问题逐项比较。AlAs（来自 D10 脚本）与 GaAs（来自一个 ABINIT 输入）的小例子在 1.5&nbsp;Ha 的粗截断下得到证书（DFT-G500&ndash;G504）。D11 任务卡的输入被拒绝并写出原因（pspcod&nbsp;3 赝势、Teter Pad&eacute; LDA、四个 k 网格平移），这是任务卡允许的结果。任务卡的设置还没有运行：所需内存超出本轮允许的范围，而且这一模式下总能量还没有认证区间（DFT-E180）。</li>
     </ul></li>
-  </ol>
-  <details class="news-more"><summary>更早：2026-09-27 至 11-09</summary>
-  <ol class="news">
     <li><time datetime="2026-11-09">2026-11-09</time><ul>
       <li><span class="tag n">平台</span><b>里程碑 M1 达成，早于计划的 11 月 29 日。</b>任意晶体结构的 LDA 证书与三元点平衡证书已经具备。这个里程碑不包括验收任务的打分：D3 与 C1 尚未达标或尚未打分。对 C1 的一次独立审查从原始输出重新计数；在 pycalphad 能比较的全部 732 个点上，稳定相集合都相同。</li>
       <li><span class="tag n">CALPHAD</span><b>验收任务 C1：Al–Cu–Mg 在 673.15&nbsp;K 的完整等温截面，但超过了时间限制。</b>在 COST&nbsp;507 数据库的完整 741 点网格上，734 个点对任务卡 46 个相中的 45 个给出平衡证书（工具拒绝 ALCE_AMORPHOUS，这个相不在任何陈述之内）；7 个点未判定（0.94%，任务卡允许 5%），没有拒绝。这 7 个点中，1 个的证书未能判定 LAVES_C36，6 个撞到检查器 1 小时时限、没有结果，我们把它们计为未判定。pycalphad 只要给出数值，就没有不一致（CAL-D126、D127）。覆盖率达到了任务卡的要求，但运行在 8 核上用了 18.7 小时，任务卡的限制是 32 核 1 小时，所以这个任务尚未正式打分。</li>
@@ -848,7 +851,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · 项目纲领 v0.5 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-11-13T23:37+08:00">2026-11-13 23:37 UTC+8</time></span></span>
+  <span>Formal in Silico · 项目纲领 v0.5 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-11-14T08:57+08:00">2026-11-14 08:57 UTC+8</time></span></span>
   <span><a href="progress.html">进度</a> · <a href="showcases.html">成果展示</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="../" hreflang="en">English</a></span>
 </div></footer>
 </body>
