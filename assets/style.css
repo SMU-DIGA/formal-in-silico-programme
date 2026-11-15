@@ -575,6 +575,8 @@ main .g-stage{height:min(70vh,620px)}
 .hero .g-sec{margin-bottom:28px}
 #roadmap-callout{margin-top:40px;border-left-color:var(--ink)}
 .rm-tasks td:first-child,.rm-tasks th:first-child{min-width:0;width:3.2em;white-space:nowrap}
+.rm-tasks td.lvl{min-width:12em;font-size:14px}
+@media (max-width:640px){.rm-tasks td:first-child{width:auto}.rm-tasks td.lvl{margin:6px 14px 4px;padding:6px 10px;border-left:2px solid var(--rule);background:var(--sunk)}.rm-tasks td.lvl::before{content:attr(data-l);display:block;font:600 11.5px/1.4 var(--sans);color:var(--muted);letter-spacing:.02em}}
 .nowidow{text-wrap:pretty}
 
 /* research goal (programme §0): scale chain */
