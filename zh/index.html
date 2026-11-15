@@ -49,9 +49,9 @@
     <div class="j ph"><span class="k">实验</span><span class="e"><i class="v">y</i><sub>obs</sub> − <i class="v">y</i><sub>model</sub> ∈ [<i class="v">y</i><sub>obs</sub> − hi, <i class="v">y</i><sub>obs</sub> − lo] ± <i class="v">σ</i><sub>exp</sub></span></div>
   </div>
   <div class="stats">
-    <div class="stat"><b data-n="all">1551</b><span>条命题登记在可信账本中</span></div>
-    <div class="stat"><b data-n="all.proved">1203</b><span>条已有机器证明（T3 或 T4）</span></div>
-    <div class="stat"><b data-n="all.T4">426</b><span>条达到端到端等级 T4：检查器可靠性、内核安全与内核浮点</span></div>
+    <div class="stat"><b data-n="all">1580</b><span>条命题登记在可信账本中</span></div>
+    <div class="stat"><b data-n="all.proved">1217</b><span>条已有机器证明（T3 或 T4）</span></div>
+    <div class="stat"><b data-n="all.T4">440</b><span>条达到端到端等级 T4：检查器可靠性、内核安全与内核浮点</span></div>
     <div class="stat"><b>4</b><span>个参照程序交叉校验：DFTK.jl、scikit-fem、ASE 与 pycalphad</span></div>
   </div>
     <p class="g-cap">证明依赖：账本里的每个命题建立在哪些命题之上，直接从 Lean 证明项读出。点一个节点追踪它的链；各领域页里有只看本领域的同一张图。</p>
@@ -110,6 +110,13 @@
   <h2>动态</h2>
   <div class="prose"><p>五个领域新增的功能、研究结果，以及论文与本网站的变化，新的在前。逐项状态见<a href="progress.html">进度</a>；这里引用的命题都登记在可信账本中。</p></div>
   <ol class="news">
+    <li><time datetime="2026-11-15">2026-11-15</time><ul>
+      <li><span class="tag n">CALPHAD</span><b>12 个 CALPHAD 任务的代理用户预演：预演中门槛通过，没有 F!。</b>我们在当前代码上预演了 M3 的验收运行。12 个任务卡各由一个新的智能体来做，它只拿到任务卡、用户文档和任务卡的预算（1&nbsp;h、32 核、64&nbsp;GB），自己运行工具并交出任务卡要求的东西；另一个智能体根据代理用户自己的检查器输出逐卡评分，并用 pycalphad 做独立核对（CAL-T200）。评分：C5、C7、C8、C10、C12 为 C；C3、C6、C9、C11 为 P；C2、C4 为 R（工具分别在 7.2&nbsp;s 和 12.5&nbsp;s 内拒绝）；C1 为 F（一小时内 741 个点认证了 324 个，P 需要 371 个）。预演中门槛通过：12 项中 11 项通过，2 个 R，9 项有证书，能力分 7.0，与我们自己运行的读法相同（<a href="progress.html#grades">C、P、R、F 的含义</a>）。没有 F!：C1、C6、C10 上 pycalphad 的标记经第二条途径查明来自 pycalphad 本身（NaN、非全局的答案、约 10<sup>&minus;9</sup> 的质量平衡偏差）。余量只有一项，靠两个判断（C2、C3）撑着；下面几条把它们定下来，并补上预演列出的缺口（docs/stage2/rehearsal-calphad-2026-11-15.md）。局限：代理用户是我们启动的智能体，不是外部用户；代理用户说它读了哪些文档是自述的。</li>
+      <li><span class="tag n">CALPHAD</span><b>C1 在我们自己的运行中一小时内达到 P；12 个 CALPHAD 任务现在都通过或计划为 R。</b><code>fis calphad section</code> 现在按在完整 C1 运行上校准的代价从最便宜的点开始，并把 <code>--budget</code> 当作从命令开始算起的截止时间（CAL-T201、T204）。用写进文档的命令在 32 核上运行（共享机器，负载约 130），59&nbsp;分钟内 741 个点中有 495 个得到认证，每一个都被检查器接受且都在任务卡的宽度之内（Gibbs 能在 1&nbsp;J/mol 内，每个成分盒不超过 0.005）；截止时 2 个点未判定，244 个点未轮到；共 29.8 CPU 小时，含截止时被杀掉的两个检查器；pycalphad 在任何点上都不矛盾，在 2 个点上返回 NaN（CAL-T202）。P 需要 741 个点中的 371 个；C 被排除（任务卡 46 相中的 45 相，且有点没有证书）。在我们自己的运行中，严格按任务卡读，12 个 CALPHAD 任务现在都通过或计划为 R（C：C5、C7、C8、C10、C12；P：C1、C3、C6、C9、C11；计划 R：C2、C4），比门槛多两项。这些是我们自己的运行；代理用户评分在 M3。</li>
+      <li><span class="tag n">纲领</span><b>预演之后，按用户决定对验收规则作了两条澄清。</b>任务卡仍然冻结；澄清是对规则的解读，不是放宽（docs/stage2/acceptance-clarifications.md 第 2、3 条）。强行运行之后拒绝仍然成立：写进文档的命令在预算的 10% 之内给出理由和估计并拒绝，且这项限制列在 TRUST.md“目前做不到”中，任务就是 R；代理用户越过拒绝强行运行，不取消这个拒绝，那次运行认证的东西按通常规则评分，其中若有 F! 仍然终止验收。回显的限制若使不适定的任务卡问题变得适定，就算任务卡的问题：任务卡上的模型按文件所写没有平衡（Gibbs 能无下界，如 C3 中 BCC_A2 在 <i class="v">N</i>&nbsp;&rarr;&nbsp;0 时）时，对使问题适定的最小限制给出的证书算数，前提是检查器回显这个限制，并且 TRUST.md 写明它及其原因；对本来适定的问题加限制，得到的仍是更小的问题（最多 P）。</li>
+      <li><span class="tag n">CALPHAD</span><b>根据预演修正的工具问题。</b><code>fis calphad section</code>、<code>row</code>、<code>invariant</code>、<code>cover</code> 和 <code>selfcheck</code> 的 <code>--budget</code> 现在是从命令开始算起的截止时间：此后不再启动驱动或检查器（CAL-T204、T206）。资源记录计入被杀掉的进程：在时限处被杀掉的检查器及其启动的进程都被回收，它们的 CPU 时间得以保留（预演中约 13 CPU 小时被杀掉的检查器没有计入；T203、T206）。截面估计会指出检查器的数据库读取器在该温度下读不了的相；C2 中是 L12_FCC 和 M3V，它们的参数只定义在 298.15&ndash;300&nbsp;K 上（T205）。这更正了先前的一个说法：C2 实测的单点代价对应 7 个可读的相，而不是全部 9 个，拒绝仍然成立（CAL-D170）。<code>fis calphad invariant</code> 打印任务卡的宽度结论（T207）。pycalphad 返回的 NaN 在交叉核对中不再算作一致，C11 的结论行列出模型中去掉的每个相（BCC_A2 与 GAS；T208）。这些都是不受信任的工具（T0）；检查器没有改动。</li>
+      <li><span class="tag n">DFT</span><b>一般格子 LDA 检查中的时间反演：已证明可靠并在 GaAs 上被接受，但没有有用的提速。</b>证书现在可以带一行 <code>symmetry tr</code>：检查器据此按晶体的操作以及 <i class="v">k</i>&nbsp;&rarr;&nbsp;&minus;<i class="v">k</i> 给 k 点配对，其结论已证明与原有路线逐字相同（DFT-G660&ndash;G674；Lean，只用标准公理）。在闪锌矿 GaAs 上（D12 问题，3&times;3&times;3 k 网格，代表从 5 个减到 4 个）检查器接受，DFTK 的解在全部 27 个 k 点上都在结论之内（E330）；篡改的证书、去掉这一行的同一证书、以及不支持它的路线都被拒绝，不带这一行的证书输出逐字节不变（E331）。它没有让检查明显变快：只有随代表数增长的阶段缩短了，在完整网格上的阶段占主导（分阶段计时，E334；按模型而非测量，收益约 1.1&ndash;1.2 倍）。唯一批准的一次 10&nbsp;Ha、4&times;4&times;4 网格测量在 3&nbsp;h 时限处停止，没有判定（E333）。因此不提议 D10 的任务卡运行，DFT 门槛在 acceptance-v1 下仍不可达（E310）。</li>
+    </ul></li>
     <li><time datetime="2026-11-14">2026-11-14</time><ul>
       <li><span class="tag n">纲领</span><b>对 24 个验收任务按任务卡规则做了评分审查，并更正了进度页。</b>我们按每个任务卡的规则（资源、结果类别、拒绝上限），像代理用户在 M3 那样逐项评分，凡<a href="progress.html#stage2">进度页</a>说得多于或少于任务卡允许的地方都已更正。D9 不算部分完成：已有的是 LDA 括号（DFT-W100–W107），任务卡要求的是 PBE。D11 是有理由的拒绝（DFT-G501），不是部分完成；得到证书的小输入（G504）是另一个问题。C2 不算部分完成：7.7&nbsp;s 的那个点只用了 FCC_A1，用任务卡的 9 个相，一个点约要 2,000&nbsp;s。C8 尚不算部分完成：任务卡的 P 还要求 LAVES_C14 直到 900&nbsp;K 都不出现（已认证到 860.46&nbsp;K，CAL-D104）。C7 原先说少了：它的全部任务卡条目在我们自己的运行中都已达到（CAL-D104），尚未由代理用户评定。D1、D2、D7 与 C4 是<i>计划</i>为 R，而不是已计为 R：R 只在 M3 评定，且需要工具本身在用掉 10% 预算之前拒绝，并在 TRUST.md 的“目前做不到”中列出这项限制。C1 最多计 P（46 相中的 45 相），其运行约用 56 CPU 小时，任务卡的预算是 32 核·小时（CAL-D126）。拒绝上限作了澄清而没有放宽：超出上限的拒绝不算通过，门槛仍要求 DFT 6 个、CALPHAD 8 个任务有证书。展望：DFT 门槛要求 D3、D4、D5、D6、D10、D12 六个全部达到 P，而今天按实测或估计，没有一个能放进 24&nbsp;小时的预算；小规模探测正在运行，以判断这个门槛是否可达。CALPHAD 门槛今天可达，但没有余量；正在做的有：C4 的工具拒绝、C8 与 C10、任务卡运行的文档化命令，以及代理用户的预演。本条不声称新的结果。</li>
       <li><span class="tag n">DFT</span><b>探针判定 DFT 门槛：在 acceptance-v1 下不可达；计划的拒绝现在经用户命令得到。</b>DFT 门槛要求 D3、D4、D5、D6、D10、D12 六项全部达到 P，每项在 24&nbsp;h、64&nbsp;GB、32 核之内。在任务卡约化设置下的小探针（2×2×2 网格上的浮点预检与校准过的代价模型；是测量，不是结果）表明没有一项装得下：D4 两种材料至少要 2,100 CPU 小时，D5、D6 各至少 25&nbsp;h，最接近的 D10 也超出预算 1.2–1.3 倍（DFT-E300–E307）。据此用户决定：DFT 门槛在 acceptance-v1 下不可达（E310）；每个任务仍按任务卡去做或拒绝。计划的拒绝现在经写进文档的用户命令得到（<code>fis dft run</code>，docs/usage-pw3d.md 第 9 节），都在预算的 10% 之内：D1、D2 由代价估计在 1–5&nbsp;分钟后拒绝（E316、E317），D7-Al 由新的 Fermi–Dirac 运行前闸门在 24&nbsp;分钟后拒绝（E315、G621），D7-Cu 由代价估计在 6&nbsp;s 内拒绝（E319），D11 的 ABINIT 输入由转换器在 0.1&nbsp;s 内拒绝（E318）；<code>--ecut</code> 现在直接接受以 hartree 计的截断（G620）。D11 会是第四个 DFT R，不算通过。这些 R 在 M3 评定，此前不算。</li>
@@ -122,6 +129,9 @@
       <li><span class="tag n">DFT</span><b>验收任务 D12：一般晶格路线上认证的零温能量步。</b>检查器的新选项 <code>--energy</code> 给出认证解的电子 LDA 能量的区间，可靠性已证明（DFT-G571–G573）。在五个 GaAs 小算例上区间宽度不超过 5.4×10<sup>−10</sup>&nbsp;Ha，有 DFTK 参考值的四例中 DFTK 的值都在区间内（E293）。这个能量不含离子–离子项：还没有与上面的 Ewald 区间合成。</li>
       <li><span class="tag n">DFT</span><b>验收任务 D12：收敛表的第一个认证点。</b>GaAs 在任务卡的 10&nbsp;Ha、4×4×4 k 网格上，检查器接受：SCF 解被包住，零温占据有定义，网格能隙在 [0.016315585, 0.016315589]&nbsp;Ha 内（DFT-E295）。这是表格的一个点，不是收敛的答案，也还没有 [E]；P 需要任务卡 12 个点中至少 6 个。检查用了 73.5 CPU 小时与 19&nbsp;GiB，是代价模型估计的 1.35 倍与 2.1 倍，模型已重新标定（E294）。</li>
     </ul></li>
+  </ol>
+  <details class="news-more"><summary>更早：2026-09-27 至 11-12</summary>
+  <ol class="news">
     <li><time datetime="2026-11-12">2026-11-12</time><ul>
       <li><span class="tag n">CALPHAD</span><b>验收任务 C5：任务卡的全部运行得到证书——两项在我们自己的运行中都达到 C 级。</b>Cu&ndash;Zn（Liang 2015）、全部 8 个相、400&ndash;1400&nbsp;K 的全部 101 个温度：每一行都得到证书，101 个温度上 pycalphad 的答案都在窗口内（0 个在外，共 73489 个相态），每条相界宽度都在任务卡的 0.005 以内（最大 0.0036）；32 核上 48 分 21 秒，在任务卡的 1 小时之内（CAL-K222）。用的是修好的驱动，以及让最重的相先跑的行检查器入口；该入口与更快的行检查器结论相同，已在 Lean 中证明（CAL-T170&ndash;T174）。加上 11 月 11 日 700&nbsp;K 的 [EQ] 证书（CAL-K143），这是第二阶段第一个两项都达到 C 级的 CALPHAD 任务。未完成：验收任务由协议下的代理用户评分，评分还没做，因此 C5 显示为“部分完成”。</li>
       <li><span class="tag n">CALPHAD</span><b>验收任务 C9：Al&ndash;Si 的 P 级内容完整。</b>共晶 LIQUID&nbsp;&rarr;&nbsp;FCC_A1&nbsp;+&nbsp;DIAMOND_A4（COST&nbsp;507）有不变反应证书 [850.1471, 850.1521]&nbsp;K，pycalphad 的 850.1498&nbsp;K 与三相成分都在其中（CAL-T150）。500&ndash;1800&nbsp;K 每 10&nbsp;K 的相图行证书在全部 131 个温度上得到；每个温度上 pycalphad 的答案都在窗口内，每个宽度都在 0.005 以内。运行在 32 核上用 18 分 45 秒（CAL-K200&ndash;K202）。最多计 P，因为相集小于任务卡的 26 个：行检查器拒绝 ALCE_AMORPHOUS 并给出理由，所以用 25 个相；不变反应证书读入 21 个。未完成：C 级需要的温度区间 [TB] 证书和“JSON 加图”的产物；代理评分。</li>
@@ -134,9 +144,6 @@
       <li><span class="tag n">DFT</span><b>验收任务 D2：GaAs 与 AlP 在任务卡的 8×8×8 k 网格、粗截断下得到证书。</b>D1 的稠密 PBE 检查器直接支持两种原子，Lean、检查器与驱动都没有改动（DFT-E200）。闪锌矿 GaAs 与 AlP 在 <i class="v">Q</i>&nbsp;=&nbsp;17/2、全部 512 个 k 点、不做对称约化时，检查器接受，带隙区间为 [0.078322888675, 0.078322888687]&nbsp;Ha（GaAs）与 [0.076266778151, 0.076266778163]&nbsp;Ha（AlP），各在 32 核上约 50 分钟；DFTK 对同一离散问题的解在每个区间之内，2×2×2 与 3×3×3 网格上也是如此（DFT-E201&ndash;E203、E206&ndash;E207）。还不是“部分完成”：截断仍低于任务卡的约化设置。在约化设置处稠密检查有理由地拒绝，估计需要约 6 万 CPU 小时与 3&nbsp;TB 以上内存（DFT-E205）；要做到需要把 PBE 放到分裂、点群路线上，并有 PBE 版的 Rule&nbsp;U，与 D1 相同。</li>
       <li><span class="tag n">CALPHAD</span><b>验收任务 C4：截面驱动已就绪，还没有点得到证书。</b>Ni&ndash;Al&ndash;Cr 截面（Liu 2016 数据库，1273.15&nbsp;K，富 Ni 一半，190 个点）有了驱动任务、任务卡的相列表与 pycalphad 相图（CAL-D130）。检查器支持任务卡 19 个相中的 18 个（不含气相），所以此任务最多计 P。在覆盖相图各区域的 10 个小算例上，驱动在每个点都写出证书，但检查器在全部 10 个点都达到 10 分钟上限（CAL-D131）；另一次 32 个点、每点 55 分钟上限的运行，32 个点也都未判定。代价在有序 L1<sub>2</sub> 与 B2 相的第一遍（CAL-D132）：现有检查器无法达到任务卡“32 核 1 小时”的要求。加速这一遍的工作正在进行。<i>同日稍后更正：加速已经试过，达不到任务卡；C4 按任务卡有理由地拒绝（CAL-D133，见上）。</i></li>
     </ul></li>
-  </ol>
-  <details class="news-more"><summary>更早：2026-09-27 至 11-11</summary>
-  <ol class="news">
     <li><time datetime="2026-11-11">2026-11-11</time><ul>
       <li><span class="tag n">CALPHAD</span><b>验收任务 C5：Cu&ndash;Zn 在 101 个温度中的 97 个得到相图行证书。</b>新的行证书在 Lean 中检查，覆盖一个二元系在一个温度下的全部成分范围，对文件所定义的模型可靠（CAL-T120&ndash;T122）。任务卡的运行（400&ndash;1400&nbsp;K，步长 10&nbsp;K）中，97 个温度得到证书，每一个温度上 pycalphad 的答案都在窗口内；其中 75 个温度的每条相界宽度都达到任务卡的 0.005。未完成：410&nbsp;K 驱动在纯 Zn 附近失败；710&ndash;730&nbsp;K 检查器到达 10 分钟上限；22 个有证书的温度宽于 0.005（1360&nbsp;K 漏掉了纯 Cu 一侧很窄的 FCC&nbsp;+&nbsp;液相区）；运行用了 1 小时 52 分，超过任务卡的 1 小时，因此不计分（CAL-K150&ndash;K152）。</li>
       <li><span class="tag n">CALPHAD</span><b>验收任务 C12：520&nbsp;K 的窗口达到任务卡要求。</b>粗盒子的原因：驱动选的参考态条件数差，检查器的细分预算在窗口被分细之前就用完了。改选条件更好的参考态后，液相窗口最宽 0.0023（任务卡 0.005），检查用时 82&nbsp;s；450&nbsp;K 不变，两个温度都达到任务卡的宽度。检查器没有改动；pycalphad 接口现在缺省采用这种选择（CAL-K170&ndash;K172）。未完成：此前一个 Cr&ndash;Fe&ndash;Ni 点上 BCC_B2 的粗盒子尾部与参考态的选择无关，需要改检查器，目前只是提议（CAL-K173）。</li>
@@ -854,7 +861,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · 项目纲领 v0.5 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-11-14T14:53+08:00">2026-11-14 14:53 UTC+8</time></span></span>
+  <span>Formal in Silico · 项目纲领 v0.5 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-11-15T10:11+08:00">2026-11-15 10:11 UTC+8</time></span></span>
   <span><a href="progress.html">进度</a> · <a href="showcases.html">成果展示</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="../" hreflang="en">English</a></span>
 </div></footer>
 </body>
