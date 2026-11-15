@@ -49,9 +49,9 @@
     <div class="j ph"><span class="k">实验</span><span class="e"><i class="v">y</i><sub>obs</sub> − <i class="v">y</i><sub>model</sub> ∈ [<i class="v">y</i><sub>obs</sub> − hi, <i class="v">y</i><sub>obs</sub> − lo] ± <i class="v">σ</i><sub>exp</sub></span></div>
   </div>
   <div class="stats">
-    <div class="stat"><b data-n="all">1580</b><span>条命题登记在可信账本中</span></div>
-    <div class="stat"><b data-n="all.proved">1217</b><span>条已有机器证明（T3 或 T4）</span></div>
-    <div class="stat"><b data-n="all.T4">440</b><span>条达到端到端等级 T4：检查器可靠性、内核安全与内核浮点</span></div>
+    <div class="stat"><b data-n="all">1598</b><span>条命题登记在可信账本中</span></div>
+    <div class="stat"><b data-n="all.proved">1221</b><span>条已有机器证明（T3 或 T4）</span></div>
+    <div class="stat"><b data-n="all.T4">444</b><span>条达到端到端等级 T4：检查器可靠性、内核安全与内核浮点</span></div>
     <div class="stat"><b>4</b><span>个参照程序交叉校验：DFTK.jl、scikit-fem、ASE 与 pycalphad</span></div>
   </div>
     <p class="g-cap">证明依赖：账本里的每个命题建立在哪些命题之上，直接从 Lean 证明项读出。点一个节点追踪它的链；各领域页里有只看本领域的同一张图。</p>
@@ -111,6 +111,11 @@
   <div class="prose"><p>五个领域新增的功能、研究结果，以及论文与本网站的变化，新的在前。逐项状态见<a href="progress.html">进度</a>；这里引用的命题都登记在可信账本中。</p></div>
   <ol class="news">
     <li><time datetime="2026-11-15">2026-11-15</time><ul>
+      <li><span class="tag n">DFT</span><b>含离子–离子项的总能量 [E]，由检查器一行给出。</b> 此前检查器的能量行不含离子–离子（Ewald）能，所以任何任务卡的 [E] 项都无法满足。新选项 <code>--total</code>（<code>certify-pw3d CERT --total</code>、<code>fis dft run --total</code>）由证书本身构造 Ewald 问题（同一晶格、原子位置与赝势电荷），用一般 Ewald 检查器检查，并把每个晶胞的总能量作为区间打印；区间包含认证解的总能量，这一点在 Lean 中对零温路线与 Fermi–Dirac 路线都已证明（DFT-G700–G704）。在小算例上（D10 脚本的 AlAs、GaAs、MgO；2×2×2，各约 3 分钟），DFTK 打印的总能量都在区间内，不加选项时输出与以前逐字节相同（E360）。表格命令 <code>fis dft ladder</code> 的 [E] 列现在是总能量。D12 已认证的点（10&nbsp;Ha，4×4×4）还没有用它重跑，所以 D12 仍没有完整的点。</li>
+      <li><span class="tag n">DFT</span><b>任务 D10：DFTK 脚本与证书之间的比较报告。</b> <code>fis dft compare --script S.jl --dftk-output OUT --checker-output CHECK</code> 打印脚本的精确换算、认证的问题是否就是脚本的问题（包括 DFTK 的 FFT 尺寸），以及 DFTK 的总能量与网格能隙：在认证区间内，或差多少 hartree（G705；这是比较，不是证书）。在降到 1.5&nbsp;Ha、2×2×2 的任务卡脚本上，DFTK 的两个数都在区间内（E361）。任务卡设置本身没有运行。</li>
+      <li><span class="tag n">DFT</span><b>任务 D8 与 D9 经用户命令被拒绝；两者都是超出上限的 R。</b> D8 的任务卡命令（Fe，共线自旋，<code>fis dft run … --spin collinear</code>）在 5&nbsp;s 内、任何驱动运行之前被拒绝：没有三维自旋极化金属的检查器（DFT-E380、G730）。D9 的命令（<code>fis dft bracket … --xc pbe</code>，Si 的 PBE 晶格常数）在 10&nbsp;s 内被拒绝：没有 PBE 能量行，也没有 PBE 括号定理（E381、G731）。每个拒绝都写出缺少的功能和代价估计，两者都已列入 TRUST.md 的“目前做不到”。D1、D2、D7 已占满计入 DFT 门槛的 3 个 R，所以这两个 R 有记录但不计入。</li>
+      <li><span class="tag n">DFT</span><b>D3、D7、D10 已达到的水平经写进文档的用户命令复现。</b> 每个已达到的水平都按用户的方式重跑（<code>fis dft run</code>，或 D10 的操作说明），再次被接受，区间相同：D3 的 MgO 9.50&nbsp;Ha 与 NaCl 3.56&nbsp;Ha（8×8×8），以及 MgO <i class="v">Q</i>&nbsp;=&nbsp;90（比约化的 28&nbsp;Ha 高一个壳层）在 2×2×2 上；D7 的 Al 6.74&nbsp;Ha、4×4×4；以及 D10 的小脚本（DFT-G732–G736）。MgO 2×2×2 的重跑共用 6 小时 46 分、74.8 CPU 小时（检查 56.5）；它需要 <code>--force</code>，因为运行前的代价估计超出校准范围，给出 364 CPU 小时（E382）。进度页现在把这些水平标为 U（用户可复现）。</li>
+      <li><span class="tag n">CALPHAD</span><b>工具修正：时限到时杀掉整棵进程树。</b> <code>fis calphad</code> 的命令（<code>row</code>、<code>invariant</code>、<code>cover</code>、<code>selfcheck</code>）在时限到时停止驱动，现在先冻结驱动及其全部子孙进程，再一起杀掉。以前在最后一次扫描之后才启动的进程会漏掉并继续运行：在一棵不断启动新进程的测试树上，每次漏掉 3–4 个，现在一个也没有。这是一个单元测试在高负载下失败时发现的。</li>
       <li><span class="tag n">CALPHAD</span><b>12 个 CALPHAD 任务的代理用户预演：预演中门槛通过，没有 F!。</b>我们在当前代码上预演了 M3 的验收运行。12 个任务卡各由一个新的智能体来做，它只拿到任务卡、用户文档和任务卡的预算（1&nbsp;h、32 核、64&nbsp;GB），自己运行工具并交出任务卡要求的东西；另一个智能体根据代理用户自己的检查器输出逐卡评分，并用 pycalphad 做独立核对（CAL-T200）。评分：C5、C7、C8、C10、C12 为 C；C3、C6、C9、C11 为 P；C2、C4 为 R（工具分别在 7.2&nbsp;s 和 12.5&nbsp;s 内拒绝）；C1 为 F（一小时内 741 个点认证了 324 个，P 需要 371 个）。预演中门槛通过：12 项中 11 项通过，2 个 R，9 项有证书，能力分 7.0，与我们自己运行的读法相同（<a href="progress.html#grades">C、P、R、F 的含义</a>）。没有 F!：C1、C6、C10 上 pycalphad 的标记经第二条途径查明来自 pycalphad 本身（NaN、非全局的答案、约 10<sup>&minus;9</sup> 的质量平衡偏差）。余量只有一项，靠两个判断（C2、C3）撑着；下面几条把它们定下来，并补上预演列出的缺口（docs/stage2/rehearsal-calphad-2026-11-15.md）。局限：代理用户是我们启动的智能体，不是外部用户；代理用户说它读了哪些文档是自述的。</li>
       <li><span class="tag n">CALPHAD</span><b>C1 在我们自己的运行中一小时内达到 P；12 个 CALPHAD 任务现在都通过或计划为 R。</b><code>fis calphad section</code> 现在按在完整 C1 运行上校准的代价从最便宜的点开始，并把 <code>--budget</code> 当作从命令开始算起的截止时间（CAL-T201、T204）。用写进文档的命令在 32 核上运行（共享机器，负载约 130），59&nbsp;分钟内 741 个点中有 495 个得到认证，每一个都被检查器接受且都在任务卡的宽度之内（Gibbs 能在 1&nbsp;J/mol 内，每个成分盒不超过 0.005）；截止时 2 个点未判定，244 个点未轮到；共 29.8 CPU 小时，含截止时被杀掉的两个检查器；pycalphad 在任何点上都不矛盾，在 2 个点上返回 NaN（CAL-T202）。P 需要 741 个点中的 371 个；C 被排除（任务卡 46 相中的 45 相，且有点没有证书）。在我们自己的运行中，严格按任务卡读，12 个 CALPHAD 任务现在都通过或计划为 R（C：C5、C7、C8、C10、C12；P：C1、C3、C6、C9、C11；计划 R：C2、C4），比门槛多两项。这些是我们自己的运行；代理用户评分在 M3。</li>
       <li><span class="tag n">纲领</span><b>预演之后，按用户决定对验收规则作了两条澄清。</b>任务卡仍然冻结；澄清是对规则的解读，不是放宽（docs/stage2/acceptance-clarifications.md 第 2、3 条）。强行运行之后拒绝仍然成立：写进文档的命令在预算的 10% 之内给出理由和估计并拒绝，且这项限制列在 TRUST.md“目前做不到”中，任务就是 R；代理用户越过拒绝强行运行，不取消这个拒绝，那次运行认证的东西按通常规则评分，其中若有 F! 仍然终止验收。回显的限制若使不适定的任务卡问题变得适定，就算任务卡的问题：任务卡上的模型按文件所写没有平衡（Gibbs 能无下界，如 C3 中 BCC_A2 在 <i class="v">N</i>&nbsp;&rarr;&nbsp;0 时）时，对使问题适定的最小限制给出的证书算数，前提是检查器回显这个限制，并且 TRUST.md 写明它及其原因；对本来适定的问题加限制，得到的仍是更小的问题（最多 P）。</li>
@@ -862,7 +867,7 @@
 </div>
 
 <footer><div class="in">
-  <span>Formal in Silico · 项目纲领 v0.5 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-11-15T14:29+08:00">2026-11-15 14:29 UTC+8</time></span></span>
+  <span>Formal in Silico · 项目纲领 v0.5 · 随项目演进修订<span class="updated"> · 更新于 <time datetime="2026-11-15T23:13+08:00">2026-11-15 23:13 UTC+8</time></span></span>
   <span><a href="progress.html">进度</a> · <a href="showcases.html">成果展示</a> · <a href="dft.html">DFT</a> · <a href="fem.html">FEM</a> · <a href="md.html">MD</a> · <a href="calphad.html">CALPHAD</a> · <a href="csp.html">CSP</a> · <a href="../" hreflang="en">English</a></span>
 </div></footer>
 </body>
